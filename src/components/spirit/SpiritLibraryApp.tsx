@@ -425,146 +425,160 @@ export default function SpiritLibraryApp({ library }: Props) {
   return (
     <section className={`${styles.page} admin-stack`}>
       {pathOpen && (
-        <div className={`admin-card ${styles.pathSection}`}>
-          <div className={styles.pathHeaderRow}>
-            <div>
-              <h2 className="admin-heading__title">{"Adj egy utat"}</h2>
-            <p className={styles.pathSubtitle}>
-              {"Determinista, szabályalapú útvonal a kért szűrések szerint. AI csak finomhangolhat."}
-            </p>
-          </div>
-        </div>
-        <div className={styles.pathForm}>
-          <label className="form-field">
-            <span className="form-field__label">{"Tradíció"}</span>
-            <select className="input" value={pathTradition} onChange={(event) => setPathTradition(event.target.value)}>
-              <option value="">Mind</option>
-              {TRADITION_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="form-field">
-            <span className="form-field__label">{"Kezdőszint"}</span>
-            <select className="input" value={pathStartLevel} onChange={(event) => setPathStartLevel(event.target.value)}>
-              <option value="">Mind</option>
-              {LEVEL_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <div className={styles.pathThemes}>
-            <span className="form-field__label">{"Témák"}</span>
-            <div className={styles.pathThemeGrid}>
-              {themePills.map((pill) => {
-                const color = pill.color;
-                const isActive = pathThemes.includes(pill.slug);
-                return (
+        <div className={styles.toolbarPanelBackdrop}>
+          <div className={styles.toolbarPanelCard}>
+            <div className={`admin-card ${styles.pathSection}`}>
+              <div className={styles.pathHeaderRow}>
+                <div>
+                  <h2 className="admin-heading__title">{"Adj egy utat"}</h2>
+                  <p className={styles.pathSubtitle}>
+                    {"Determinista, szabályalapú útvonal a kért szűrések szerint. AI csak finomhangolhat."}
+                  </p>
+                </div>
+                <div className={styles.pathHeaderActions}>
                   <button
-                    key={pill.slug}
                     type="button"
-                    className={`${styles.pathThemePill} ${isActive ? styles.pathThemePillActive : ""}`}
-                    onClick={() => togglePathTheme(pill.slug)}
-                    style={{
-                      borderColor: color,
-                      color: isActive ? "#fff" : color,
-                      background: isActive ? color : hexToRgba(color, 0.12),
-                    }}
-                    title={pill.label}
+                    className="btn btn--ghost"
+                    onClick={() => setPathOpen(false)}
+                    aria-label="Bezárás"
                   >
-                    {pill.short_label}
+                    <X size={18} />
                   </button>
-                );
-              })}
-            </div>
-          </div>
-          <div className={styles.pathActions}>
-            <button type="button" className="btn" onClick={handleGeneratePath}>
-              {"Utat kérek"}
-            </button>
-          </div>
-        </div>
+                </div>
+              </div>
+              <div className={styles.pathForm}>
+                <label className="form-field">
+                  <span className="form-field__label">{"Tradíció"}</span>
+                  <select className="input" value={pathTradition} onChange={(event) => setPathTradition(event.target.value)}>
+                    <option value="">Mind</option>
+                    {TRADITION_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="form-field">
+                  <span className="form-field__label">{"Kezdőszint"}</span>
+                  <select className="input" value={pathStartLevel} onChange={(event) => setPathStartLevel(event.target.value)}>
+                    <option value="">Mind</option>
+                    {LEVEL_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <div className={styles.pathThemes}>
+                  <span className="form-field__label">{"Témák"}</span>
+                  <div className={styles.pathThemeGrid}>
+                    {themePills.map((pill) => {
+                      const color = pill.color;
+                      const isActive = pathThemes.includes(pill.slug);
+                      return (
+                        <button
+                          key={pill.slug}
+                          type="button"
+                          className={`${styles.pathThemePill} ${isActive ? styles.pathThemePillActive : ""}`}
+                          onClick={() => togglePathTheme(pill.slug)}
+                          style={{
+                            borderColor: color,
+                            color: isActive ? "#fff" : color,
+                            background: isActive ? color : hexToRgba(color, 0.12),
+                          }}
+                          title={pill.label}
+                        >
+                          {pill.short_label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className={styles.pathActions}>
+                  <button type="button" className="btn" onClick={handleGeneratePath}>
+                    {"Utat kérek"}
+                  </button>
+                </div>
+              </div>
 
-        {generatedPath && (
-          <div className={styles.pathResult}>
-            {generatedPath.steps.length === 0 ? (
-              <p className="admin-text-muted">{"Nincs elérhető útvonal ezekkel a szűrésekkel."}</p>
-            ) : (
-              <>
-                <div className={styles.pathResultMeta}>
-                  <span>{`${generatedPath.steps.length} könyv`}</span>
-                  <span>{`Flow quality: ${Math.round(generatedPath.flow * 100)}%`}</span>
-                </div>
-                <div className={styles.pathActionsRow}>
-                  <button type="button" className="btn" onClick={handleSaveGeneratedPath}>
-                    {"Ajánlott út rögzítése"}
-                  </button>
-                </div>
-                <div className={styles.pathResultList}>
-                  {generatedPath.steps.map((step, index) => (
-                    <button
-                      key={step.book.id}
-                      type="button"
-                      className={styles.pathResultCard}
-                      onClick={() => setBookStack([step.book])}
-                    >
-                      <span className={styles.pathResultIndex}>{index + 1}</span>
-                      <div className={styles.pathResultBody}>
-                        <strong>{step.book.title}</strong>
-                        <span className={styles.pathBookAuthor}>{step.book.author}</span>
-                        {step.reasons.length > 0 && (
-                          <span className={styles.pathReason}>{step.reasons.join(" · ")}</span>
-                        )}
+              {generatedPath && (
+                <div className={styles.pathResult}>
+                  {generatedPath.steps.length === 0 ? (
+                    <p className="admin-text-muted">{"Nincs elérhető útvonal ezekkel a szűrésekkel."}</p>
+                  ) : (
+                    <>
+                      <div className={styles.pathResultMeta}>
+                        <span>{`${generatedPath.steps.length} könyv`}</span>
+                        <span>{`Flow quality: ${Math.round(generatedPath.flow * 100)}%`}</span>
                       </div>
-                    </button>
-                  ))}
+                      <div className={styles.pathActionsRow}>
+                        <button type="button" className="btn" onClick={handleSaveGeneratedPath}>
+                          {"Ajánlott út rögzítése"}
+                        </button>
+                      </div>
+                      <div className={styles.pathResultList}>
+                        {generatedPath.steps.map((step, index) => (
+                          <button
+                            key={step.book.id}
+                            type="button"
+                            className={styles.pathResultCard}
+                            onClick={() => setBookStack([step.book])}
+                          >
+                            <span className={styles.pathResultIndex}>{index + 1}</span>
+                            <div className={styles.pathResultBody}>
+                              <strong>{step.book.title}</strong>
+                              <span className={styles.pathBookAuthor}>{step.book.author}</span>
+                              {step.reasons.length > 0 && (
+                                <span className={styles.pathReason}>{step.reasons.join(" · ")}</span>
+                              )}
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
-              </>
-        )}
-      </div>
-      )}
+              )}
+            </div>
 
-      {pathOpen && curatedPaths.length > 0 && (
-        <div className={styles.pathGridSection}>
-          <div className={styles.pathGridHeader}>
-            <h2 className="admin-heading__title">{"Mentett utak"}</h2>
-            <p className={styles.pathSubtitle}>{"Rögzített és kézzel válogatott útvonalak."}</p>
+            {curatedPaths.length > 0 && (
+              <div className={styles.pathGridSection}>
+                <div className={styles.pathGridHeader}>
+                  <h2 className="admin-heading__title">{"Mentett utak"}</h2>
+                  <p className={styles.pathSubtitle}>{"Rögzített és kézzel válogatott útvonalak."}</p>
+                </div>
+                <div className={styles.pathGrid}>
+                  {curatedPaths.map((path) => {
+                    const entries = pathItemsForRender(path);
+                    return (
+                      <button
+                        key={path.id}
+                        type="button"
+                        className={styles.pathCard}
+                        onClick={() => setSelectedPathId(path.id)}
+                      >
+                        <div className={styles.pathCardHeader}>
+                          <div>
+                            <h3 className={styles.pathTitle}>{path.title}</h3>
+                            {path.description && <p className={styles.pathDesc}>{path.description}</p>}
+                            <p className={styles.pathMeta}>
+                              {`${entries.length} könyv · ${getPathProgress(path)}%`}
+                            </p>
+                          </div>
+                        </div>
+                        <div className={styles.pathProgressBar}>
+                          <span
+                            className={styles.pathProgressFill}
+                            style={{ width: `${getPathProgress(path)}%` }}
+                          />
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
-          <div className={styles.pathGrid}>
-            {curatedPaths.map((path) => {
-              const entries = pathItemsForRender(path);
-              return (
-                <button
-                  key={path.id}
-                  type="button"
-                  className={styles.pathCard}
-                  onClick={() => setSelectedPathId(path.id)}
-                >
-                  <div className={styles.pathCardHeader}>
-                    <div>
-                      <h3 className={styles.pathTitle}>{path.title}</h3>
-                      {path.description && <p className={styles.pathDesc}>{path.description}</p>}
-                      <p className={styles.pathMeta}>
-                        {`${entries.length} könyv · ${getPathProgress(path)}%`}
-                      </p>
-                    </div>
-                  </div>
-                  <div className={styles.pathProgressBar}>
-                    <span
-                      className={styles.pathProgressFill}
-                      style={{ width: `${getPathProgress(path)}%` }}
-                    />
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
         </div>
       )}
 
@@ -604,118 +618,132 @@ export default function SpiritLibraryApp({ library }: Props) {
       </div>
 
       {filtersOpen && (
-        <div className={`admin-card ${styles.filtersCard}`}>
-          <div className={styles.filtersHeader}>
-            <h2 className="admin-heading__title">{"Szűrők és keresés"}</h2>
-            <button type="button" className="btn btn--ghost" onClick={clearFilters}>
-              {"Szűrők törlése"}
-            </button>
-          </div>
-
-          <div className={styles.searchRow}>
-            <input
-              className="input"
-              type="search"
-              placeholder="Keresés cím, szerző vagy kulcsszavak alapján"
-              value={searchQuery}
-              onChange={(event) => setSearchQuery(event.target.value)}
-            />
-          </div>
-
-          <div className={styles.filterGrid}>
-            <label className="form-field">
-              <span className="form-field__label">{"Tradíció"}</span>
-              <select className="input" value={tradition} onChange={(event) => setTradition(event.target.value)}>
-                <option value="">Mind</option>
-                {TRADITION_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="form-field">
-              <span className="form-field__label">Szint</span>
-              <select className="input" value={level} onChange={(event) => setLevel(event.target.value)}>
-                <option value="">Mind</option>
-                {LEVEL_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="form-field">
-              <span className="form-field__label">Nyelv</span>
-              <select className="input" value={language} onChange={(event) => setLanguage(event.target.value)}>
-                <option value="">Mind</option>
-                {LANGUAGE_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="form-field">
-              <span className="form-field__label">{"Formátum"}</span>
-              <select className="input" value={format} onChange={(event) => setFormat(event.target.value)}>
-                <option value="">Mind</option>
-                {FORMAT_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="form-field">
-              <span className="form-field__label">{"Státusz"}</span>
-              <select className="input" value={status} onChange={(event) => setStatus(event.target.value)}>
-                <option value="">Mind</option>
-                {STATUS_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-
-          <div className={styles.themePanel}>
-            <button
-              type="button"
-              className={styles.themeToggle}
-              aria-expanded={themesOpen}
-              onClick={() => setThemesOpen((current) => !current)}
-            >
-              {"Tematikus szűrés"}
-              <span className={styles.themeToggleMeta}>
-                {themes.length > 0 ? `${themes.length} kiválasztva` : "Nincs szűrés"}
-              </span>
-            </button>
-            {themesOpen && (
-              <div className={styles.themeGrid}>
-                {themePills.map((pill) => {
-                  const color = pill.color;
-                  const isActive = themes.includes(pill.slug);
-                  return (
-                    <button
-                      key={pill.slug}
-                      type="button"
-                      className={`${styles.themePill} ${isActive ? styles.themePillActive : ""}`}
-                      onClick={() => toggleTheme(pill.slug)}
-                      style={{
-                        borderColor: color,
-                        color: isActive ? "#fff" : color,
-                        background: isActive ? color : hexToRgba(color, 0.12),
-                      }}
-                      title={pill.label}
-                    >
-                      {pill.short_label}
-                    </button>
-                  );
-                })}
+        <div className={styles.toolbarPanelBackdrop}>
+          <div className={styles.toolbarPanelCard}>
+            <div className={`admin-card ${styles.filtersCard}`}>
+              <div className={styles.filtersHeader}>
+                <h2 className="admin-heading__title">{"Szűrők és keresés"}</h2>
+                <div className={styles.filtersActions}>
+                  <button type="button" className="btn btn--ghost" onClick={clearFilters}>
+                    {"Szűrők törlése"}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn--ghost"
+                    onClick={() => setFiltersOpen(false)}
+                    aria-label="Bezárás"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
               </div>
-            )}
+
+              <div className={styles.searchRow}>
+                <input
+                  className="input"
+                  type="search"
+                  placeholder="Keresés cím, szerző vagy kulcsszavak alapján"
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                />
+              </div>
+
+              <div className={styles.filterGrid}>
+                <label className="form-field">
+                  <span className="form-field__label">{"Tradíció"}</span>
+                  <select className="input" value={tradition} onChange={(event) => setTradition(event.target.value)}>
+                    <option value="">Mind</option>
+                    {TRADITION_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="form-field">
+                  <span className="form-field__label">Szint</span>
+                  <select className="input" value={level} onChange={(event) => setLevel(event.target.value)}>
+                    <option value="">Mind</option>
+                    {LEVEL_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="form-field">
+                  <span className="form-field__label">Nyelv</span>
+                  <select className="input" value={language} onChange={(event) => setLanguage(event.target.value)}>
+                    <option value="">Mind</option>
+                    {LANGUAGE_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="form-field">
+                  <span className="form-field__label">{"Formátum"}</span>
+                  <select className="input" value={format} onChange={(event) => setFormat(event.target.value)}>
+                    <option value="">Mind</option>
+                    {FORMAT_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="form-field">
+                  <span className="form-field__label">{"Státusz"}</span>
+                  <select className="input" value={status} onChange={(event) => setStatus(event.target.value)}>
+                    <option value="">Mind</option>
+                    {STATUS_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+
+              <div className={styles.themePanel}>
+                <button
+                  type="button"
+                  className={styles.themeToggle}
+                  aria-expanded={themesOpen}
+                  onClick={() => setThemesOpen((current) => !current)}
+                >
+                  {"Tematikus szűrés"}
+                  <span className={styles.themeToggleMeta}>
+                    {themes.length > 0 ? `${themes.length} kiválasztva` : "Nincs szűrés"}
+                  </span>
+                </button>
+                {themesOpen && (
+                  <div className={styles.themeGrid}>
+                    {themePills.map((pill) => {
+                      const color = pill.color;
+                      const isActive = themes.includes(pill.slug);
+                      return (
+                        <button
+                          key={pill.slug}
+                          type="button"
+                          className={`${styles.themePill} ${isActive ? styles.themePillActive : ""}`}
+                          onClick={() => toggleTheme(pill.slug)}
+                          style={{
+                            borderColor: color,
+                            color: isActive ? "#fff" : color,
+                            background: isActive ? color : hexToRgba(color, 0.12),
+                          }}
+                          title={pill.label}
+                        >
+                          {pill.short_label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}

@@ -35,6 +35,11 @@
   gap: 1rem;
 }
 
+.filtersActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .searchRow {
   display: grid;
 }
@@ -53,6 +58,14 @@
   flex-direction: column;
   gap: 0.8rem;
   z-index: 41;
+}
+
+.toolbarPanelBackdrop {
+  position: static;
+}
+
+.toolbarPanelCard {
+  display: contents;
 }
 
 .filterFabActive {
@@ -342,6 +355,27 @@
 
   .overlayLayout {
     grid-template-columns: 1fr;
+  }
+
+  .toolbarPanelBackdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0.75rem 0.75rem 1rem;
+    background: rgba(0, 0, 0, 0.55);
+  }
+
+  .toolbarPanelCard {
+    display: grid;
+    gap: 1rem;
+    width: min(100%, 720px);
+    max-height: 88vh;
+    max-height: 88dvh;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -917,6 +951,11 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
+}
+
+.pathHeaderActions {
+  display: flex;
+  gap: 0.5rem;
 }
 
 .pathSubtitle {

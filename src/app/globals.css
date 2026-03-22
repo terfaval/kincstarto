@@ -153,6 +153,8 @@ select {
   justify-content: center;
   padding: 2rem 1rem;
   background: rgba(0, 0, 0, 0.78);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .admin-overlay-panel {
@@ -162,6 +164,19 @@ select {
   background: var(--panel-2);
   box-shadow: var(--shadow);
   padding: 1.5rem;
+}
+
+@media (max-width: 720px) {
+  .admin-overlay-backdrop {
+    align-items: flex-end;
+    padding: 0.75rem;
+  }
+
+  .admin-overlay-panel {
+    width: 100%;
+    max-height: 92vh;
+    max-height: 92dvh;
+  }
 }
 
 .admin-message {

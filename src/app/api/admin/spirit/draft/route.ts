@@ -38,8 +38,16 @@ export async function POST(request: Request) {
   const aiModel = process.env.SPIRIT_AI_MODEL;
   const apiKey = process.env.OPENAI_API_KEY;
 
-  if (!searchModel || !aiModel || !apiKey) {
-    return NextResponse.json({ error: "Missing OpenAI env config" }, { status: 500 });
+  const missingEnv: string[] = [];
+  if (!searchModel) missingEnv.push("SPIRIT_SEARCH_MODEL");
+  if (!aiModel) missingEnv.push("SPIRIT_AI_MODEL");
+  if (!apiKey) missingEnv.push("OPENAI_API_KEY");
+
+  if (missingEnv.length > 0) {
+    return NextResponse.json(
+      { error: "Missing OpenAI env config", missing: missingEnv },
+      { status: 500 }
+    );
   }
 
   const raw = await readFile(LIBRARY_PATH, "utf-8");

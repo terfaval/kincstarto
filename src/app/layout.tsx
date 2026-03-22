@@ -20,7 +20,7 @@ const sfFontDisplay = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Spirit Library",
+  title: "Kincstartó",
   description: "Spirituális könyvtár szűréssel és AI-tervezett bejegyzésekkel",
   icons: {
     icon: "/favicon.svg",
