@@ -425,8 +425,8 @@ export default function SpiritLibraryApp({ library }: Props) {
   return (
     <section className={`${styles.page} admin-stack`}>
       {pathOpen && (
-        <div className={styles.toolbarPanelBackdrop}>
-          <div className={styles.toolbarPanelCard}>
+        <div className={styles.toolbarPanelBackdrop} onClick={() => setPathOpen(false)}>
+          <div className={styles.toolbarPanelCard} onClick={(event) => event.stopPropagation()}>
             <div className={`admin-card ${styles.pathSection}`}>
               <div className={styles.pathHeaderRow}>
                 <div>
@@ -618,8 +618,8 @@ export default function SpiritLibraryApp({ library }: Props) {
       </div>
 
       {filtersOpen && (
-        <div className={styles.toolbarPanelBackdrop}>
-          <div className={styles.toolbarPanelCard}>
+        <div className={styles.toolbarPanelBackdrop} onClick={() => setFiltersOpen(false)}>
+          <div className={styles.toolbarPanelCard} onClick={(event) => event.stopPropagation()}>
             <div className={`admin-card ${styles.filtersCard}`}>
               <div className={styles.filtersHeader}>
                 <h2 className="admin-heading__title">{"Szűrők és keresés"}</h2>

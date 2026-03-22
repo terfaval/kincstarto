@@ -116,6 +116,16 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
 
   const themePills = library.thematic_pills;
 
+  const readJson = async (response: Response) => {
+    const text = await response.text();
+    if (!text) return null;
+    try {
+      return JSON.parse(text);
+    } catch {
+      return { error: text };
+    }
+  };
+
   const close = () => {
     setOpen(false);
     setStep("input");
@@ -138,7 +148,7 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, author, publisher: publisher || null }),
       });
-      const payload = await response.json();
+      const payload = await readJson(response);
       if (!response.ok) {
         throw new Error(payload?.error ?? "Draft failed");
       }
@@ -167,7 +177,7 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ draft }),
       });
-      const payload = await response.json();
+      const payload = await readJson(response);
       if (!response.ok) {
         throw new Error(payload?.error ?? "Save failed");
       }
