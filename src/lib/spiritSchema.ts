@@ -5,6 +5,11 @@ export const SpiritLevelEnum = z.enum(["kezdo", "kozep-halado", "halado"]);
 export const SpiritFormatEnum = z.enum(["konyv", "kommentar", "valogatas", "szutra", "essze"]);
 export const SpiritStatusEnum = z.enum(["olvasatlan", "folyamatban", "befejezett", "referencia"]);
 
+export type SpiritTradition = z.infer<typeof SpiritTraditionEnum>;
+export type SpiritLevel = z.infer<typeof SpiritLevelEnum>;
+export type SpiritFormat = z.infer<typeof SpiritFormatEnum>;
+export type SpiritStatus = z.infer<typeof SpiritStatusEnum>;
+
 export const SpiritPillSchema = z.object({
   slug: z.string().min(1),
   label: z.string().min(1),
