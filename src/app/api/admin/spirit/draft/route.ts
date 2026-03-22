@@ -68,7 +68,18 @@ export async function POST(request: Request) {
   });
 
   const searchText = (searchResponse as any).output_text ?? "";
-  const searchJson = extractJson(searchText);
+  let searchJson: unknown;
+  try {
+    searchJson = extractJson(searchText);
+  } catch {
+    return NextResponse.json(
+      {
+        error: "Invalid search JSON",
+        output_preview: searchText.slice(0, 800),
+      },
+      { status: 502 }
+    );
+  }
 
   const draftPrompt = `You are drafting a curated spiritual book entry. Output JSON only, with schema: ` +
     `{ draft: { id, title, author, tradition, level, summary_short, recommendation, themes, language, format, status, summary_long, prerequisites, cautions, tags, notes, year, related }, confidence, warnings, uncertain_fields, sources }.` +
@@ -86,7 +97,18 @@ export async function POST(request: Request) {
   });
 
   const draftText = (draftResponse as any).output_text ?? "";
-  const draftJson = extractJson(draftText);
+  let draftJson: unknown;
+  try {
+    draftJson = extractJson(draftText);
+  } catch {
+    return NextResponse.json(
+      {
+        error: "Invalid draft JSON",
+        output_preview: draftText.slice(0, 800),
+      },
+      { status: 502 }
+    );
+  }
 
   const parsedDraft = SpiritDraftResponseSchema.parse(draftJson);
 
