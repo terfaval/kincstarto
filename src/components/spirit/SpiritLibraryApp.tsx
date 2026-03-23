@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useMemo, useState, useEffect } from "react";
-import { Bookmark, Check, Clock, Circle, SlidersHorizontal, X } from "lucide-react";
+import { Bookmark, Check, Clock, Circle, LayoutList, SlidersHorizontal, X } from "lucide-react";
 import type { SpiritBook, SpiritLibrary, SpiritPill, SpiritTradition, SpiritLevel, SpiritPath } from "@/lib/spiritSchema";
 import { buildLearningPath, getNextBookRecommendations, type LearningPathFilters } from "@/lib/learningPathEngine";
 import styles from "./SpiritLibraryApp.module.css";
@@ -176,6 +176,8 @@ export default function SpiritLibraryApp({ library }: Props) {
   const selectedBook = bookStack.length ? bookStack[bookStack.length - 1] : null;
   const [statusOverrides, setStatusOverrides] = useState<Record<string, ReadingStatus>>({});
   const [statusNotes, setStatusNotes] = useState<Record<string, string>>({});
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [viewModeLocked, setViewModeLocked] = useState(false);
 
   useEffect(() => {
     if (!selectedBook) {
@@ -206,6 +208,18 @@ export default function SpiritLibraryApp({ library }: Props) {
       return { ...current, [selectedBook.id]: selectedBook.notes ?? "" };
     });
   }, [selectedBook]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia("(max-width: 720px) and (orientation: portrait)");
+    const syncViewMode = () => {
+      if (viewModeLocked) return;
+      setViewMode(media.matches ? "list" : "grid");
+    };
+    syncViewMode();
+    media.addEventListener("change", syncViewMode);
+    return () => media.removeEventListener("change", syncViewMode);
+  }, [viewModeLocked]);
 
   const themePills = library.thematic_pills;
   const bookById = useMemo(() => new Map(library.books.map((book) => [book.id, book])), [library.books]);
@@ -262,6 +276,10 @@ export default function SpiritLibraryApp({ library }: Props) {
     setFiltersOpen((current) => !current);
   };
 
+  const toggleViewMode = () => {
+    setViewModeLocked(true);
+    setViewMode((current) => (current === "grid" ? "list" : "grid"));
+  };
 
   const handleStatusToggle = async (bookId: string, currentStatus: ReadingStatus) => {
     const nextStatus = getNextStatus(currentStatus);
@@ -584,34 +602,29 @@ export default function SpiritLibraryApp({ library }: Props) {
       <div className={styles.fabToolbar}>
         <button
           type="button"
+          className={`${styles.addFab} ${pathOpen ? styles.filterFabActive : ""}`}
+          aria-label={pathOpen ? "Utak elrejtése" : "Utak megnyitása"}
+          aria-expanded={pathOpen}
+          onClick={() => setPathOpen((current) => !current)}
+        >
+          <img src="/lotus.svg" alt="" aria-hidden="true" className={styles.lotusIcon} />
+        </button>
+        <button
+          type="button"
+          className={`${styles.addFab} ${styles.viewToggleButton} ${viewMode === "list" ? styles.filterFabActive : ""}`}
+          aria-label={viewMode === "list" ? "Rácsnézet" : "Lista nézet"}
+          onClick={toggleViewMode}
+        >
+          <LayoutList size={18} />
+        </button>
+        <button
+          type="button"
           className={`${styles.addFab} ${filtersOpen ? styles.filterFabActive : ""}`}
           aria-label={filtersOpen ? "Szűrők elrejtése" : "Szűrők megnyitása"}
           aria-expanded={filtersOpen}
           onClick={toggleFilters}
         >
           <SlidersHorizontal size={18} />
-        </button>
-        <button
-          type="button"
-          className={`${styles.addFab} ${pathOpen ? styles.filterFabActive : ""}`}
-          aria-label={pathOpen ? "Utak elrejtése" : "Utak megnyitása"}
-          aria-expanded={pathOpen}
-          onClick={() => setPathOpen((current) => !current)}
-        >
-          <svg className={styles.fabIcon} viewBox="0 0 500 500" aria-hidden="true">
-            <path
-              fill="currentColor"
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M354.833,250.592c0.102,57.355-47.481,105.71-103.998,105.685c-59.215-0.025-106.763-47.524-106.695-106.582c0.065-56.391,47.708-103.55,104.742-103.679C307.443,145.881,354.733,192.555,354.833,250.592z"
-            />
-            <path
-              fill="currentColor"
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M248.16,20.448C123,20.731,18.456,124.216,18.313,247.96c-0.134,117.372,85.438,213.935,198.111,231.15v-59.834c-79.629-16.197-139.057-86.123-138.959-170.501c0.104-92.082,77.9-169.088,171.034-169.297c95.626-0.22,172.841,75.995,173.008,170.763c0.146,82.528-60.174,153.631-137.655,169.337v59.974C393.595,463.539,480.861,365,480.66,249.931C480.436,122.575,376.667,20.153,248.16,20.448z"
-            />
-          </svg>
         </button>
         <SpiritAddBookModal library={library} onOpenBook={(book) => setBookStack([book])} />
       </div>
@@ -753,79 +766,128 @@ export default function SpiritLibraryApp({ library }: Props) {
         </p>
       </div>
 
-      <div className={styles.grid}>
-        {filteredBooks.map((book) => (
-          <div
-            key={book.id}
-            role="button"
-            tabIndex={0}
-            className={`${styles.card} admin-card`}
-            onClick={() => setBookStack([book])}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                setBookStack([book]);
-              }
-            }}
-          >
-            <div className={styles.cardHeader}>
-              <div>
-                <h3 className={styles.cardTitle}>{book.title}</h3>
-                <p className={styles.cardAuthor}>{book.author}</p>
-              </div>
+      <div className={`${styles.grid} ${viewMode === "list" ? styles.gridList : ""}`}>
+        {filteredBooks.map((book) => {
+          const status = (statusOverrides[book.id] ?? book.status) as ReadingStatus;
+          const Icon = getStatusIcon(status);
+          const firstTheme = book.themes[0];
+          const firstThemeColor = firstTheme ? getThemeColor(themePills, firstTheme) : "#222222";
+          return (
+            <div
+              key={book.id}
+              role="button"
+              tabIndex={0}
+              className={`${styles.card} ${viewMode === "list" ? styles.listCard : ""} admin-card`}
+              onClick={() => setBookStack([book])}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  setBookStack([book]);
+                }
+              }}
+            >
+              {viewMode === "list" ? (
+                <>
+                  <div className={styles.listColLeft}>
+                    <div className={styles.levelRow} aria-label={book.level}>
+                      {Array.from({ length: 3 }).map((_, idx) => (
+                        <span
+                          key={`${book.id}-dot-${idx}`}
+                          className={`${styles.levelDot} ${idx < getLevelDots(book.level) ? styles.levelDotActive : ""}`}
+                        />
+                      ))}
+                    </div>
+                    {firstTheme && (
+                      <span
+                        className={styles.listThemeTag}
+                        style={{
+                          borderColor: firstThemeColor,
+                          color: firstThemeColor,
+                          background: hexToRgba(firstThemeColor, 0.12),
+                        }}
+                        title={getThemeLabel(themePills, firstTheme)}
+                      >
+                        {getThemeShortLabel(themePills, firstTheme)}
+                      </span>
+                    )}
+                  </div>
+                  <div className={styles.listColMain}>
+                    <h3 className={styles.cardTitle}>{book.title}</h3>
+                    <p className={styles.cardAuthor}>{book.author}</p>
+                  </div>
+                  <div className={styles.listColStatus}>
+                    <button
+                      type="button"
+                      className={styles.statusButton}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleStatusToggle(book.id, status);
+                      }}
+                      aria-label={`Olvasási státusz: ${status}`}
+                      title={`Olvasási státusz: ${status}`}
+                    >
+                      <Icon size={16} />
+                    </button>
+                    <span className={styles.statusLabel}>{STATUS_LABELS[status] ?? status}</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className={styles.cardHeader}>
+                    <div>
+                      <h3 className={styles.cardTitle}>{book.title}</h3>
+                      <p className={styles.cardAuthor}>{book.author}</p>
+                    </div>
+                  </div>
+                  <p className={styles.cardSummary}>{book.summary_short}</p>
+                  <div className={styles.levelRow} aria-label={book.level}>
+                    {Array.from({ length: 3 }).map((_, idx) => (
+                      <span
+                        key={`${book.id}-dot-${idx}`}
+                        className={`${styles.levelDot} ${idx < getLevelDots(book.level) ? styles.levelDotActive : ""}`}
+                      />
+                    ))}
+                    <span className={styles.levelValue}>{book.level}</span>
+                  </div>
+                  <div className={styles.cardThemes}>
+                    {book.themes.slice(0, 5).map((theme) => {
+                      const color = getThemeColor(themePills, theme);
+                      return (
+                        <span
+                          key={theme}
+                          className={styles.themeTag}
+                          style={{
+                            borderColor: color,
+                            color,
+                            background: hexToRgba(color, 0.12),
+                          }}
+                          title={getThemeLabel(themePills, theme)}
+                        >
+                          {getThemeShortLabel(themePills, theme)}
+                        </span>
+                      );
+                    })}
+                  </div>
+                  <div className={styles.cardFooter}>
+                    <button
+                      type="button"
+                      className={styles.statusButton}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleStatusToggle(book.id, status);
+                      }}
+                      aria-label={`Olvasási státusz: ${status}`}
+                      title={`Olvasási státusz: ${status}`}
+                    >
+                      <Icon size={16} />
+                    </button>
+                    <span className={styles.statusLabel}>{STATUS_LABELS[status] ?? status}</span>
+                  </div>
+                </>
+              )}
             </div>
-            <p className={styles.cardSummary}>{book.summary_short}</p>
-            <div className={styles.levelRow} aria-label={book.level}>
-                            {Array.from({ length: 3 }).map((_, idx) => (
-                <span
-                  key={`${book.id}-dot-${idx}`}
-                  className={`${styles.levelDot} ${idx < getLevelDots(book.level) ? styles.levelDotActive : ""}`}
-                />
-              ))}
-              <span className={styles.levelValue}>{book.level}</span>
-            </div>
-                        <div className={styles.cardThemes}>
-              {book.themes.slice(0, 5).map((theme) => {
-                const color = getThemeColor(themePills, theme);
-                return (
-                  <span
-                    key={theme}
-                    className={styles.themeTag}
-                    style={{
-                      borderColor: color,
-                      color,
-                      background: hexToRgba(color, 0.12),
-                    }}
-                    title={getThemeLabel(themePills, theme)}
-                  >
-                    {getThemeShortLabel(themePills, theme)}
-                  </span>
-                );
-              })}
-            </div>
-            {(() => {
-              const status = (statusOverrides[book.id] ?? book.status) as ReadingStatus;
-              const Icon = getStatusIcon(status);
-              return (
-                <div className={styles.cardFooter}>
-                                    <button
-                    type="button"
-                    className={styles.statusButton}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      handleStatusToggle(book.id, status);
-                    }}
-                    aria-label={`Olvasási státusz: ${status}`}
-                    title={`Olvasási státusz: ${status}`}
-                  >
-                    <Icon size={16} />
-                  </button>
-                  <span className={styles.statusLabel}>{STATUS_LABELS[status] ?? status}</span>
-                </div>
-              );
-            })()}
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {selectedPath && (
@@ -1118,5 +1180,3 @@ export default function SpiritLibraryApp({ library }: Props) {
       )}    </section>
   );
 }
-
-

@@ -130,8 +130,12 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
+}
+
+.gridList {
+  grid-template-columns: 1fr;
 }
 
 .card {
@@ -146,6 +150,48 @@
   box-shadow: 0 12px 26px rgba(12, 18, 32, 0.08);
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease;
   will-change: transform;
+}
+
+.listCard {
+  grid-template-columns: minmax(0, 100px) minmax(0, 1fr) minmax(0, 80px);
+  align-items: center;
+  gap: 0.8rem;
+  column-gap: 0.55rem;
+  padding: 0.85rem 1rem;
+}
+
+.listColLeft {
+  display: grid;
+  gap: 0.7rem;
+  align-content: start;
+  justify-items: center;
+}
+
+.listColMain {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.listColStatus {
+  display: grid;
+  gap: 0.4rem;
+  text-align: center;
+  justify-items: center;
+}
+
+.listThemeTag {
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  font-size: 0.72rem;
+  line-height: 1.1;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  width: fit-content;
 }
 
 .pathCard,
@@ -404,6 +450,10 @@
     max-height: 88dvh;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .viewToggleButton {
+    display: none;
   }
 }
 
@@ -849,6 +899,16 @@
   z-index: 40;
   cursor: pointer;
   transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.viewToggleButton {
+  display: inline-flex;
+}
+
+.lotusIcon {
+  width: 20px;
+  height: 20px;
+  display: block;
 }
 
 .fabIcon {
@@ -1339,5 +1399,27 @@
 @media (max-width: 720px) {
   .pathResultCard {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) and (orientation: landscape) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) and (orientation: portrait) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .listCard {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .listColStatus {
+    justify-items: start;
+    text-align: left;
   }
 }
