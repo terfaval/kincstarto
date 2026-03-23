@@ -250,6 +250,17 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
     });
   }, [library.books, tradition, level, language, format, status, themes, searchQuery]);
 
+  const sortedBooks = useMemo(() => {
+    return [...filteredBooks].sort((a, b) => {
+      const statusA = (statusOverrides[a.id] ?? a.status) as ReadingStatus;
+      const statusB = (statusOverrides[b.id] ?? b.status) as ReadingStatus;
+      const aInProgress = statusA === "folyamatban";
+      const bInProgress = statusB === "folyamatban";
+      if (aInProgress !== bInProgress) return aInProgress ? -1 : 1;
+      return 0;
+    });
+  }, [filteredBooks, statusOverrides]);
+
   const relatedBooks = useMemo(() => {
     if (!selectedBook) return [];
     return deriveRelatedBooks(selectedBook, library.books);
@@ -818,7 +829,7 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
       </div>
 
       <div className={`${styles.grid} ${viewMode === "list" ? styles.gridList : ""}`}>
-        {filteredBooks.map((book) => {
+        {sortedBooks.map((book) => {
           const status = (statusOverrides[book.id] ?? book.status) as ReadingStatus;
           const Icon = getStatusIcon(status);
           const firstTheme = book.themes[0];

@@ -12,11 +12,13 @@ export type ExerciseEntry = {
 export type YogaLibraryEntry = {
   id: string;
   label: string;
-  description: string;
-  durationMinutes: number;
-  intensity: 1 | 2 | 3;
   category: YogaCategory;
-  icon: string;
+  duration_minutes: number | null;
+  intensity: 1 | 2 | 3 | null;
+  link: string | null;
+  description?: string | null;
+  created_at?: string;
+  updated_at?: string;
 };
 
 export type ACLRoutine = {
@@ -48,6 +50,7 @@ export type ActivityLogRow = {
   activity_type: ActivityType;
   category: string;
   exercise_id: string | null;
+  yoga_id?: string | null;
   label: string;
   duration_minutes: number | null;
   distance_km: number | null;
@@ -58,45 +61,6 @@ export type ActivityLogRow = {
   created_at?: string;
   updated_at?: string;
 };
-
-export const YOGA_LIBRARY: YogaLibraryEntry[] = [
-  {
-    id: "calm-waters",
-    label: "Calm Waters Flow",
-    description: "Lassú, hullámzó mozdulatok a mellkas és gerinc megnyitásához.",
-    durationMinutes: 12,
-    intensity: 1,
-    category: "relax",
-    icon: "waves",
-  },
-  {
-    id: "grounded-lullaby",
-    label: "Grounded Lullaby",
-    description: "Széles állás, tartott hip stretch és mély hasi légzés.",
-    durationMinutes: 10,
-    intensity: 1,
-    category: "relax",
-    icon: "lotus",
-  },
-  {
-    id: "iron-hold",
-    label: "Iron Hold",
-    description: "Fokozott tartású kitartások és erősítő flow, amiben a láb és core dolgozik.",
-    durationMinutes: 16,
-    intensity: 3,
-    category: "strong",
-    icon: "shield",
-  },
-  {
-    id: "sun-ascend",
-    label: "Sun Ascend",
-    description: "Dinamikus napüdvözletek és lendületes állások, melyek intelligens tartást igényelnek.",
-    durationMinutes: 14,
-    intensity: 2,
-    category: "strong",
-    icon: "sun",
-  },
-];
 
 export const ACL_ROUTINES: ACLRoutine[] = [
   {

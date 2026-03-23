@@ -1,93 +1,22 @@
 [
   {
-    "id": "07720df2-9181-43c6-aad9-c962375e3968",
-    "date": "2026-03-11",
-    "activity_type": "yoga",
-    "category": "relax",
-    "exercise_id": null,
-    "label": "Backbending and opening yin yoga",
-    "duration_minutes": 32,
-    "distance_km": null,
-    "intensity": 1,
-    "notes": "feszült lapockákhoz és gerinchez, 2-3 perces mély nyújtások",
-    "metadata": {
-      "link": "https://www.youtube.com/watch?v=t2mhYiw51y8"
-    },
-    "created_at": "2026-03-11 20:46:39.713075+00",
-    "updated_at": "2026-03-11 20:46:39.713075+00",
-    "user_id": null
-  },
-  {
-    "id": "19eaea56-f788-48e4-886b-d618d14ba967",
-    "date": "2026-03-06",
-    "activity_type": "yoga",
-    "category": "relax",
-    "exercise_id": null,
-    "label": "Total body release + meditation",
-    "duration_minutes": 47,
-    "distance_km": null,
-    "intensity": 1,
-    "notes": null,
-    "metadata": {
-      "link": "https://www.youtube.com/watch?v=KObUQOsqQKI"
-    },
-    "created_at": "2026-03-05 22:18:19.793347+00",
-    "updated_at": "2026-03-05 22:18:19.793347+00",
-    "user_id": null
-  },
-  {
-    "id": "25df49f2-1b98-416a-a999-4a5070c8c1ca",
-    "date": "2026-03-05",
+    "id": "800df306-7ad1-4d03-a13b-eec3e20ece3a",
+    "date": "2026-03-04",
     "activity_type": "yoga",
     "category": "strong",
     "exercise_id": null,
-    "label": "Advanced power yoga",
-    "duration_minutes": 27,
-    "distance_km": null,
-    "intensity": 3,
-    "notes": null,
-    "metadata": {
-      "link": "https://www.youtube.com/watch?v=OHNNfNHxapc"
-    },
-    "created_at": "2026-03-05 20:41:37.573319+00",
-    "updated_at": "2026-03-05 20:41:37.573319+00",
-    "user_id": null
-  },
-  {
-    "id": "26e24473-6003-4bff-a903-87440a04d158",
-    "date": "2026-03-16",
-    "activity_type": "yoga",
-    "category": "relax",
-    "exercise_id": null,
-    "label": "Yoga for runners",
-    "duration_minutes": 20,
+    "label": "Improve back flexibility",
+    "duration_minutes": 25,
     "distance_km": null,
     "intensity": 2,
     "notes": null,
     "metadata": {
-      "link": "https://youtu.be/OwiJqWQtY4U"
+      "link": "https://www.youtube.com/watch?v=tr99w1IfdhM"
     },
-    "created_at": "2026-03-17 07:22:47.88894+00",
-    "updated_at": "2026-03-17 07:22:47.88894+00",
-    "user_id": null
-  },
-  {
-    "id": "2ff92f3f-9168-4bb2-8a2d-3d7bec25956b",
-    "date": "2026-03-17",
-    "activity_type": "yoga",
-    "category": "strong",
-    "exercise_id": null,
-    "label": "Advanced Vinyasa yoga",
-    "duration_minutes": 52,
-    "distance_km": null,
-    "intensity": 2,
-    "notes": null,
-    "metadata": {
-      "link": "https://www.youtube.com/watch?v=f7_zx1sPBj0"
-    },
-    "created_at": "2026-03-17 12:06:44.285306+00",
-    "updated_at": "2026-03-17 12:06:44.285306+00",
-    "user_id": null
+    "created_at": "2026-03-05 20:04:13.262385+00",
+    "updated_at": "2026-03-05 20:04:13.262385+00",
+    "user_id": null,
+    "yoga_id": "09b237ab-2268-4b10-b778-9a516a30db86"
   },
   {
     "id": "3041a013-11f6-4790-bfb3-6e6bcea53c53",
@@ -105,61 +34,27 @@
     },
     "created_at": "2026-03-05 20:40:19.187359+00",
     "updated_at": "2026-03-05 20:40:19.187359+00",
-    "user_id": null
+    "user_id": null,
+    "yoga_id": "1fdeedb9-4ac3-4e4a-a557-224c4157ca77"
   },
   {
-    "id": "4b53c39d-7f91-4e6d-9d9f-ee723a5065b6",
-    "date": "2026-03-13",
+    "id": "25df49f2-1b98-416a-a999-4a5070c8c1ca",
+    "date": "2026-03-05",
     "activity_type": "yoga",
-    "category": "relax",
+    "category": "strong",
     "exercise_id": null,
-    "label": "Morning flow for back & hip",
-    "duration_minutes": 25,
-    "distance_km": null,
-    "intensity": 2,
-    "notes": null,
-    "metadata": {
-      "link": "https://www.youtube.com/watch?v=wfXGVHSXc2Q"
-    },
-    "created_at": "2026-03-13 07:05:38.330515+00",
-    "updated_at": "2026-03-13 07:05:38.330515+00",
-    "user_id": null
-  },
-  {
-    "id": "4f53052c-2498-43dd-bed2-3423f2e65f83",
-    "date": "2026-03-08",
-    "activity_type": "yoga",
-    "category": "relax",
-    "exercise_id": null,
-    "label": "Yoga for lymphatix flow",
+    "label": "Advanced power yoga",
     "duration_minutes": 27,
     "distance_km": null,
-    "intensity": 1,
+    "intensity": 3,
     "notes": null,
     "metadata": {
-      "link": "https://www.youtube.com/watch?v=bYQwM841ED4"
+      "link": "https://www.youtube.com/watch?v=OHNNfNHxapc"
     },
-    "created_at": "2026-03-08 19:51:42.722038+00",
-    "updated_at": "2026-03-08 19:51:42.722038+00",
-    "user_id": null
-  },
-  {
-    "id": "652efb5f-8e46-417f-a9e4-a6eeade8434d",
-    "date": "2026-03-22",
-    "activity_type": "yoga",
-    "category": "relax",
-    "exercise_id": null,
-    "label": "Restorative yoga flow",
-    "duration_minutes": 25,
-    "distance_km": null,
-    "intensity": 1,
-    "notes": null,
-    "metadata": {
-      "link": "https://www.youtube.com/watch?v=XwC7MDDsbDs"
-    },
-    "created_at": "2026-03-22 22:05:08.136774+00",
-    "updated_at": "2026-03-22 22:05:08.136774+00",
-    "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02"
+    "created_at": "2026-03-05 20:41:37.573319+00",
+    "updated_at": "2026-03-05 20:41:37.573319+00",
+    "user_id": null,
+    "yoga_id": "64abcc11-0707-4be3-ac47-ca605d0cba31"
   },
   {
     "id": "67d0b935-eeba-43dc-a326-95aa20b03b5a",
@@ -207,6 +102,82 @@
     "user_id": null
   },
   {
+    "id": "19eaea56-f788-48e4-886b-d618d14ba967",
+    "date": "2026-03-06",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Total body release + meditation",
+    "duration_minutes": 47,
+    "distance_km": null,
+    "intensity": 1,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=KObUQOsqQKI"
+    },
+    "created_at": "2026-03-05 22:18:19.793347+00",
+    "updated_at": "2026-03-05 22:18:19.793347+00",
+    "user_id": null,
+    "yoga_id": "5bf8f9f2-2e79-4a07-ac64-9150af08828b"
+  },
+  {
+    "id": "a75b01d1-d7c2-428b-a088-9cba132c4f68",
+    "date": "2026-03-08",
+    "activity_type": "yoga",
+    "category": "strong",
+    "exercise_id": null,
+    "label": "Every day full body yoga",
+    "duration_minutes": 34,
+    "distance_km": null,
+    "intensity": 2,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=NTqVG9Kt070"
+    },
+    "created_at": "2026-03-08 19:50:53.015499+00",
+    "updated_at": "2026-03-08 19:50:53.015499+00",
+    "user_id": null,
+    "yoga_id": "4aaa18ce-e3ef-43c8-a953-44458dfb7f50"
+  },
+  {
+    "id": "4f53052c-2498-43dd-bed2-3423f2e65f83",
+    "date": "2026-03-08",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Yoga for lymphatix flow",
+    "duration_minutes": 27,
+    "distance_km": null,
+    "intensity": 1,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=bYQwM841ED4"
+    },
+    "created_at": "2026-03-08 19:51:42.722038+00",
+    "updated_at": "2026-03-08 19:51:42.722038+00",
+    "user_id": null,
+    "yoga_id": "5ef7d64f-ec79-44a9-bddb-33efbb6d4426"
+  },
+  {
+    "id": "07720df2-9181-43c6-aad9-c962375e3968",
+    "date": "2026-03-11",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Backbending and opening yin yoga",
+    "duration_minutes": 32,
+    "distance_km": null,
+    "intensity": 1,
+    "notes": "feszült lapockákhoz és gerinchez, 2-3 perces mély nyújtások",
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=t2mhYiw51y8"
+    },
+    "created_at": "2026-03-11 20:46:39.713075+00",
+    "updated_at": "2026-03-11 20:46:39.713075+00",
+    "user_id": null,
+    "yoga_id": "ed20c382-23bd-4472-a2c2-e5e6e3c38223"
+  },
+  {
     "id": "73b6a000-1928-4e3e-af08-a5e3dc752913",
     "date": "2026-03-12",
     "activity_type": "yoga",
@@ -222,25 +193,138 @@
     },
     "created_at": "2026-03-13 07:04:40.804666+00",
     "updated_at": "2026-03-13 07:04:40.804666+00",
-    "user_id": null
+    "user_id": null,
+    "yoga_id": "b8e6fa5a-1fd1-449b-b8e5-dc3a656126c3"
   },
   {
-    "id": "800df306-7ad1-4d03-a13b-eec3e20ece3a",
-    "date": "2026-03-04",
+    "id": "4b53c39d-7f91-4e6d-9d9f-ee723a5065b6",
+    "date": "2026-03-13",
     "activity_type": "yoga",
-    "category": "strong",
+    "category": "relax",
     "exercise_id": null,
-    "label": "Improve back flexibility",
+    "label": "Morning flow for back & hip",
     "duration_minutes": 25,
     "distance_km": null,
     "intensity": 2,
     "notes": null,
     "metadata": {
-      "link": "https://www.youtube.com/watch?v=tr99w1IfdhM"
+      "link": "https://www.youtube.com/watch?v=wfXGVHSXc2Q"
     },
-    "created_at": "2026-03-05 20:04:13.262385+00",
-    "updated_at": "2026-03-05 20:04:13.262385+00",
+    "created_at": "2026-03-13 07:05:38.330515+00",
+    "updated_at": "2026-03-13 07:05:38.330515+00",
+    "user_id": null,
+    "yoga_id": "dcaf4e59-0eb9-45e0-ba3b-09cca395942e"
+  },
+  {
+    "id": "c3515c13-886d-4dc5-af1a-ecfa494df412",
+    "date": "2026-03-16",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Full body morning flow",
+    "duration_minutes": 20,
+    "distance_km": null,
+    "intensity": 2,
+    "notes": null,
+    "metadata": {
+      "link": "https://youtu.be/XHXb5-HdEBs"
+    },
+    "created_at": "2026-03-17 07:20:43.881055+00",
+    "updated_at": "2026-03-17 07:20:43.881055+00",
+    "user_id": null,
+    "yoga_id": "45257c2b-7a9d-4fa4-a907-bc0fc826453f"
+  },
+  {
+    "id": "9be5165f-070d-4f74-87de-2e882453ad47",
+    "date": "2026-03-16",
+    "activity_type": "running",
+    "category": "run",
+    "exercise_id": null,
+    "label": "Futás",
+    "duration_minutes": null,
+    "distance_km": 5,
+    "intensity": null,
+    "notes": null,
+    "metadata": null,
+    "created_at": "2026-03-17 07:21:24.82457+00",
+    "updated_at": "2026-03-17 07:21:24.82457+00",
     "user_id": null
+  },
+  {
+    "id": "26e24473-6003-4bff-a903-87440a04d158",
+    "date": "2026-03-16",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Yoga for runners",
+    "duration_minutes": 20,
+    "distance_km": null,
+    "intensity": 2,
+    "notes": null,
+    "metadata": {
+      "link": "https://youtu.be/OwiJqWQtY4U"
+    },
+    "created_at": "2026-03-17 07:22:47.88894+00",
+    "updated_at": "2026-03-17 07:22:47.88894+00",
+    "user_id": null,
+    "yoga_id": "fa204bfe-08e3-4eee-a181-e16a30b1aafb"
+  },
+  {
+    "id": "2ff92f3f-9168-4bb2-8a2d-3d7bec25956b",
+    "date": "2026-03-17",
+    "activity_type": "yoga",
+    "category": "strong",
+    "exercise_id": null,
+    "label": "Advanced Vinyasa yoga",
+    "duration_minutes": 52,
+    "distance_km": null,
+    "intensity": 2,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=f7_zx1sPBj0"
+    },
+    "created_at": "2026-03-17 12:06:44.285306+00",
+    "updated_at": "2026-03-17 12:06:44.285306+00",
+    "user_id": null,
+    "yoga_id": "32e4ec40-c1ae-4977-bf3f-b1e54c93d0bf"
+  },
+  {
+    "id": "c28f1390-b04e-4d39-b75d-35de292e25e1",
+    "date": "2026-03-17",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Upper back love",
+    "duration_minutes": 23,
+    "distance_km": null,
+    "intensity": 1,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=lMTyp5npt78"
+    },
+    "created_at": "2026-03-17 17:10:15.126778+00",
+    "updated_at": "2026-03-17 17:10:15.126778+00",
+    "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02",
+    "yoga_id": "989285d3-c951-4d21-9203-2f84633ba0c0"
+  },
+  {
+    "id": "faf6d022-dacc-4976-a7f7-448b1a85d7dd",
+    "date": "2026-03-18",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Total body deep stretch",
+    "duration_minutes": 45,
+    "distance_km": null,
+    "intensity": 2,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=GLy2rYHwUqY"
+    },
+    "created_at": "2026-03-21 08:10:48.679336+00",
+    "updated_at": "2026-03-21 08:10:48.679336+00",
+    "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02",
+    "yoga_id": "b7644b06-9d7f-4412-9a05-b009ee3f3539"
   },
   {
     "id": "811707eb-3ff5-4f37-bfee-ec274ff1431c",
@@ -259,22 +343,6 @@
     "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02"
   },
   {
-    "id": "9be5165f-070d-4f74-87de-2e882453ad47",
-    "date": "2026-03-16",
-    "activity_type": "running",
-    "category": "run",
-    "exercise_id": null,
-    "label": "Futás",
-    "duration_minutes": null,
-    "distance_km": 5.0,
-    "intensity": null,
-    "notes": null,
-    "metadata": null,
-    "created_at": "2026-03-17 07:21:24.82457+00",
-    "updated_at": "2026-03-17 07:21:24.82457+00",
-    "user_id": null
-  },
-  {
     "id": "a6323305-cf77-468f-89f4-82eb749e577b",
     "date": "2026-03-19",
     "activity_type": "yoga",
@@ -290,79 +358,8 @@
     },
     "created_at": "2026-03-21 08:09:49.324098+00",
     "updated_at": "2026-03-21 08:09:49.324098+00",
-    "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02"
-  },
-  {
-    "id": "a75b01d1-d7c2-428b-a088-9cba132c4f68",
-    "date": "2026-03-08",
-    "activity_type": "yoga",
-    "category": "strong",
-    "exercise_id": null,
-    "label": "Every day full body yoga",
-    "duration_minutes": 34,
-    "distance_km": null,
-    "intensity": 2,
-    "notes": null,
-    "metadata": {
-      "link": "https://www.youtube.com/watch?v=NTqVG9Kt070"
-    },
-    "created_at": "2026-03-08 19:50:53.015499+00",
-    "updated_at": "2026-03-08 19:50:53.015499+00",
-    "user_id": null
-  },
-  {
-    "id": "ad8ec2eb-de2f-47eb-b027-5b1fc17ecfc8",
-    "date": "2026-03-22",
-    "activity_type": "yoga",
-    "category": "relax",
-    "exercise_id": null,
-    "label": "Feel good full body flow",
-    "duration_minutes": 30,
-    "distance_km": null,
-    "intensity": 2,
-    "notes": null,
-    "metadata": {
-      "link": "https://www.youtube.com/watch?v=ZFbEt_TzeNI"
-    },
-    "created_at": "2026-03-22 22:06:09.360196+00",
-    "updated_at": "2026-03-22 22:06:09.360196+00",
-    "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02"
-  },
-  {
-    "id": "c28f1390-b04e-4d39-b75d-35de292e25e1",
-    "date": "2026-03-17",
-    "activity_type": "yoga",
-    "category": "relax",
-    "exercise_id": null,
-    "label": "Upper back love",
-    "duration_minutes": 23,
-    "distance_km": null,
-    "intensity": 1,
-    "notes": null,
-    "metadata": {
-      "link": "https://www.youtube.com/watch?v=lMTyp5npt78"
-    },
-    "created_at": "2026-03-17 17:10:15.126778+00",
-    "updated_at": "2026-03-17 17:10:15.126778+00",
-    "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02"
-  },
-  {
-    "id": "c3515c13-886d-4dc5-af1a-ecfa494df412",
-    "date": "2026-03-16",
-    "activity_type": "yoga",
-    "category": "relax",
-    "exercise_id": null,
-    "label": "Full body morning flow",
-    "duration_minutes": 20,
-    "distance_km": null,
-    "intensity": 2,
-    "notes": null,
-    "metadata": {
-      "link": "https://youtu.be/XHXb5-HdEBs"
-    },
-    "created_at": "2026-03-17 07:20:43.881055+00",
-    "updated_at": "2026-03-17 07:20:43.881055+00",
-    "user_id": null
+    "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02",
+    "yoga_id": "5ffe3a82-9f3e-42e5-9533-3a916856ee62"
   },
   {
     "id": "e9e9440f-491d-4694-8fbe-856ffd295aab",
@@ -422,21 +419,79 @@
     "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02"
   },
   {
-    "id": "faf6d022-dacc-4976-a7f7-448b1a85d7dd",
-    "date": "2026-03-18",
+    "id": "652efb5f-8e46-417f-a9e4-a6eeade8434d",
+    "date": "2026-03-22",
     "activity_type": "yoga",
     "category": "relax",
     "exercise_id": null,
-    "label": "Total body deep stretch",
-    "duration_minutes": 45,
+    "label": "Restorative yoga flow",
+    "duration_minutes": 25,
+    "distance_km": null,
+    "intensity": 1,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=XwC7MDDsbDs"
+    },
+    "created_at": "2026-03-22 22:05:08.136774+00",
+    "updated_at": "2026-03-22 22:05:08.136774+00",
+    "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02",
+    "yoga_id": "c32860d9-6812-4662-af65-fc960e828717"
+  },
+  {
+    "id": "ad8ec2eb-de2f-47eb-b027-5b1fc17ecfc8",
+    "date": "2026-03-22",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Feel good full body flow",
+    "duration_minutes": 30,
     "distance_km": null,
     "intensity": 2,
     "notes": null,
     "metadata": {
-      "link": "https://www.youtube.com/watch?v=GLy2rYHwUqY"
+      "link": "https://www.youtube.com/watch?v=ZFbEt_TzeNI"
     },
-    "created_at": "2026-03-21 08:10:48.679336+00",
-    "updated_at": "2026-03-21 08:10:48.679336+00",
-    "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02"
+    "created_at": "2026-03-22 22:06:09.360196+00",
+    "updated_at": "2026-03-22 22:06:09.360196+00",
+    "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02",
+    "yoga_id": "aec4972e-bf7f-4adf-aa40-44ac2e38c4c9"
+  },
+  {
+    "id": "460810b9-858b-43e4-85fb-8b3f546c27ed",
+    "date": "2026-03-23",
+    "activity_type": "yoga",
+    "category": "strong",
+    "exercise_id": null,
+    "label": "Full body strength workout",
+    "duration_minutes": 30,
+    "distance_km": null,
+    "intensity": 3,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=UnpGR1t5UOY"
+    },
+    "user_id": null,
+    "created_at": "2026-03-23T21:24:32.087Z",
+    "updated_at": "2026-03-23T21:24:32.087Z",
+    "yoga_id": "7f1bcc48-e93f-4a61-ab5f-8573ca95bd13"
+  },
+  {
+    "id": "f1db1ff1-4635-4f5f-b9ee-a678297aaf97",
+    "date": "2026-03-23",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Anytime unwind",
+    "duration_minutes": 23,
+    "distance_km": null,
+    "intensity": 1,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=s7ryIG-GQr8"
+    },
+    "user_id": null,
+    "created_at": "2026-03-23T21:25:43.850Z",
+    "updated_at": "2026-03-23T21:25:43.850Z",
+    "yoga_id": "d31d7f5e-f49f-46d7-b2be-2072f113e177"
   }
 ]

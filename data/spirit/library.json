@@ -16,7 +16,7 @@
     {
       "slug": "termeszetes_elet",
       "label": "Spontán, természetes élet",
-      "short_label": "Spontaneit?s",
+      "short_label": "Spontaneitás",
       "color": "#1F8A70"
     },
     {
@@ -404,7 +404,7 @@
       ],
       "language": "hu",
       "format": "essze",
-      "status": "olvasatlan",
+      "status": "folyamatban",
       "summary_long": "A wu wei fogalmát irodalmi és reflexív módon közelíti meg, inkább hangulatot és szemléletet közvetít, mint pontos tanítást. Segít ráérezni a nem-erőltetés természetére.",
       "cautions": "Nem klasszikus szöveg, hanem értelmezés, ezért nem helyettesíti az eredeti tanításokat.",
       "tags": [
@@ -1357,7 +1357,7 @@
       ],
       "language": "hu",
       "format": "konyv",
-      "status": "olvasatlan",
+      "status": "folyamatban",
       "summary_long": "A könyv a tibeti buddhizmus tanításait modern nyelven és példákon keresztül közvetíti, különös hangsúllyal a halál és a tudat kapcsolatára. Hidat képez a klasszikus szövegek és a mai olvasó között.",
       "cautions": "Modern interpretáció, ezért bizonyos elemek leegyszerűsítve jelennek meg.",
       "tags": [
@@ -1499,6 +1499,65 @@
       "related": [
         "tibeti_halottaskonyv_helikon",
         "tibeti_halottaskonyv_fli"
+      ]
+    },
+    {
+      "id": "utmutato_a_taoizmushoz",
+      "title": "Útmutató a taoizmushoz",
+      "author": "Eva Wong",
+      "tradition": "taoizmus",
+      "level": "kozep-halado",
+      "summary_short": "Átfogó bevezetés a taoizmus történetébe, filozófiájába és gyakorlati irányzataiba.",
+      "recommendation": "Akkor ajánlott, ha a taoizmust nem csak idézeteken vagy egy-egy alapművön keresztül szeretnéd megérteni, hanem rendszerszinten akarod látni a különböző iskoláit és gyakorlatait. Nem ideális, ha elsősorban költői, intuitív ráhangolódást keresel.",
+      "themes": [
+        "tao_alapok",
+        "belso_alkimia",
+        "meditacio",
+        "kommentar"
+      ],
+      "language": "hu",
+      "format": "konyv",
+      "status": "folyamatban",
+      "summary_long": "A könyv a taoizmust nem egyetlen tanításként, hanem több, egymással összefüggő hagyomány és gyakorlat rendszerként mutatja be. Eva Wong áttekinti a fontosabb történeti alakokat, szövegeket és iskolákat, miközben arra is rálátást ad, milyen a taoizmust tényleges útként gyakorolni. Erőssége, hogy kontextust ad: segít elhelyezni a filozófiai taoizmust, a meditációs irányokat és a belső alkímia felé mutató vonalakat egy közös térképen.",
+      "cautions": "A könyv inkább áttekintő térkép, mint mély egyutas bevezetés, ezért könnyű pusztán intellektuális szinten olvasni. Nem pótolja a primer szövegekkel vagy egy konkrét taoista gyakorlati ággal való közvetlen találkozást.",
+      "tags": [
+        "taoizmus_attekintes",
+        "rendszerezo"
+      ],
+      "year": "2011",
+      "related": [
+        "tao_longevity_mind_body",
+        "belso_alkimia",
+        "imigyen_szola_laozi"
+      ]
+    },
+    {
+      "id": "nyugati_utazas_wu_cheng_en",
+      "title": "Nyugati utazás",
+      "author": "Vu Cseng-en",
+      "tradition": "vegyes",
+      "level": "kozep-halado",
+      "summary_short": "Klasszikus kínai regény spirituális utazásról, buddhista és taoista elemekkel.",
+      "recommendation": "Akkor ajánlott, ha történeteken keresztül szeretnél kapcsolódni a keleti tanításokhoz, és nem zavar a mitológiai, néha humoros forma. Nem ideális, ha tömör, direkt tanítást keresel.",
+      "themes": [
+        "mitologia",
+        "buddhizmus_alapok",
+        "tao_alapok",
+        "irodalmi_spiritualitas"
+      ],
+      "language": "hu",
+      "format": "konyv",
+      "status": "folyamatban",
+      "summary_long": "A Nyugati utazás egy epikus történet, amelyben egy szerzetes és kísérői – köztük a híres Majomkirály – spirituális küldetésre indulnak szent iratok megszerzésére. A történet egyszerre kalandregény, allegória és tanítás: a szereplők különböző emberi és tudati minőségeket jelenítenek meg, az út pedig a belső fejlődés metaforájaként is értelmezhető. A buddhista, taoista és népi vallási elemek szorosan összefonódnak benne.",
+      "cautions": "A történet rétegzett: könnyű pusztán kalandként olvasni, miközben a mélyebb szimbolikus jelentések rejtve maradnak. Terjedelme miatt kitartást igényel.",
+      "tags": [
+        "kinai_klasszikus",
+        "majomkiraly",
+        "allegoria"
+      ],
+      "related": [
+        "mahabharata_ramajana",
+        "milarepa_elete"
       ]
     }
   ],

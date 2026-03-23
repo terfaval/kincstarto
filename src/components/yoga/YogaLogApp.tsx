@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { BookOpen, ChevronLeft, ChevronRight, LogOut, Pencil, Plus, Trash2 } from "lucide-react";
+import { BookOpen, ChevronLeft, ChevronRight, Info, LogOut, Pencil, Plus, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "./YogaLogApp.module.css";
@@ -11,12 +11,16 @@ import {
   ACL_ROUTINES,
   STRENGTH_WORKOUTS,
   ACTIVITY_TYPE_META,
-  YOGA_LIBRARY,
+  type ACLCategory,
+  type StrengthWorkout,
+  type StrengthCategory,
+  type YogaCategory,
   type ActivityLogRow,
   type ActivityType,
 } from "@/types/activity";
 
 type YogaTemplate = {
+  id: string;
   category: string;
   label: string;
   duration_minutes: number | null;
@@ -58,6 +62,12 @@ const MONTHS = [
   "December",
 ];
 
+const DEFAULT_STRENGTH_PROGRESSION = {
+  repEvery: 2,
+  roundEvery: 5,
+  timeIncrementSeconds: 5,
+};
+
 function pad(value: number) {
   return value.toString().padStart(2, "0");
 }
@@ -75,23 +85,6 @@ function parseDateKey(value: string) {
   return new Date(year, month - 1, day);
 }
 
-function startOfWeek(date: Date) {
-  const copy = new Date(date);
-  const shift = (copy.getDay() + 6) % 7;
-  copy.setDate(copy.getDate() - shift);
-  return copy;
-}
-
-function addDays(date: Date, amount: number) {
-  const copy = new Date(date);
-  copy.setDate(copy.getDate() + amount);
-  return copy;
-}
-
-function buildWeek(date: Date) {
-  const start = startOfWeek(date);
-  return Array.from({ length: 7 }, (_, idx) => addDays(start, idx));
-}
 
 function buildMonthGrid(year: number, monthIndex: number) {
   const first = new Date(year, monthIndex, 1);
@@ -145,6 +138,137 @@ function getCategoryMeta(type: ActivityType, category: string) {
   };
 }
 
+type ExerciseInfo = {
+  start?: string;
+  movement?: string;
+  focus?: string;
+  notes?: string;
+};
+
+function parseExerciseDetail(detail?: string | null): ExerciseInfo | null {
+  if (!detail) return null;
+  const lines = detail
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+  if (lines.length === 0) return null;
+
+  const sections: ExerciseInfo = {};
+  let current: keyof ExerciseInfo | null = null;
+
+  const pushLine = (target: keyof ExerciseInfo, text: string) => {
+    const trimmed = text.replace(/^\s*[-•]\s*/i, "").trim();
+    if (!trimmed) return;
+    sections[target] = sections[target] ? `${sections[target]} ${trimmed}` : trimmed;
+  };
+
+  for (const line of lines) {
+    const normalized = line.toLowerCase();
+    if (normalized.startsWith("kiinduló") || normalized.startsWith("kiindulo")) {
+      current = "start";
+      const rest = line.split(":").slice(1).join(":").trim();
+      if (rest) pushLine("start", rest);
+      continue;
+    }
+    if (normalized.startsWith("mozdulat")) {
+      current = "movement";
+      const rest = line.split(":").slice(1).join(":").trim();
+      if (rest) pushLine("movement", rest);
+      continue;
+    }
+    if (normalized.startsWith("fókusz") || normalized.startsWith("fokusz")) {
+      current = "focus";
+      const rest = line.split(":").slice(1).join(":").trim();
+      if (rest) pushLine("focus", rest);
+      continue;
+    }
+    if (normalized.startsWith("tempó") || normalized.startsWith("tempo")) {
+      pushLine("notes", line);
+      continue;
+    }
+    if (current) {
+      pushLine(current, line);
+    } else {
+      pushLine("notes", line);
+    }
+  }
+
+  if (!sections.start && !sections.movement && !sections.focus && !sections.notes) return null;
+  if (!sections.start && !sections.movement && !sections.focus && sections.notes) {
+    return { movement: sections.notes };
+  }
+  return sections;
+}
+
+function getIntensityDots(intensity?: number | null) {
+  if (!intensity) return 0;
+  return Math.max(0, Math.min(3, intensity));
+}
+
+function getStrengthProgression(workout: StrengthWorkout) {
+  return workout.progression ?? DEFAULT_STRENGTH_PROGRESSION;
+}
+
+function parseBaseRounds(workout: StrengthWorkout) {
+  if (typeof workout.baseRounds === "number" && Number.isFinite(workout.baseRounds)) return workout.baseRounds;
+  const match = workout.rounds.match(/(\d+)/);
+  if (!match) return null;
+  const base = Number(match[1]);
+  return Number.isFinite(base) ? base : null;
+}
+
+function applyRounds(rounds: string, baseRounds: number | null, roundSteps: number) {
+  if (!baseRounds || roundSteps <= 0) return rounds;
+  const next = baseRounds + roundSteps;
+  return rounds.replace(/^\s*\d+/, String(next));
+}
+
+function applyRepProgression(reps: string, repSteps: number, timeIncrementSeconds: number) {
+  if (repSteps <= 0) return reps;
+  const match = reps.match(/^(\s*\d+\s*×\s*)(\d+)(\s*-\s*(\d+))?(\s*[^0-9]*)$/i);
+  if (!match) return reps;
+
+  const prefix = match[1] ?? "";
+  const firstRaw = match[2];
+  const rangeRaw = match[4];
+  const suffix = match[5] ?? "";
+  const isTimeBased = /mp\b|sec\b|s\b/i.test(suffix);
+  const increment = isTimeBased ? repSteps * timeIncrementSeconds : repSteps;
+
+  const first = Number(firstRaw);
+  if (!Number.isFinite(first)) return reps;
+
+  const nextFirst = first + increment;
+  if (rangeRaw) {
+    const second = Number(rangeRaw);
+    if (!Number.isFinite(second)) return reps;
+    const nextSecond = second + increment;
+    return `${prefix}${nextFirst}-${nextSecond}${suffix}`;
+  }
+
+  return `${prefix}${nextFirst}${suffix}`;
+}
+
+function buildStrengthWithProgress(
+  workouts: StrengthWorkout[],
+  progressMap: Record<string, number>
+): StrengthWorkout[] {
+  return workouts.map((workout) => {
+    const completed = progressMap[workout.id] ?? 0;
+    const effectiveCompleted = Math.max(0, completed - 1);
+    const progression = getStrengthProgression(workout);
+    const repSteps = progression.repEvery > 0 ? Math.floor(effectiveCompleted / progression.repEvery) : 0;
+    const roundSteps = progression.roundEvery > 0 ? Math.floor(effectiveCompleted / progression.roundEvery) : 0;
+    const baseRounds = parseBaseRounds(workout);
+    const rounds = applyRounds(workout.rounds, baseRounds, roundSteps);
+    const exercises = workout.exercises.map((exercise) => ({
+      ...exercise,
+      reps: applyRepProgression(exercise.reps, repSteps, progression.timeIncrementSeconds),
+    }));
+    return { ...workout, rounds, exercises };
+  });
+}
+
 export default function YogaLogApp() {
   const router = useRouter();
   const today = useMemo(() => new Date(), []);
@@ -155,6 +279,13 @@ export default function YogaLogApp() {
   const [templates, setTemplates] = useState<YogaTemplate[]>([]);
   const [loading, setLoading] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [selectedYogaCategory, setSelectedYogaCategory] = useState<YogaCategory>("relax");
+  const [selectedStrengthCategory, setSelectedStrengthCategory] = useState<StrengthCategory>("easy");
+  const [selectedAclCategory, setSelectedAclCategory] = useState<ACLCategory>("routine");
+  const [showYogaForm, setShowYogaForm] = useState(false);
+  const [openExerciseInfo, setOpenExerciseInfo] = useState<string | null>(null);
+  const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
+  const [strengthProgress, setStrengthProgress] = useState<Record<string, number>>({});
   const [draft, setDraft] = useState<DraftState>({
     label: "",
     category: "relax",
@@ -165,8 +296,6 @@ export default function YogaLogApp() {
     distanceKm: "",
     exerciseId: "",
   });
-
-  const weekDates = useMemo(() => buildWeek(parseDateKey(selectedDate)), [selectedDate]);
 
   useEffect(() => {
     const date = parseDateKey(selectedDate);
@@ -210,8 +339,38 @@ export default function YogaLogApp() {
   }, []);
 
   useEffect(() => {
+    fetch("/api/strength-progress")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && typeof data === "object" && data.counts && typeof data.counts === "object") {
+          setStrengthProgress(data.counts as Record<string, number>);
+        }
+      })
+      .catch(() => setStrengthProgress({}));
+  }, []);
+
+  const templatesForCategory = useMemo(
+    () => templates.filter((template) => template.category === selectedYogaCategory),
+    [templates, selectedYogaCategory]
+  );
+
+  const strengthOptions = useMemo(() => {
+    const progressed = buildStrengthWithProgress(STRENGTH_WORKOUTS, strengthProgress);
+    return progressed.filter((workout) => workout.category === selectedStrengthCategory);
+  }, [selectedStrengthCategory, strengthProgress]);
+
+  const aclOptions = useMemo(
+    () => ACL_ROUTINES.filter((routine) => routine.category === selectedAclCategory),
+    [selectedAclCategory]
+  );
+
+  useEffect(() => {
     if (editingId) return;
+    setOpenExerciseInfo(null);
+    setDuplicateWarning(null);
     if (activeType === "yoga") {
+      setShowYogaForm(false);
+      setSelectedYogaCategory("relax");
       setDraft((current) => ({
         ...current,
         label: "",
@@ -223,7 +382,8 @@ export default function YogaLogApp() {
       }));
     }
     if (activeType === "strength") {
-      const first = STRENGTH_WORKOUTS[0];
+      setSelectedStrengthCategory("easy");
+      const first = STRENGTH_WORKOUTS.find((workout) => workout.category === "easy");
       setDraft((current) => ({
         ...current,
         exerciseId: first?.id ?? "",
@@ -231,7 +391,8 @@ export default function YogaLogApp() {
       }));
     }
     if (activeType === "acl") {
-      const first = ACL_ROUTINES[0];
+      setSelectedAclCategory("routine");
+      const first = ACL_ROUTINES.find((routine) => routine.category === "routine");
       setDraft((current) => ({
         ...current,
         exerciseId: first?.id ?? "",
@@ -249,6 +410,37 @@ export default function YogaLogApp() {
     }
   }, [activeType, editingId]);
 
+  useEffect(() => {
+    setDraft((current) => ({ ...current, category: selectedYogaCategory }));
+  }, [selectedYogaCategory]);
+
+  useEffect(() => {
+    if (strengthOptions.length === 0) return;
+    setDraft((current) => ({ ...current, exerciseId: strengthOptions[0].id }));
+  }, [strengthOptions]);
+
+  useEffect(() => {
+    if (aclOptions.length === 0) return;
+    setDraft((current) => ({ ...current, exerciseId: aclOptions[0].id }));
+  }, [aclOptions]);
+
+  useEffect(() => {
+    if (editingId) return;
+    setDraft((current) => ({ ...current, category: selectedYogaCategory }));
+  }, [selectedYogaCategory, editingId]);
+
+  useEffect(() => {
+    if (editingId) return;
+    if (strengthOptions.length === 0) return;
+    setDraft((current) => ({ ...current, exerciseId: strengthOptions[0].id }));
+  }, [strengthOptions, editingId]);
+
+  useEffect(() => {
+    if (editingId) return;
+    if (aclOptions.length === 0) return;
+    setDraft((current) => ({ ...current, exerciseId: aclOptions[0].id }));
+  }, [aclOptions, editingId]);
+
   const logsByDate = useMemo(() => {
     const map = new Map<string, ActivityLogRow[]>();
     logs.forEach((log) => {
@@ -259,11 +451,16 @@ export default function YogaLogApp() {
     return map;
   }, [logs]);
 
+  const buildIndicators = (dayLogs: ActivityLogRow[]) => {
+    const unique = new Map<string, { label: string; color: string; icon: string }>();
+    dayLogs.forEach((log) => {
+      const meta = getCategoryMeta(log.activity_type, log.category);
+      unique.set(`${log.activity_type}:${meta.label}`, meta);
+    });
+    return Array.from(unique.values());
+  };
+
   const logsForDay = useMemo(() => logs.filter((log) => log.date === selectedDate), [logs, selectedDate]);
-  const logsForType = useMemo(
-    () => logsForDay.filter((log) => log.activity_type === activeType),
-    [logsForDay, activeType]
-  );
 
   const selectedWorkout = useMemo(
     () => STRENGTH_WORKOUTS.find((workout) => workout.id === draft.exerciseId),
@@ -279,6 +476,18 @@ export default function YogaLogApp() {
     setEditingId(log.id);
     setActiveType(log.activity_type);
     setSelectedDate(log.date);
+    setOpenExerciseInfo(null);
+    if (log.activity_type === "yoga") {
+      const category = (log.category as YogaCategory) || "relax";
+      setSelectedYogaCategory(category);
+      setShowYogaForm(true);
+    }
+    if (log.activity_type === "strength") {
+      setSelectedStrengthCategory((log.category as StrengthCategory) || "easy");
+    }
+    if (log.activity_type === "acl") {
+      setSelectedAclCategory((log.category as ACLCategory) || "routine");
+    }
     setDraft({
       label: log.label ?? "",
       category: log.category ?? "",
@@ -296,10 +505,13 @@ export default function YogaLogApp() {
 
   const resetDraft = () => {
     setEditingId(null);
+    setOpenExerciseInfo(null);
+    setDuplicateWarning(null);
     if (activeType === "yoga") {
+      setShowYogaForm(false);
       setDraft({
         label: "",
-        category: "relax",
+        category: selectedYogaCategory,
         durationMinutes: "",
         intensity: "2",
         notes: "",
@@ -350,6 +562,20 @@ export default function YogaLogApp() {
       metadata: draft.link ? { link: draft.link } : null,
     };
 
+    if (activeType === "yoga" && draft.link) {
+      const duplicate = logs.find((log) => {
+        if (editingId && log.id === editingId) return false;
+        if (!log.metadata || typeof log.metadata !== "object") return false;
+        const link = (log.metadata as Record<string, unknown>).link;
+        return typeof link === "string" && link === draft.link;
+      });
+      if (duplicate) {
+        setDuplicateWarning("Ez a link már rögzítve van. Megnyitottam a meglévő logot.");
+        handleEdit(duplicate);
+        return;
+      }
+    }
+
     if (activeType === "strength" && selectedWorkout) {
       payload.category = selectedWorkout.category;
       payload.exercise_id = selectedWorkout.id;
@@ -384,11 +610,22 @@ export default function YogaLogApp() {
       body: JSON.stringify(editingId ? { ...payload, id: editingId } : payload),
     });
 
-    if (!response.ok) return;
+    if (!response.ok) {
+      if (response.status === 409) {
+        const data = await response.json().catch(() => null);
+        if (data?.error === "duplicate_link" && data.log) {
+          setDuplicateWarning("Ez a link már rögzítve van. Megnyitottam a meglévő logot.");
+          handleEdit(data.log as ActivityLogRow);
+          return;
+        }
+      }
+      return;
+    }
     const data = await response.json();
     const updatedLog = data.log as ActivityLogRow | undefined;
     if (!updatedLog) return;
 
+    setDuplicateWarning(null);
     setLogs((current) => {
       if (editingId) {
         return current.map((log) => (log.id === updatedLog.id ? updatedLog : log));
@@ -444,13 +681,19 @@ export default function YogaLogApp() {
       </div>
 
       <div className={styles.layout}>
-        <div className={styles.mainColumn}>
-          <div className={`admin-card ${styles.weekCard}`}>
-            <div className={styles.weekHeader}>
+        <div className={styles.topRow}>
+          <div className={`admin-card ${styles.monthCard}`}>
+            <div className={styles.monthHeader}>
+              <button type="button" className="btn btn--ghost" onClick={() => handleMonthShift(-1)}>
+                <ChevronLeft size={16} />
+              </button>
               <div>
-                <p className={styles.sectionTag}>{"Heti nézet"}</p>
-                <h2>{"Kiválasztott nap"}</h2>
+                <p className={styles.sectionTag}>{"Havi nézet"}</p>
+                <h2>{`${MONTHS[monthDate.getMonth()]} ${monthDate.getFullYear()}`}</h2>
               </div>
+              <button type="button" className="btn btn--ghost" onClick={() => handleMonthShift(1)}>
+                <ChevronRight size={16} />
+              </button>
               <button
                 type="button"
                 className="btn btn--ghost"
@@ -459,46 +702,36 @@ export default function YogaLogApp() {
                 {"Ma"}
               </button>
             </div>
-            <div className={styles.weekRow}>
-              {weekDates.map((date) => {
+            <div className={styles.monthGrid}>
+              {WEEKDAYS.map((label, idx) => (
+                <span key={`${label}-${idx}`} className={styles.monthLabel}>
+                  {label}
+                </span>
+              ))}
+              {monthGrid.map(({ date, inMonth }) => {
                 const key = toDateKey(date);
-                const isActive = key === selectedDate;
-                const hasLog = (logsByDate.get(key) ?? []).length > 0;
+                const dayLogs = logsByDate.get(key) ?? [];
+                const indicators = buildIndicators(dayLogs);
                 return (
                   <button
                     key={key}
                     type="button"
-                    className={`${styles.weekDay} ${isActive ? styles.weekDayActive : ""}`}
-                    data-has-log={hasLog ? "true" : "false"}
+                    className={`${styles.monthCell} ${inMonth ? "" : styles.monthCellMuted} ${
+                      key === selectedDate ? styles.monthCellActive : ""
+                    }`}
                     onClick={() => setSelectedDate(key)}
                   >
-                    <span>{WEEKDAYS[(date.getDay() + 6) % 7]}</span>
-                    <strong>{date.getDate()}</strong>
+                    <span>{date.getDate()}</span>
+                    {indicators.length > 0 && (
+                      <div className={styles.monthIndicators}>
+                        {indicators.map((meta) => (
+                          <span key={`${key}-${meta.label}`} style={{ backgroundColor: meta.color }} />
+                        ))}
+                      </div>
+                    )}
                   </button>
                 );
               })}
-            </div>
-            <div className={styles.tabRow}>
-              {ACTIVITY_TABS.map((tab) => (
-                <button
-                  key={tab.type}
-                  type="button"
-                  className={`${styles.tabButton} ${activeType === tab.type ? styles.tabButtonActive : ""}`}
-                  onClick={() => setActiveType(tab.type)}
-                  style={
-                    activeType === tab.type
-                      ? {
-                          borderColor: ACTIVITY_COLORS[tab.type],
-                          backgroundColor: hexToRgba(ACTIVITY_COLORS[tab.type], 0.12),
-                          color: ACTIVITY_COLORS[tab.type],
-                        }
-                      : undefined
-                  }
-                >
-                  <img src={tab.icon} alt="" aria-hidden="true" />
-                  <span>{tab.label}</span>
-                </button>
-              ))}
             </div>
           </div>
 
@@ -509,18 +742,18 @@ export default function YogaLogApp() {
                 <h2>{`${selectedDate}`}</h2>
               </div>
               <div className={styles.logHeaderMeta}>
-                <span>{activeType.toUpperCase()}</span>
+                <span>{`${logsForDay.length} log`}</span>
                 {loading && <em>{"betöltés..."}</em>}
               </div>
             </div>
 
-            {logsForType.length === 0 && !loading && (
+            {logsForDay.length === 0 && !loading && (
               <p className={styles.emptyText}>{"Nincs log ehhez a naphoz."}</p>
             )}
 
-            {logsForType.length > 0 && (
+            {logsForDay.length > 0 && (
               <div className={styles.logList}>
-                {logsForType.map((log) => (
+                {logsForDay.map((log) => (
                   <div key={log.id} className={styles.logItem}>
                     <div className={styles.logMeta}>
                       <div>
@@ -538,7 +771,11 @@ export default function YogaLogApp() {
                               backgroundColor: hexToRgba(meta.color, 0.12),
                             }}
                           >
-                            <img src={meta.icon} alt="" aria-hidden="true" />
+                            <span
+                              className={styles.pillIcon}
+                              style={{ ["--pill-icon" as any]: `url(${meta.icon})` }}
+                              aria-hidden="true"
+                            />
                             <span>{meta.label}</span>
                           </div>
                         );
@@ -564,347 +801,497 @@ export default function YogaLogApp() {
                 ))}
               </div>
             )}
-
-            <div className={styles.formSection}>
-              <div className={styles.formHeader}>
-                <h3>{editingId ? "Log szerkesztése" : "Új log"}</h3>
-                {editingId && (
-                  <button type="button" className="btn btn--ghost" onClick={resetDraft}>
-                    {"Szerkesztés lezárása"}
-                  </button>
-                )}
-              </div>
-
-              {activeType === "yoga" && (
-                <div className={styles.templateRow}>
-                  <div className={styles.templateGroup}>
-                    <p>{"Mentett sablonok"}</p>
-                    <div className={styles.templateList}>
-                      {templates.length === 0 && <span className={styles.templateEmpty}>{"Nincs mentett sablon."}</span>}
-                      {templates.map((template, idx) => (
-                        <button
-                          key={`${template.label}-${idx}`}
-                          type="button"
-                          className={styles.templateButton}
-                          onClick={() =>
-                            setDraft((current) => ({
-                              ...current,
-                              label: template.label,
-                              category: template.category,
-                              durationMinutes: template.duration_minutes ? String(template.duration_minutes) : "",
-                              intensity: template.intensity ? String(template.intensity) : "2",
-                              link: template.link ?? "",
-                            }))
-                          }
-                        >
-                          <strong>{template.label}</strong>
-                          {(() => {
-                            const meta = getCategoryMeta("yoga", template.category);
-                            return (
-                              <span
-                                className={styles.templateBadge}
-                                style={{
-                                  borderColor: meta.color,
-                                  color: meta.color,
-                                  backgroundColor: hexToRgba(meta.color, 0.12),
-                                }}
-                              >
-                                <img src={meta.icon} alt="" aria-hidden="true" />
-                                {meta.label}
-                              </span>
-                            );
-                          })()}
-                          <span>
-                            {template.duration_minutes ? `${template.duration_minutes} perc` : "idő nélkül"} ·{" "}
-                            {`intenzitás ${template.intensity ?? "-"}`}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  <div className={styles.templateGroup}>
-                    <p>{"Könyvtári flow-k"}</p>
-                    <div className={styles.templateList}>
-                      {YOGA_LIBRARY.map((entry) => (
-                        <button
-                          key={entry.id}
-                          type="button"
-                          className={styles.templateButton}
-                          onClick={() =>
-                            setDraft((current) => ({
-                              ...current,
-                              label: entry.label,
-                              category: entry.category,
-                              durationMinutes: String(entry.durationMinutes),
-                              intensity: String(entry.intensity),
-                            }))
-                          }
-                        >
-                          <strong>{entry.label}</strong>
-                          {(() => {
-                            const meta = getCategoryMeta("yoga", entry.category);
-                            return (
-                              <span
-                                className={styles.templateBadge}
-                                style={{
-                                  borderColor: meta.color,
-                                  color: meta.color,
-                                  backgroundColor: hexToRgba(meta.color, 0.12),
-                                }}
-                              >
-                                <img src={meta.icon} alt="" aria-hidden="true" />
-                                {meta.label}
-                              </span>
-                            );
-                          })()}
-                          <span>{`${entry.durationMinutes} perc · intenzitás ${entry.intensity}`}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <div className={styles.formGrid}>
-                {activeType === "yoga" && (
-                  <>
-                    <label className="form-field">
-                      <span className="form-field__label">{"Cím"}</span>
-                      <input
-                        className="input"
-                        value={draft.label}
-                        onChange={(event) => setDraft((current) => ({ ...current, label: event.target.value }))}
-                      />
-                    </label>
-                    <label className="form-field">
-                      <span className="form-field__label">{"Kategória"}</span>
-                      <select
-                        className="input"
-                        value={draft.category}
-                        onChange={(event) => setDraft((current) => ({ ...current, category: event.target.value }))}
-                      >
-                        <option value="relax">Relax</option>
-                        <option value="strong">Strong</option>
-                      </select>
-                    </label>
-                    <label className="form-field">
-                      <span className="form-field__label">{"Időtartam (perc)"}</span>
-                      <input
-                        className="input"
-                        type="number"
-                        min="0"
-                        value={draft.durationMinutes}
-                        onChange={(event) =>
-                          setDraft((current) => ({ ...current, durationMinutes: event.target.value }))
-                        }
-                      />
-                    </label>
-                    <label className="form-field">
-                      <span className="form-field__label">{"Intenzitás"}</span>
-                      <select
-                        className="input"
-                        value={draft.intensity}
-                        onChange={(event) => setDraft((current) => ({ ...current, intensity: event.target.value }))}
-                      >
-                        <option value="1">1 · lágy</option>
-                        <option value="2">2 · közepes</option>
-                        <option value="3">3 · erős</option>
-                      </select>
-                    </label>
-                    <label className="form-field">
-                      <span className="form-field__label">{"Link"}</span>
-                      <input
-                        className="input"
-                        value={draft.link}
-                        onChange={(event) => setDraft((current) => ({ ...current, link: event.target.value }))}
-                      />
-                    </label>
-                  </>
-                )}
-
-                {activeType === "strength" && (
-                  <>
-                    <label className="form-field">
-                      <span className="form-field__label">{"Workout"}</span>
-                      <select
-                        className="input"
-                        value={draft.exerciseId}
-                        onChange={(event) => setDraft((current) => ({ ...current, exerciseId: event.target.value }))}
-                      >
-                        {STRENGTH_WORKOUTS.map((workout) => (
-                          <option key={workout.id} value={workout.id}>
-                            {workout.label}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                    {selectedWorkout && (
-                      <div className={styles.formHint}>
-                        <strong>{selectedWorkout.label}</strong>
-                        <span>{`${selectedWorkout.rounds} · ${selectedWorkout.category}`}</span>
-                      </div>
-                    )}
-                  </>
-                )}
-
-                {activeType === "acl" && (
-                  <>
-                    <label className="form-field">
-                      <span className="form-field__label">{"Rutin vagy blokk"}</span>
-                      <select
-                        className="input"
-                        value={draft.exerciseId}
-                        onChange={(event) => setDraft((current) => ({ ...current, exerciseId: event.target.value }))}
-                      >
-                        {ACL_ROUTINES.map((routine) => (
-                          <option key={routine.id} value={routine.id}>
-                            {routine.label}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                    {selectedRoutine && (
-                      <div className={styles.formHint}>
-                        <strong>{selectedRoutine.label}</strong>
-                        <span>{selectedRoutine.focus}</span>
-                      </div>
-                    )}
-                  </>
-                )}
-
-                {activeType === "running" && (
-                  <>
-                    <label className="form-field">
-                      <span className="form-field__label">{"Megnevezés"}</span>
-                      <input
-                        className="input"
-                        value={draft.label}
-                        onChange={(event) => setDraft((current) => ({ ...current, label: event.target.value }))}
-                      />
-                    </label>
-                    <label className="form-field">
-                      <span className="form-field__label">{"Táv (km)"}</span>
-                      <input
-                        className="input"
-                        type="number"
-                        min="0"
-                        step="0.1"
-                        value={draft.distanceKm}
-                        onChange={(event) => setDraft((current) => ({ ...current, distanceKm: event.target.value }))}
-                      />
-                    </label>
-                    <label className="form-field">
-                      <span className="form-field__label">{"Idő (perc)"}</span>
-                      <input
-                        className="input"
-                        type="number"
-                        min="0"
-                        value={draft.durationMinutes}
-                        onChange={(event) =>
-                          setDraft((current) => ({ ...current, durationMinutes: event.target.value }))
-                        }
-                      />
-                    </label>
-                  </>
-                )}
-              </div>
-
-              <label className="form-field">
-                <span className="form-field__label">{"Megjegyzés"}</span>
-                <textarea
-                  className="input"
-                  rows={3}
-                  value={draft.notes}
-                  onChange={(event) => setDraft((current) => ({ ...current, notes: event.target.value }))}
-                />
-              </label>
-
-              <div className={styles.formActions}>
-                <button type="button" className="btn btn--primary" onClick={handleSubmit}>
-                  <Plus size={16} />
-                  {editingId ? "Mentés" : "Rögzítés"}
-                </button>
-              </div>
-            </div>
           </div>
         </div>
 
-        <div className={styles.sideColumn}>
-          <div className={`admin-card ${styles.monthCard}`}>
-            <div className={styles.monthHeader}>
-              <button type="button" className="btn btn--ghost" onClick={() => handleMonthShift(-1)}>
-                <ChevronLeft size={16} />
-              </button>
+          <div className={`admin-card ${styles.entryCard} ${styles.entryFull}`}>
+            <div className={styles.entryHeader}>
               <div>
-                <p className={styles.sectionTag}>{"Havi nézet"}</p>
-                <h2>{`${MONTHS[monthDate.getMonth()]} ${monthDate.getFullYear()}`}</h2>
+                <p className={styles.sectionTag}>{"Rögzítés"}</p>
+                <h2>{editingId ? "Log szerkesztése" : "Új log"}</h2>
               </div>
-              <button type="button" className="btn btn--ghost" onClick={() => handleMonthShift(1)}>
-                <ChevronRight size={16} />
-              </button>
+              {editingId && (
+                <button type="button" className="btn btn--ghost" onClick={resetDraft}>
+                  {"Szerkesztés lezárása"}
+                </button>
+              )}
             </div>
-            <div className={styles.monthGrid}>
-              {WEEKDAYS.map((label, idx) => (
-                <span key={`${label}-${idx}`} className={styles.monthLabel}>
-                  {label}
-                </span>
+
+            {duplicateWarning && <div className={styles.warningBanner}>{duplicateWarning}</div>}
+
+            <div className={styles.tabRow}>
+              {ACTIVITY_TABS.map((tab) => (
+                <button
+                  key={tab.type}
+                  type="button"
+                  className={`${styles.tabButton} ${activeType === tab.type ? styles.tabButtonActive : ""}`}
+                  onClick={() => setActiveType(tab.type)}
+                  style={
+                    activeType === tab.type
+                      ? {
+                          borderColor: ACTIVITY_COLORS[tab.type],
+                          backgroundColor: hexToRgba(ACTIVITY_COLORS[tab.type], 0.12),
+                          color: ACTIVITY_COLORS[tab.type],
+                        }
+                      : undefined
+                  }
+                >
+                  <span
+                    className={styles.tabIcon}
+                    style={{ ["--pill-icon" as any]: `url(${tab.icon})` }}
+                    aria-hidden="true"
+                  />
+                  <span>{tab.label}</span>
+                </button>
               ))}
-              {monthGrid.map(({ date, inMonth }) => {
-                const key = toDateKey(date);
-                const dayLogs = logsByDate.get(key) ?? [];
-                return (
+            </div>
+
+            {activeType === "yoga" && (
+              <div className={styles.stepSection}>
+                <p className={styles.stepLabel}>{"Kategória"}</p>
+                <div className={styles.optionRow}>
                   <button
-                    key={key}
                     type="button"
-                    className={`${styles.monthCell} ${inMonth ? "" : styles.monthCellMuted} ${
-                      key === selectedDate ? styles.monthCellActive : ""
-                    }`}
-                    onClick={() => setSelectedDate(key)}
+                    className={`${styles.optionButton} ${selectedYogaCategory === "relax" ? styles.optionButtonActive : ""}`}
+                    onClick={() => setSelectedYogaCategory("relax")}
                   >
-                    <span>{date.getDate()}</span>
-                    {dayLogs.length > 0 && (
-                      <div className={styles.monthIndicators}>
-                        {ACTIVITY_TABS.map((tab) => {
-                          const indicatorMeta = dayLogs
-                            .filter((log) => log.activity_type === tab.type)
-                            .map((log) => getCategoryMeta(log.activity_type, log.category));
-                          if (indicatorMeta.length === 0) return null;
-                          const unique = Array.from(
-                            new Map(indicatorMeta.map((meta) => [`${tab.type}:${meta.label}`, meta])).values()
-                          );
+                    {"Relax"}
+                  </button>
+                  <button
+                    type="button"
+                    className={`${styles.optionButton} ${selectedYogaCategory === "strong" ? styles.optionButtonActive : ""}`}
+                    onClick={() => setSelectedYogaCategory("strong")}
+                  >
+                    {"Strong"}
+                  </button>
+                </div>
+
+                <div className={styles.templateGroup}>
+                  <p>{"Mentett sablonok"}</p>
+                  <div className={styles.templateList}>
+                    {templatesForCategory.length === 0 && (
+                      <span className={styles.templateEmpty}>{"Nincs mentett sablon."}</span>
+                    )}
+                    {templatesForCategory.map((template) => (
+                      <button
+                        key={template.id}
+                        type="button"
+                        className={styles.templateButton}
+                        onClick={() => {
+                          setSelectedYogaCategory(template.category as YogaCategory);
+                          setShowYogaForm(true);
+                          setDraft((current) => ({
+                            ...current,
+                            label: template.label,
+                            category: template.category,
+                            durationMinutes: template.duration_minutes ? String(template.duration_minutes) : "",
+                            intensity: template.intensity ? String(template.intensity) : "2",
+                            link: template.link ?? "",
+                          }));
+                        }}
+                      >
+                        <strong>{template.label}</strong>
+                        {(() => {
+                          const meta = getCategoryMeta("yoga", template.category);
                           return (
-                            <div key={`${key}-${tab.type}`} className={styles.monthIndicatorGroup}>
-                              {unique.map((meta) => (
-                                <span
-                                  key={`${key}-${tab.type}-${meta.label}`}
-                                  style={{ backgroundColor: meta.color }}
-                                />
-                              ))}
+                            <span
+                              className={styles.templateBadge}
+                              style={{
+                                borderColor: meta.color,
+                                color: meta.color,
+                                backgroundColor: hexToRgba(meta.color, 0.12),
+                              }}
+                            >
+                              <span
+                                className={styles.pillIcon}
+                                style={{ ["--pill-icon" as any]: `url(${meta.icon})` }}
+                                aria-hidden="true"
+                              />
+                              {meta.label}
+                            </span>
+                          );
+                        })()}
+                        <span>
+                          {template.duration_minutes ? `${template.duration_minutes} perc` : "idő nélkül"}
+                        </span>
+                        <div
+                          className={styles.intensityRow}
+                          aria-label={`intenzitás ${template.intensity ?? "-"}`}
+                        >
+                          {Array.from({ length: 3 }).map((_, idx) => (
+                            <span
+                              key={`${template.id}-dot-${idx}`}
+                              className={`${styles.intensityDot} ${
+                                idx < getIntensityDots(template.intensity) ? styles.intensityDotActive : ""
+                              }`}
+                            />
+                          ))}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className={`btn btn--ghost ${styles.addYogaButton}`}
+                  onClick={() => setShowYogaForm((current) => !current)}
+                >
+                  {showYogaForm ? "Adatlap bezárása" : "Új jóga hozzáadása"}
+                </button>
+
+                {showYogaForm && (
+                  <div className={styles.formSection}>
+                    <div className={styles.formGrid}>
+                      <label className="form-field">
+                        <span className="form-field__label">{"Cím"}</span>
+                        <input
+                          className="input"
+                          value={draft.label}
+                          onChange={(event) => setDraft((current) => ({ ...current, label: event.target.value }))}
+                        />
+                      </label>
+                      <label className="form-field">
+                        <span className="form-field__label">{"Időtartam (perc)"}</span>
+                        <input
+                          className="input"
+                          type="number"
+                          min="0"
+                          value={draft.durationMinutes}
+                          onChange={(event) =>
+                            setDraft((current) => ({ ...current, durationMinutes: event.target.value }))
+                          }
+                        />
+                      </label>
+                      <label className="form-field">
+                        <span className="form-field__label">{"Intenzitás"}</span>
+                        <select
+                          className="input"
+                          value={draft.intensity}
+                          onChange={(event) => setDraft((current) => ({ ...current, intensity: event.target.value }))}
+                        >
+                          <option value="1">1 · lágy</option>
+                          <option value="2">2 · közepes</option>
+                          <option value="3">3 · erős</option>
+                        </select>
+                      </label>
+                      <label className="form-field">
+                        <span className="form-field__label">{"Link"}</span>
+                        <input
+                          className="input"
+                          value={draft.link}
+                          onChange={(event) => setDraft((current) => ({ ...current, link: event.target.value }))}
+                        />
+                      </label>
+                    </div>
+
+                    <label className="form-field">
+                      <span className="form-field__label">{"Megjegyzés"}</span>
+                      <textarea
+                        className="input"
+                        rows={3}
+                        value={draft.notes}
+                        onChange={(event) => setDraft((current) => ({ ...current, notes: event.target.value }))}
+                      />
+                    </label>
+
+                    <div className={styles.formActions}>
+                      <button type="button" className="btn btn--primary" onClick={handleSubmit}>
+                        <Plus size={16} />
+                        {editingId ? "Mentés" : "Rögzítés"}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeType === "strength" && (
+              <div className={styles.stepSection}>
+                <p className={styles.stepLabel}>{"Intenzitás"}</p>
+                <div className={styles.optionRow}>
+                  <button
+                    type="button"
+                    className={`${styles.optionButton} ${selectedStrengthCategory === "easy" ? styles.optionButtonActive : ""}`}
+                    onClick={() => setSelectedStrengthCategory("easy")}
+                  >
+                    {"Easy"}
+                  </button>
+                  <button
+                    type="button"
+                    className={`${styles.optionButton} ${selectedStrengthCategory === "intense" ? styles.optionButtonActive : ""}`}
+                    onClick={() => setSelectedStrengthCategory("intense")}
+                  >
+                    {"Intense"}
+                  </button>
+                </div>
+
+                <div className={styles.workoutList}>
+                  {strengthOptions.map((workout) => (
+                    <div
+                      key={workout.id}
+                      className={`${styles.workoutCard} ${draft.exerciseId === workout.id ? styles.workoutCardActive : ""}`}
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => setDraft((current) => ({ ...current, exerciseId: workout.id }))}
+                    >
+                      <div className={styles.workoutHeader}>
+                        <strong>{workout.label}</strong>
+                        <span className={styles.workoutMeta}>{workout.rounds}</span>
+                      </div>
+                      <div className={styles.exerciseList}>
+                        {workout.exercises.map((exercise, idx) => {
+                          const infoId = `${workout.id}-${idx}`;
+                          const detail = parseExerciseDetail(exercise.detail);
+                          return (
+                            <div key={infoId} className={styles.exerciseBlock}>
+                              <div className={styles.exerciseRow}>
+                                <button
+                                  type="button"
+                                  className={styles.infoButton}
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    setOpenExerciseInfo((current) => (current === infoId ? null : infoId));
+                                  }}
+                                  aria-label={`Info: ${exercise.name}`}
+                                >
+                                  <Info size={14} />
+                                </button>
+                                <span className={styles.exerciseName}>{exercise.name}</span>
+                                <span className={styles.exerciseRep}>{exercise.reps}</span>
+                              </div>
+                              {openExerciseInfo === infoId && detail && (
+                                <div className={styles.infoPanel}>
+                                  {detail.start && (
+                                    <div className={styles.infoSection}>
+                                      <span>{"Kiinduló"}</span>
+                                      <p>{detail.start}</p>
+                                    </div>
+                                  )}
+                                  {detail.movement && (
+                                    <div className={styles.infoSection}>
+                                      <span>{"Mozdulat"}</span>
+                                      <p>{detail.movement}</p>
+                                    </div>
+                                  )}
+                                  {detail.focus && (
+                                    <div className={styles.infoSection}>
+                                      <span>{"Fókusz"}</span>
+                                      <p>{detail.focus}</p>
+                                    </div>
+                                  )}
+                                  {!detail.start && !detail.movement && !detail.focus && detail.notes && (
+                                    <div className={styles.infoSection}>
+                                      <span>{"Leírás"}</span>
+                                      <p>{detail.notes}</p>
+                                    </div>
+                                  )}
+                                  {detail.notes && detail.movement && (
+                                    <div className={styles.infoSection}>
+                                      <span>{"Megjegyzés"}</span>
+                                      <p>{detail.notes}</p>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
                             </div>
                           );
                         })}
                       </div>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+                    </div>
+                  ))}
+                </div>
 
-          <div className={`admin-card ${styles.metaCard}`}>
-            <p className={styles.sectionTag}>{"Dokumentáció"}</p>
-            <h2>{"Yoga rendszer forrásai"}</h2>
-            <ul className={styles.metaList}>
-              <li>{"TICKETS/body/INDEX.md"}</li>
-              <li>{"TICKETS/body/yoga_surface_contract.md"}</li>
-              <li>{"TICKETS/body/yoga_guru.md"}</li>
-              <li>{"TICKETS/body/acl_edzes_rendszer.md"}</li>
-              <li>{"TICKETS/body/acl_stabilitas_erosito_program.md"}</li>
-            </ul>
+                <label className="form-field">
+                  <span className="form-field__label">{"Megjegyzés"}</span>
+                  <textarea
+                    className="input"
+                    rows={3}
+                    value={draft.notes}
+                    onChange={(event) => setDraft((current) => ({ ...current, notes: event.target.value }))}
+                  />
+                </label>
+
+                <div className={styles.formActions}>
+                  <button type="button" className="btn btn--primary" onClick={handleSubmit}>
+                    <Plus size={16} />
+                    {editingId ? "Mentés" : "Rögzítés"}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {activeType === "acl" && (
+              <div className={styles.stepSection}>
+                <p className={styles.stepLabel}>{"Típus"}</p>
+                <div className={styles.optionRow}>
+                  <button
+                    type="button"
+                    className={`${styles.optionButton} ${selectedAclCategory === "routine" ? styles.optionButtonActive : ""}`}
+                    onClick={() => setSelectedAclCategory("routine")}
+                  >
+                    {"Routine"}
+                  </button>
+                  <button
+                    type="button"
+                    className={`${styles.optionButton} ${selectedAclCategory === "block" ? styles.optionButtonActive : ""}`}
+                    onClick={() => setSelectedAclCategory("block")}
+                  >
+                    {"Block"}
+                  </button>
+                </div>
+
+                <div className={styles.workoutList}>
+                  {aclOptions.map((routine) => (
+                    <div
+                      key={routine.id}
+                      className={`${styles.workoutCard} ${draft.exerciseId === routine.id ? styles.workoutCardActive : ""}`}
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => setDraft((current) => ({ ...current, exerciseId: routine.id }))}
+                    >
+                      <div className={styles.workoutHeader}>
+                        <strong>{routine.label}</strong>
+                        <span className={styles.workoutMeta}>{routine.focus}</span>
+                      </div>
+                      <div className={styles.exerciseList}>
+                        {routine.exercises.map((exercise, idx) => {
+                          const infoId = `${routine.id}-${idx}`;
+                          const detail = parseExerciseDetail(exercise.detail);
+                          return (
+                            <div key={infoId} className={styles.exerciseBlock}>
+                              <div className={styles.exerciseRow}>
+                                <button
+                                  type="button"
+                                  className={styles.infoButton}
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    setOpenExerciseInfo((current) => (current === infoId ? null : infoId));
+                                  }}
+                                  aria-label={`Info: ${exercise.name}`}
+                                >
+                                  <Info size={14} />
+                                </button>
+                                <span className={styles.exerciseName}>{exercise.name}</span>
+                                <span className={styles.exerciseRep}>{exercise.reps}</span>
+                              </div>
+                              {openExerciseInfo === infoId && detail && (
+                                <div className={styles.infoPanel}>
+                                  {detail.start && (
+                                    <div className={styles.infoSection}>
+                                      <span>{"Kiinduló"}</span>
+                                      <p>{detail.start}</p>
+                                    </div>
+                                  )}
+                                  {detail.movement && (
+                                    <div className={styles.infoSection}>
+                                      <span>{"Mozdulat"}</span>
+                                      <p>{detail.movement}</p>
+                                    </div>
+                                  )}
+                                  {detail.focus && (
+                                    <div className={styles.infoSection}>
+                                      <span>{"Fókusz"}</span>
+                                      <p>{detail.focus}</p>
+                                    </div>
+                                  )}
+                                  {!detail.start && !detail.movement && !detail.focus && detail.notes && (
+                                    <div className={styles.infoSection}>
+                                      <span>{"Leírás"}</span>
+                                      <p>{detail.notes}</p>
+                                    </div>
+                                  )}
+                                  {detail.notes && detail.movement && (
+                                    <div className={styles.infoSection}>
+                                      <span>{"Megjegyzés"}</span>
+                                      <p>{detail.notes}</p>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <label className="form-field">
+                  <span className="form-field__label">{"Megjegyzés"}</span>
+                  <textarea
+                    className="input"
+                    rows={3}
+                    value={draft.notes}
+                    onChange={(event) => setDraft((current) => ({ ...current, notes: event.target.value }))}
+                  />
+                </label>
+
+                <div className={styles.formActions}>
+                  <button type="button" className="btn btn--primary" onClick={handleSubmit}>
+                    <Plus size={16} />
+                    {editingId ? "Mentés" : "Rögzítés"}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {activeType === "running" && (
+              <div className={styles.stepSection}>
+                <div className={styles.formGrid}>
+                  <label className="form-field">
+                    <span className="form-field__label">{"Megnevezés"}</span>
+                    <input
+                      className="input"
+                      value={draft.label}
+                      onChange={(event) => setDraft((current) => ({ ...current, label: event.target.value }))}
+                    />
+                  </label>
+                  <label className="form-field">
+                    <span className="form-field__label">{"Táv (km)"}</span>
+                    <input
+                      className="input"
+                      type="number"
+                      min="0"
+                      step="0.1"
+                      value={draft.distanceKm}
+                      onChange={(event) => setDraft((current) => ({ ...current, distanceKm: event.target.value }))}
+                    />
+                  </label>
+                  <label className="form-field">
+                    <span className="form-field__label">{"Idő (perc)"}</span>
+                    <input
+                      className="input"
+                      type="number"
+                      min="0"
+                      value={draft.durationMinutes}
+                      onChange={(event) =>
+                        setDraft((current) => ({ ...current, durationMinutes: event.target.value }))
+                      }
+                    />
+                  </label>
+                </div>
+
+                <label className="form-field">
+                  <span className="form-field__label">{"Megjegyzés"}</span>
+                  <textarea
+                    className="input"
+                    rows={3}
+                    value={draft.notes}
+                    onChange={(event) => setDraft((current) => ({ ...current, notes: event.target.value }))}
+                  />
+                </label>
+
+                <div className={styles.formActions}>
+                  <button type="button" className="btn btn--primary" onClick={handleSubmit}>
+                    <Plus size={16} />
+                    {editingId ? "Mentés" : "Rögzítés"}
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-      </div>
-
       <div className={styles.fabToolbar}>
         <Link
           href="/admin"

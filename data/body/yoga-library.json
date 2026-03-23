@@ -1,0 +1,192 @@
+[
+  {
+    "id": "09b237ab-2268-4b10-b778-9a516a30db86",
+    "label": "Improve back flexibility",
+    "category": "strong",
+    "duration_minutes": 25,
+    "intensity": 2,
+    "link": "https://www.youtube.com/watch?v=tr99w1IfdhM",
+    "created_at": "2026-03-05 20:04:13.262385+00",
+    "updated_at": "2026-03-05 20:04:13.262385+00"
+  },
+  {
+    "id": "1fdeedb9-4ac3-4e4a-a557-224c4157ca77",
+    "label": "Neck, shoulders and upper back release",
+    "category": "relax",
+    "duration_minutes": 29,
+    "intensity": 1,
+    "link": "https://www.youtube.com/watch?v=gnVIx5z9-Fk",
+    "created_at": "2026-03-05 20:40:19.187359+00",
+    "updated_at": "2026-03-05 20:40:19.187359+00"
+  },
+  {
+    "id": "64abcc11-0707-4be3-ac47-ca605d0cba31",
+    "label": "Advanced power yoga",
+    "category": "strong",
+    "duration_minutes": 27,
+    "intensity": 3,
+    "link": "https://www.youtube.com/watch?v=OHNNfNHxapc",
+    "created_at": "2026-03-05 20:41:37.573319+00",
+    "updated_at": "2026-03-05 20:41:37.573319+00"
+  },
+  {
+    "id": "5bf8f9f2-2e79-4a07-ac64-9150af08828b",
+    "label": "Total body release + meditation",
+    "category": "relax",
+    "duration_minutes": 47,
+    "intensity": 1,
+    "link": "https://www.youtube.com/watch?v=KObUQOsqQKI",
+    "created_at": "2026-03-05 22:18:19.793347+00",
+    "updated_at": "2026-03-05 22:18:19.793347+00"
+  },
+  {
+    "id": "4aaa18ce-e3ef-43c8-a953-44458dfb7f50",
+    "label": "Every day full body yoga",
+    "category": "strong",
+    "duration_minutes": 34,
+    "intensity": 2,
+    "link": "https://www.youtube.com/watch?v=NTqVG9Kt070",
+    "created_at": "2026-03-08 19:50:53.015499+00",
+    "updated_at": "2026-03-08 19:50:53.015499+00"
+  },
+  {
+    "id": "5ef7d64f-ec79-44a9-bddb-33efbb6d4426",
+    "label": "Yoga for lymphatix flow",
+    "category": "relax",
+    "duration_minutes": 27,
+    "intensity": 1,
+    "link": "https://www.youtube.com/watch?v=bYQwM841ED4",
+    "created_at": "2026-03-08 19:51:42.722038+00",
+    "updated_at": "2026-03-08 19:51:42.722038+00"
+  },
+  {
+    "id": "ed20c382-23bd-4472-a2c2-e5e6e3c38223",
+    "label": "Backbending and opening yin yoga",
+    "category": "relax",
+    "duration_minutes": 32,
+    "intensity": 1,
+    "link": "https://www.youtube.com/watch?v=t2mhYiw51y8",
+    "created_at": "2026-03-11 20:46:39.713075+00",
+    "updated_at": "2026-03-11 20:46:39.713075+00"
+  },
+  {
+    "id": "b8e6fa5a-1fd1-449b-b8e5-dc3a656126c3",
+    "label": "Easy bedtime yoga",
+    "category": "relax",
+    "duration_minutes": 19,
+    "intensity": 1,
+    "link": "https://www.youtube.com/watch?v=v7SN-d4qXx0",
+    "created_at": "2026-03-13 07:04:40.804666+00",
+    "updated_at": "2026-03-13 07:04:40.804666+00"
+  },
+  {
+    "id": "dcaf4e59-0eb9-45e0-ba3b-09cca395942e",
+    "label": "Morning flow for back & hip",
+    "category": "relax",
+    "duration_minutes": 25,
+    "intensity": 2,
+    "link": "https://www.youtube.com/watch?v=wfXGVHSXc2Q",
+    "created_at": "2026-03-13 07:05:38.330515+00",
+    "updated_at": "2026-03-13 07:05:38.330515+00"
+  },
+  {
+    "id": "45257c2b-7a9d-4fa4-a907-bc0fc826453f",
+    "label": "Full body morning flow",
+    "category": "relax",
+    "duration_minutes": 20,
+    "intensity": 2,
+    "link": "https://youtu.be/XHXb5-HdEBs",
+    "created_at": "2026-03-17 07:20:43.881055+00",
+    "updated_at": "2026-03-17 07:20:43.881055+00"
+  },
+  {
+    "id": "fa204bfe-08e3-4eee-a181-e16a30b1aafb",
+    "label": "Yoga for runners",
+    "category": "relax",
+    "duration_minutes": 20,
+    "intensity": 2,
+    "link": "https://youtu.be/OwiJqWQtY4U",
+    "created_at": "2026-03-17 07:22:47.88894+00",
+    "updated_at": "2026-03-17 07:22:47.88894+00"
+  },
+  {
+    "id": "32e4ec40-c1ae-4977-bf3f-b1e54c93d0bf",
+    "label": "Advanced Vinyasa yoga",
+    "category": "strong",
+    "duration_minutes": 52,
+    "intensity": 2,
+    "link": "https://www.youtube.com/watch?v=f7_zx1sPBj0",
+    "created_at": "2026-03-17 12:06:44.285306+00",
+    "updated_at": "2026-03-17 12:06:44.285306+00"
+  },
+  {
+    "id": "989285d3-c951-4d21-9203-2f84633ba0c0",
+    "label": "Upper back love",
+    "category": "relax",
+    "duration_minutes": 23,
+    "intensity": 1,
+    "link": "https://www.youtube.com/watch?v=lMTyp5npt78",
+    "created_at": "2026-03-17 17:10:15.126778+00",
+    "updated_at": "2026-03-17 17:10:15.126778+00"
+  },
+  {
+    "id": "b7644b06-9d7f-4412-9a05-b009ee3f3539",
+    "label": "Total body deep stretch",
+    "category": "relax",
+    "duration_minutes": 45,
+    "intensity": 2,
+    "link": "https://www.youtube.com/watch?v=GLy2rYHwUqY",
+    "created_at": "2026-03-21 08:10:48.679336+00",
+    "updated_at": "2026-03-21 08:10:48.679336+00"
+  },
+  {
+    "id": "5ffe3a82-9f3e-42e5-9533-3a916856ee62",
+    "label": "Post-run yoga",
+    "category": "relax",
+    "duration_minutes": 30,
+    "intensity": 3,
+    "link": "https://www.youtube.com/watch?v=0hTllAb4XGg",
+    "created_at": "2026-03-21 08:09:49.324098+00",
+    "updated_at": "2026-03-21 08:09:49.324098+00"
+  },
+  {
+    "id": "c32860d9-6812-4662-af65-fc960e828717",
+    "label": "Restorative yoga flow",
+    "category": "relax",
+    "duration_minutes": 25,
+    "intensity": 1,
+    "link": "https://www.youtube.com/watch?v=XwC7MDDsbDs",
+    "created_at": "2026-03-22 22:05:08.136774+00",
+    "updated_at": "2026-03-22 22:05:08.136774+00"
+  },
+  {
+    "id": "aec4972e-bf7f-4adf-aa40-44ac2e38c4c9",
+    "label": "Feel good full body flow",
+    "category": "relax",
+    "duration_minutes": 30,
+    "intensity": 2,
+    "link": "https://www.youtube.com/watch?v=ZFbEt_TzeNI",
+    "created_at": "2026-03-22 22:06:09.360196+00",
+    "updated_at": "2026-03-22 22:06:09.360196+00"
+  },
+  {
+    "id": "7f1bcc48-e93f-4a61-ab5f-8573ca95bd13",
+    "label": "Full body strength workout",
+    "category": "strong",
+    "duration_minutes": 30,
+    "intensity": 3,
+    "link": "https://www.youtube.com/watch?v=UnpGR1t5UOY",
+    "created_at": "2026-03-23T21:24:32.087Z",
+    "updated_at": "2026-03-23T21:24:32.087Z"
+  },
+  {
+    "id": "d31d7f5e-f49f-46d7-b2be-2072f113e177",
+    "label": "Anytime unwind",
+    "category": "relax",
+    "duration_minutes": 23,
+    "intensity": 1,
+    "link": "https://www.youtube.com/watch?v=s7ryIG-GQr8",
+    "created_at": "2026-03-23T21:25:43.850Z",
+    "updated_at": "2026-03-23T21:25:43.850Z"
+  }
+]

@@ -3,7 +3,7 @@
 ### Taoizmus
 - tao_alapok: Taoizmus alapelvei (Tao, Te, wu wei) | short: Tao | color: #1F8A70
 - wu_wei: Nem-cselekvés | short: Wu-wei | color: #1F8A70
-- termeszetes_elet: Spontán, természetes élet | short: Spontaneit?s | color: #1F8A70
+- termeszetes_elet: Spontán, természetes élet | short: Spontaneitás | color: #1F8A70
 - belso_alkimia: Taoista belső alkímia | short: Belső alkímia | color: #1F8A70
 - hosszu_elet: Longevity, egészség | short: Hosszú élet | color: #1F8A70
 
