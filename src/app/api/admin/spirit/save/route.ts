@@ -3,6 +3,7 @@ import { readFile, writeFile, rename } from "node:fs/promises";
 import { join } from "node:path";
 import { SpiritDraftSchema } from "@/lib/spiritDraftSchema";
 import { validateSpiritLibrary } from "@/lib/spiritSchema";
+import { requireAdmin } from "@/lib/adminAuth";
 
 const LIBRARY_PATH = join(process.cwd(), "data", "spirit", "library.json");
 
@@ -25,6 +26,9 @@ function normalizeDraft(draft: any) {
 }
 
 export async function POST(request: Request) {
+  const authError = await requireAdmin();
+  if (authError) return authError;
+
   const payload = await request.json().catch(() => null);
   if (!payload?.draft) {
     return NextResponse.json({ error: "Missing draft" }, { status: 400 });

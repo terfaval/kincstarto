@@ -1,0 +1,31 @@
+.panel {
+  display: grid;
+  gap: 1rem;
+}
+
+.header {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.form {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.25rem;
+}

@@ -2,10 +2,10 @@ import { loadSpiritLibrary } from "@/lib/spiritLibrary";
 import SpiritLibraryApp from "@/components/spirit/SpiritLibraryApp";
 
 export const metadata = {
-  title: "Spirit Library",
+  title: "Spirit Library Admin",
 };
 
-export default async function SpiritPage() {
+export default async function SpiritAdminPage() {
   const library = await loadSpiritLibrary();
-  return <SpiritLibraryApp library={library} admin={false} />;
+  return <SpiritLibraryApp library={library} admin />;
 }

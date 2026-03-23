@@ -34,7 +34,8 @@ export default function TimeThemeEffect() {
   useEffect(() => {
     const updateTheme = () => {
       const now = new Date();
-      const theme = getThemeFromDate();
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const theme = prefersDark ? "night" : getThemeFromDate();
       applyTheme(theme);
 
       const bg = pickDailyBackground(theme, now);
@@ -45,12 +46,16 @@ export default function TimeThemeEffect() {
 
     const intervalId = window.setInterval(updateTheme, MINUTE_MS);
     const handleFocus = () => updateTheme();
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleSchemeChange = () => updateTheme();
 
     window.addEventListener("focus", handleFocus);
+    media.addEventListener("change", handleSchemeChange);
 
     return () => {
       window.clearInterval(intervalId);
       window.removeEventListener("focus", handleFocus);
+      media.removeEventListener("change", handleSchemeChange);
     };
   }, []);
 

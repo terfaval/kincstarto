@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { SpiritStatusEnum, validateSpiritLibrary } from "@/lib/spiritSchema";
+import { requireAdmin } from "@/lib/adminAuth";
 
 const LIBRARY_PATH = join(process.cwd(), "data", "spirit", "library.json");
 
@@ -12,6 +13,9 @@ type Payload = {
 };
 
 export async function POST(request: Request) {
+  const authError = await requireAdmin();
+  if (authError) return authError;
+
   let payload: Payload;
   try {
     payload = (await request.json()) as Payload;

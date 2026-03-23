@@ -9,6 +9,7 @@ import SpiritAddBookModal from "./SpiritAddBookModal";
 
 type Props = {
   library: SpiritLibrary;
+  admin?: boolean;
 };
 
 const TRADITION_OPTIONS = [
@@ -155,7 +156,8 @@ function deriveRelatedBooks(book: SpiritBook, books: SpiritBook[]) {
   return overlaps;
 }
 
-export default function SpiritLibraryApp({ library }: Props) {
+export default function SpiritLibraryApp({ library, admin }: Props) {
+  const isAdmin = Boolean(admin);
   const [searchQuery, setSearchQuery] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [tradition, setTradition] = useState<string>("");
@@ -282,6 +284,7 @@ export default function SpiritLibraryApp({ library }: Props) {
   };
 
   const handleStatusToggle = async (bookId: string, currentStatus: ReadingStatus) => {
+    if (!isAdmin) return;
     const nextStatus = getNextStatus(currentStatus);
     setStatusOverrides((current) => ({ ...current, [bookId]: nextStatus }));
 
@@ -301,6 +304,7 @@ export default function SpiritLibraryApp({ library }: Props) {
   };
 
   const handleNoteSave = async (bookId: string, note: string) => {
+    if (!isAdmin) return;
     const trimmed = note.trim();
     try {
       const response = await fetch("/api/admin/spirit/status", {
@@ -365,6 +369,7 @@ export default function SpiritLibraryApp({ library }: Props) {
   };
 
   const savePathUpdate = async (payload: Record<string, unknown>) => {
+    if (!isAdmin) return;
     try {
       await fetch("/api/admin/spirit/path", {
         method: "POST",
@@ -407,12 +412,14 @@ export default function SpiritLibraryApp({ library }: Props) {
   };
 
   const handleDeletePath = async (pathId: string) => {
+    if (!isAdmin) return;
     setPaths((current) => current.filter((path) => path.id !== pathId));
     setSelectedPathId(null);
     await savePathUpdate({ pathId, delete: true });
   };
 
   const handleSaveGeneratedPath = async () => {
+    if (!isAdmin) return;
     if (!generatedPath || generatedPath.ordered_ids.length === 0) return;
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     const titleParts = [
@@ -445,119 +452,121 @@ export default function SpiritLibraryApp({ library }: Props) {
       {pathOpen && (
         <div className={styles.toolbarPanelBackdrop} onClick={() => setPathOpen(false)}>
           <div className={styles.toolbarPanelCard} onClick={(event) => event.stopPropagation()}>
-            <div className={`admin-card ${styles.pathSection}`}>
-              <div className={styles.pathHeaderRow}>
-                <div>
-                  <h2 className="admin-heading__title">{"Adj egy utat"}</h2>
-                  <p className={styles.pathSubtitle}>
-                    {"Determinista, szabályalapú útvonal a kért szűrések szerint. AI csak finomhangolhat."}
-                  </p>
-                </div>
-                <div className={styles.pathHeaderActions}>
-                  <button
-                    type="button"
-                    className="btn btn--ghost"
-                    onClick={() => setPathOpen(false)}
-                    aria-label="Bezárás"
-                  >
-                    <X size={18} />
-                  </button>
-                </div>
-              </div>
-              <div className={styles.pathForm}>
-                <label className="form-field">
-                  <span className="form-field__label">{"Tradíció"}</span>
-                  <select className="input" value={pathTradition} onChange={(event) => setPathTradition(event.target.value)}>
-                    <option value="">Mind</option>
-                    {TRADITION_OPTIONS.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label className="form-field">
-                  <span className="form-field__label">{"Kezdőszint"}</span>
-                  <select className="input" value={pathStartLevel} onChange={(event) => setPathStartLevel(event.target.value)}>
-                    <option value="">Mind</option>
-                    {LEVEL_OPTIONS.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <div className={styles.pathThemes}>
-                  <span className="form-field__label">{"Témák"}</span>
-                  <div className={styles.pathThemeGrid}>
-                    {themePills.map((pill) => {
-                      const color = pill.color;
-                      const isActive = pathThemes.includes(pill.slug);
-                      return (
-                        <button
-                          key={pill.slug}
-                          type="button"
-                          className={`${styles.pathThemePill} ${isActive ? styles.pathThemePillActive : ""}`}
-                          onClick={() => togglePathTheme(pill.slug)}
-                          style={{
-                            borderColor: color,
-                            color: isActive ? "#fff" : color,
-                            background: isActive ? color : hexToRgba(color, 0.12),
-                          }}
-                          title={pill.label}
-                        >
-                          {pill.short_label}
-                        </button>
-                      );
-                    })}
+            {isAdmin && (
+              <div className={`admin-card ${styles.pathSection}`}>
+                <div className={styles.pathHeaderRow}>
+                  <div>
+                    <h2 className="admin-heading__title">{"Adj egy utat"}</h2>
+                    <p className={styles.pathSubtitle}>
+                      {"Determinista, szabályalapú útvonal a kért szűrések szerint. AI csak finomhangolhat."}
+                    </p>
+                  </div>
+                  <div className={styles.pathHeaderActions}>
+                    <button
+                      type="button"
+                      className="btn btn--ghost"
+                      onClick={() => setPathOpen(false)}
+                      aria-label="Bezárás"
+                    >
+                      <X size={18} />
+                    </button>
                   </div>
                 </div>
-                <div className={styles.pathActions}>
-                  <button type="button" className="btn" onClick={handleGeneratePath}>
-                    {"Utat kérek"}
-                  </button>
-                </div>
-              </div>
-
-              {generatedPath && (
-                <div className={styles.pathResult}>
-                  {generatedPath.steps.length === 0 ? (
-                    <p className="admin-text-muted">{"Nincs elérhető útvonal ezekkel a szűrésekkel."}</p>
-                  ) : (
-                    <>
-                      <div className={styles.pathResultMeta}>
-                        <span>{`${generatedPath.steps.length} könyv`}</span>
-                        <span>{`Flow quality: ${Math.round(generatedPath.flow * 100)}%`}</span>
-                      </div>
-                      <div className={styles.pathActionsRow}>
-                        <button type="button" className="btn" onClick={handleSaveGeneratedPath}>
-                          {"Ajánlott út rögzítése"}
-                        </button>
-                      </div>
-                      <div className={styles.pathResultList}>
-                        {generatedPath.steps.map((step, index) => (
+                <div className={styles.pathForm}>
+                  <label className="form-field">
+                    <span className="form-field__label">{"Tradíció"}</span>
+                    <select className="input" value={pathTradition} onChange={(event) => setPathTradition(event.target.value)}>
+                      <option value="">Mind</option>
+                      {TRADITION_OPTIONS.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="form-field">
+                    <span className="form-field__label">{"Kezdőszint"}</span>
+                    <select className="input" value={pathStartLevel} onChange={(event) => setPathStartLevel(event.target.value)}>
+                      <option value="">Mind</option>
+                      {LEVEL_OPTIONS.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <div className={styles.pathThemes}>
+                    <span className="form-field__label">{"Témák"}</span>
+                    <div className={styles.pathThemeGrid}>
+                      {themePills.map((pill) => {
+                        const color = pill.color;
+                        const isActive = pathThemes.includes(pill.slug);
+                        return (
                           <button
-                            key={step.book.id}
+                            key={pill.slug}
                             type="button"
-                            className={styles.pathResultCard}
-                            onClick={() => setBookStack([step.book])}
+                            className={`${styles.pathThemePill} ${isActive ? styles.pathThemePillActive : ""}`}
+                            onClick={() => togglePathTheme(pill.slug)}
+                            style={{
+                              borderColor: color,
+                              color: isActive ? "#fff" : color,
+                              background: isActive ? color : hexToRgba(color, 0.12),
+                            }}
+                            title={pill.label}
                           >
-                            <span className={styles.pathResultIndex}>{index + 1}</span>
-                            <div className={styles.pathResultBody}>
-                              <strong>{step.book.title}</strong>
-                              <span className={styles.pathBookAuthor}>{step.book.author}</span>
-                              {step.reasons.length > 0 && (
-                                <span className={styles.pathReason}>{step.reasons.join(" · ")}</span>
-                              )}
-                            </div>
+                            {pill.short_label}
                           </button>
-                        ))}
-                      </div>
-                    </>
-                  )}
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div className={styles.pathActions}>
+                    <button type="button" className="btn" onClick={handleGeneratePath}>
+                      {"Utat kérek"}
+                    </button>
+                  </div>
                 </div>
-              )}
-            </div>
+
+                {generatedPath && (
+                  <div className={styles.pathResult}>
+                    {generatedPath.steps.length === 0 ? (
+                      <p className="admin-text-muted">{"Nincs elérhető útvonal ezekkel a szűrésekkel."}</p>
+                    ) : (
+                      <>
+                        <div className={styles.pathResultMeta}>
+                          <span>{`${generatedPath.steps.length} könyv`}</span>
+                          <span>{`Flow quality: ${Math.round(generatedPath.flow * 100)}%`}</span>
+                        </div>
+                        <div className={styles.pathActionsRow}>
+                          <button type="button" className="btn" onClick={handleSaveGeneratedPath}>
+                            {"Ajánlott út rögzítése"}
+                          </button>
+                        </div>
+                        <div className={styles.pathResultList}>
+                          {generatedPath.steps.map((step, index) => (
+                            <button
+                              key={step.book.id}
+                              type="button"
+                              className={styles.pathResultCard}
+                              onClick={() => setBookStack([step.book])}
+                            >
+                              <span className={styles.pathResultIndex}>{index + 1}</span>
+                              <div className={styles.pathResultBody}>
+                                <strong>{step.book.title}</strong>
+                                <span className={styles.pathBookAuthor}>{step.book.author}</span>
+                                {step.reasons.length > 0 && (
+                                  <span className={styles.pathReason}>{step.reasons.join(" · ")}</span>
+                                )}
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
 
             {curatedPaths.length > 0 && (
               <div className={styles.pathGridSection}>
@@ -600,15 +609,17 @@ export default function SpiritLibraryApp({ library }: Props) {
       )}
 
       <div className={styles.fabToolbar}>
-        <button
-          type="button"
-          className={`${styles.addFab} ${pathOpen ? styles.filterFabActive : ""}`}
-          aria-label={pathOpen ? "Utak elrejtése" : "Utak megnyitása"}
-          aria-expanded={pathOpen}
-          onClick={() => setPathOpen((current) => !current)}
-        >
-          <img src="/lotus.svg" alt="" aria-hidden="true" className={styles.lotusIcon} />
-        </button>
+        {(isAdmin || curatedPaths.length > 0) && (
+          <button
+            type="button"
+            className={`${styles.addFab} ${pathOpen ? styles.filterFabActive : ""}`}
+            aria-label={pathOpen ? "Utak elrejtése" : "Utak megnyitása"}
+            aria-expanded={pathOpen}
+            onClick={() => setPathOpen((current) => !current)}
+          >
+            <img src="/lotus.svg" alt="" aria-hidden="true" className={styles.lotusIcon} />
+          </button>
+        )}
         <button
           type="button"
           className={`${styles.addFab} ${styles.viewToggleButton} ${viewMode === "list" ? styles.filterFabActive : ""}`}
@@ -626,7 +637,7 @@ export default function SpiritLibraryApp({ library }: Props) {
         >
           <SlidersHorizontal size={18} />
         </button>
-        <SpiritAddBookModal library={library} onOpenBook={(book) => setBookStack([book])} />
+        {isAdmin && <SpiritAddBookModal library={library} onOpenBook={(book) => setBookStack([book])} />}
       </div>
 
       {filtersOpen && (
@@ -816,18 +827,24 @@ export default function SpiritLibraryApp({ library }: Props) {
                     <p className={styles.cardAuthor}>{book.author}</p>
                   </div>
                   <div className={styles.listColStatus}>
-                    <button
-                      type="button"
-                      className={styles.statusButton}
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        handleStatusToggle(book.id, status);
-                      }}
-                      aria-label={`Olvasási státusz: ${status}`}
-                      title={`Olvasási státusz: ${status}`}
-                    >
-                      <Icon size={16} />
-                    </button>
+                    {isAdmin ? (
+                      <button
+                        type="button"
+                        className={styles.statusButton}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleStatusToggle(book.id, status);
+                        }}
+                        aria-label={`Olvasási státusz: ${status}`}
+                        title={`Olvasási státusz: ${status}`}
+                      >
+                        <Icon size={16} />
+                      </button>
+                    ) : (
+                      <span className={styles.statusButton} aria-hidden="true">
+                        <Icon size={16} />
+                      </span>
+                    )}
                     <span className={styles.statusLabel}>{STATUS_LABELS[status] ?? status}</span>
                   </div>
                 </>
@@ -869,18 +886,24 @@ export default function SpiritLibraryApp({ library }: Props) {
                     })}
                   </div>
                   <div className={styles.cardFooter}>
-                    <button
-                      type="button"
-                      className={styles.statusButton}
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        handleStatusToggle(book.id, status);
-                      }}
-                      aria-label={`Olvasási státusz: ${status}`}
-                      title={`Olvasási státusz: ${status}`}
-                    >
-                      <Icon size={16} />
-                    </button>
+                    {isAdmin ? (
+                      <button
+                        type="button"
+                        className={styles.statusButton}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleStatusToggle(book.id, status);
+                        }}
+                        aria-label={`Olvasási státusz: ${status}`}
+                        title={`Olvasási státusz: ${status}`}
+                      >
+                        <Icon size={16} />
+                      </button>
+                    ) : (
+                      <span className={styles.statusButton} aria-hidden="true">
+                        <Icon size={16} />
+                      </span>
+                    )}
                     <span className={styles.statusLabel}>{STATUS_LABELS[status] ?? status}</span>
                   </div>
                 </>
@@ -896,29 +919,42 @@ export default function SpiritLibraryApp({ library }: Props) {
             <div className={styles.overlayHeader}>
               <div>
                 <p className={styles.overlayMeta}>{"Mentett út"}</p>
-                <input
-                  className={styles.pathTitleInput}
-                  value={selectedPath.title}
-                  onChange={(event) => handlePathTitleChange(selectedPath.id, event.target.value)}
-                  onBlur={(event) => handlePathTitleSave(selectedPath.id, event.target.value)}
-                />
-                <textarea
-                  className={styles.pathDescInput}
-                  value={selectedPath.description ?? ""}
-                  onChange={(event) => handlePathDescriptionChange(selectedPath.id, event.target.value)}
-                  onBlur={(event) => handlePathDescriptionSave(selectedPath.id, event.target.value)}
-                  placeholder="Leírás az útról"
-                  rows={2}
-                />
+                {isAdmin ? (
+                  <>
+                    <input
+                      className={styles.pathTitleInput}
+                      value={selectedPath.title}
+                      onChange={(event) => handlePathTitleChange(selectedPath.id, event.target.value)}
+                      onBlur={(event) => handlePathTitleSave(selectedPath.id, event.target.value)}
+                    />
+                    <textarea
+                      className={styles.pathDescInput}
+                      value={selectedPath.description ?? ""}
+                      onChange={(event) => handlePathDescriptionChange(selectedPath.id, event.target.value)}
+                      onBlur={(event) => handlePathDescriptionSave(selectedPath.id, event.target.value)}
+                      placeholder="Leírás az útról"
+                      rows={2}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <h2 className={styles.pathTitle}>{selectedPath.title}</h2>
+                    {selectedPath.description && (
+                      <p className={styles.pathOverlayDesc}>{selectedPath.description}</p>
+                    )}
+                  </>
+                )}
               </div>
               <div className={styles.pathOverlayActions}>
-                <button
-                  type="button"
-                  className="btn btn--ghost"
-                  onClick={() => handleDeletePath(selectedPath.id)}
-                >
-                  {"Törlés"}
-                </button>
+                {isAdmin && (
+                  <button
+                    type="button"
+                    className="btn btn--ghost"
+                    onClick={() => handleDeletePath(selectedPath.id)}
+                  >
+                    {"Törlés"}
+                  </button>
+                )}
                 <button
                   type="button"
                   className="btn btn--ghost"
@@ -942,22 +978,23 @@ export default function SpiritLibraryApp({ library }: Props) {
                 <span className={styles.pathProgressValue}>{`${getPathProgress(selectedPath)}%`}</span>
               </div>
 
-              <div className={styles.pathOverlayList}>
-                {pathItemsForRender(selectedPath).map(({ book, item }) => (
-                  <div key={book.id} className={styles.pathOverlayItem}>
-                    <button
-                      type="button"
-                      className={styles.pathOverlayBook}
-                      onClick={() => {
-                        setSelectedPathId(null);
-                        setBookStack([book]);
-                      }}
-                    >
-                      <div>
-                        <strong>{book.title}</strong>
-                        <span className={styles.pathBookAuthor}>{book.author}</span>
-                      </div>
-                    </button>
+            <div className={styles.pathOverlayList}>
+              {pathItemsForRender(selectedPath).map(({ book, item }) => (
+                <div key={book.id} className={styles.pathOverlayItem}>
+                  <button
+                    type="button"
+                    className={styles.pathOverlayBook}
+                    onClick={() => {
+                      setSelectedPathId(null);
+                      setBookStack([book]);
+                    }}
+                  >
+                    <div>
+                      <strong>{book.title}</strong>
+                      <span className={styles.pathBookAuthor}>{book.author}</span>
+                    </div>
+                  </button>
+                  {isAdmin ? (
                     <textarea
                       className={styles.pathComment}
                       value={item.comment ?? ""}
@@ -970,9 +1007,12 @@ export default function SpiritLibraryApp({ library }: Props) {
                       placeholder="Megjegyzés ehhez az olvasmányhoz"
                       rows={2}
                     />
-                  </div>
-                ))}
-              </div>
+                  ) : (
+                    item.comment && <p className={styles.pathComment}>{item.comment}</p>
+                  )}
+                </div>
+              ))}
+            </div>
             </div>
           </div>
         </div>
@@ -1103,34 +1143,42 @@ export default function SpiritLibraryApp({ library }: Props) {
                     const Icon = getStatusIcon(status);
                     return (
                       <div className={styles.statusControls}>
-                        <button
-                          type="button"
-                          className={styles.statusButton}
-                          onClick={() => handleStatusToggle(selectedBook.id, status)}
-                          aria-label={`Olvasási státusz: ${status}`}
-                          title={`Olvasási státusz: ${status}`}
-                        >
-                          <Icon size={16} />
-                        </button>
+                        {isAdmin ? (
+                          <button
+                            type="button"
+                            className={styles.statusButton}
+                            onClick={() => handleStatusToggle(selectedBook.id, status)}
+                            aria-label={`Olvasási státusz: ${status}`}
+                            title={`Olvasási státusz: ${status}`}
+                          >
+                            <Icon size={16} />
+                          </button>
+                        ) : (
+                          <span className={styles.statusButton} aria-hidden="true">
+                            <Icon size={16} />
+                          </span>
+                        )}
                         <span className={styles.statusLabel}>{STATUS_LABELS[status] ?? status}</span>
                       </div>
                     );
                   })()}
                 </div>
-                <textarea
-                  id={`status-note-${selectedBook.id}`}
-                  className={styles.commentTextarea}
-                  value={statusNotes[selectedBook.id] ?? ""}
-                  onChange={(event) =>
-                    setStatusNotes((current) => ({
-                      ...current,
-                      [selectedBook.id]: event.target.value,
-                    }))
-                  }
-                  onBlur={(event) => handleNoteSave(selectedBook.id, event.target.value)}
-                  placeholder="Megjegyzés az olvasási státuszhoz"
-                  rows={4}
-                />
+                {isAdmin && (
+                  <textarea
+                    id={`status-note-${selectedBook.id}`}
+                    className={styles.commentTextarea}
+                    value={statusNotes[selectedBook.id] ?? ""}
+                    onChange={(event) =>
+                      setStatusNotes((current) => ({
+                        ...current,
+                        [selectedBook.id]: event.target.value,
+                      }))
+                    }
+                    onBlur={(event) => handleNoteSave(selectedBook.id, event.target.value)}
+                    placeholder="Megjegyzés az olvasási státuszhoz"
+                    rows={4}
+                  />
+                )}
               </div>
 
               {relatedBooks.length > 0 && (
