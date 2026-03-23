@@ -28,6 +28,33 @@
   gap: 1rem;
 }
 
+.adminTopBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.adminTopLabel {
+  margin: 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.adminTopMeta {
+  margin: 0.25rem 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.adminTopActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .filtersHeader {
   display: flex;
   align-items: center;
@@ -59,7 +86,6 @@
   gap: 0.8rem;
   z-index: 41;
   pointer-events: auto;
-  transform: translateZ(0);
 }
 
 .toolbarPanelBackdrop {

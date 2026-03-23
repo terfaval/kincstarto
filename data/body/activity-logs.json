@@ -1,0 +1,442 @@
+[
+  {
+    "id": "07720df2-9181-43c6-aad9-c962375e3968",
+    "date": "2026-03-11",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Backbending and opening yin yoga",
+    "duration_minutes": 32,
+    "distance_km": null,
+    "intensity": 1,
+    "notes": "feszült lapockákhoz és gerinchez, 2-3 perces mély nyújtások",
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=t2mhYiw51y8"
+    },
+    "created_at": "2026-03-11 20:46:39.713075+00",
+    "updated_at": "2026-03-11 20:46:39.713075+00",
+    "user_id": null
+  },
+  {
+    "id": "19eaea56-f788-48e4-886b-d618d14ba967",
+    "date": "2026-03-06",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Total body release + meditation",
+    "duration_minutes": 47,
+    "distance_km": null,
+    "intensity": 1,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=KObUQOsqQKI"
+    },
+    "created_at": "2026-03-05 22:18:19.793347+00",
+    "updated_at": "2026-03-05 22:18:19.793347+00",
+    "user_id": null
+  },
+  {
+    "id": "25df49f2-1b98-416a-a999-4a5070c8c1ca",
+    "date": "2026-03-05",
+    "activity_type": "yoga",
+    "category": "strong",
+    "exercise_id": null,
+    "label": "Advanced power yoga",
+    "duration_minutes": 27,
+    "distance_km": null,
+    "intensity": 3,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=OHNNfNHxapc"
+    },
+    "created_at": "2026-03-05 20:41:37.573319+00",
+    "updated_at": "2026-03-05 20:41:37.573319+00",
+    "user_id": null
+  },
+  {
+    "id": "26e24473-6003-4bff-a903-87440a04d158",
+    "date": "2026-03-16",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Yoga for runners",
+    "duration_minutes": 20,
+    "distance_km": null,
+    "intensity": 2,
+    "notes": null,
+    "metadata": {
+      "link": "https://youtu.be/OwiJqWQtY4U"
+    },
+    "created_at": "2026-03-17 07:22:47.88894+00",
+    "updated_at": "2026-03-17 07:22:47.88894+00",
+    "user_id": null
+  },
+  {
+    "id": "2ff92f3f-9168-4bb2-8a2d-3d7bec25956b",
+    "date": "2026-03-17",
+    "activity_type": "yoga",
+    "category": "strong",
+    "exercise_id": null,
+    "label": "Advanced Vinyasa yoga",
+    "duration_minutes": 52,
+    "distance_km": null,
+    "intensity": 2,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=f7_zx1sPBj0"
+    },
+    "created_at": "2026-03-17 12:06:44.285306+00",
+    "updated_at": "2026-03-17 12:06:44.285306+00",
+    "user_id": null
+  },
+  {
+    "id": "3041a013-11f6-4790-bfb3-6e6bcea53c53",
+    "date": "2026-03-04",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Neck, shoulders and upper back release",
+    "duration_minutes": 29,
+    "distance_km": null,
+    "intensity": 1,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=gnVIx5z9-Fk"
+    },
+    "created_at": "2026-03-05 20:40:19.187359+00",
+    "updated_at": "2026-03-05 20:40:19.187359+00",
+    "user_id": null
+  },
+  {
+    "id": "4b53c39d-7f91-4e6d-9d9f-ee723a5065b6",
+    "date": "2026-03-13",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Morning flow for back & hip",
+    "duration_minutes": 25,
+    "distance_km": null,
+    "intensity": 2,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=wfXGVHSXc2Q"
+    },
+    "created_at": "2026-03-13 07:05:38.330515+00",
+    "updated_at": "2026-03-13 07:05:38.330515+00",
+    "user_id": null
+  },
+  {
+    "id": "4f53052c-2498-43dd-bed2-3423f2e65f83",
+    "date": "2026-03-08",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Yoga for lymphatix flow",
+    "duration_minutes": 27,
+    "distance_km": null,
+    "intensity": 1,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=bYQwM841ED4"
+    },
+    "created_at": "2026-03-08 19:51:42.722038+00",
+    "updated_at": "2026-03-08 19:51:42.722038+00",
+    "user_id": null
+  },
+  {
+    "id": "652efb5f-8e46-417f-a9e4-a6eeade8434d",
+    "date": "2026-03-22",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Restorative yoga flow",
+    "duration_minutes": 25,
+    "distance_km": null,
+    "intensity": 1,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=XwC7MDDsbDs"
+    },
+    "created_at": "2026-03-22 22:05:08.136774+00",
+    "updated_at": "2026-03-22 22:05:08.136774+00",
+    "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02"
+  },
+  {
+    "id": "67d0b935-eeba-43dc-a326-95aa20b03b5a",
+    "date": "2026-03-06",
+    "activity_type": "acl",
+    "category": "routine",
+    "exercise_id": "activation-routine",
+    "label": "Aktiváló rutin (10–12 perc)",
+    "duration_minutes": null,
+    "distance_km": null,
+    "intensity": null,
+    "notes": null,
+    "metadata": {
+      "focus": "Rövid idegrendszeri bekapcsolás jóga vagy futás előtt.",
+      "exercises": [
+        {
+          "name": "Heel Dig Bridge",
+          "reps": "2×8",
+          "detail": "Kiinduló: hanyatt fekvés, térd hajlítva, sarkak a talajon. Mozdulat: sarkak nyom, csípő emel lassan, 2 mp tartás, vissza. Fókusz: combhát aktiválódjon, derék ne dolgozzon."
+        },
+        {
+          "name": "Hamstring Walkout",
+          "reps": "2×5",
+          "detail": "Kiinduló: híd pozíció. Mozdulat: csípő fent marad, sarkakkal 3–4 kis lépés előre, majd vissza. Fókusz: combhát feszül, medence stabil."
+        },
+        {
+          "name": "Kickstand Hinge",
+          "reps": "2×6/oldal",
+          "detail": "Kiinduló: testsúly az egyik lábon, másik hátul csak támasz. Mozdulat: csípő hátra, törzs előre, visszaállás. Fókusz: csípőből indul a mozgás, térd stabil."
+        },
+        {
+          "name": "Wall Warrior III",
+          "reps": "3×20-30 mp/oldal",
+          "detail": "Kiinduló: egyik kéz a falon. Mozdulat: csípőből előredőlés, hátsó láb emel. Fókusz: medence nem fordul ki, apró egyensúlykorrekciók."
+        },
+        {
+          "name": "Kontrollált Squat",
+          "reps": "2×6",
+          "detail": "Mozdulat: csípő hátra, lassú ereszkedés, sarok lent marad. Tempó: 3 mp le. Fókusz: térd követi a lábujjakat."
+        }
+      ]
+    },
+    "created_at": "2026-03-05 22:17:24.704973+00",
+    "updated_at": "2026-03-05 22:17:24.704973+00",
+    "user_id": null
+  },
+  {
+    "id": "73b6a000-1928-4e3e-af08-a5e3dc752913",
+    "date": "2026-03-12",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Easy bedtime yoga",
+    "duration_minutes": 19,
+    "distance_km": null,
+    "intensity": 1,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=v7SN-d4qXx0"
+    },
+    "created_at": "2026-03-13 07:04:40.804666+00",
+    "updated_at": "2026-03-13 07:04:40.804666+00",
+    "user_id": null
+  },
+  {
+    "id": "800df306-7ad1-4d03-a13b-eec3e20ece3a",
+    "date": "2026-03-04",
+    "activity_type": "yoga",
+    "category": "strong",
+    "exercise_id": null,
+    "label": "Improve back flexibility",
+    "duration_minutes": 25,
+    "distance_km": null,
+    "intensity": 2,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=tr99w1IfdhM"
+    },
+    "created_at": "2026-03-05 20:04:13.262385+00",
+    "updated_at": "2026-03-05 20:04:13.262385+00",
+    "user_id": null
+  },
+  {
+    "id": "811707eb-3ff5-4f37-bfee-ec274ff1431c",
+    "date": "2026-03-19",
+    "activity_type": "running",
+    "category": "run",
+    "exercise_id": null,
+    "label": "Futás",
+    "duration_minutes": null,
+    "distance_km": 5.5,
+    "intensity": null,
+    "notes": null,
+    "metadata": null,
+    "created_at": "2026-03-21 08:08:47.55119+00",
+    "updated_at": "2026-03-21 08:08:47.55119+00",
+    "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02"
+  },
+  {
+    "id": "9be5165f-070d-4f74-87de-2e882453ad47",
+    "date": "2026-03-16",
+    "activity_type": "running",
+    "category": "run",
+    "exercise_id": null,
+    "label": "Futás",
+    "duration_minutes": null,
+    "distance_km": 5.0,
+    "intensity": null,
+    "notes": null,
+    "metadata": null,
+    "created_at": "2026-03-17 07:21:24.82457+00",
+    "updated_at": "2026-03-17 07:21:24.82457+00",
+    "user_id": null
+  },
+  {
+    "id": "a6323305-cf77-468f-89f4-82eb749e577b",
+    "date": "2026-03-19",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Post-run yoga",
+    "duration_minutes": 30,
+    "distance_km": null,
+    "intensity": 3,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=0hTllAb4XGg"
+    },
+    "created_at": "2026-03-21 08:09:49.324098+00",
+    "updated_at": "2026-03-21 08:09:49.324098+00",
+    "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02"
+  },
+  {
+    "id": "a75b01d1-d7c2-428b-a088-9cba132c4f68",
+    "date": "2026-03-08",
+    "activity_type": "yoga",
+    "category": "strong",
+    "exercise_id": null,
+    "label": "Every day full body yoga",
+    "duration_minutes": 34,
+    "distance_km": null,
+    "intensity": 2,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=NTqVG9Kt070"
+    },
+    "created_at": "2026-03-08 19:50:53.015499+00",
+    "updated_at": "2026-03-08 19:50:53.015499+00",
+    "user_id": null
+  },
+  {
+    "id": "ad8ec2eb-de2f-47eb-b027-5b1fc17ecfc8",
+    "date": "2026-03-22",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Feel good full body flow",
+    "duration_minutes": 30,
+    "distance_km": null,
+    "intensity": 2,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=ZFbEt_TzeNI"
+    },
+    "created_at": "2026-03-22 22:06:09.360196+00",
+    "updated_at": "2026-03-22 22:06:09.360196+00",
+    "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02"
+  },
+  {
+    "id": "c28f1390-b04e-4d39-b75d-35de292e25e1",
+    "date": "2026-03-17",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Upper back love",
+    "duration_minutes": 23,
+    "distance_km": null,
+    "intensity": 1,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=lMTyp5npt78"
+    },
+    "created_at": "2026-03-17 17:10:15.126778+00",
+    "updated_at": "2026-03-17 17:10:15.126778+00",
+    "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02"
+  },
+  {
+    "id": "c3515c13-886d-4dc5-af1a-ecfa494df412",
+    "date": "2026-03-16",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Full body morning flow",
+    "duration_minutes": 20,
+    "distance_km": null,
+    "intensity": 2,
+    "notes": null,
+    "metadata": {
+      "link": "https://youtu.be/XHXb5-HdEBs"
+    },
+    "created_at": "2026-03-17 07:20:43.881055+00",
+    "updated_at": "2026-03-17 07:20:43.881055+00",
+    "user_id": null
+  },
+  {
+    "id": "e9e9440f-491d-4694-8fbe-856ffd295aab",
+    "date": "2026-03-21",
+    "activity_type": "strength",
+    "category": "intense",
+    "exercise_id": "strength-b",
+    "label": "Erősítés B",
+    "duration_minutes": null,
+    "distance_km": null,
+    "intensity": null,
+    "notes": null,
+    "metadata": {
+      "rounds": "4 kör",
+      "exercises": [
+        {
+          "name": "Push-up",
+          "reps": "4×6–10",
+          "detail": "Váll alatt kéz, törzs egyenes, lassú leengedés."
+        },
+        {
+          "name": "Pike Push-up",
+          "reps": "3×6–8",
+          "detail": "Csípő magas, váll tolóerő."
+        },
+        {
+          "name": "Step Back Lunge",
+          "reps": "3×8/oldal",
+          "detail": "Hátralépés, kontrollált mozgás."
+        },
+        {
+          "name": "Glute Bridge Hold",
+          "reps": "3×30 mp",
+          "detail": "Csípő fent tart."
+        },
+        {
+          "name": "Bird Dog",
+          "reps": "3×12/oldal",
+          "detail": "Kiinduló: négykézláb.\nMozdulat: ellentétes kar-láb nyújt.\nFókusz: medence stabil, lassú kontroll."
+        },
+        {
+          "name": "Plank Shoulder Tap",
+          "reps": "2×20 érintés",
+          "detail": "Kiinduló: plank.\nMozdulat: váll érintés váltott kézzel.\nFókusz: csípő nem billeg."
+        }
+      ],
+      "progression": {
+        "bonusReps": 0,
+        "baseRounds": 4,
+        "countAfter": 1,
+        "bonusRounds": 0,
+        "countBefore": 0
+      }
+    },
+    "created_at": "2026-03-21 09:53:23.926576+00",
+    "updated_at": "2026-03-21 09:53:23.926576+00",
+    "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02"
+  },
+  {
+    "id": "faf6d022-dacc-4976-a7f7-448b1a85d7dd",
+    "date": "2026-03-18",
+    "activity_type": "yoga",
+    "category": "relax",
+    "exercise_id": null,
+    "label": "Total body deep stretch",
+    "duration_minutes": 45,
+    "distance_km": null,
+    "intensity": 2,
+    "notes": null,
+    "metadata": {
+      "link": "https://www.youtube.com/watch?v=GLy2rYHwUqY"
+    },
+    "created_at": "2026-03-21 08:10:48.679336+00",
+    "updated_at": "2026-03-21 08:10:48.679336+00",
+    "user_id": "a7d1ba17-0218-43ba-8241-263c7305ba02"
+  }
+]

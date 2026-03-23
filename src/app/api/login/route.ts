@@ -5,6 +5,7 @@ const ADMIN_COOKIE = "admin_key";
 type Payload = {
   email?: string;
   password?: string;
+  remember?: boolean;
 };
 
 export async function POST(request: Request) {
@@ -25,17 +26,20 @@ export async function POST(request: Request) {
 
   const email = payload.email?.trim().toLowerCase() ?? "";
   const password = payload.password ?? "";
+  const remember = payload.remember === true;
 
   if (email !== adminEmail.toLowerCase() || password !== adminPassword) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const response = NextResponse.json({ ok: true });
+  const maxAge = remember ? 60 * 60 * 24 * 365 : 60 * 60 * 24;
   response.cookies.set(ADMIN_COOKIE, adminSecret, {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
     path: "/",
+    maxAge,
   });
   return response;
 }

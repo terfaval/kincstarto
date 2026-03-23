@@ -1,7 +1,9 @@
 ﻿"use client";
 
 import { useMemo, useState, useEffect } from "react";
-import { Bookmark, Check, Clock, Circle, LayoutList, SlidersHorizontal, X } from "lucide-react";
+import { Bookmark, Check, Clock, Circle, Dumbbell, LayoutList, SlidersHorizontal, X } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { SpiritBook, SpiritLibrary, SpiritPill, SpiritTradition, SpiritLevel, SpiritPath } from "@/lib/spiritSchema";
 import { buildLearningPath, getNextBookRecommendations, type LearningPathFilters } from "@/lib/learningPathEngine";
 import styles from "./SpiritLibraryApp.module.css";
@@ -158,6 +160,7 @@ function deriveRelatedBooks(book: SpiritBook, books: SpiritBook[]) {
 
 export default function SpiritLibraryApp({ library, admin }: Props) {
   const isAdmin = Boolean(admin);
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [tradition, setTradition] = useState<string>("");
@@ -280,6 +283,14 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
 
   const toggleFilters = () => {
     setFiltersOpen((current) => !current);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/logout", { method: "POST" });
+    } finally {
+      router.replace("/login");
+    }
   };
 
   const toggleViewMode = () => {
@@ -453,6 +464,19 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
 
   return (
     <section className={`${styles.page} admin-stack`}>
+      {isAdmin && (
+        <div className={`admin-card ${styles.adminTopBar}`}>
+          <div>
+            <p className={styles.adminTopLabel}>{"Admin felĂĽlet"}</p>
+            <p className={styles.adminTopMeta}>{"Bejelentkezve"}</p>
+          </div>
+          <div className={styles.adminTopActions}>
+            <button type="button" className="btn btn--ghost" onClick={handleLogout}>
+              {"KijelentkezĂ©s"}
+            </button>
+          </div>
+        </div>
+      )}
       {pathOpen && (
         <div className={styles.toolbarPanelBackdrop} onClick={() => setPathOpen(false)}>
           <div className={styles.toolbarPanelCard} onClick={(event) => event.stopPropagation()}>
@@ -613,6 +637,16 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
       )}
 
       <div className={styles.fabToolbar}>
+        {isAdmin && (
+          <Link
+            href="/admin/yoga"
+            className={styles.addFab}
+            aria-label="Yoga napló"
+            title="Yoga napló"
+          >
+            <Dumbbell size={18} />
+          </Link>
+        )}
         {(isAdmin || curatedPaths.length > 0) && (
           <button
             type="button"

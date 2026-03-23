@@ -10,6 +10,25 @@ const LIBRARY_PATH = join(process.cwd(), "data", "spirit", "library.json");
 const FORBIDDEN = ["TBD", "TODO", "..."];
 const SLUG_RE = /^[a-z0-9_]+$/;
 
+function normalizeKey(value: string) {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "")
+    .trim();
+}
+
+function slugify(value: string) {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9\s_-]/g, "")
+    .trim()
+    .replace(/[\s_-]+/g, "_")
+    .toLowerCase();
+}
+
 function hasForbidden(value?: string | null) {
   if (!value) return false;
   return FORBIDDEN.some((token) => value.includes(token));
@@ -38,6 +57,12 @@ export async function POST(request: Request) {
   if (!SLUG_RE.test(draft.id)) {
     return NextResponse.json({ error: "Invalid ASCII slug" }, { status: 400 });
   }
+  if (draft.status !== "olvasatlan") {
+    return NextResponse.json({ error: "Status must be olvasatlan" }, { status: 400 });
+  }
+  if (draft.year && !/^\d{4}$/.test(draft.year)) {
+    return NextResponse.json({ error: "Invalid year" }, { status: 400 });
+  }
 
   if (
     hasForbidden(draft.summary_short) ||
@@ -52,8 +77,34 @@ export async function POST(request: Request) {
   const parsed = JSON.parse(raw);
   const library = validateSpiritLibrary(parsed);
 
+  const normalizedTitle = normalizeKey(draft.title);
+  const normalizedAuthor = normalizeKey(draft.author);
+  const slugFromTitle = slugify(draft.title);
+
   if (library.books.some((book) => book.id === draft.id)) {
     return NextResponse.json({ error: "Duplicate book id" }, { status: 400 });
+  }
+  if (library.books.some((book) => book.id === slugFromTitle)) {
+    return NextResponse.json({ error: "Duplicate slug" }, { status: 400 });
+  }
+  if (
+    library.books.some(
+      (book) =>
+        normalizeKey(book.title) === normalizedTitle &&
+        normalizeKey(book.author) === normalizedAuthor
+    )
+  ) {
+    return NextResponse.json({ error: "Duplicate title + author" }, { status: 400 });
+  }
+  if (
+    library.books.some((book) => {
+      const bookAuthor = normalizeKey(book.author);
+      if (bookAuthor !== normalizedAuthor) return false;
+      const bookTitle = normalizeKey(book.title);
+      return bookTitle.includes(normalizedTitle) || normalizedTitle.includes(bookTitle);
+    })
+  ) {
+    return NextResponse.json({ error: "Possible duplicate by title/author" }, { status: 409 });
   }
 
   const pillSet = new Set(library.thematic_pills.map((pill) => pill.slug));

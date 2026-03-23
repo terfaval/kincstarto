@@ -8,6 +8,7 @@ export default function LoginOverlay() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -19,7 +20,7 @@ export default function LoginOverlay() {
       const response = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, remember: rememberMe }),
       });
 
       if (!response.ok) {
@@ -63,6 +64,15 @@ export default function LoginOverlay() {
               onChange={(event) => setPassword(event.target.value)}
               required
             />
+          </label>
+          <label className={styles.rememberRow}>
+            <input
+              type="checkbox"
+              className={styles.rememberCheckbox}
+              checked={rememberMe}
+              onChange={(event) => setRememberMe(event.target.checked)}
+            />
+            <span className={styles.rememberLabel}>{"EmlĂ©kezz rĂˇm (kijelentkezĂ©sig)"}</span>
           </label>
           {error && <p className="admin-message admin-message--error">{error}</p>}
           <div className={styles.actions}>

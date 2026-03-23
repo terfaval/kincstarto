@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { Plus, X, AlertTriangle, CheckCircle2, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { SpiritBook, SpiritLibrary, SpiritPill } from "@/lib/spiritSchema";
-import type { SpiritDraftResponse, SpiritDraft } from "@/lib/spiritDraftSchema";
+import type { SpiritDraftPreviewResponse, SpiritDraftPreview } from "@/lib/spiritDraftSchema";
 import styles from "./SpiritLibraryApp.module.css";
 
 const TRADITION_OPTIONS = [
@@ -32,6 +32,12 @@ const LANGUAGE_OPTIONS = [
   { value: "en", label: "EN" },
   { value: "egyeb", label: "Egyéb" },
 ];
+
+type SpiritLanguage = "hu" | "en" | "egyeb";
+
+function isSpiritLanguage(value: string): value is SpiritLanguage {
+  return value === "hu" || value === "en" || value === "egyeb";
+}
 
 const STATUS_OPTIONS = [
   { value: "olvasatlan", label: "Olvasatlan" },
@@ -109,9 +115,10 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
   const [author, setAuthor] = useState("");
   const [publisher, setPublisher] = useState("");
   const [duplicates, setDuplicates] = useState<DuplicateHit[]>([]);
-  const [draftResponse, setDraftResponse] = useState<SpiritDraftResponse | null>(null);
-  const [draft, setDraft] = useState<SpiritDraft | null>(null);
+  const [draftResponse, setDraftResponse] = useState<SpiritDraftPreviewResponse | null>(null);
+  const [draft, setDraft] = useState<SpiritDraftPreview | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [errorMeta, setErrorMeta] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
   const themePills = library.thematic_pills;
@@ -136,11 +143,23 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
     setDraftResponse(null);
     setDraft(null);
     setError(null);
+    setErrorMeta(null);
     setSaving(false);
+  };
+
+  const formatError = (payload: any, fallback: string) => {
+    if (!payload) return { message: fallback, meta: null };
+    const message = payload?.error ?? fallback;
+    const metaParts = [];
+    if (payload?.phase) metaParts.push(`phase=${payload.phase}`);
+    if (payload?.error_code) metaParts.push(`code=${payload.error_code}`);
+    if (payload?.detail) metaParts.push(payload.detail);
+    return { message, meta: metaParts.length ? metaParts.join(" | ") : null };
   };
 
   const startDraft = async () => {
     setError(null);
+    setErrorMeta(null);
     setStep("drafting");
     try {
       const response = await fetch("/api/admin/spirit/draft", {
@@ -150,13 +169,18 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
       });
       const payload = await readJson(response);
       if (!response.ok) {
-        throw new Error(payload?.error ?? "Draft failed");
+        const formatted = formatError(payload, "Draft failed");
+        setError(formatted.message);
+        setErrorMeta(formatted.meta);
+        setStep("input");
+        return;
       }
-      setDraftResponse(payload as SpiritDraftResponse);
-      setDraft((payload as SpiritDraftResponse).draft);
+      setDraftResponse(payload as SpiritDraftPreviewResponse);
+      setDraft((payload as SpiritDraftPreviewResponse).draft);
       setStep("preview");
     } catch (err) {
       setError((err as Error)?.message ?? "Draft failed");
+      setErrorMeta(null);
       setStep("input");
     }
   };
@@ -171,6 +195,7 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
     if (!draft) return;
     setSaving(true);
     setError(null);
+    setErrorMeta(null);
     try {
       const response = await fetch("/api/admin/spirit/save", {
         method: "POST",
@@ -179,12 +204,16 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
       });
       const payload = await readJson(response);
       if (!response.ok) {
-        throw new Error(payload?.error ?? "Save failed");
+        const formatted = formatError(payload, "Save failed");
+        setError(formatted.message);
+        setErrorMeta(formatted.meta);
+        return;
       }
       router.refresh();
       close();
     } catch (err) {
       setError((err as Error)?.message ?? "Save failed");
+      setErrorMeta(null);
     } finally {
       setSaving(false);
     }
@@ -252,6 +281,12 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
     if (step === "preview" && draft) {
       return (
         <div className={styles.addModalBody}>
+          {draftResponse &&
+            (draftResponse.warnings.length > 0 || draftResponse.uncertain_fields.length > 0) && (
+              <div className="admin-message">
+                <p>Review needed: draft has warnings or uncertain fields.</p>
+              </div>
+            )}
           <div className={styles.previewGrid}>
             <label className="form-field">
               <span className="form-field__label">Cím</span>
@@ -267,7 +302,7 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
                 className="input"
                 value={draft.tradition}
                 onChange={(e) =>
-                  setDraft({ ...draft, tradition: e.target.value as SpiritDraft["tradition"] })
+                  setDraft({ ...draft, tradition: e.target.value as SpiritDraftPreview["tradition"] })
                 }
               >
                 {TRADITION_OPTIONS.map((opt) => (
@@ -280,7 +315,7 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
               <select
                 className="input"
                 value={draft.level}
-                onChange={(e) => setDraft({ ...draft, level: e.target.value as SpiritDraft["level"] })}
+                onChange={(e) => setDraft({ ...draft, level: e.target.value as SpiritDraftPreview["level"] })}
               >
                 {LEVEL_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -292,7 +327,12 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
               <select
                 className="input"
                 value={draft.language}
-                onChange={(e) => setDraft({ ...draft, language: e.target.value })}
+                onChange={(e) => {
+                  const next = e.target.value;
+                  if (isSpiritLanguage(next)) {
+                    setDraft({ ...draft, language: next });
+                  }
+                }}
               >
                 {LANGUAGE_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -304,7 +344,7 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
               <select
                 className="input"
                 value={draft.format}
-                onChange={(e) => setDraft({ ...draft, format: e.target.value as SpiritDraft["format"] })}
+                onChange={(e) => setDraft({ ...draft, format: e.target.value as SpiritDraftPreview["format"] })}
               >
                 {FORMAT_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -316,7 +356,8 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
               <select
                 className="input"
                 value={draft.status}
-                onChange={(e) => setDraft({ ...draft, status: e.target.value as SpiritDraft["status"] })}
+                onChange={(e) => setDraft({ ...draft, status: e.target.value as SpiritDraftPreview["status"] })}
+                disabled
               >
                 {STATUS_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -429,10 +470,28 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
                   </ul>
                 )}
               </div>
+              {draftResponse.confidence &&
+                Object.keys(draftResponse.confidence).length > 0 && (
+                  <div>
+                    <p className="form-field__label">Confidence</p>
+                    <ul className={styles.metaList}>
+                      {Object.entries(draftResponse.confidence).map(([key, value]) => (
+                        <li key={key}>
+                          {key}: {String(value)}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
             </div>
           )}
 
-          {error && <p className="admin-message admin-message--error">{error}</p>}
+          {error && (
+            <div className="admin-message admin-message--error">
+              <p>{error}</p>
+              {errorMeta && <p className="admin-text-muted">{errorMeta}</p>}
+            </div>
+          )}
           <div className={styles.addModalActions}>
             <button type="button" className="btn btn--ghost" onClick={() => setStep("input")}>
               Vissza
@@ -459,7 +518,12 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
           <span className="form-field__label">Publisher (opcionális)</span>
           <input className="input" value={publisher} onChange={(e) => setPublisher(e.target.value)} />
         </label>
-        {error && <p className="admin-message admin-message--error">{error}</p>}
+        {error && (
+          <div className="admin-message admin-message--error">
+            <p>{error}</p>
+            {errorMeta && <p className="admin-text-muted">{errorMeta}</p>}
+          </div>
+        )}
         <div className={styles.addModalActions}>
           <button type="button" className="btn btn--ghost" onClick={close}>Bezár</button>
           <button type="button" className="btn btn--primary" onClick={onAnalyze} disabled={!title || !author}>
@@ -468,7 +532,20 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
         </div>
       </div>
     );
-  }, [open, step, title, author, publisher, duplicates, draftResponse, draft, error, saving, themePills]);
+  }, [
+    open,
+    step,
+    title,
+    author,
+    publisher,
+    duplicates,
+    draftResponse,
+    draft,
+    error,
+    errorMeta,
+    saving,
+    themePills,
+  ]);
 
   return (
     <>
