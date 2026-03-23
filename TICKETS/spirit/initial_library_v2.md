@@ -1,42 +1,42 @@
 ## Thematic Pills (v2)
 
-### Core
-- tao_alapok: Taoizmus alapelvei (Tao, Te, wu wei) | short: Tao | color: #23B5D3
-- buddhizmus_alapok: Alap tanítások, üresség, nirvána | short: Buddhizmus | color: #4C6FFF
-- nem_kettosseg: Non-dualitás, advaita, sunyata | short: Non-dual | color: #7C4DFF
-- ontudat_es_en: Én, ego, identitás kérdése | short: En/ego | color: #FF6B6B
+### Taoizmus
+- tao_alapok: Taoizmus alapelvei (Tao, Te, wu wei) | short: Tao | color: #1F8A70
+- wu_wei: Nem-cselekvés | short: Wu-wei | color: #1F8A70
+- termeszetes_elet: Spontán, természetes élet | short: Spontaneit?s | color: #1F8A70
+- belso_alkimia: Taoista belső alkímia | short: Belső alkímia | color: #1F8A70
+- hosszu_elet: Longevity, egészség | short: Hosszú élet | color: #1F8A70
 
-### Gyakorlat
-- meditacio: Meditációs gyakorlatok és utak | short: Meditacio | color: #00B894
-- zen_gyakorlat: Zen gyakorlás (zazen, koan) | short: Zen | color: #2D9CDB
-- mindfulness: Modern éber figyelem | short: Mindful | color: #2ECC71
-- test_tudat: Test–tudat kapcsolat | short: Test-tudat | color: #F6B93B
+### Buddhizmus
+- buddhizmus_alapok: Alap tanítások, üresség, nirvána | short: Buddhizmus | color: #4B6FFF
+- zen_gyakorlat: Zen gyakorlás (zazen, koan) | short: Zen | color: #4B6FFF
+- nem_kettosseg: Non-dualitás, advaita, sunyata | short: Non-dual | color: #4B6FFF
+- ontudat_es_en: Ego és identitás kérdése | short: Öntudat | color: #4B6FFF
+- egyutt_erzes: Együttérzés, bodhiszattva út | short: Együttérzés | color: #4B6FFF
 
-### Tradíció-specifikus
-- wu_wei: Nem-cselekvés | short: Wu wei | color: #F2994A
-- termeszetes_elet: Spontán, természetes élet | short: Termeszetes | color: #27AE60
-- belso_alkimia: Taoista belső alkímia | short: Belso alk. | color: #E67E22
-- hosszu_elet: Longevity, egészség | short: Hosszu elet | color: #F39C12
-- tibeti_buddhizmus: Vadzsrajána hagyomány | short: Tibeti | color: #9B51E0
-- egyutt_erzes: Együttérzés, bodhiszattva út | short: Egyutt | color: #FF7A9E
+### Tibet
+- tibeti_buddhizmus: Vadzsrajána hagyomány | short: Tibet | color: #7C3AED
+- halal_es_atmenet: Halál, bardó és átmeneti állapotok | short: Bardó | color: #7C3AED
 
-### Szövegtípus
-- klasszikus_szoveg: Primer hagyományos művek | short: Klasszikus | color: #5C5C5C
-- szutra: Buddhista szútrák | short: Szutra | color: #8E5C4A
-- kommentar: Magyarázatok, értelmezések | short: Kommentar | color: #4E7ABF
+### Gyakorlati
+- meditacio: Meditációs gyakorlatok és utak | short: Meditáció | color: #2BB673
+- mindfulness: Modern éber figyelem | short: Mindfulness | color: #2BB673
+- legzes_es_energia: Prána, energetika | short: Légzés | color: #2BB673
+- test_tudat: Test-tudat kapcsolat | short: Test-tudat | color: #2BB673
 
-### Modern / értelmező
-- modern_spiritualitas: Nyugati interpretációk | short: Modern | color: #00A8FF
-- pszichologia: Tudat és elme működése | short: Pszicho | color: #00B8A9
-- tudomany: Tudományos megközelítés | short: Tudomany | color: #0984E3
+### Sz?vegt?pus
+- szutra: Buddhista szútrák | short: Szútra | color: #8C6A54
+- kommentar: Magyarázatok, értelmezések | short: Kommentár | color: #8C6A54
+- klasszikus_szoveg: Primer hagyományos művek | short: Klasszikus | color: #8C6A54
+- modern_spiritualitas: Nyugati interpretációk | short: Modern | color: #8C6A54
+- irodalmi_spiritualitas: Esszé, költői megközelítés | short: Irodalmi | color: #8C6A54
+- popularizalo: Közérthető feldolgozás | short: Közérthető | color: #8C6A54
 
-### Egyéb
-- mitologia: Eposzok, történetek | short: Mitologia | color: #C0392B
-- joga: Jóga filozófia | short: Joga | color: #6C5CE7
-- legzes_es_energia: Prána, energetika | short: Legzes | color: #00CEC9
-- halal_es_atmenet: Halál, bardó és átmeneti állapotok | short: Atmenet | color: #B83280
-- popularizalo: Közérthető feldolgozás | short: Pop | color: #F1C40F
-- irodalmi_spiritualitas: Esszé, költői megközelítés | short: Irodalmi | color: #6D4C41
+### Egy?b
+- pszichologia: Tudat és elme működése | short: Pszicho | color: #C45848
+- tudomany: Tudományos megközelítés | short: Tudomány | color: #C45848
+- mitologia: Eposzok, történetek | short: Mitológia | color: #C45848
+- joga: Jóga filozófia | short: Jóga | color: #C45848
 
 ---
 

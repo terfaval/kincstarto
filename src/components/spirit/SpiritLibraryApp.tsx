@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useMemo, useState, useEffect } from "react";
-import { Bookmark, Check, Clock, Circle, Dumbbell, LayoutList, SlidersHorizontal, X } from "lucide-react";
+import { Bookmark, Check, Clock, Circle, Dumbbell, LayoutList, LogOut, Route, SlidersHorizontal, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { SpiritBook, SpiritLibrary, SpiritPill, SpiritTradition, SpiritLevel, SpiritPath } from "@/lib/spiritSchema";
@@ -216,10 +216,13 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const media = window.matchMedia("(max-width: 720px) and (orientation: portrait)");
+    const media = window.matchMedia("(max-width: 720px)");
     const syncViewMode = () => {
+      if (media.matches) {
+        setViewMode("grid");
+        return;
+      }
       if (viewModeLocked) return;
-      setViewMode(media.matches ? "list" : "grid");
     };
     syncViewMode();
     if (typeof media.addEventListener === "function") {
@@ -464,19 +467,6 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
 
   return (
     <section className={`${styles.page} admin-stack`}>
-      {isAdmin && (
-        <div className={`admin-card ${styles.adminTopBar}`}>
-          <div>
-            <p className={styles.adminTopLabel}>{"Admin felĂĽlet"}</p>
-            <p className={styles.adminTopMeta}>{"Bejelentkezve"}</p>
-          </div>
-          <div className={styles.adminTopActions}>
-            <button type="button" className="btn btn--ghost" onClick={handleLogout}>
-              {"KijelentkezĂ©s"}
-            </button>
-          </div>
-        </div>
-      )}
       {pathOpen && (
         <div className={styles.toolbarPanelBackdrop} onClick={() => setPathOpen(false)}>
           <div className={styles.toolbarPanelCard} onClick={(event) => event.stopPropagation()}>
@@ -604,6 +594,7 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
                 <div className={styles.pathGrid}>
                   {curatedPaths.map((path) => {
                     const entries = pathItemsForRender(path);
+                    const progress = getPathProgress(path);
                     return (
                       <button
                         key={path.id}
@@ -616,14 +607,14 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
                             <h3 className={styles.pathTitle}>{path.title}</h3>
                             {path.description && <p className={styles.pathDesc}>{path.description}</p>}
                             <p className={styles.pathMeta}>
-                              {`${entries.length} könyv · ${getPathProgress(path)}%`}
+                              {`${entries.length} könyv · ${progress}%`}
                             </p>
                           </div>
                         </div>
-                        <div className={styles.pathProgressBar}>
+                        <div className={`${styles.pathProgressBar} ${styles.pathProgressBarCard}`}>
                           <span
                             className={styles.pathProgressFill}
-                            style={{ width: `${getPathProgress(path)}%` }}
+                            style={{ width: `${progress}%` }}
                           />
                         </div>
                       </button>
@@ -637,6 +628,17 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
       )}
 
       <div className={styles.fabToolbar}>
+        {isAdmin && (
+          <button
+            type="button"
+            className={styles.addFab}
+            onClick={handleLogout}
+            aria-label="KijelentkezĂ©s"
+            title="KijelentkezĂ©s"
+          >
+            <LogOut size={18} />
+          </button>
+        )}
         {isAdmin && (
           <Link
             href="/admin/yoga"
@@ -655,7 +657,7 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
             aria-expanded={pathOpen}
             onClick={() => setPathOpen((current) => !current)}
           >
-            <img src="/lotus.svg" alt="" aria-hidden="true" className={styles.lotusIcon} />
+            <Route size={18} className={styles.fabIcon} />
           </button>
         )}
         <button

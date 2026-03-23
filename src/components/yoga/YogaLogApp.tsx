@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight, Pencil, Plus, Trash2 } from "lucide-react";
+import { BookOpen, ChevronLeft, ChevronRight, LogOut, Pencil, Plus, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import styles from "./YogaLogApp.module.css";
 import {
   ACTIVITY_CATEGORY_META,
@@ -438,11 +439,6 @@ export default function YogaLogApp() {
           <div>
             <span>{"Havi logok"}</span>
             <strong>{logs.length}</strong>
-          </div>
-          <div className={styles.heroAction}>
-            <button type="button" className="btn btn--ghost" onClick={handleLogout}>
-              {"KijelentkezĂ©s"}
-            </button>
           </div>
         </div>
       </div>
@@ -908,6 +904,27 @@ export default function YogaLogApp() {
           </div>
         </div>
       </div>
+
+      <div className={styles.fabToolbar}>
+        <Link
+          href="/admin"
+          className={styles.addFab}
+          aria-label="Vissza a konyvekhez"
+          title="Vissza a konyvekhez"
+        >
+          <BookOpen size={18} />
+        </Link>
+        <button
+          type="button"
+          className={styles.addFab}
+          onClick={handleLogout}
+          aria-label="Kijelentkezes"
+          title="Kijelentkezes"
+        >
+          <LogOut size={18} />
+        </button>
+      </div>
+
     </section>
   );
 }

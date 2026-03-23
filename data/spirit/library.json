@@ -3,159 +3,159 @@
   "thematic_pills": [
     {
       "slug": "tao_alapok",
-      "label": "Taoizmus alapelvei",
+      "label": "Taoizmus alapelvei (Tao, Te, wu wei)",
       "short_label": "Tao",
-      "color": "#23B5D3"
-    },
-    {
-      "slug": "buddhizmus_alapok",
-      "label": "Alap tanítások, üresség, nirvána",
-      "short_label": "Buddhizmus",
-      "color": "#4C6FFF"
-    },
-    {
-      "slug": "nem_kettosseg",
-      "label": "Non-dualitás, advaita, sunyata",
-      "short_label": "Non-dual",
-      "color": "#7C4DFF"
-    },
-    {
-      "slug": "ontudat_es_en",
-      "label": "Ego és identitás kérdése",
-      "short_label": "Öntudat",
-      "color": "#FF6B6B"
-    },
-    {
-      "slug": "meditacio",
-      "label": "Meditációs gyakorlatok és utak",
-      "short_label": "Meditáció",
-      "color": "#00B894"
-    },
-    {
-      "slug": "zen_gyakorlat",
-      "label": "Zen gyakorlás",
-      "short_label": "Zen",
-      "color": "#2D9CDB"
-    },
-    {
-      "slug": "mindfulness",
-      "label": "Éber figyelem",
-      "short_label": "Mindfulness",
-      "color": "#2ECC71"
-    },
-    {
-      "slug": "test_tudat",
-      "label": "Test–tudat kapcsolat",
-      "short_label": "Test-tudat",
-      "color": "#F6B93B"
+      "color": "#1F8A70"
     },
     {
       "slug": "wu_wei",
-      "label": "Wu-wei",
+      "label": "Nem-cselekvés",
       "short_label": "Wu-wei",
-      "color": "#F2994A"
+      "color": "#1F8A70"
     },
     {
       "slug": "termeszetes_elet",
       "label": "Spontán, természetes élet",
-      "short_label": "Spontaneitás",
-      "color": "#27AE60"
+      "short_label": "Spontaneit?s",
+      "color": "#1F8A70"
     },
     {
       "slug": "belso_alkimia",
       "label": "Taoista belső alkímia",
       "short_label": "Belső alkímia",
-      "color": "#E67E22"
+      "color": "#1F8A70"
     },
     {
       "slug": "hosszu_elet",
       "label": "Longevity, egészség",
       "short_label": "Hosszú élet",
-      "color": "#F39C12"
+      "color": "#1F8A70"
     },
     {
-      "slug": "tibeti_buddhizmus",
-      "label": "Vadzsrajána hagyomány",
-      "short_label": "Tibet",
-      "color": "#9B51E0"
+      "slug": "buddhizmus_alapok",
+      "label": "Alap tanítások, üresség, nirvána",
+      "short_label": "Buddhizmus",
+      "color": "#4B6FFF"
+    },
+    {
+      "slug": "zen_gyakorlat",
+      "label": "Zen gyakorlás (zazen, koan)",
+      "short_label": "Zen",
+      "color": "#4B6FFF"
+    },
+    {
+      "slug": "nem_kettosseg",
+      "label": "Non-dualitás, advaita, sunyata",
+      "short_label": "Non-dual",
+      "color": "#4B6FFF"
+    },
+    {
+      "slug": "ontudat_es_en",
+      "label": "Ego és identitás kérdése",
+      "short_label": "Öntudat",
+      "color": "#4B6FFF"
     },
     {
       "slug": "egyutt_erzes",
       "label": "Együttérzés, bodhiszattva út",
       "short_label": "Együttérzés",
-      "color": "#FF7A9E"
+      "color": "#4B6FFF"
     },
     {
-      "slug": "klasszikus_szoveg",
-      "label": "Primer hagyományos művek",
-      "short_label": "Klasszikus",
-      "color": "#5C5C5C"
+      "slug": "tibeti_buddhizmus",
+      "label": "Vadzsrajána hagyomány",
+      "short_label": "Tibet",
+      "color": "#7C3AED"
     },
     {
-      "slug": "szutra",
-      "label": "Buddhista szútrák",
-      "short_label": "Szútra",
-      "color": "#8E5C4A"
+      "slug": "halal_es_atmenet",
+      "label": "Halál, bardó és átmeneti állapotok",
+      "short_label": "Bardó",
+      "color": "#7C3AED"
     },
     {
-      "slug": "kommentar",
-      "label": "Magyarázatok, értelmezések",
-      "short_label": "Kommentár",
-      "color": "#4E7ABF"
+      "slug": "meditacio",
+      "label": "Meditációs gyakorlatok és utak",
+      "short_label": "Meditáció",
+      "color": "#2BB673"
     },
     {
-      "slug": "modern_spiritualitas",
-      "label": "Nyugati interpretációk",
-      "short_label": "Modern",
-      "color": "#00A8FF"
-    },
-    {
-      "slug": "pszichologia",
-      "label": "Tudat és elme működése",
-      "short_label": "Pszicho",
-      "color": "#00B8A9"
-    },
-    {
-      "slug": "tudomany",
-      "label": "Tudományos megközelítés",
-      "short_label": "Tudomány",
-      "color": "#0984E3"
-    },
-    {
-      "slug": "mitologia",
-      "label": "Eposzok, történetek",
-      "short_label": "Mitológia",
-      "color": "#C0392B"
-    },
-    {
-      "slug": "joga",
-      "label": "Jóga filozófia",
-      "short_label": "Jóga",
-      "color": "#6C5CE7"
+      "slug": "mindfulness",
+      "label": "Modern éber figyelem",
+      "short_label": "Mindfulness",
+      "color": "#2BB673"
     },
     {
       "slug": "legzes_es_energia",
       "label": "Prána, energetika",
       "short_label": "Légzés",
-      "color": "#00CEC9"
+      "color": "#2BB673"
     },
     {
-      "slug": "halal_es_atmenet",
-      "label": "Halál és átmeneti állapotok",
-      "short_label": "Bardó",
-      "color": "#B83280"
+      "slug": "test_tudat",
+      "label": "Test-tudat kapcsolat",
+      "short_label": "Test-tudat",
+      "color": "#2BB673"
     },
     {
-      "slug": "popularizalo",
-      "label": "Közérthető feldolgozás",
-      "short_label": "Közérthető",
-      "color": "#F1C40F"
+      "slug": "szutra",
+      "label": "Buddhista szútrák",
+      "short_label": "Szútra",
+      "color": "#8C6A54"
+    },
+    {
+      "slug": "kommentar",
+      "label": "Magyarázatok, értelmezések",
+      "short_label": "Kommentár",
+      "color": "#8C6A54"
+    },
+    {
+      "slug": "klasszikus_szoveg",
+      "label": "Primer hagyományos művek",
+      "short_label": "Klasszikus",
+      "color": "#8C6A54"
+    },
+    {
+      "slug": "modern_spiritualitas",
+      "label": "Nyugati interpretációk",
+      "short_label": "Modern",
+      "color": "#8C6A54"
     },
     {
       "slug": "irodalmi_spiritualitas",
       "label": "Esszé, költői megközelítés",
       "short_label": "Irodalmi",
-      "color": "#6D4C41"
+      "color": "#8C6A54"
+    },
+    {
+      "slug": "popularizalo",
+      "label": "Közérthető feldolgozás",
+      "short_label": "Közérthető",
+      "color": "#8C6A54"
+    },
+    {
+      "slug": "pszichologia",
+      "label": "Tudat és elme működése",
+      "short_label": "Pszicho",
+      "color": "#C45848"
+    },
+    {
+      "slug": "tudomany",
+      "label": "Tudományos megközelítés",
+      "short_label": "Tudomány",
+      "color": "#C45848"
+    },
+    {
+      "slug": "mitologia",
+      "label": "Eposzok, történetek",
+      "short_label": "Mitológia",
+      "color": "#C45848"
+    },
+    {
+      "slug": "joga",
+      "label": "Jóga filozófia",
+      "short_label": "Jóga",
+      "color": "#C45848"
     }
   ],
   "books": [
@@ -1563,4 +1563,3 @@
     }
   ]
 }
-

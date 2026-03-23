@@ -567,8 +567,8 @@
 }
 
 .levelDotActive {
-  background: #1a1b1f;
-  border-color: #1a1b1f;
+  background: #f2f4f8;
+  border-color: #d9deea;
 }
 
 .statusButton {
@@ -935,12 +935,6 @@
 
 .viewToggleButton {
   display: inline-flex;
-}
-
-.lotusIcon {
-  width: 20px;
-  height: 20px;
-  display: block;
 }
 
 .fabIcon {
@@ -1314,16 +1308,21 @@
 
 .pathProgressBar {
   width: 100%;
-  height: 8px;
+  height: 10px;
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.08);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
   overflow: hidden;
 }
 
 .pathProgressFill {
   display: block;
   height: 100%;
-  background: var(--brand-ink);
+  background: #f2f4f8;
+}
+
+.pathProgressBarCard {
+  height: 8px;
 }
 
 .pathGridSection {
