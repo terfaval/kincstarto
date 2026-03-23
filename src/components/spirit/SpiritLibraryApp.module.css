@@ -968,6 +968,25 @@
   gap: 1rem;
 }
 
+.addModeRow {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.jsonTextarea {
+  font-family: "SFMono-Regular", "Consolas", "Liberation Mono", "Courier New", monospace;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  min-height: 220px;
+}
+
+.jsonHint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
 .addModalActions {
   display: flex;
   justify-content: flex-end;

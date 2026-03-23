@@ -111,9 +111,11 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<"input" | "duplicates" | "drafting" | "preview">("input");
+  const [entryMode, setEntryMode] = useState<"ai" | "json">("ai");
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [publisher, setPublisher] = useState("");
+  const [jsonText, setJsonText] = useState("");
   const [duplicates, setDuplicates] = useState<DuplicateHit[]>([]);
   const [draftResponse, setDraftResponse] = useState<SpiritDraftPreviewResponse | null>(null);
   const [draft, setDraft] = useState<SpiritDraftPreview | null>(null);
@@ -136,9 +138,11 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
   const close = () => {
     setOpen(false);
     setStep("input");
+    setEntryMode("ai");
     setTitle("");
     setAuthor("");
     setPublisher("");
+    setJsonText("");
     setDuplicates([]);
     setDraftResponse(null);
     setDraft(null);
@@ -189,6 +193,55 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
     const hits = findDuplicates(library, title, author);
     setDuplicates(hits);
     setStep("duplicates");
+  };
+
+  const switchEntryMode = (mode: "ai" | "json") => {
+    setEntryMode(mode);
+    setStep("input");
+    setError(null);
+    setErrorMeta(null);
+  };
+
+  const handleJsonSave = async () => {
+    setError(null);
+    setErrorMeta(null);
+    setSaving(true);
+    const trimmed = jsonText.trim();
+    if (!trimmed) {
+      setError("Hiányzik a JSON tartalom.");
+      setSaving(false);
+      return;
+    }
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(trimmed);
+    } catch {
+      setError("Érvénytelen JSON. Ellenőrizd a formátumot.");
+      setSaving(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/admin/spirit/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ book: parsed }),
+      });
+      const payload = await readJson(response);
+      if (!response.ok) {
+        const formatted = formatError(payload, "JSON mentés sikertelen");
+        setError(formatted.message);
+        setErrorMeta(formatted.meta);
+        return;
+      }
+      router.refresh();
+      close();
+    } catch (err) {
+      setError((err as Error)?.message ?? "JSON mentés sikertelen");
+      setErrorMeta(null);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleSave = async () => {
@@ -506,18 +559,54 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
 
     return (
       <div className={styles.addModalBody}>
-        <label className="form-field">
-          <span className="form-field__label">Cím</span>
-          <input className="input" value={title} onChange={(e) => setTitle(e.target.value)} />
-        </label>
-        <label className="form-field">
-          <span className="form-field__label">Szerző</span>
-          <input className="input" value={author} onChange={(e) => setAuthor(e.target.value)} />
-        </label>
-        <label className="form-field">
-          <span className="form-field__label">Publisher (opcionális)</span>
-          <input className="input" value={publisher} onChange={(e) => setPublisher(e.target.value)} />
-        </label>
+        <div className={styles.addModeRow}>
+          <button
+            type="button"
+            className={`btn ${entryMode === "ai" ? "btn--primary" : "btn--ghost"}`}
+            onClick={() => switchEntryMode("ai")}
+          >
+            AI draft
+          </button>
+          <button
+            type="button"
+            className={`btn ${entryMode === "json" ? "btn--primary" : "btn--ghost"}`}
+            onClick={() => switchEntryMode("json")}
+          >
+            JSON input
+          </button>
+        </div>
+        {entryMode === "json" ? (
+          <>
+            <label className="form-field">
+              <span className="form-field__label">JSON entry</span>
+              <textarea
+                className={`${styles.jsonTextarea} input`}
+                rows={10}
+                value={jsonText}
+                onChange={(e) => setJsonText(e.target.value)}
+                placeholder={`{\n  "id": "konyv_slug",\n  "title": "Könyv címe",\n  "author": "Szerző",\n  "tradition": "taoizmus",\n  "level": "kezdo",\n  "summary_short": "...",\n  "recommendation": "...",\n  "themes": ["tema_slug"],\n  "language": "hu",\n  "format": "konyv",\n  "status": "olvasatlan"\n}`}
+              />
+            </label>
+            <p className={styles.jsonHint}>
+              Egy darab könyv-objektumot illessz be a `library.json` formátumában.
+            </p>
+          </>
+        ) : (
+          <>
+            <label className="form-field">
+              <span className="form-field__label">Cím</span>
+              <input className="input" value={title} onChange={(e) => setTitle(e.target.value)} />
+            </label>
+            <label className="form-field">
+              <span className="form-field__label">Szerző</span>
+              <input className="input" value={author} onChange={(e) => setAuthor(e.target.value)} />
+            </label>
+            <label className="form-field">
+              <span className="form-field__label">Publisher (opcionális)</span>
+              <input className="input" value={publisher} onChange={(e) => setPublisher(e.target.value)} />
+            </label>
+          </>
+        )}
         {error && (
           <div className="admin-message admin-message--error">
             <p>{error}</p>
@@ -526,18 +615,26 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
         )}
         <div className={styles.addModalActions}>
           <button type="button" className="btn btn--ghost" onClick={close}>Bezár</button>
-          <button type="button" className="btn btn--primary" onClick={onAnalyze} disabled={!title || !author}>
-            Elemzés és draft készítése
-          </button>
+          {entryMode === "json" ? (
+            <button type="button" className="btn btn--primary" onClick={handleJsonSave} disabled={saving}>
+              {saving ? "Mentés..." : "JSON mentése"}
+            </button>
+          ) : (
+            <button type="button" className="btn btn--primary" onClick={onAnalyze} disabled={!title || !author}>
+              Elemzés és draft készítése
+            </button>
+          )}
         </div>
       </div>
     );
   }, [
     open,
     step,
+    entryMode,
     title,
     author,
     publisher,
+    jsonText,
     duplicates,
     draftResponse,
     draft,
@@ -563,7 +660,9 @@ export default function SpiritAddBookModal({ library, onOpenBook }: Props) {
           <div className={`admin-overlay-panel ${styles.addModal}`}>
             <div className={styles.addModalHeader}>
               <div>
-                <p className={styles.overlayMeta}>Add Book with AI</p>
+                <p className={styles.overlayMeta}>
+                  {entryMode === "json" ? "Add Book via JSON" : "Add Book with AI"}
+                </p>
                 <h2 className={styles.overlayTitle}>Új könyv</h2>
               </div>
               <button type="button" className="btn btn--ghost" onClick={close}>
