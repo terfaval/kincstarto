@@ -545,7 +545,6 @@ export default function SpiritLibraryApp({ library }: Props) {
               <div className={styles.pathGridSection}>
                 <div className={styles.pathGridHeader}>
                   <h2 className="admin-heading__title">{"Mentett utak"}</h2>
-                  <p className={styles.pathSubtitle}>{"Rögzített és kézzel válogatott útvonalak."}</p>
                 </div>
                 <div className={styles.pathGrid}>
                   {curatedPaths.map((path) => {

@@ -1,21 +1,21 @@
 ﻿:root {
-  --bg: #f5efe5;
+  --bg: #efddc6;
   --bg-grad:
-    radial-gradient(1200px circle at 12% 10%, rgba(255, 210, 150, 0.12), transparent 62%),
-    radial-gradient(900px circle at 85% 15%, rgba(140, 188, 205, 0.12), transparent 58%),
-    linear-gradient(180deg, rgba(245, 239, 229, 0.12) 0%, rgba(239, 229, 213, 0.18) 100%);
-  --bg-photo: url("/backgrounds/day/022_background.png");
-  --panel: rgba(255, 248, 235, 0.85);
-  --panel-2: rgba(250, 237, 215, 0.9);
-  --surface: rgba(255, 253, 248, 0.9);
-  --surface-2: rgba(246, 237, 221, 0.92);
-  --surface-3: rgba(240, 230, 210, 0.9);
-  --input-bg: rgba(6, 84, 100, 0.06);
+    radial-gradient(1200px circle at 12% 10%, rgba(255, 200, 140, 0.3), transparent 60%),
+    radial-gradient(900px circle at 85% 18%, rgba(110, 176, 205, 0.28), transparent 56%),
+    linear-gradient(180deg, rgba(242, 231, 214, 0.4) 0%, rgba(227, 207, 182, 0.5) 100%);
+  --bg-photo: url("/backgrounds/day/day_default.png");
+  --panel: rgba(255, 242, 220, 0.94);
+  --panel-2: rgba(246, 228, 198, 0.95);
+  --surface: rgba(255, 249, 238, 0.96);
+  --surface-2: rgba(238, 218, 192, 0.96);
+  --surface-3: rgba(230, 206, 178, 0.95);
+  --input-bg: rgba(6, 84, 100, 0.12);
   --text: #12141a;
-  --muted: rgba(14, 63, 80, 0.7);
-  --line: rgba(15, 45, 65, 0.14);
-  --focus-ring: rgba(219, 146, 33, 0.45);
-  --shadow: 0 12px 30px rgba(7, 12, 25, 0.2);
+  --muted: rgba(14, 63, 80, 0.74);
+  --line: rgba(18, 52, 74, 0.24);
+  --focus-ring: rgba(219, 146, 33, 0.4);
+  --shadow: 0 14px 32px rgba(12, 18, 32, 0.14);
   --brand-ink: #05768d;
   --brand-paper: #fae7c6;
   --brand-accent: #db9221;
@@ -29,6 +29,27 @@
   color-scheme: light;
 }
 
+:root[data-time-theme="day"] {
+  --bg: #efddc6;
+  --bg-grad:
+    radial-gradient(1200px circle at 12% 10%, rgba(255, 200, 140, 0.3), transparent 60%),
+    radial-gradient(900px circle at 85% 18%, rgba(110, 176, 205, 0.28), transparent 56%),
+    linear-gradient(180deg, rgba(242, 231, 214, 0.4) 0%, rgba(227, 207, 182, 0.5) 100%);
+  --panel: rgba(255, 242, 220, 0.94);
+  --panel-2: rgba(246, 228, 198, 0.95);
+  --surface: rgba(255, 249, 238, 0.96);
+  --surface-2: rgba(238, 218, 192, 0.96);
+  --surface-3: rgba(230, 206, 178, 0.95);
+  --input-bg: rgba(6, 84, 100, 0.12);
+  --muted: rgba(50, 63, 80, 0.85);
+  --line: rgba(18, 52, 74, 0.24);
+  --shadow: 0 14px 32px rgba(12, 18, 32, 0.14);
+  --shadow: 0 18px 40px rgba(12, 18, 32, 0.18);
+  --bg-photo: url("/backgrounds/day/day_default.png");
+  --background: var(--bg);
+  --foreground: var(--text);
+  color-scheme: light;
+}
 @media (prefers-color-scheme: dark) {
   :root:not([data-time-theme]) {
     --bg: #0a1324;
@@ -47,7 +68,7 @@
     --line: rgba(170, 208, 235, 0.16);
     --focus-ring: rgba(219, 146, 33, 0.6);
     --shadow: 0 18px 40px rgba(2, 5, 12, 0.55);
-    --bg-photo: url("/backgrounds/night/077_background.png");
+    --bg-photo: url("/backgrounds/night/night_default.png");
     --background: var(--bg);
     --foreground: var(--text);
     color-scheme: dark;
@@ -71,7 +92,7 @@
   --line: rgba(170, 208, 235, 0.16);
   --focus-ring: rgba(219, 146, 33, 0.6);
   --shadow: 0 18px 40px rgba(2, 5, 12, 0.55);
-  --bg-photo: url("/backgrounds/night/077_background.png");
+  --bg-photo: url("/backgrounds/night/night_default.png");
   --background: var(--bg);
   --foreground: var(--text);
   color-scheme: dark;
@@ -91,10 +112,16 @@ body {
   background-attachment: fixed, fixed;
   background-repeat: no-repeat, no-repeat;
   background-position: center, center;
-  background-size: auto, cover;
+  background-size: cover, cover;
+  background-blend-mode: normal, multiply;
   color: var(--foreground);
   font-family: var(--font-body);
   line-height: 1.5;
+}
+
+svg,
+svg * {
+  color: var(--muted);
 }
 
 @media (max-width: 720px) {

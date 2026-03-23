@@ -139,6 +139,34 @@
   display: grid;
   gap: 0.75rem;
   cursor: pointer;
+  padding: 1rem 1.1rem;
+  border-radius: 1rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: 0 12px 26px rgba(12, 18, 32, 0.08);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease;
+  will-change: transform;
+}
+
+.pathCard,
+.pathResultCard,
+.pathBookButton,
+.relatedCard,
+.nextStepCard {
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease;
+  will-change: transform;
+}
+
+@media (hover: hover) {
+  .card:hover,
+  .pathCard:hover,
+  .pathResultCard:hover,
+  .pathBookButton:hover,
+  .relatedCard:hover,
+  .nextStepCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px rgba(12, 18, 32, 0.12);
+  }
 }
 
 .cardHeader {
@@ -455,11 +483,12 @@
   height: 8px;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: transparent;
+  background: var(--surface-2);
 }
 
 .levelDotActive {
-  background: var(--foreground);
+  background: #1a1b1f;
+  border-color: #1a1b1f;
 }
 
 .statusButton {
@@ -1046,17 +1075,48 @@
 .pathForm {
   display: grid;
   gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.pathForm :global(.form-field) {
+  min-width: 0;
+}
+
+.pathForm :global(select.input) {
+  padding-right: 2.6rem;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(var(--brand-ink-rgb), 0.7) 50%),
+    linear-gradient(135deg, rgba(var(--brand-ink-rgb), 0.7) 50%, transparent 50%),
+    linear-gradient(to right, transparent, transparent);
+  background-position:
+    calc(100% - 1.15rem) 50%,
+    calc(100% - 0.9rem) 50%,
+    0 0;
+  background-size: 6px 6px, 6px 6px, 100% 100%;
+  background-repeat: no-repeat;
 }
 
 .pathThemes {
   display: grid;
   gap: 0.5rem;
+  grid-column: 1 / -1;
 }
 
 .pathThemeGrid {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
+}
+
+@media (max-width: 720px) {
+  .pathForm {
+    grid-template-columns: 1fr;
+  }
+
+  .pathThemes {
+    grid-column: auto;
+  }
 }
 
 .pathThemePill {
@@ -1080,6 +1140,7 @@
 .pathActions {
   display: flex;
   justify-content: flex-end;
+  grid-column: 1 / -1;
 }
 
 .pathResult {
@@ -1180,7 +1241,8 @@
 
 .pathGridHeader {
   display: grid;
-  gap: 0.4rem;
+  gap: 0.3rem;
+  margin-block: 2.5rem 1.5rem;
 }
 
 .pathOverlayDesc {
