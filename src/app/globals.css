@@ -1,9 +1,10 @@
 ﻿:root {
   --bg: #f5efe5;
   --bg-grad:
-    radial-gradient(1200px circle at 12% 10%, rgba(255, 210, 150, 0.35), transparent 60%),
-    radial-gradient(900px circle at 85% 15%, rgba(140, 188, 205, 0.35), transparent 55%),
-    linear-gradient(180deg, #f5efe5 0%, #efe5d5 100%);
+    radial-gradient(1200px circle at 12% 10%, rgba(255, 210, 150, 0.12), transparent 62%),
+    radial-gradient(900px circle at 85% 15%, rgba(140, 188, 205, 0.12), transparent 58%),
+    linear-gradient(180deg, rgba(245, 239, 229, 0.12) 0%, rgba(239, 229, 213, 0.18) 100%);
+  --bg-photo: url("/backgrounds/day/022_background.png");
   --panel: rgba(255, 248, 235, 0.85);
   --panel-2: rgba(250, 237, 215, 0.9);
   --surface: rgba(255, 253, 248, 0.9);
@@ -32,9 +33,9 @@
   :root:not([data-time-theme]) {
     --bg: #0a1324;
     --bg-grad:
-      radial-gradient(1200px circle at 12% 10%, rgba(10, 55, 92, 0.6), transparent 60%),
-      radial-gradient(900px circle at 80% 20%, rgba(6, 110, 130, 0.35), transparent 55%),
-      linear-gradient(180deg, #0a1324 0%, #070b16 100%);
+      radial-gradient(1200px circle at 12% 10%, rgba(10, 55, 92, 0.18), transparent 62%),
+      radial-gradient(900px circle at 80% 20%, rgba(6, 110, 130, 0.16), transparent 58%),
+      linear-gradient(180deg, rgba(10, 19, 36, 0.2) 0%, rgba(7, 11, 22, 0.28) 100%);
     --panel: rgba(11, 30, 48, 0.78);
     --panel-2: rgba(10, 26, 44, 0.92);
     --surface: rgba(12, 32, 52, 0.92);
@@ -46,6 +47,7 @@
     --line: rgba(170, 208, 235, 0.16);
     --focus-ring: rgba(219, 146, 33, 0.6);
     --shadow: 0 18px 40px rgba(2, 5, 12, 0.55);
+    --bg-photo: url("/backgrounds/night/077_background.png");
     --background: var(--bg);
     --foreground: var(--text);
     color-scheme: dark;
@@ -55,9 +57,9 @@
 :root[data-time-theme="night"] {
   --bg: #0a1324;
   --bg-grad:
-    radial-gradient(1200px circle at 12% 10%, rgba(10, 55, 92, 0.6), transparent 60%),
-    radial-gradient(900px circle at 80% 20%, rgba(6, 110, 130, 0.35), transparent 55%),
-    linear-gradient(180deg, #0a1324 0%, #070b16 100%);
+    radial-gradient(1200px circle at 12% 10%, rgba(10, 55, 92, 0.18), transparent 62%),
+    radial-gradient(900px circle at 80% 20%, rgba(6, 110, 130, 0.16), transparent 58%),
+    linear-gradient(180deg, rgba(10, 19, 36, 0.2) 0%, rgba(7, 11, 22, 0.28) 100%);
   --panel: rgba(11, 30, 48, 0.78);
   --panel-2: rgba(10, 26, 44, 0.92);
   --surface: rgba(12, 32, 52, 0.92);
@@ -69,6 +71,7 @@
   --line: rgba(170, 208, 235, 0.16);
   --focus-ring: rgba(219, 146, 33, 0.6);
   --shadow: 0 18px 40px rgba(2, 5, 12, 0.55);
+  --bg-photo: url("/backgrounds/night/077_background.png");
   --background: var(--bg);
   --foreground: var(--text);
   color-scheme: dark;
@@ -84,11 +87,21 @@ body {
   margin: 0;
   min-height: 100vh;
   background: var(--background);
-  background-image: var(--bg-grad);
-  background-attachment: fixed;
+  background-image: var(--bg-grad), var(--bg-photo);
+  background-attachment: fixed, fixed;
+  background-repeat: no-repeat, no-repeat;
+  background-position: center, center;
+  background-size: auto, cover;
   color: var(--foreground);
   font-family: var(--font-body);
   line-height: 1.5;
+}
+
+@media (max-width: 720px) {
+  body {
+    background-size: auto, 140% auto;
+    background-position: center, center 35%;
+  }
 }
 
 .antialiased {
