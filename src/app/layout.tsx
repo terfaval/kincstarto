@@ -1,6 +1,7 @@
 ﻿import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import TimeThemeEffect from "@/components/TimeThemeEffect";
+import DebugBanner from "@/components/DebugBanner";
 import "./globals.css";
 
 const sfFontBody = localFont({
@@ -41,6 +42,7 @@ export default function RootLayout({
     <html lang="hu" className={`${sfFontBody.variable} ${sfFontDisplay.variable}`}>
       <body className={`${sfFontBody.className} antialiased`}>
         <TimeThemeEffect />
+        <DebugBanner />
         {children}
       </body>
     </html>
