@@ -50,12 +50,20 @@ export default function TimeThemeEffect() {
     const handleSchemeChange = () => updateTheme();
 
     window.addEventListener("focus", handleFocus);
-    media.addEventListener("change", handleSchemeChange);
+    if (typeof media.addEventListener === "function") {
+      media.addEventListener("change", handleSchemeChange);
+    } else {
+      media.addListener(handleSchemeChange);
+    }
 
     return () => {
       window.clearInterval(intervalId);
       window.removeEventListener("focus", handleFocus);
-      media.removeEventListener("change", handleSchemeChange);
+      if (typeof media.removeEventListener === "function") {
+        media.removeEventListener("change", handleSchemeChange);
+      } else {
+        media.removeListener(handleSchemeChange);
+      }
     };
   }, []);
 

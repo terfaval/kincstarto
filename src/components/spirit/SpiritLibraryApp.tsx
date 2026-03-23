@@ -219,8 +219,12 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
       setViewMode(media.matches ? "list" : "grid");
     };
     syncViewMode();
-    media.addEventListener("change", syncViewMode);
-    return () => media.removeEventListener("change", syncViewMode);
+    if (typeof media.addEventListener === "function") {
+      media.addEventListener("change", syncViewMode);
+      return () => media.removeEventListener("change", syncViewMode);
+    }
+    media.addListener(syncViewMode);
+    return () => media.removeListener(syncViewMode);
   }, [viewModeLocked]);
 
   const themePills = library.thematic_pills;

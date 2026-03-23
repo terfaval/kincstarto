@@ -152,6 +152,7 @@
   box-shadow: 0 12px 26px rgba(12, 18, 32, 0.08);
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease;
   will-change: transform;
+  touch-action: manipulation;
 }
 
 .listCard {
@@ -203,6 +204,7 @@
 .nextStepCard {
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease;
   will-change: transform;
+  touch-action: manipulation;
 }
 
 @media (hover: hover) {
@@ -1365,6 +1367,7 @@
   background: transparent;
   padding: 0;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 @media (max-width: 960px) {
