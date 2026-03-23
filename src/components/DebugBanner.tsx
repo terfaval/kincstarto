@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type DebugInfo = {
   error: string | null;
@@ -11,9 +10,14 @@ type DebugInfo = {
 };
 
 export default function DebugBanner() {
-  const params = useSearchParams();
-  const enabled = useMemo(() => params.get("debug") === "1", [params]);
+  const [enabled, setEnabled] = useState(false);
   const [info, setInfo] = useState<DebugInfo | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    setEnabled(params.get("debug") === "1");
+  }, []);
 
   useEffect(() => {
     if (!enabled) return;
