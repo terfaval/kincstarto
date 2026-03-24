@@ -23,6 +23,9 @@
   --brand-warm: #be2d12;
   --brand-ink-rgb: 5, 118, 141;
   --brand-accent-rgb: 219, 146, 33;
+  --level-dot-active: #273645;
+  --level-dot-active-border: #1f2b38;
+  --path-progress-active: #273645;
   --background: var(--bg);
   --foreground: var(--text);
   --font-display: var(--sf-font-display), "Segoe UI", system-ui, sans-serif;
@@ -46,6 +49,9 @@
   --line: rgba(18, 52, 74, 0.24);
   --shadow: 0 14px 32px rgba(12, 18, 32, 0.14);
   --shadow: 0 18px 40px rgba(12, 18, 32, 0.18);
+  --level-dot-active: #273645;
+  --level-dot-active-border: #1f2b38;
+  --path-progress-active: #273645;
   --bg-photo: url("/backgrounds/day/day_default.png");
   --bg-blend-mode: normal, multiply;
   --background: var(--bg);
@@ -71,6 +77,9 @@
     --line: rgba(170, 208, 235, 0.16);
     --focus-ring: rgba(219, 146, 33, 0.6);
     --shadow: 0 18px 40px rgba(2, 5, 12, 0.55);
+    --level-dot-active: #f2f4f8;
+    --level-dot-active-border: #d9deea;
+    --path-progress-active: #f2f4f8;
     --bg-photo: url("/backgrounds/night/night_default.png");
     --background: var(--bg);
     --foreground: var(--text);
@@ -96,6 +105,9 @@
   --line: rgba(170, 208, 235, 0.16);
   --focus-ring: rgba(219, 146, 33, 0.6);
   --shadow: 0 18px 40px rgba(2, 5, 12, 0.55);
+  --level-dot-active: #f2f4f8;
+  --level-dot-active-border: #d9deea;
+  --path-progress-active: #f2f4f8;
   --bg-photo: url("/backgrounds/night/night_default.png");
   --background: var(--bg);
   --foreground: var(--text);

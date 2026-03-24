@@ -10,6 +10,12 @@ function toNumber(value: unknown) {
   return Number.isFinite(num) ? num : null;
 }
 
+function toYogaIntensity(value: unknown): YogaLibraryEntry["intensity"] {
+  const num = toNumber(value);
+  if (num === 1 || num === 2 || num === 3) return num;
+  return null;
+}
+
 function cleanText(value: unknown) {
   if (typeof value !== "string") return "";
   return value.trim();
@@ -32,7 +38,7 @@ function updateYogaEntry(
     label: string;
     category: YogaCategory;
     duration_minutes: number | null;
-    intensity: number | null;
+    intensity: YogaLibraryEntry["intensity"];
     link: string | null;
   }
 ) {
@@ -126,7 +132,7 @@ export async function POST(request: Request) {
       label,
       category: category as YogaCategory,
       duration_minutes: newLog.duration_minutes ?? null,
-      intensity: newLog.intensity ?? null,
+      intensity: toYogaIntensity(newLog.intensity),
       link,
     };
     const existing = findYogaEntry(library, entryCandidate);
@@ -149,7 +155,7 @@ export async function POST(request: Request) {
         label: entryCandidate.label,
         category: entryCandidate.category,
         duration_minutes: entryCandidate.duration_minutes,
-        intensity: entryCandidate.intensity as YogaLibraryEntry["intensity"],
+        intensity: entryCandidate.intensity,
         link: entryCandidate.link,
         created_at: now,
         updated_at: now,
@@ -217,7 +223,7 @@ export async function PATCH(request: Request) {
       label: updated.label,
       category: updated.category as YogaCategory,
       duration_minutes: updated.duration_minutes ?? null,
-      intensity: updated.intensity ?? null,
+      intensity: toYogaIntensity(updated.intensity),
       link,
     };
     const existing = findYogaEntry(library, entryCandidate);
