@@ -7,13 +7,22 @@ import styles from "../styles/meditations.module.css";
 type Props = {
   meditation: Meditation;
   onEnter: () => void;
+  onClose: () => void;
 };
 
-export default function MeditationPreviewPanel({ meditation, onEnter }: Props) {
+export default function MeditationPreviewPanel({ meditation, onEnter, onClose }: Props) {
   const levelDots = Math.max(1, Math.min(3, Number(meditation.level)));
 
   return (
-    <aside className={styles.previewPanel} aria-live="polite">
+    <aside className={styles.previewPanel} aria-live="polite" onClick={(event) => event.stopPropagation()}>
+      <button
+        type="button"
+        className={styles.previewClose}
+        onClick={onClose}
+        aria-label="Bezárás"
+      >
+        X
+      </button>
       <div className={styles.previewHeader}>
         <span className={styles.previewCategory}>{getCategoryLabel(meditation.category)}</span>
         <h3 className={styles.previewTitle}>{meditation.title}</h3>
@@ -47,7 +56,7 @@ export default function MeditationPreviewPanel({ meditation, onEnter }: Props) {
         </div>
       )}
       <button type="button" className={`${styles.previewButton} btn btn--primary`} onClick={onEnter}>
-        Belépés
+        Indítás
       </button>
     </aside>
   );

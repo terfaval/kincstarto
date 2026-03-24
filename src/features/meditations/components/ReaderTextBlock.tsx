@@ -13,7 +13,10 @@ export default function ReaderTextBlock({ block }: Props) {
   }
 
   return (
-    <p className={`${styles.readerText} ${styles[`readerTone-${block.tone}`] ?? ""}`}>
+    <p
+      key={block.content}
+      className={`${styles.readerText} ${styles[`readerTone-${block.tone}`] ?? ""}`}
+    >
       {block.content}
     </p>
   );

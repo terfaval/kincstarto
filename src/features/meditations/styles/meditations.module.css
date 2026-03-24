@@ -37,6 +37,69 @@
   pointer-events: none;
 }
 
+.backLink {
+  position: fixed;
+  top: 1.25rem;
+  left: 1.25rem;
+  z-index: 50;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: rgba(233, 239, 246, 0.9);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 1.6rem;
+  letter-spacing: 0.05em;
+  gap: 0.5rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+  overflow: visible;
+}
+
+.backIcon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.backLabel {
+  position: absolute;
+  left: 100%;
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(233, 239, 246, 0.8);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.backLink:hover {
+  transform: translateY(-1px);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.backLink:hover .backLabel {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.spaceReaderOpen .ring {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.spaceReaderOpen .previewBackdrop,
+.spaceReaderOpen .previewPanel,
+.spaceReaderOpen .centerFocus {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .spaceInner {
   position: relative;
   width: 100%;
@@ -146,11 +209,18 @@
   box-shadow: 0 0 30px color-mix(in srgb, var(--bead-glow, #7aaad2) 80%, white);
 }
 
-.previewPanel {
+.previewBackdrop {
   position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.previewPanel {
+  position: relative;
   width: min(360px, 90vw);
   padding: 1.5rem;
   border-radius: 20px;
@@ -158,7 +228,23 @@
   background: rgba(9, 14, 23, 0.82);
   box-shadow: 0 24px 60px rgba(2, 4, 8, 0.6);
   backdrop-filter: blur(14px);
-  z-index: 3;
+  z-index: 5;
+}
+
+.previewClose {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(8, 12, 18, 0.75);
+  color: rgba(233, 239, 246, 0.9);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
 }
 
 .previewHeader {
@@ -272,12 +358,13 @@
   position: fixed;
   inset: 0;
   z-index: 40;
-  background: rgba(4, 7, 12, 0.94);
+  background: rgba(6, 10, 16, 0.6);
+  backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.8s ease, background 0.8s ease, backdrop-filter 0.8s ease;
 }
 
 .readerOverlayClosing {
@@ -320,7 +407,7 @@
     rgba(7, 11, 18, 0.88);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 30px 80px rgba(2, 4, 8, 0.7);
-  transition: opacity 0.6s ease;
+  transition: opacity 0.8s ease;
 }
 
 .readerStageClosing {
@@ -333,7 +420,7 @@
   letter-spacing: 0.01em;
   margin: 0;
   color: #f4f7fb;
-  animation: fadeIn 0.8s ease;
+  animation: fadeIn 1.2s ease;
 }
 
 .readerPlaceholder {
@@ -400,10 +487,7 @@
   }
 
   .previewPanel {
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
     margin-top: 0;
   }
 

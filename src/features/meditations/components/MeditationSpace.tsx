@@ -71,6 +71,11 @@ export default function MeditationSpace({ meditations: initialMeditations }: Pro
     setHoveredId(id);
   };
 
+  const closePreview = () => {
+    setSelectedId(null);
+    setHoveredId(null);
+  };
+
   const openReader = () => {
     if (!selected) return;
     setReaderId(selected.id);
@@ -89,8 +94,19 @@ export default function MeditationSpace({ meditations: initialMeditations }: Pro
     }
   };
 
+  useEffect(() => {
+    if (!selected || readerOpen) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closePreview();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [readerOpen, selected]);
+
   return (
-    <section className={styles.space}>
+    <section className={`${styles.space} ${readerOpen ? styles.spaceReaderOpen : ""}`}>
       <div className={styles.spaceInner}>
         {!readerOpen && <MeditationCenterFocus meditation={focused} />}
         <MeditationRing
@@ -101,12 +117,15 @@ export default function MeditationSpace({ meditations: initialMeditations }: Pro
           onSelect={handleSelect}
         />
         {selected && !readerOpen && (
-          <MeditationPreviewPanel
-            meditation={selected}
-            onEnter={() => {
-              openReader();
-            }}
-          />
+          <div className={styles.previewBackdrop} onClick={closePreview}>
+            <MeditationPreviewPanel
+              meditation={selected}
+              onEnter={() => {
+                openReader();
+              }}
+              onClose={closePreview}
+            />
+          </div>
         )}
         {readerCompleted && !readerOpen && (
           <div className={styles.readerReturnHint}>A csend marad. Válassz újra.</div>
