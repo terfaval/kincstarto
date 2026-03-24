@@ -22,17 +22,20 @@ export default function MeditationPreviewPanel({ meditation, onEnter }: Props) {
       <div className={styles.previewMeta}>
         <span>{formatDuration(meditation.duration_sec)}</span>
         <span className={styles.previewDot}>•</span>
-        <span>Szint {meditation.level}</span>
+        <div className={styles.previewLevelDots} aria-label={`Szint ${meditation.level}`}>
+          {Array.from({ length: 3 }).map((_, idx) => (
+            <span
+              key={`${meditation.id}-level-${idx}`}
+              className={`${styles.levelDot} ${idx < levelDots ? styles.levelDotActive : ""}`}
+              aria-hidden="true"
+            />
+          ))}
+        </div>
       </div>
-      <div className={styles.levelRow} aria-label={`Szint ${meditation.level}`}>
-        {Array.from({ length: 3 }).map((_, idx) => (
-          <span
-            key={`${meditation.id}-level-${idx}`}
-            className={`${styles.levelDot} ${idx < levelDots ? styles.levelDotActive : ""}`}
-            aria-hidden="true"
-          />
-        ))}
-        <span className={styles.levelValue}>{meditation.level}</span>
+      <div className={styles.previewModeRow}>
+        <span className={`${styles.modePill} ${styles[`mode${meditation.meditation_mode}` as const]}`}>
+          {meditation.meditation_mode}
+        </span>
       </div>
       {meditation.techniques.length > 0 && (
         <div className={styles.previewTags}>
