@@ -1,7 +1,19 @@
 ﻿"use client";
 
 import { Fragment, useMemo, useState, useEffect } from "react";
-import { Bookmark, Check, Clock, Circle, Dumbbell, LayoutList, LogOut, Route, SlidersHorizontal, X } from "lucide-react";
+import {
+  Bookmark,
+  Check,
+  Clock,
+  Circle,
+  Dumbbell,
+  LayoutList,
+  LogOut,
+  Route,
+  SlidersHorizontal,
+  Sparkles,
+  X,
+} from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { SpiritBook, SpiritLibrary, SpiritPill, SpiritTradition, SpiritLevel, SpiritPath } from "@/lib/spiritSchema";
@@ -721,6 +733,14 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
             <Route size={18} className={styles.fabIcon} />
           </button>
         )}
+        <Link
+          href="/meditations"
+          className={styles.addFab}
+          aria-label="Meditációs tér"
+          title="Meditációs tér"
+        >
+          <Sparkles size={18} className={styles.fabIcon} />
+        </Link>
           {!isMobile && (
             <button
               type="button"

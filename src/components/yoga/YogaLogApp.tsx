@@ -432,15 +432,7 @@ export default function YogaLogApp() {
     setDraft((current) => ({ ...current, category: selectedYogaCategory }));
   }, [selectedYogaCategory]);
 
-  useEffect(() => {
-    if (strengthOptions.length === 0) return;
-    setDraft((current) => ({ ...current, exerciseId: strengthOptions[0].id }));
-  }, [strengthOptions]);
 
-  useEffect(() => {
-    if (aclOptions.length === 0) return;
-    setDraft((current) => ({ ...current, exerciseId: aclOptions[0].id }));
-  }, [aclOptions]);
 
   useEffect(() => {
     if (editingId) return;
@@ -449,15 +441,19 @@ export default function YogaLogApp() {
 
   useEffect(() => {
     if (editingId) return;
+    if (activeType !== "strength") return;
     if (strengthOptions.length === 0) return;
+    if (strengthOptions.some((workout) => workout.id === draft.exerciseId)) return;
     setDraft((current) => ({ ...current, exerciseId: strengthOptions[0].id }));
-  }, [strengthOptions, editingId]);
+  }, [strengthOptions, editingId, activeType, draft.exerciseId]);
 
   useEffect(() => {
     if (editingId) return;
+    if (activeType !== "acl") return;
     if (aclOptions.length === 0) return;
+    if (aclOptions.some((routine) => routine.id === draft.exerciseId)) return;
     setDraft((current) => ({ ...current, exerciseId: aclOptions[0].id }));
-  }, [aclOptions, editingId]);
+  }, [aclOptions, editingId, activeType, draft.exerciseId]);
 
   const logsByDate = useMemo(() => {
     const map = new Map<string, ActivityLogRow[]>();
