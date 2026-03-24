@@ -222,6 +222,17 @@ select {
   padding: 1.5rem;
 }
 
+@supports (-webkit-touch-callout: none) {
+  body {
+    background-attachment: scroll, scroll;
+  }
+
+  .admin-card,
+  .admin-overlay-panel {
+    -webkit-backdrop-filter: blur(14px);
+  }
+}
+
 @media (max-width: 720px) {
   .admin-overlay-backdrop {
     align-items: flex-end;
