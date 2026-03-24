@@ -1,0 +1,335 @@
+{
+  "id": "ALV_3_04_hatarnelkuli_nyugalom",
+  "title": "Határnélküli Nyugalom",
+  "category": "ALV",
+  "meditation_mode": "imaginativ",
+  "level": "halado",
+  "order_in_category": 4,
+  "duration_sec": 1020,
+  "summary_short": "Mély alvásmeditáció a testi és mentális határok oldására, a határnélküli csend és tágasság megtapasztalására.",
+  "tone": ["lágy", "táguló", "elmélyülő"],
+  "techniques": [
+    "testpásztázás",
+    "tudati tér kiterjesztése",
+    "passzív megfigyelés",
+    "elengedés",
+    "jelenlét"
+  ],
+  "visual_theme": "default_dark_atmospheric",
+  "status": "optimalizalt",
+  "is_published": true,
+  "campaign_key": null,
+  "source_docx": "ALV_3_04_Hatarnelkuli_Nyugalom_Optimalizalt.docx",
+  "reader": {
+    "autoplay": true,
+    "end_behavior": "fade_out",
+    "blocks": [
+      {
+        "type": "text",
+        "content": "Helyezkedj el kényelmesen...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Engedd, hogy tested megtalálja a helyét a térben...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Érezd a kapcsolatot a testeddel,",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 2000
+      },
+      {
+        "type": "text",
+        "content": "mintha egy puha belső tenger felszínén lebegnél...",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Semmit sem kell változtatnod.",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Semmit sem kell irányítanod.",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Fürkészd végig finoman figyelmeddel a tested belső tájait...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Észlelj minden apró érzetet...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Ha feszültséget találsz, csak hagyd, hogy beleolvadjon a légzés hullámába...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Belégzés...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Finom tágulás belül...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Kilégzés...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Lágy megpihenés.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Mintha a tested belső tere is lélegezne...",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Most figyeld meg a gondolatokat, érzeteket, érzéseket...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Mint apró felhők, amelyek átúsznak egy széles, tiszta égbolton.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Engedd, hogy a figyelmed lágyan kövesse őket...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Majd térj vissza a tág tudati tér nyugalmához...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Csak hagyd, hogy minden mozgás feloldódjon a tér könnyedségében.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Most engedd, hogy a figyelmed tovább táguljon...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Mint egy horizont, ami láthatatlanul kitárul minden irányban.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Belégzés...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "A tér kitágul...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Kilégzés...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "A határok elmosódnak.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most nincs test...",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Nincs gondolat...",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Csak a csend...",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "A határnélküli jelenlét...",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Engedd, hogy minden szó, minden irány, minden érzet lassan elsimuljon...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Ha elalszol, az is rendben van...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Csak sodródj a határnélküli nyugalomban...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Most már nincs szükség irányra vagy szóra...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Csak a csend ölelő határtalansága marad.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 35000
+      }
+    ]
+  }
+}

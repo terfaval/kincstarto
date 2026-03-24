@@ -1,0 +1,179 @@
+{
+  "id": "ALV_1_05_alomkerti_seta",
+  "title": "Álomkerti Séta",
+  "category": "ALV",
+  "meditation_mode": "imaginativ",
+  "level": "kezdo",
+  "order_in_category": 5,
+  "duration_sec": 720,
+  "summary_short": "Fátyolos, álomszerű vizualizációval vezetett alvásmeditáció a test elnehezedésére és az álomtérbe való átúszás támogatására.",
+  "tone": ["lágy", "lebegő", "csendes"],
+  "techniques": [
+    "testérzet lazítás",
+    "imaginatív vizualizáció",
+    "formaoldás",
+    "elengedés",
+    "jelenlét"
+  ],
+  "visual_theme": "default_dark_atmospheric",
+  "status": "optimalizalt",
+  "is_published": true,
+  "campaign_key": null,
+  "source_docx": "ALV_1_05_Alomkerti_Seta_Optimalizalt.docx",
+  "reader": {
+    "autoplay": true,
+    "end_behavior": "fade_out",
+    "blocks": [
+      {
+        "type": "text",
+        "content": "Helyezkedj el kényelmesen…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "A tested lassan megnyugszik… mint a víztükör, ha elcsendesedik minden körülötte…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Érzed a tested súlyát… ahogy finoman belesimul az ágyba…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "A légzésed lassan, magától történik… mint valami csendes áramlás…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Most megengedheted magadnak, hogy ne figyelj semmire… és éppen itt vagy…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "A szemed mögött halvány fények sejlenek fel… mintha egy kert képe lassan kibomlana…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Nem részlet, nem forma… csak hangulat… mint mikor egy régi emlék érkezik, de nem emlékszel pontosan…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "A levegőben valami ismerős illat van… finom, halk… csak érzékeled…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "A talpad alatt valami lágy érintés… mintha fű vagy moha lenne…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Egy ösvény nyúlik előtted… de nem kell rajta végigmenned… elég, hogy tudod: ott van.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "A kert képe lassan elhalványul… csak az érzés marad, hogy benne vagy…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Mintha a tested határai is elkezdenének feloldódni…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "A gondolatok halkabbak… a figyelem nem keres többé…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Minden, ami vagy, most egyszerre súly… és lebegés…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "A kert már nem kint van, hanem benned… és szépen lassan az is elcsendesül…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most már nem kell, hogy bárhová menjünk… csak maradj ebben az érzésben…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "A test pihen… a gondolatok elhalkulnak… a figyelem elenged…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "És ahol most vagy… ott nyitva áll az álom kapuja…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 12000
+      }
+    ]
+  }
+}
