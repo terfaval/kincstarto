@@ -2,7 +2,8 @@ import { loadSpiritLibrary } from "@/lib/spiritLibrary";
 import SpiritLibraryApp from "@/components/spirit/SpiritLibraryApp";
 
 export const metadata = {
-  title: "Spirit Library",
+  title: "Kincstartó",
+  description: "Könyvek és gondolatok személyes gyűjteménye a belső út kereséséhez",
 };
 
 export const dynamic = "force-dynamic";
