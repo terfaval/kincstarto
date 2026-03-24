@@ -225,7 +225,6 @@
 
 .pathCard,
 .pathResultCard,
-.pathBookButton,
 .relatedCard,
 .nextStepCard {
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease;
@@ -237,7 +236,6 @@
   .card:hover,
   .pathCard:hover,
   .pathResultCard:hover,
-  .pathBookButton:hover,
   .relatedCard:hover,
   .nextStepCard:hover {
     transform: translateY(-2px);
@@ -1099,7 +1097,7 @@
 
 .pathGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
 }
 
@@ -1108,11 +1106,21 @@
   border: 1px solid var(--line);
   background: var(--surface);
   padding: 1rem;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 0.8rem;
   text-align: left;
   cursor: pointer;
   appearance: none;
+}
+
+.pathProgressSection {
+  margin-top: auto;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.pathProgressBarCard {
 }
 
 .pathCardHeader {
@@ -1121,9 +1129,13 @@
   gap: 0.6rem;
 }
 
+.pathCardHeaderContent {
+  min-height: 5.2rem;
+}
+
 .pathTitle {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
 .pathMeta {
@@ -1140,24 +1152,19 @@
 
 .pathBookList {
   display: grid;
-  gap: 0.5rem;
+  gap: 0.2rem;
 }
 
-.pathBookCard {
-  display: grid;
-  gap: 0.45rem;
-}
-
-.pathBookButton {
-  border-radius: 0.75rem;
-  border: 1px solid var(--line);
-  background: var(--surface-2);
-  padding: 0.6rem 0.75rem;
-  text-align: left;
+.pathBookRowStatic {
   display: grid;
   gap: 0.2rem;
-  font-size: 0.9rem;
+  padding: 0.45rem 0;
 }
+
+.pathBookRowStatic:not(:last-child) {
+  border-bottom: 1px solid var(--line);
+}
+
 
 .pathBookAuthor {
   color: var(--muted);
@@ -1390,27 +1397,36 @@
 
 .pathOverlayList {
   display: grid;
-  gap: 0.8rem;
+  gap: 1rem;
 }
 
 .pathOverlayItem {
   display: grid;
-  gap: 0.4rem;
-  padding: 0.8rem 0.9rem;
-  border-radius: 0.9rem;
-  border: 1px solid var(--line);
-  background: var(--surface);
+  gap: 0.3rem;
 }
 
-.pathOverlayBook {
+.pathOverlayBookCard {
   text-align: left;
-  display: grid;
-  gap: 0.2rem;
-  border: none;
-  background: transparent;
-  padding: 0;
   cursor: pointer;
   touch-action: manipulation;
+}
+
+.pathOverlayBookCard:not(:last-child) {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.6rem;
+}
+
+.pathOverlayHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.pathOverlayThemes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
 }
 
 @media (max-width: 960px) {

@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { Fragment, useMemo, useState, useEffect } from "react";
 import { Bookmark, Check, Clock, Circle, Dumbbell, LayoutList, LogOut, Route, SlidersHorizontal, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -71,6 +71,12 @@ function getLevelDots(level: string) {
   if (level === "halado") return 3;
   if (level === "kozep-halado") return 2;
   return 1;
+}
+
+function getLevelRank(level: string) {
+  if (level === "kezdo") return 0;
+  if (level === "kozep-halado") return 1;
+  return 2;
 }
 const LANGUAGE_OPTIONS = [
   { value: "hu", label: "HU" },
@@ -626,28 +632,53 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
                     const entries = pathItemsForRender(path);
                     const progress = getPathProgress(path);
                     return (
-                      <button
+                      <div
                         key={path.id}
-                        type="button"
+                        role="button"
+                        tabIndex={0}
                         className={styles.pathCard}
                         onClick={() => setSelectedPathId(path.id)}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
+                            setSelectedPathId(path.id);
+                          }
+                        }}
                       >
                         <div className={styles.pathCardHeader}>
-                          <div>
+                          <div className={styles.pathCardHeaderContent}>
                             <h3 className={styles.pathTitle}>{path.title}</h3>
                             {path.description && <p className={styles.pathDesc}>{path.description}</p>}
-                            <p className={styles.pathMeta}>
-                              {`${entries.length} könyv · ${progress}%`}
-                            </p>
                           </div>
                         </div>
-                        <div className={`${styles.pathProgressBar} ${styles.pathProgressBarCard}`}>
-                          <span
-                            className={styles.pathProgressFill}
-                            style={{ width: `${progress}%` }}
-                          />
+                        {entries.length > 0 && (
+                          <div className={styles.pathBookList}>
+                            {[...entries]
+                              .sort((a, b) => {
+                                const levelDelta = getLevelRank(a.book.level) - getLevelRank(b.book.level);
+                                if (levelDelta !== 0) return levelDelta;
+                                return a.book.title.localeCompare(b.book.title, "hu");
+                              })
+                              .map(({ book }) => (
+                                <div key={book.id} className={styles.pathBookRowStatic}>
+                                  <strong>{book.title}</strong>
+                                  <span className={styles.pathBookAuthor}>{book.author}</span>
+                                </div>
+                              ))}
+                          </div>
+                        )}
+                        <div className={styles.pathProgressSection}>
+                          <p className={styles.pathMeta}>
+                            {`${entries.length} könyv · ${progress}%`}
+                          </p>
+                          <div className={`${styles.pathProgressBar} ${styles.pathProgressBarCard}`}>
+                            <span
+                              className={styles.pathProgressFill}
+                              style={{ width: `${progress}%` }}
+                            />
+                          </div>
                         </div>
-                      </button>
+                      </div>
                     );
                   })}
                 </div>
@@ -1051,39 +1082,84 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
               </div>
 
             <div className={styles.pathOverlayList}>
-              {pathItemsForRender(selectedPath).map(({ book, item }) => (
-                <div key={book.id} className={styles.pathOverlayItem}>
+              {pathItemsForRender(selectedPath).map(({ book, item }) => {
+                const card = (
                   <button
                     type="button"
-                    className={styles.pathOverlayBook}
+                    className={`${styles.nextStepCard} ${styles.pathOverlayBookCard}`}
                     onClick={() => {
                       setSelectedPathId(null);
                       setBookStack([book]);
                     }}
                   >
-                    <div>
+                    <div className={styles.pathOverlayHeaderRow}>
                       <strong>{book.title}</strong>
-                      <span className={styles.pathBookAuthor}>{book.author}</span>
+                      <div className={styles.levelRow} aria-label={book.level}>
+                        {Array.from({ length: 3 }).map((_, idx) => (
+                          <span
+                            key={`${book.id}-path-dot-${idx}`}
+                            className={`${styles.levelDot} ${idx < getLevelDots(book.level) ? styles.levelDotActive : ""}`}
+                          />
+                        ))}
+                      </div>
                     </div>
+                    <span className={styles.pathBookAuthor}>{book.author}</span>
+                    {book.themes.length > 0 && (
+                      <div className={styles.pathOverlayThemes}>
+                        {book.themes.slice(0, 5).map((theme) => {
+                          const color = getThemeColor(themePills, theme);
+                          return (
+                            <span
+                              key={theme}
+                              className={styles.themeTag}
+                              style={{
+                                borderColor: color,
+                                color,
+                                background: hexToRgba(color, 0.12),
+                              }}
+                            >
+                              {getThemeShortLabel(themePills, theme)}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    )}
+                    {book.summary_short && (
+                      <span className={styles.nextStepSummary}>{book.summary_short}</span>
+                    )}
                   </button>
-                  {isAdmin ? (
-                    <textarea
-                      className={styles.pathComment}
-                      value={item.comment ?? ""}
-                      onChange={(event) =>
-                        handlePathCommentChange(selectedPath.id, book.id, event.target.value)
-                      }
-                      onBlur={(event) =>
-                        handlePathCommentSave(selectedPath.id, book.id, event.target.value)
-                      }
-                      placeholder="Megjegyzés ehhez az olvasmányhoz"
-                      rows={2}
-                    />
-                  ) : (
-                    item.comment && <p className={styles.pathComment}>{item.comment}</p>
-                  )}
-                </div>
-              ))}
+                );
+
+                if (!isAdmin) {
+                  return (
+                    <Fragment key={book.id}>
+                      {card}
+                    </Fragment>
+                  );
+                }
+
+                return (
+                  <div key={book.id} className={styles.pathOverlayItem}>
+                    {card}
+                    {isAdmin ? (
+                      <textarea
+                        className={styles.pathComment}
+                        value={item.comment ?? ""}
+                        onChange={(event) =>
+                          handlePathCommentChange(selectedPath.id, book.id, event.target.value)
+                        }
+                        onBlur={(event) =>
+                          handlePathCommentSave(selectedPath.id, book.id, event.target.value)
+                        }
+                        placeholder="Megjegyzés ehhez az olvasmányhoz"
+                        rows={2}
+                      />
+                    ) : (
+                      item.comment && <p className={styles.pathComment}>{item.comment}</p>
+                    )}
+                  </div>
+                );
+              })}
             </div>
             </div>
           </div>
