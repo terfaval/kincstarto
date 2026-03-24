@@ -3,6 +3,7 @@ import { readFile, writeFile, rename } from "node:fs/promises";
 import { join } from "node:path";
 import { SpiritDraftSchema } from "@/lib/spiritDraftSchema";
 import { SpiritBookSchema, validateSpiritLibrary } from "@/lib/spiritSchema";
+import { buildTagLabel } from "@/lib/spiritTags";
 import { requireAdmin } from "@/lib/adminAuth";
 
 const LIBRARY_PATH = join(process.cwd(), "data", "spirit", "library.json");
@@ -149,6 +150,15 @@ export async function POST(request: Request) {
 
   const cleaned = isJsonBook ? normalizeBook(book) : normalizeDraft(book);
   library.books.push(cleaned);
+  if (book.tags && book.tags.length > 0) {
+    if (!library.tag_labels) library.tag_labels = {};
+    book.tags.forEach((tag) => {
+      if (!library.tag_labels) return;
+      if (!library.tag_labels[tag]) {
+        library.tag_labels[tag] = buildTagLabel(tag);
+      }
+    });
+  }
 
   const tmp = `${LIBRARY_PATH}.tmp`;
   await writeFile(tmp, JSON.stringify(library, null, 2) + "\n", "utf-8");

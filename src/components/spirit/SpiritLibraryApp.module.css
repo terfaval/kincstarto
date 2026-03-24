@@ -654,7 +654,7 @@
   display: grid;
   grid-template-columns: 120px 1fr;
   gap: 0.7rem;
-  align-items: center;
+  align-items: start;
 }
 
 .metaPillsInline {
@@ -670,7 +670,6 @@
   border: 1px solid var(--line);
   background: var(--surface);
   display: grid;
-  gap: 0.75rem;
 }
 
 
@@ -686,7 +685,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.45rem;
 }
 
 .recommendationHeader .levelRow {
@@ -1445,6 +1444,12 @@
 .nextStepReason {
   color: var(--muted);
   font-size: 0.78rem;
+}
+
+.nextStepSummary {
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
 }
 
 @media (max-width: 720px) {

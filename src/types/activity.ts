@@ -428,10 +428,10 @@ export const ACTIVITY_COLORS: Record<ActivityType, string> = {
 };
 
 export const ACTIVITY_TYPE_META: Record<ActivityType, { label: string; color: string; icon: string }> = {
-  yoga: { label: "Yoga", color: "#d97706", icon: "/yoga/ICONS/icon_yoga.svg" },
-  strength: { label: "Strength", color: "#c2410c", icon: "/yoga/ICONS/icon_training.svg" },
-  acl: { label: "ACL", color: "#16a34a", icon: "/yoga/ICONS/icon_acl.svg" },
-  running: { label: "Running", color: "#fbbf24", icon: "/yoga/ICONS/icon_run.svg" },
+  yoga: { label: "Yoga", color: "#d97706", icon: "/YOGA/ICONS/icon_yoga.svg" },
+  strength: { label: "Strength", color: "#c2410c", icon: "/YOGA/ICONS/icon_training.svg" },
+  acl: { label: "ACL", color: "#16a34a", icon: "/YOGA/ICONS/icon_acl.svg" },
+  running: { label: "Running", color: "#fbbf24", icon: "/YOGA/ICONS/icon_run.svg" },
 };
 
 export const ACTIVITY_CATEGORY_META: Record<
@@ -439,19 +439,19 @@ export const ACTIVITY_CATEGORY_META: Record<
   Record<string, { label: string; color: string; icon: string }>
 > = {
   yoga: {
-    relax: { label: "Relax", color: "#2563eb", icon: "/yoga/ICONS/icon_yoga-relax.svg" },
-    strong: { label: "Strong", color: "#dc2626", icon: "/yoga/ICONS/icon_yoga-strong.svg" },
+    relax: { label: "Relax", color: "#2563eb", icon: "/YOGA/ICONS/icon_yoga-relax.svg" },
+    strong: { label: "Strong", color: "#dc2626", icon: "/YOGA/ICONS/icon_yoga-strong.svg" },
   },
   strength: {
-    easy: { label: "Easy", color: "#f97316", icon: "/yoga/ICONS/icon_training-easy.svg" },
-    intense: { label: "Intense", color: "#b91c1c", icon: "/yoga/ICONS/icon_training-intense.svg" },
+    easy: { label: "Easy", color: "#f97316", icon: "/YOGA/ICONS/icon_training-easy.svg" },
+    intense: { label: "Intense", color: "#b91c1c", icon: "/YOGA/ICONS/icon_training-intense.svg" },
   },
   acl: {
-    routine: { label: "Routine", color: "#22c55e", icon: "/yoga/ICONS/icon_acl-routine.svg" },
-    block: { label: "Block", color: "#0f766e", icon: "/yoga/ICONS/icon_acl-train.svg" },
+    routine: { label: "Routine", color: "#22c55e", icon: "/YOGA/ICONS/icon_acl-routine.svg" },
+    block: { label: "Block", color: "#0f766e", icon: "/YOGA/ICONS/icon_acl-train.svg" },
   },
   running: {
-    run: { label: "Run", color: "#fbbf24", icon: "/yoga/ICONS/icon_run.svg" },
+    run: { label: "Run", color: "#fbbf24", icon: "/YOGA/ICONS/icon_run.svg" },
   },
 };
 

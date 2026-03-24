@@ -297,6 +297,24 @@ export default function YogaLogApp() {
     exerciseId: "",
   });
 
+  const renderLogBadge = (meta: { label: string; color: string; icon: string }) => (
+    <span
+      className={styles.logBadge}
+      style={{
+        borderColor: meta.color,
+        color: meta.color,
+        backgroundColor: hexToRgba(meta.color, 0.12),
+      }}
+    >
+      <span
+        className={styles.pillIcon}
+        style={{ ["--pill-icon" as any]: `url(${meta.icon})` }}
+        aria-hidden="true"
+      />
+      {meta.label}
+    </span>
+  );
+
   useEffect(() => {
     const date = parseDateKey(selectedDate);
     const nextMonth = toMonthKey(date);
@@ -852,16 +870,48 @@ export default function YogaLogApp() {
                 <div className={styles.optionRow}>
                   <button
                     type="button"
-                    className={`${styles.optionButton} ${selectedYogaCategory === "relax" ? styles.optionButtonActive : ""}`}
+                    className={`${styles.optionButton} ${
+                      selectedYogaCategory === "relax" ? styles.optionButtonActive : styles.optionButtonInactive
+                    }`}
                     onClick={() => setSelectedYogaCategory("relax")}
+                    style={
+                      selectedYogaCategory === "relax"
+                        ? {
+                            borderColor: ACTIVITY_CATEGORY_META.yoga.relax.color,
+                            backgroundColor: hexToRgba(ACTIVITY_CATEGORY_META.yoga.relax.color, 0.12),
+                            color: ACTIVITY_CATEGORY_META.yoga.relax.color,
+                          }
+                        : undefined
+                    }
                   >
+                    <span
+                      className={styles.pillIcon}
+                      style={{ ["--pill-icon" as any]: `url(${ACTIVITY_CATEGORY_META.yoga.relax.icon})` }}
+                      aria-hidden="true"
+                    />
                     {"Relax"}
                   </button>
                   <button
                     type="button"
-                    className={`${styles.optionButton} ${selectedYogaCategory === "strong" ? styles.optionButtonActive : ""}`}
+                    className={`${styles.optionButton} ${
+                      selectedYogaCategory === "strong" ? styles.optionButtonActive : styles.optionButtonInactive
+                    }`}
                     onClick={() => setSelectedYogaCategory("strong")}
+                    style={
+                      selectedYogaCategory === "strong"
+                        ? {
+                            borderColor: ACTIVITY_CATEGORY_META.yoga.strong.color,
+                            backgroundColor: hexToRgba(ACTIVITY_CATEGORY_META.yoga.strong.color, 0.12),
+                            color: ACTIVITY_CATEGORY_META.yoga.strong.color,
+                          }
+                        : undefined
+                    }
                   >
+                    <span
+                      className={styles.pillIcon}
+                      style={{ ["--pill-icon" as any]: `url(${ACTIVITY_CATEGORY_META.yoga.strong.icon})` }}
+                      aria-hidden="true"
+                    />
                     {"Strong"}
                   </button>
                 </div>
@@ -1012,16 +1062,48 @@ export default function YogaLogApp() {
                 <div className={styles.optionRow}>
                   <button
                     type="button"
-                    className={`${styles.optionButton} ${selectedStrengthCategory === "easy" ? styles.optionButtonActive : ""}`}
+                    className={`${styles.optionButton} ${
+                      selectedStrengthCategory === "easy" ? styles.optionButtonActive : styles.optionButtonInactive
+                    }`}
                     onClick={() => setSelectedStrengthCategory("easy")}
+                    style={
+                      selectedStrengthCategory === "easy"
+                        ? {
+                            borderColor: ACTIVITY_CATEGORY_META.strength.easy.color,
+                            backgroundColor: hexToRgba(ACTIVITY_CATEGORY_META.strength.easy.color, 0.12),
+                            color: ACTIVITY_CATEGORY_META.strength.easy.color,
+                          }
+                        : undefined
+                    }
                   >
+                    <span
+                      className={styles.pillIcon}
+                      style={{ ["--pill-icon" as any]: `url(${ACTIVITY_CATEGORY_META.strength.easy.icon})` }}
+                      aria-hidden="true"
+                    />
                     {"Easy"}
                   </button>
                   <button
                     type="button"
-                    className={`${styles.optionButton} ${selectedStrengthCategory === "intense" ? styles.optionButtonActive : ""}`}
+                    className={`${styles.optionButton} ${
+                      selectedStrengthCategory === "intense" ? styles.optionButtonActive : styles.optionButtonInactive
+                    }`}
                     onClick={() => setSelectedStrengthCategory("intense")}
+                    style={
+                      selectedStrengthCategory === "intense"
+                        ? {
+                            borderColor: ACTIVITY_CATEGORY_META.strength.intense.color,
+                            backgroundColor: hexToRgba(ACTIVITY_CATEGORY_META.strength.intense.color, 0.12),
+                            color: ACTIVITY_CATEGORY_META.strength.intense.color,
+                          }
+                        : undefined
+                    }
                   >
+                    <span
+                      className={styles.pillIcon}
+                      style={{ ["--pill-icon" as any]: `url(${ACTIVITY_CATEGORY_META.strength.intense.icon})` }}
+                      aria-hidden="true"
+                    />
                     {"Intense"}
                   </button>
                 </div>
@@ -1127,16 +1209,48 @@ export default function YogaLogApp() {
                 <div className={styles.optionRow}>
                   <button
                     type="button"
-                    className={`${styles.optionButton} ${selectedAclCategory === "routine" ? styles.optionButtonActive : ""}`}
+                    className={`${styles.optionButton} ${
+                      selectedAclCategory === "routine" ? styles.optionButtonActive : styles.optionButtonInactive
+                    }`}
                     onClick={() => setSelectedAclCategory("routine")}
+                    style={
+                      selectedAclCategory === "routine"
+                        ? {
+                            borderColor: ACTIVITY_CATEGORY_META.acl.routine.color,
+                            backgroundColor: hexToRgba(ACTIVITY_CATEGORY_META.acl.routine.color, 0.12),
+                            color: ACTIVITY_CATEGORY_META.acl.routine.color,
+                          }
+                        : undefined
+                    }
                   >
+                    <span
+                      className={styles.pillIcon}
+                      style={{ ["--pill-icon" as any]: `url(${ACTIVITY_CATEGORY_META.acl.routine.icon})` }}
+                      aria-hidden="true"
+                    />
                     {"Routine"}
                   </button>
                   <button
                     type="button"
-                    className={`${styles.optionButton} ${selectedAclCategory === "block" ? styles.optionButtonActive : ""}`}
+                    className={`${styles.optionButton} ${
+                      selectedAclCategory === "block" ? styles.optionButtonActive : styles.optionButtonInactive
+                    }`}
                     onClick={() => setSelectedAclCategory("block")}
+                    style={
+                      selectedAclCategory === "block"
+                        ? {
+                            borderColor: ACTIVITY_CATEGORY_META.acl.block.color,
+                            backgroundColor: hexToRgba(ACTIVITY_CATEGORY_META.acl.block.color, 0.12),
+                            color: ACTIVITY_CATEGORY_META.acl.block.color,
+                          }
+                        : undefined
+                    }
                   >
+                    <span
+                      className={styles.pillIcon}
+                      style={{ ["--pill-icon" as any]: `url(${ACTIVITY_CATEGORY_META.acl.block.icon})` }}
+                      aria-hidden="true"
+                    />
                     {"Block"}
                   </button>
                 </div>
@@ -1239,6 +1353,10 @@ export default function YogaLogApp() {
             {activeType === "running" && (
               <div className={styles.stepSection}>
                 <div className={styles.formGrid}>
+                  {(() => {
+                    const meta = getCategoryMeta("running", "run");
+                    return <div className={styles.optionRow}>{renderLogBadge(meta)}</div>;
+                  })()}
                   <label className="form-field">
                     <span className="form-field__label">{"Megnevezés"}</span>
                     <input

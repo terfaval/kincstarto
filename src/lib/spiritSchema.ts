@@ -61,6 +61,7 @@ export const SpiritLibrarySchema = z.object({
   library_version: z.string().min(1),
   thematic_pills: z.array(SpiritPillSchema).min(1),
   books: z.array(SpiritBookSchema).min(1),
+  tag_labels: z.record(z.string().min(1)).optional(),
   paths: z.array(SpiritPathSchema).optional(),
 });
 

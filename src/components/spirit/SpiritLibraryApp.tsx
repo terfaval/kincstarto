@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { SpiritBook, SpiritLibrary, SpiritPill, SpiritTradition, SpiritLevel, SpiritPath } from "@/lib/spiritSchema";
 import { buildLearningPath, getNextBookRecommendations, type LearningPathFilters } from "@/lib/learningPathEngine";
+import { resolveTagLabel } from "@/lib/spiritTags";
 import styles from "./SpiritLibraryApp.module.css";
 import SpiritAddBookModal from "./SpiritAddBookModal";
 
@@ -117,12 +118,15 @@ function getOptionLabel(options: { value: string; label: string }[], value: stri
 function prettifyMetaLabel(themes: SpiritPill[], value: string) {
   const themed = themes.find((theme) => theme.slug === value)?.label;
   if (themed) return themed;
-  return value
+  const cleaned = value
     .replace(/[\-_]+/g, " ")
     .replace(/\s+/g, " ")
     .trim()
-    .replace(/\b\w/g, (char) => char.toUpperCase());
+    .toLowerCase();
+  if (!cleaned) return value;
+  return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
 }
+
 
 
 function hexToRgba(hex: string, alpha: number) {
@@ -183,6 +187,7 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
   const [statusNotes, setStatusNotes] = useState<Record<string, string>>({});
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [viewModeLocked, setViewModeLocked] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (!selectedBook) {
@@ -218,6 +223,7 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
     if (typeof window === "undefined") return;
     const media = window.matchMedia("(max-width: 720px)");
     const syncViewMode = () => {
+      setIsMobile(media.matches);
       if (media.matches) {
         setViewMode("grid");
         return;
@@ -234,6 +240,7 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
   }, [viewModeLocked]);
 
   const themePills = library.thematic_pills;
+  const tagLabels = library.tag_labels ?? {};
   const bookById = useMemo(() => new Map(library.books.map((book) => [book.id, book])), [library.books]);
   const curatedPaths = paths;
 
@@ -296,7 +303,19 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
   };
 
   const toggleFilters = () => {
-    setFiltersOpen((current) => !current);
+    setFiltersOpen((current) => {
+      const next = !current;
+      if (next) setPathOpen(false);
+      return next;
+    });
+  };
+
+  const togglePathPanel = () => {
+    setPathOpen((current) => {
+      const next = !current;
+      if (next) setFiltersOpen(false);
+      return next;
+    });
   };
 
   const handleLogout = async () => {
@@ -666,19 +685,21 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
             className={`${styles.addFab} ${pathOpen ? styles.filterFabActive : ""}`}
             aria-label={pathOpen ? "Utak elrejtése" : "Utak megnyitása"}
             aria-expanded={pathOpen}
-            onClick={() => setPathOpen((current) => !current)}
+            onClick={togglePathPanel}
           >
             <Route size={18} className={styles.fabIcon} />
           </button>
         )}
-        <button
-          type="button"
-          className={`${styles.addFab} ${styles.viewToggleButton} ${viewMode === "list" ? styles.filterFabActive : ""}`}
-          aria-label={viewMode === "list" ? "Rácsnézet" : "Lista nézet"}
-          onClick={toggleViewMode}
-        >
-          <LayoutList size={18} />
-        </button>
+          {!isMobile && (
+            <button
+              type="button"
+              className={`${styles.addFab} ${styles.viewToggleButton} ${viewMode === "list" ? styles.filterFabActive : ""}`}
+              aria-label={viewMode === "list" ? "Rácsnézet" : "Lista nézet"}
+              onClick={toggleViewMode}
+            >
+              <LayoutList size={18} />
+            </button>
+          )}
         <button
           type="button"
           className={`${styles.addFab} ${filtersOpen ? styles.filterFabActive : ""}`}
@@ -1086,7 +1107,7 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
               <div className={styles.metaRecommendationGrid}>
                 <div className={styles.recommendationBlock}>
                   <div className={styles.recommendationHeader}>
-                    <span className={styles.metaLabel}>{"Szint"}</span>
+                    <h3>{"Ajánlás"}</h3>
                     <div className={styles.levelRow} aria-label={selectedBook.level}>
                       {Array.from({ length: 3 }).map((_, idx) => (
                         <span
@@ -1099,7 +1120,6 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
                       </span>
                     </div>
                   </div>
-                  <h3>{"Ajánlás"}</h3>
                   <p>{selectedBook.recommendation}</p>
                 </div>
 
@@ -1142,7 +1162,7 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
                         <div className={styles.metaPillsInline}>
                           {selectedBook.tags.map((tag) => (
                             <span key={tag} className={`${styles.metaPill} ${styles.metaPillTag}`}>
-                              {prettifyMetaLabel(themePills, tag)}
+                              {resolveTagLabel(tag, tagLabels)}
                             </span>
                           ))}
                         </div>
@@ -1232,24 +1252,6 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
                 )}
               </div>
 
-              {relatedBooks.length > 0 && (
-                <div className={styles.overlaySection}>
-                  <h3>{"Kapcsolódó könyvek"}</h3>
-                  <div className={styles.relatedGrid}>
-                    {relatedBooks.map((book) => (
-                      <button
-                        key={book.id}
-                        type="button"
-                        className={styles.relatedCard}
-                        onClick={() => setBookStack([book])}
-                      >
-                        <strong>{book.title}</strong>
-                        <span>{book.author}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
               {nextSteps.items.length > 0 && (
                 <div className={styles.overlaySection}>
                   <h3>{"Következő lépések"}</h3>
@@ -1263,10 +1265,15 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
                       >
                         <div>
                           <strong>{item.book.title}</strong>
-                          <span className={styles.pathBookAuthor}>{item.book.author}</span>
                         </div>
+                        <span className={styles.pathBookAuthor}>{item.book.author}</span>
                         {item.reasons.length > 0 && (
-                          <span className={styles.nextStepReason}>{item.reasons.join(" · ")}</span>
+                          <span className={styles.nextStepReason}>
+                            {`Kapcsolódó könyv · ${item.reasons.length} közös téma`}
+                          </span>
+                        )}
+                        {item.book.summary_short && (
+                          <span className={styles.nextStepSummary}>{item.book.summary_short}</span>
                         )}
                       </button>
                     ))}
