@@ -1,4 +1,4 @@
-import type { MeditationCategory } from "./meditation-types";
+﻿import type { MeditationCategory } from "./meditation-types";
 
 const CATEGORY_LABELS: Record<MeditationCategory, string> = {
   ALV: "Alvas",
@@ -29,3 +29,4 @@ export function getCategoryLabel(category: MeditationCategory) {
 export function getCategoryColor(category: MeditationCategory) {
   return CATEGORY_COLORS[category] ?? "rgba(170, 190, 220, 0.7)";
 }
+

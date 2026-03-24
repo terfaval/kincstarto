@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useState } from "react";
 import type { Meditation, MeditationEndBehavior } from "../lib/meditation-types";
@@ -94,3 +94,4 @@ export default function MeditationSpace({ meditations: initialMeditations }: Pro
     </section>
   );
 }
+

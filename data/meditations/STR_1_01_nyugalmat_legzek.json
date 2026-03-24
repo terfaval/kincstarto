@@ -1,0 +1,298 @@
+{
+  "id": "STR_1_01_nyugalmat_legzek",
+  "title": "Nyugalmat Légzek",
+  "category": "STR",
+  "level": "kezdo",
+  "order_in_category": 1,
+  "duration_sec": 360,
+  "summary_short": "Rövid stresszoldó légzésmeditáció a feszültség észlelésére, puhítására és a nyugalom visszahívására.",
+  "tone": ["lágy", "csendes", "megengedő"],
+  "techniques": [
+    "termeszetes legzes megfigyelese",
+    "visszatereles",
+    "elengedes",
+    "hala",
+    "jelenlet"
+  ],
+  "visual_theme": "default_dark_atmospheric",
+  "status": "optimalizalt",
+  "is_published": true,
+  "campaign_key": null,
+  "source_docx": "STR_1_01_Nyugalmat_Legzek_Optimalizalt.docx",
+  "reader": {
+    "autoplay": true,
+    "end_behavior": "soft_end",
+    "blocks": [
+      {
+        "type": "text",
+        "content": "Helyezkedj el kényelmesen...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Hunyd be a szemed, ha jólesik...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "Észleld, ahogy a tested megérkezik ide...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell semmit megváltoztatni...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 2500
+      },
+      {
+        "type": "text",
+        "content": "Nem kell semmit javítani...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "Csak érzékeld, ahogy vagy.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Vidd a figyelmed most a légzésedre...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "Ahogy a levegő puhán beáramlik...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3500
+      },
+      {
+        "type": "text",
+        "content": "És lágyan kiáramlik...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Belégzés...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Észleld a nyugalom apró rezdülését a testedben...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 5000
+      },
+      {
+        "type": "text",
+        "content": "Kilégzés...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3500
+      },
+      {
+        "type": "text",
+        "content": "Engedd, hogy ami feszül, most egy kicsit meglazuljon...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "Mint egy fuvallat, ami átsiklik a tó felszínén.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Belégzés...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3500
+      },
+      {
+        "type": "text",
+        "content": "Mint amikor a szél óvatosan megérinti a füvet...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 5000
+      },
+      {
+        "type": "text",
+        "content": "Kilégzés...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "Engedd tovább mindazt, ami nehezék...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Ha a figyelem elkalandozik,",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 2000
+      },
+      {
+        "type": "text",
+        "content": "semmi baj...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 2500
+      },
+      {
+        "type": "text",
+        "content": "Csak észreveszed...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 2500
+      },
+      {
+        "type": "text",
+        "content": "És gyengéden visszahozod a légzésedhez,",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 2500
+      },
+      {
+        "type": "text",
+        "content": "úgy, ahogy most van.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Minden légzés, mint egy halk érintés a világban.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most idézd fel magadban a hálát...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "Hála a testnek, amely hordoz...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Hála a levegőnek, amely simogat...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Hála ennek a csendes időnek, ami most is megenged.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 12000
+      },
+      {
+        "type": "text",
+        "content": "Majd finoman, amikor jólesik,",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "nyisd ki a szemed.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      }
+    ]
+  }
+}

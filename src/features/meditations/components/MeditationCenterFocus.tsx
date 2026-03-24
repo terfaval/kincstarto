@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import type { Meditation } from "../lib/meditation-types";
 import { getCategoryLabel } from "../lib/meditation-utils";
@@ -21,3 +21,4 @@ export default function MeditationCenterFocus({ meditation }: { meditation: Medi
     </div>
   );
 }
+

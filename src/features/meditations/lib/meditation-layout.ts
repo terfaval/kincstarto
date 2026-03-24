@@ -1,4 +1,4 @@
-import type { Meditation } from "./meditation-types";
+﻿import type { Meditation } from "./meditation-types";
 
 export type RingLayoutItem = {
   id: string;
@@ -17,3 +17,4 @@ export function buildRingLayout(items: Meditation[]): RingLayoutItem[] {
     meditation,
   }));
 }
+

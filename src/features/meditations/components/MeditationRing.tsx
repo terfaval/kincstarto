@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import type { Meditation } from "../lib/meditation-types";
 import { buildRingLayout } from "../lib/meditation-layout";
@@ -46,3 +46,4 @@ export default function MeditationRing({ meditations, hoveredId, selectedId, onH
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-export type MeditationCategory = "ALV" | "STR" | "FOK" | "ENR" | "SPC";
+﻿export type MeditationCategory = "ALV" | "STR" | "FOK" | "ENR" | "SPC";
 export type MeditationLevel = "kezdo" | "kozep-halado" | "halado";
 export type MeditationStatus = "raw" | "optimalizalt";
 export type MeditationEndBehavior = "fade_out" | "soft_end" | "complete";
@@ -38,3 +38,4 @@ export type Meditation = {
     blocks: ReaderBlock[];
   };
 };
+

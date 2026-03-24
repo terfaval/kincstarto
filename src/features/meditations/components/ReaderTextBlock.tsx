@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import type { ReaderTextBlock } from "../lib/meditation-types";
 import styles from "../styles/meditations.module.css";
@@ -18,3 +18,4 @@ export default function ReaderTextBlock({ block }: Props) {
     </p>
   );
 }
+

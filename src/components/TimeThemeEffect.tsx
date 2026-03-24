@@ -27,42 +27,71 @@ const pickDailyBackground = (theme: string, date: Date) => {
 };
 
 const applyTheme = (theme: string) => {
+  if (typeof document === "undefined" || !document.documentElement) return;
   document.documentElement.setAttribute("data-time-theme", theme);
 };
 
 export default function TimeThemeEffect() {
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    const safeTheme = (theme: string) => {
+      try {
+        applyTheme(theme);
+      } catch {
+        // no-op: avoid boot crash
+      }
+    };
     const updateTheme = () => {
-      const now = new Date();
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const theme = prefersDark ? "night" : getThemeFromDate();
-      applyTheme(theme);
+      try {
+        const now = new Date();
+        const canMatch = typeof window.matchMedia === "function";
+        const prefersDark = canMatch ? window.matchMedia("(prefers-color-scheme: dark)").matches : false;
+        const theme = prefersDark ? "night" : getThemeFromDate();
+        safeTheme(theme);
 
-      const bg = pickDailyBackground(theme, now);
-      document.documentElement.style.setProperty("--bg-photo", `url("${bg}")`);
+        if (typeof document !== "undefined" && document.documentElement) {
+          const bg = pickDailyBackground(theme, now);
+          document.documentElement.style.setProperty("--bg-photo", `url("${bg}")`);
+        }
+      } catch {
+        safeTheme("day");
+      }
     };
 
     updateTheme();
 
     const intervalId = window.setInterval(updateTheme, MINUTE_MS);
     const handleFocus = () => updateTheme();
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    window.addEventListener("focus", handleFocus);
+    const canMatch = typeof window.matchMedia === "function";
+    const media = canMatch ? window.matchMedia("(prefers-color-scheme: dark)") : null;
     const handleSchemeChange = () => updateTheme();
 
-    window.addEventListener("focus", handleFocus);
-    if (typeof media.addEventListener === "function") {
-      media.addEventListener("change", handleSchemeChange);
-    } else {
-      media.addListener(handleSchemeChange);
+    if (media) {
+      try {
+        if (typeof media.addEventListener === "function") {
+          media.addEventListener("change", handleSchemeChange);
+        } else {
+          media.addListener(handleSchemeChange);
+        }
+      } catch {
+        // ignore listener failures
+      }
     }
 
     return () => {
-      window.clearInterval(intervalId);
-      window.removeEventListener("focus", handleFocus);
-      if (typeof media.removeEventListener === "function") {
-        media.removeEventListener("change", handleSchemeChange);
-      } else {
-        media.removeListener(handleSchemeChange);
+      try {
+        window.clearInterval(intervalId);
+        window.removeEventListener("focus", handleFocus);
+        if (media) {
+          if (typeof media.removeEventListener === "function") {
+            media.removeEventListener("change", handleSchemeChange);
+          } else {
+            media.removeListener(handleSchemeChange);
+          }
+        }
+      } catch {
+        // no-op
       }
     };
   }, []);

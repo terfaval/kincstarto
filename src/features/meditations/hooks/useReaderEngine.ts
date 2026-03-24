@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Meditation, ReaderTextBlock } from "../lib/meditation-types";
@@ -86,3 +86,4 @@ export function useReaderEngine(meditation: Meditation | null) {
     restart,
   };
 }
+

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import type { ReaderTextBlock } from "../lib/meditation-types";
 import ReaderTextBlockView from "./ReaderTextBlock";
@@ -16,3 +16,4 @@ export default function ReaderStage({ block, isClosing }: Props) {
     </div>
   );
 }
+

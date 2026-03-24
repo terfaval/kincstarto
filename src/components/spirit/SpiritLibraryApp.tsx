@@ -209,12 +209,18 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
 
   useEffect(() => {
     if (!selectedBook) {
-      document.body.style.overflow = "";
+      if (typeof document !== "undefined" && document.body) {
+        document.body.style.overflow = "";
+      }
       return;
     }
-    document.body.style.overflow = "hidden";
+    if (typeof document !== "undefined" && document.body) {
+      document.body.style.overflow = "hidden";
+    }
     return () => {
-      document.body.style.overflow = "";
+      if (typeof document !== "undefined" && document.body) {
+        document.body.style.overflow = "";
+      }
     };
   }, [selectedBook]);
 
@@ -239,22 +245,49 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const media = window.matchMedia("(max-width: 720px)");
+    let media: MediaQueryList | null = null;
+    try {
+      if (typeof window.matchMedia === "function") {
+        media = window.matchMedia("(max-width: 720px)");
+      }
+    } catch {
+      media = null;
+    }
     const syncViewMode = () => {
-      setIsMobile(media.matches);
-      if (media.matches) {
+      const isMatch = Boolean(media && media.matches);
+      setIsMobile(isMatch);
+      if (isMatch) {
         setViewMode("grid");
         return;
       }
       if (viewModeLocked) return;
     };
-    syncViewMode();
-    if (typeof media.addEventListener === "function") {
-      media.addEventListener("change", syncViewMode);
-      return () => media.removeEventListener("change", syncViewMode);
+    try {
+      syncViewMode();
+      if (media) {
+        if (typeof media.addEventListener === "function") {
+          media.addEventListener("change", syncViewMode);
+          return () => {
+            try {
+              media?.removeEventListener("change", syncViewMode);
+            } catch {
+              // no-op
+            }
+          };
+        }
+        media.addListener(syncViewMode);
+        return () => {
+          try {
+            media?.removeListener(syncViewMode);
+          } catch {
+            // no-op
+          }
+        };
+      }
+    } catch {
+      setIsMobile(false);
     }
-    media.addListener(syncViewMode);
-    return () => media.removeListener(syncViewMode);
+    return () => {};
   }, [viewModeLocked]);
 
   const themePills = library.thematic_pills;

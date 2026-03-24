@@ -1,4 +1,4 @@
-import { MeditationSpace, loadMeditations } from "@/features/meditations";
+﻿import { MeditationSpace, loadMeditations } from "@/features/meditations";
 
 export const metadata = {
   title: "Meditacios ter",
@@ -11,3 +11,4 @@ export default async function MeditationPage() {
   const meditations = await loadMeditations();
   return <MeditationSpace meditations={meditations} />;
 }
+

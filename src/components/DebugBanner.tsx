@@ -78,7 +78,14 @@ export default function DebugBanner() {
 }
 
 function getBaseInfo(): DebugInfo {
-  const media = typeof window !== "undefined" ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  let media: MediaQueryList | null = null;
+  try {
+    if (typeof window !== "undefined" && typeof window.matchMedia === "function") {
+      media = window.matchMedia("(prefers-color-scheme: dark)");
+    }
+  } catch {
+    media = null;
+  }
   const hasAddEventListener = Boolean(media && typeof media.addEventListener === "function");
   return {
     error: null,

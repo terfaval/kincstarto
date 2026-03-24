@@ -1,4 +1,4 @@
-import { readdir, readFile } from "node:fs/promises";
+﻿import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import type { Meditation, MeditationCategory, MeditationLevel, MeditationStatus } from "./meditation-types";
 
@@ -107,3 +107,4 @@ export async function loadMeditations(): Promise<Meditation[]> {
     return a.category.localeCompare(b.category);
   });
 }
+

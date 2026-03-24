@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useMemo } from "react";
 import type { Meditation } from "../lib/meditation-types";
@@ -17,3 +17,4 @@ export function useMeditations(initial: Meditation[]) {
       });
   }, [initial]);
 }
+

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import type { Meditation } from "../lib/meditation-types";
 import { formatDuration, getCategoryLabel } from "../lib/meditation-utils";
@@ -19,7 +19,7 @@ export default function MeditationPreviewPanel({ meditation, onEnter }: Props) {
       <p className={styles.previewSummary}>{meditation.summary_short}</p>
       <div className={styles.previewMeta}>
         <span>{formatDuration(meditation.duration_sec)}</span>
-        <span className={styles.previewDot}>�</span>
+        <span className={styles.previewDot}>•</span>
         <span>{meditation.level.replace("-", " ")}</span>
       </div>
       {meditation.techniques.length > 0 && (
@@ -37,3 +37,4 @@ export default function MeditationPreviewPanel({ meditation, onEnter }: Props) {
     </aside>
   );
 }
+
