@@ -6,7 +6,11 @@
   "order_in_category": 1,
   "duration_sec": 360,
   "summary_short": "Rövid stresszoldó légzésmeditáció a feszültség észlelésére, puhítására és a nyugalom visszahívására.",
-  "tone": ["lágy", "csendes", "megengedő"],
+  "tone": [
+    "lágy",
+    "csendes",
+    "megengedő"
+  ],
   "techniques": [
     "termeszetes legzes megfigyelese",
     "visszatereles",
@@ -294,5 +298,6 @@
         "duration_ms": 6000
       }
     ]
-  }
+  },
+  "meditation_mode": "kontemplativ"
 }

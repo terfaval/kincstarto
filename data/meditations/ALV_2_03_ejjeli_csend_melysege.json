@@ -1,0 +1,302 @@
+{
+  "id": "ALV_2_03_ejjeli_csend_melysege",
+  "title": "Éjjeli Csend Mélysége",
+  "category": "ALV",
+  "level": "kozep-halado",
+  "order_in_category": 3,
+  "duration_sec": 840,
+  "summary_short": "Belső fény és csendes tér megtapasztalására épülő alvásmeditáció a mély elmerülés támogatására.",
+  "tone": [
+    "lágy",
+    "mélyülő",
+    "csendes"
+  ],
+  "techniques": [
+    "testerzekeles",
+    "passziv vizualizacio",
+    "jelenlet",
+    "elengedes"
+  ],
+  "visual_theme": "default_dark_atmospheric",
+  "status": "optimalizalt",
+  "is_published": true,
+  "campaign_key": null,
+  "source_docx": "ALV_2_03_Ejjeli_Csend_Fenye_Sotet_Optimalizalt.docx",
+  "reader": {
+    "autoplay": true,
+    "end_behavior": "fade_out",
+    "blocks": [
+      {
+        "type": "text",
+        "content": "Helyezkedj el kényelmesen a fekvő helyzetben...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 5000
+      },
+      {
+        "type": "text",
+        "content": "Érezd, ahogy a tested megadja magát a földnek...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 5000
+      },
+      {
+        "type": "text",
+        "content": "Mint egy kő, ami óvatosan megpihen a patak alján.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Nincs hova menni...",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Nincs mit tenni...",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Csak engedd, hogy a tested megtalálja a helyét.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Érzékeld a légzésedet...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "A finom beáramlást...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "A lágy kiáramlást...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Most figyeld meg...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "Mintha valahol belül valami lágy, csendes fény ébredne...",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell látnod...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell formálnod...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Csak engedd, hogy felderengjen, ha akar.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Mint egy csillag, ami magától pihen a sötétben.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Ez a fény lélegezhet is...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Tágulhat...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Lágyan... újra és újra...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Talán csak egy csendes fényfolt, ami ringatózik.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Semmit sem kell csinálnod vele...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "Csak hagyni, hogy ott legyen.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most engedd, hogy az érzékelés is puhán elhalványuljon...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 5000
+      },
+      {
+        "type": "text",
+        "content": "Mint amikor a fény maga is megpihen a csendben.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Nincs következő lépés.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Nincs teendő.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Csak ez az ölelő csend.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Ha bárhol elmerülsz, az is rendben van.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Csak pihenj a csend fényében...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Most a belső fény is elcsendesedik benned,",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "lassan elsimul, és észrevétlenül beleolvad az éjjeli csend sötétjébe.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 35000
+      }
+    ]
+  },
+  "meditation_mode": "imaginativ"
+}

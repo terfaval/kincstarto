@@ -10,6 +10,8 @@ type Props = {
 };
 
 export default function MeditationPreviewPanel({ meditation, onEnter }: Props) {
+  const levelDots = Math.max(1, Math.min(3, Number(meditation.level)));
+
   return (
     <aside className={styles.previewPanel} aria-live="polite">
       <div className={styles.previewHeader}>
@@ -20,7 +22,17 @@ export default function MeditationPreviewPanel({ meditation, onEnter }: Props) {
       <div className={styles.previewMeta}>
         <span>{formatDuration(meditation.duration_sec)}</span>
         <span className={styles.previewDot}>•</span>
-        <span>{meditation.level.replace("-", " ")}</span>
+        <span>Szint {meditation.level}</span>
+      </div>
+      <div className={styles.levelRow} aria-label={`Szint ${meditation.level}`}>
+        {Array.from({ length: 3 }).map((_, idx) => (
+          <span
+            key={`${meditation.id}-level-${idx}`}
+            className={`${styles.levelDot} ${idx < levelDots ? styles.levelDotActive : ""}`}
+            aria-hidden="true"
+          />
+        ))}
+        <span className={styles.levelValue}>{meditation.level}</span>
       </div>
       {meditation.techniques.length > 0 && (
         <div className={styles.previewTags}>
@@ -32,9 +44,8 @@ export default function MeditationPreviewPanel({ meditation, onEnter }: Props) {
         </div>
       )}
       <button type="button" className={`${styles.previewButton} btn btn--primary`} onClick={onEnter}>
-        Belepes
+        Belépés
       </button>
     </aside>
   );
 }
-

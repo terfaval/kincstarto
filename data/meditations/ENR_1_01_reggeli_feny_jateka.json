@@ -1,0 +1,250 @@
+{
+  "id": "ENR_1_01_reggeli_feny_jateka",
+  "title": "Reggeli Fény Játéka",
+  "category": "ENR",
+  "meditation_mode": "imaginativ",
+  "level": "kezdo",
+  "order_in_category": 1,
+  "duration_sec": 360,
+  "summary_short": "Reggeli energizáló meditáció a fény és melegség érzékelésén keresztül, a nap lágy és tudatos indításához.",
+  "tone": ["friss", "lágy", "derűs"],
+  "techniques": [
+    "legzesfigyelem",
+    "testerzekeles",
+    "vizualizacio",
+    "energiaerzet",
+    "jelenlet"
+  ],
+  "visual_theme": "default_dark_atmospheric",
+  "status": "optimalizalt",
+  "is_published": true,
+  "campaign_key": null,
+  "source_docx": "ENR_1_01_Reggeli_Feny_Jateka_Optimalizalt.docx",
+  "reader": {
+    "autoplay": true,
+    "end_behavior": "complete",
+    "blocks": [
+      {
+        "type": "text",
+        "content": "Helyezkedj el kényelmesen...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Ha még csukva van a szemed, hagyd csukva...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Ha nyitva, csak lazán érzékeld a fényt körülötted.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Érezd, ahogy a testedet finoman megérinti a reggel első fénye...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 5000
+      },
+      {
+        "type": "text",
+        "content": "Mint amikor a hajnal fénye lassan kibomlik egy nyugodt táj felett.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Semmit sem kell tenned...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Csak jelen lenni ebben a lágy ébredésben.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most észleld a légzésedet...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "Ahogy a levegő szelíd áramlása megtölti a testedet...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "Mint amikor a nap első sugarai",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 2000
+      },
+      {
+        "type": "text",
+        "content": "lassan átmelegítik a füvet.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Belégzés...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Puha melegség terjed szét benned...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Kilégzés...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "A tested lágyan ellazul, és helyet ad a fénynek.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Engedd, hogy a melegség és a fény óvatosan kitágítsa a belső teredet...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Mint egy tiszta reggeli égbolt, amelyben még minden lehetőség ott rejlik.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell akarni semmit...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Csak hagyni, hogy a jelenlét könnyeddé váljon.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most érzékeld a tested frissülő életérzését...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Észleld, ahogy a fény és a melegség finoman kísérni kezdi a napod.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Majd, amikor kész vagy,",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 2000
+      },
+      {
+        "type": "text",
+        "content": "mozdulj lassan,",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 2000
+      },
+      {
+        "type": "text",
+        "content": "nyisd ki a szemed,",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 2000
+      },
+      {
+        "type": "text",
+        "content": "és engedd, hogy ez a lágy fény vigyen tovább.",
+        "tone": "soft"
+      }
+    ]
+  }
+}

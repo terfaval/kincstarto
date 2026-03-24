@@ -1,5 +1,6 @@
-﻿export type MeditationCategory = "ALV" | "STR" | "FOK" | "ENR" | "SPC";
-export type MeditationLevel = "kezdo" | "kozep-halado" | "halado";
+export type MeditationCategory = "ALV" | "STR" | "FOK" | "ENR" | "SPC";
+export type MeditationLevel = 1 | 2 | 3;
+export type MeditationMode = "kontemplativ" | "imaginativ";
 export type MeditationStatus = "raw" | "optimalizalt";
 export type MeditationEndBehavior = "fade_out" | "soft_end" | "complete";
 export type ReaderTone = "soft" | "neutral" | "deep";
@@ -22,6 +23,7 @@ export type Meditation = {
   title: string;
   category: MeditationCategory;
   level: MeditationLevel;
+  meditation_mode: MeditationMode;
   order_in_category: number;
   duration_sec: number;
   summary_short: string;
@@ -38,4 +40,3 @@ export type Meditation = {
     blocks: ReaderBlock[];
   };
 };
-

@@ -1,0 +1,365 @@
+{
+  "id": "FOK_1_01_rezdules_kapuja",
+  "title": "A Rezdülés Kapuja",
+  "category": "FOK",
+  "meditation_mode": "kontemplativ",
+  "level": "kezdo",
+  "order_in_category": 1,
+  "duration_sec": 660,
+  "summary_short": "Fókuszfejlesztő meditáció a légzés finom érzetére hangolódva, az apró rezdülések észlelésének mélyítésére.",
+  "tone": [
+    "finom",
+    "figyelmi",
+    "csendes"
+  ],
+  "techniques": [
+    "legzeserzet megfigyelese",
+    "rezdulesek eszlelese",
+    "visszatereles",
+    "jelenlet"
+  ],
+  "visual_theme": "default_dark_atmospheric",
+  "status": "optimalizalt",
+  "is_published": true,
+  "campaign_key": null,
+  "source_docx": "FOK_1_01_Rezdules_Kapuja_Optimalizalt.docx",
+  "reader": {
+    "autoplay": true,
+    "end_behavior": "soft_end",
+    "blocks": [
+      {
+        "type": "text",
+        "content": "Helyezkedj el kényelmesen...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "Érezd, ahogy a tested megadja magát a földnek...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 5000
+      },
+      {
+        "type": "text",
+        "content": "Hunyd be a szemed, ha jólesik...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Nincs hova sietni...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 2000
+      },
+      {
+        "type": "text",
+        "content": "Nincs mit elérni...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Csak megérkezni ide, ebbe a pillanatba.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Engedd, hogy figyelmed a légzésed felé forduljon...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "Ahogy a levegő be- és kiáramlik magától.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Vidd most a figyelmed az orrlyukak környékére...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 5000
+      },
+      {
+        "type": "text",
+        "content": "Észleld a levegő hűvös beáramlását...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "És a kilégzés meleg, lágy áramlását...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Nincs semmi teendő...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Csak észlelni...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 2000
+      },
+      {
+        "type": "text",
+        "content": "figyelni...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 2000
+      },
+      {
+        "type": "text",
+        "content": "engedni.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most figyelj még finomabban...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "Érezheted az apró rezdüléseket...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "A levegő alig észrevehető érintését...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 5000
+      },
+      {
+        "type": "text",
+        "content": "Talán érzed, ahogy egyetlen szőrszál is megmozdul a légzés lágy sodrában...",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Ez a rezdülés, ez a finomság most a teljes világod lehet...",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell tudnod semmit...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell megnevezned...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Csak érzékelni...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Mint amikor a hajnal csendje ébred.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Ha a figyelem elkalandozik,",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 2000
+      },
+      {
+        "type": "text",
+        "content": "észreveszed...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 2000
+      },
+      {
+        "type": "text",
+        "content": "Megköszönöd magadnak, hogy felfedezted...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 2500
+      },
+      {
+        "type": "text",
+        "content": "És gyengéden visszahozod a légzés apró rezdüléséhez.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most engedd, hogy minden akarat, minden szó elcsendesedjen...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 5000
+      },
+      {
+        "type": "text",
+        "content": "Csak érzékelsz...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Mint amikor a csend érinti a nyíló virágot.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Az érzékelés maga a jelenlét.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Most lassan, szelídül,",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "visszahozhatod a figyelmed a tested egészébe...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 5000
+      },
+      {
+        "type": "text",
+        "content": "Észleld a támasztékokat, a hangokat, a teret magad körül...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Majd, amikor kész vagy,",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "nyisd ki a szemed.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      }
+    ]
+  }
+}

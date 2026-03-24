@@ -6,7 +6,11 @@
   "order_in_category": 2,
   "duration_sec": 840,
   "summary_short": "Belső fény vizualizációra épülő alvásmeditáció a csendes elmerülés és az álomba való átvezetés támogatására.",
-  "tone": ["lágy", "mélyülő", "csendes"],
+  "tone": [
+    "lágy",
+    "mélyülő",
+    "csendes"
+  ],
   "techniques": [
     "testerzekeles",
     "passziv vizualizacio",
@@ -311,5 +315,6 @@
         "duration_ms": 35000
       }
     ]
-  }
+  },
+  "meditation_mode": "imaginativ"
 }

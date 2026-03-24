@@ -8,8 +8,8 @@ export default function MeditationCenterFocus({ meditation }: { meditation: Medi
   if (!meditation) {
     return (
       <div className={styles.centerFocus}>
-        <p className={styles.centerHint}>Engedd, hogy a figyelem lassan megalljon.</p>
-        <span className={styles.centerSubtle}>Erints egy gyongyot.</span>
+        <p className={styles.centerHint}>Engedd, hogy a figyelmed lassan megálljon.</p>
+        <span className={styles.centerSubtle}>Érints meg egy gyöngyöt.</span>
       </div>
     );
   }
@@ -21,4 +21,3 @@ export default function MeditationCenterFocus({ meditation }: { meditation: Medi
     </div>
   );
 }
-

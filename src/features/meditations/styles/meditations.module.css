@@ -7,9 +7,11 @@
   align-items: center;
   justify-content: center;
   padding: clamp(1.5rem, 5vw, 4rem);
-  background: radial-gradient(900px circle at 20% 20%, rgba(82, 120, 185, 0.16), transparent 60%),
-    radial-gradient(700px circle at 80% 25%, rgba(80, 180, 165, 0.12), transparent 58%),
-    linear-gradient(180deg, rgba(6, 10, 18, 0.94) 0%, rgba(5, 8, 14, 0.98) 100%);
+  background-color: #05080e;
+  background-image: url("/backgrounds/meditations_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: #e9eff6;
   overflow: hidden;
 }
@@ -18,16 +20,27 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.05), transparent 55%),
-    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.04), transparent 60%);
+  background: radial-gradient(900px circle at 18% 18%, rgba(120, 170, 210, 0.38), transparent 62%),
+    radial-gradient(700px circle at 80% 30%, rgba(80, 210, 170, 0.26), transparent 60%),
+    linear-gradient(160deg, rgba(7, 14, 26, 0.7) 0%, rgba(5, 8, 14, 0.92) 100%);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.space::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.06), transparent 55%),
+    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.05), transparent 60%);
   opacity: 0.6;
   pointer-events: none;
 }
 
 .spaceInner {
   position: relative;
-  width: min(920px, 100%);
-  min-height: min(720px, 85vh);
+  width: 100%;
+  min-height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -36,15 +49,17 @@
 }
 
 .centerFocus {
-  position: absolute;
+  position: fixed;
   z-index: 2;
   text-align: center;
   max-width: 360px;
-  padding: 1rem 1.5rem;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(7, 12, 20, 0.68);
-  backdrop-filter: blur(12px);
+  padding: 0;
+  border: none;
+  background: transparent;
+  backdrop-filter: none;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .centerHint {
@@ -79,7 +94,10 @@
 }
 
 .ring {
-  position: relative;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   width: min(520px, 70vw);
   height: min(520px, 70vw);
   border-radius: 50%;
@@ -87,7 +105,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  --ring-radius: clamp(150px, 28vw, 220px);
+  --ring-radius: clamp(190px, 32vw, 260px);
 }
 
 .bead {
@@ -98,7 +116,8 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: rgba(120, 170, 210, 0.25);
   box-shadow: 0 0 12px rgba(120, 170, 210, 0.22);
-  transform: translate(-50%, -50%) rotate(var(--bead-angle)) translateX(var(--ring-radius))
+  transform: translate(-50%, -50%) rotate(var(--bead-angle))
+    translateX(calc(var(--ring-radius) * var(--bead-radius-mult, 1)))
     rotate(calc(var(--bead-angle) * -1));
   left: 50%;
   top: 50%;
@@ -114,16 +133,17 @@
 }
 
 .beadHovered {
-  background: rgba(255, 255, 255, 0.45);
-  box-shadow: 0 0 26px var(--bead-glow);
-  transform: translate(-50%, -50%) rotate(var(--bead-angle)) translateX(var(--ring-radius))
-    rotate(calc(var(--bead-angle) * -1)) scale(1.18);
+  background: color-mix(in srgb, var(--bead-color, #7aaad2) 55%, white);
+  box-shadow: 0 0 26px color-mix(in srgb, var(--bead-glow, #7aaad2) 70%, white);
+  transform: translate(-50%, -50%) rotate(var(--bead-angle))
+    translateX(calc(var(--ring-radius) * var(--bead-radius-mult, 1)))
+    rotate(calc(var(--bead-angle) * -1));
 }
 
 .beadSelected {
-  background: rgba(255, 255, 255, 0.6);
-  border-color: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 0 30px var(--bead-glow);
+  background: color-mix(in srgb, var(--bead-color, #7aaad2) 70%, white);
+  border-color: color-mix(in srgb, var(--bead-color, #7aaad2) 40%, white);
+  box-shadow: 0 0 30px color-mix(in srgb, var(--bead-glow, #7aaad2) 80%, white);
 }
 
 .previewPanel {
@@ -174,6 +194,33 @@
   color: rgba(195, 210, 230, 0.6);
 }
 
+.levelRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.6rem 0 1rem;
+}
+
+.levelDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.levelDotActive {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.levelValue {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: rgba(195, 210, 230, 0.7);
+}
+
 .previewDot {
   opacity: 0.4;
 }
@@ -203,7 +250,7 @@
   position: fixed;
   inset: 0;
   z-index: 40;
-  background: rgba(3, 5, 9, 0.92);
+  background: rgba(4, 7, 12, 0.94);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -215,12 +262,20 @@
   opacity: 0;
 }
 
+.readerPanel {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(720px, 90vw);
+  min-height: min(420px, 55vh);
+}
+
 .readerExit {
   position: absolute;
   top: 1.5rem;
   right: 1.5rem;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(8, 12, 18, 0.7);
+  background: rgba(8, 12, 18, 0.85);
   color: rgba(230, 238, 246, 0.8);
   padding: 0.4rem 0.9rem;
   border-radius: 999px;
@@ -239,8 +294,8 @@
   text-align: center;
   padding: clamp(1.5rem, 4vw, 3rem);
   border-radius: 28px;
-  background: radial-gradient(circle at 30% 20%, rgba(120, 170, 210, 0.1), transparent 60%),
-    rgba(7, 11, 18, 0.82);
+  background: radial-gradient(circle at 30% 20%, rgba(120, 170, 210, 0.08), transparent 60%),
+    rgba(7, 11, 18, 0.88);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 30px 80px rgba(2, 4, 8, 0.7);
   transition: opacity 0.6s ease;
@@ -313,9 +368,13 @@
   }
 
   .ring {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
     width: min(360px, 88vw);
     height: min(360px, 88vw);
-    --ring-radius: clamp(120px, 34vw, 170px);
+    --ring-radius: clamp(150px, 40vw, 200px);
   }
 
   .previewPanel {
@@ -324,8 +383,11 @@
   }
 
   .centerFocus {
-    position: static;
-    margin-bottom: 2rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin-bottom: 0;
   }
 }
 

@@ -61,24 +61,27 @@ export default function MeditationReader({ meditation, onExit, onComplete }: Pro
       className={`${styles.readerOverlay} ${closing ? styles.readerOverlayClosing : ""}`}
       role="dialog"
       aria-modal="true"
+      onClick={handleExit}
     >
-      <button type="button" className={styles.readerExit} onClick={handleExit}>
-        Kilepes
-      </button>
-      <ReaderStage block={currentText} isClosing={closing} />
-      {showEndPanel && (
-        <div className={styles.readerEndPanel}>
-          <p>{endCopy}</p>
-          <div className={styles.readerEndActions}>
-            <button type="button" className="btn btn--ghost" onClick={restart}>
-              Ujrainditas
-            </button>
-            <button type="button" className="btn btn--primary" onClick={handleExit}>
-              Vissza a terbe
-            </button>
+      <div className={styles.readerPanel} onClick={(event) => event.stopPropagation()}>
+        <button type="button" className={styles.readerExit} onClick={handleExit}>
+          Kilepes
+        </button>
+        <ReaderStage block={currentText} isClosing={closing} />
+        {showEndPanel && (
+          <div className={styles.readerEndPanel}>
+            <p>{endCopy}</p>
+            <div className={styles.readerEndActions}>
+              <button type="button" className="btn btn--ghost" onClick={restart}>
+                Ujrainditas
+              </button>
+              <button type="button" className="btn btn--primary" onClick={handleExit}>
+                Vissza a terbe
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

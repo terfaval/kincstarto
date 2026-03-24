@@ -1,11 +1,18 @@
-﻿import { readdir, readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
-import type { Meditation, MeditationCategory, MeditationLevel, MeditationStatus } from "./meditation-types";
+import type {
+  Meditation,
+  MeditationCategory,
+  MeditationLevel,
+  MeditationMode,
+  MeditationStatus,
+} from "./meditation-types";
 
 const MEDITATIONS_DIR = join(process.cwd(), "data", "meditations");
 
 const CATEGORY_SET = new Set<MeditationCategory>(["ALV", "STR", "FOK", "ENR", "SPC"]);
-const LEVEL_SET = new Set<MeditationLevel>(["kezdo", "kozep-halado", "halado"]);
+const LEVEL_SET = new Set<MeditationLevel>([1, 2, 3]);
+const MODE_SET = new Set<MeditationMode>(["kontemplativ", "imaginativ"]);
 const STATUS_SET = new Set<MeditationStatus>(["raw", "optimalizalt"]);
 const END_BEHAVIOR_SET = new Set(["fade_out", "soft_end", "complete"] as const);
 
@@ -20,15 +27,20 @@ function parseMeditation(raw: unknown, source: string): Meditation | null {
   }
 
   const category = raw.category as MeditationCategory;
-  const level = raw.level as MeditationLevel;
+  const level = normalizeLevel(raw.level);
+  const mode = raw.meditation_mode as MeditationMode;
   const status = raw.status as MeditationStatus;
 
   if (!CATEGORY_SET.has(category)) {
     console.error(`[meditations] Invalid category in ${source}.`);
     return null;
   }
-  if (!LEVEL_SET.has(level)) {
+  if (!level || !LEVEL_SET.has(level)) {
     console.error(`[meditations] Invalid level in ${source}.`);
+    return null;
+  }
+  if (!MODE_SET.has(mode)) {
+    console.error(`[meditations] Invalid meditation_mode in ${source}.`);
     return null;
   }
   if (!STATUS_SET.has(status)) {
@@ -51,6 +63,7 @@ function parseMeditation(raw: unknown, source: string): Meditation | null {
     title: String(raw.title ?? ""),
     category,
     level,
+    meditation_mode: mode,
     order_in_category: Number(raw.order_in_category ?? 0),
     duration_sec: Number(raw.duration_sec ?? 0),
     summary_short: String(raw.summary_short ?? ""),
@@ -74,6 +87,20 @@ function parseMeditation(raw: unknown, source: string): Meditation | null {
   }
 
   return meditation;
+}
+
+function normalizeLevel(raw: unknown): MeditationLevel | null {
+  if (raw === 1 || raw === 2 || raw === 3) return raw;
+  if (typeof raw === "string") {
+    const trimmed = raw.trim();
+    if (trimmed === "1" || trimmed === "2" || trimmed === "3") {
+      return Number(trimmed) as MeditationLevel;
+    }
+    if (trimmed === "kezdo") return 1;
+    if (trimmed === "kozep-halado") return 2;
+    if (trimmed === "halado") return 3;
+  }
+  return null;
 }
 
 export async function loadMeditations(): Promise<Meditation[]> {
@@ -107,4 +134,3 @@ export async function loadMeditations(): Promise<Meditation[]> {
     return a.category.localeCompare(b.category);
   });
 }
-

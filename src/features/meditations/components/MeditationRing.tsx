@@ -18,7 +18,7 @@ export default function MeditationRing({ meditations, hoveredId, selectedId, onH
 
   return (
     <div className={styles.ring} aria-label="Meditacios gyuru">
-      {layout.map(({ meditation, angle }) => {
+      {layout.map(({ meditation, angle, radiusMult }) => {
         const isHovered = hoveredId === meditation.id;
         const isSelected = selectedId === meditation.id;
         const color = getCategoryColor(meditation.category);
@@ -33,6 +33,8 @@ export default function MeditationRing({ meditations, hoveredId, selectedId, onH
             style={{
               ["--bead-angle" as any]: `${angle}deg`,
               ["--bead-glow" as any]: color,
+              ["--bead-color" as any]: color,
+              ["--bead-radius-mult" as any]: `${radiusMult}`,
             }}
             onMouseEnter={() => onHover(meditation.id)}
             onMouseLeave={() => onHover(null)}

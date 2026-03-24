@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Meditation, MeditationEndBehavior } from "../lib/meditation-types";
 import { useMeditations } from "../hooks/useMeditations";
 import MeditationCenterFocus from "./MeditationCenterFocus";
@@ -20,6 +20,34 @@ export default function MeditationSpace({ meditations: initialMeditations }: Pro
   const [readerId, setReaderId] = useState<string | null>(null);
   const [readerOpen, setReaderOpen] = useState(false);
   const [readerCompleted, setReaderCompleted] = useState(false);
+
+  useEffect(() => {
+    const body = document.body;
+    const previous = {
+      backgroundImage: body.style.backgroundImage,
+      backgroundColor: body.style.backgroundColor,
+      backgroundRepeat: body.style.backgroundRepeat,
+      backgroundSize: body.style.backgroundSize,
+      backgroundPosition: body.style.backgroundPosition,
+      backgroundBlendMode: body.style.backgroundBlendMode,
+    };
+
+    body.style.backgroundImage = 'url("/backgrounds/meditations_background.png")';
+    body.style.backgroundColor = "#05080e";
+    body.style.backgroundRepeat = "no-repeat";
+    body.style.backgroundSize = "cover";
+    body.style.backgroundPosition = "center";
+    body.style.backgroundBlendMode = "normal";
+
+    return () => {
+      body.style.backgroundImage = previous.backgroundImage;
+      body.style.backgroundColor = previous.backgroundColor;
+      body.style.backgroundRepeat = previous.backgroundRepeat;
+      body.style.backgroundSize = previous.backgroundSize;
+      body.style.backgroundPosition = previous.backgroundPosition;
+      body.style.backgroundBlendMode = previous.backgroundBlendMode;
+    };
+  }, []);
 
   const hovered = useMemo(
     () => meditations.find((meditation) => meditation.id === hoveredId) ?? null,
@@ -64,7 +92,7 @@ export default function MeditationSpace({ meditations: initialMeditations }: Pro
   return (
     <section className={styles.space}>
       <div className={styles.spaceInner}>
-        <MeditationCenterFocus meditation={focused} />
+        {!readerOpen && <MeditationCenterFocus meditation={focused} />}
         <MeditationRing
           meditations={meditations}
           hoveredId={hoveredId}
@@ -81,7 +109,7 @@ export default function MeditationSpace({ meditations: initialMeditations }: Pro
           />
         )}
         {readerCompleted && !readerOpen && (
-          <div className={styles.readerReturnHint}>A csend marad. Valassz ujra.</div>
+          <div className={styles.readerReturnHint}>A csend marad. Válassz újra.</div>
         )}
       </div>
       {readerOpen && readerMeditation && (
@@ -94,4 +122,3 @@ export default function MeditationSpace({ meditations: initialMeditations }: Pro
     </section>
   );
 }
-
