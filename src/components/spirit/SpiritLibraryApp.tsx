@@ -766,15 +766,17 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
             <Route size={18} className={styles.fabIcon} />
           </button>
         )}
-        <Link
-          href="/meditations"
-          className={styles.addFab}
-          aria-label="Meditációs tér"
-          title="Meditációs tér"
-        >
-          <Sparkles size={18} className={styles.fabIcon} />
-        </Link>
-          {!isMobile && (
+        {isAdmin && (
+          <Link
+            href="/meditations"
+            className={styles.addFab}
+            aria-label="Meditációs tér"
+            title="Meditációs tér"
+          >
+            <Sparkles size={18} className={styles.fabIcon} />
+          </Link>
+        )}
+        {!isMobile && (
             <button
               type="button"
               className={`${styles.addFab} ${styles.viewToggleButton} ${viewMode === "list" ? styles.filterFabActive : ""}`}
