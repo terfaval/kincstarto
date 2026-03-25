@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Meditation, MeditationEndBehavior } from "../lib/meditation-types";
 import { useMeditations } from "../hooks/useMeditations";
+import { initInteractionProbe, markClientBoot, scanForFullScreenBlockers } from "@/lib/debugClient";
 import MeditationCenterFocus from "./MeditationCenterFocus";
 import MeditationRing from "./MeditationRing";
 import MeditationPreviewPanel from "./MeditationPreviewPanel";
@@ -20,6 +21,12 @@ export default function MeditationSpace({ meditations: initialMeditations }: Pro
   const [readerId, setReaderId] = useState<string | null>(null);
   const [readerOpen, setReaderOpen] = useState(false);
   const [readerCompleted, setReaderCompleted] = useState(false);
+
+  useEffect(() => {
+    markClientBoot("MeditationSpace");
+    initInteractionProbe();
+    scanForFullScreenBlockers();
+  }, []);
 
   useEffect(() => {
     const body = document.body;

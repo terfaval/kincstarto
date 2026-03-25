@@ -5,6 +5,7 @@ import { BookOpen, ChevronLeft, ChevronRight, Info, LogOut, Pencil, Plus, Trash2
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "./YogaLogApp.module.css";
+import { initInteractionProbe, markClientBoot, scanForFullScreenBlockers } from "@/lib/debugClient";
 import {
   ACTIVITY_CATEGORY_META,
   ACTIVITY_COLORS,
@@ -296,6 +297,12 @@ export default function YogaLogApp() {
     distanceKm: "",
     exerciseId: "",
   });
+
+  useEffect(() => {
+    markClientBoot("YogaLogApp");
+    initInteractionProbe();
+    scanForFullScreenBlockers();
+  }, []);
 
   const renderLogBadge = (meta: { label: string; color: string; icon: string }) => (
     <span

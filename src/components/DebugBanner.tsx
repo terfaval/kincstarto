@@ -9,9 +9,18 @@ type DebugInfo = {
   hydratedAt: string;
 };
 
+type DebugRuntime = {
+  bootOk: boolean;
+  viewport: string;
+  blockerCount: number;
+  lastTap: string;
+  lastTop: string;
+};
+
 export default function DebugBanner() {
   const [enabled, setEnabled] = useState(false);
   const [info, setInfo] = useState<DebugInfo | null>(null);
+  const [runtime, setRuntime] = useState<DebugRuntime | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -42,12 +51,17 @@ export default function DebugBanner() {
 
     const base = getBaseInfo();
     setInfo(base);
+    setRuntime(getRuntimeInfo());
 
     window.addEventListener("error", errorHandler);
     window.addEventListener("unhandledrejection", rejectionHandler);
+    const interval = window.setInterval(() => {
+      setRuntime(getRuntimeInfo());
+    }, 500);
     return () => {
       window.removeEventListener("error", errorHandler);
       window.removeEventListener("unhandledrejection", rejectionHandler);
+      window.clearInterval(interval);
     };
   }, [enabled]);
 
@@ -71,6 +85,11 @@ export default function DebugBanner() {
       <div>debug=1</div>
       <div>{info.hydratedAt}</div>
       <div>{info.matchMediaEventSupport}</div>
+      <div>{runtime?.bootOk ? "boot: ok" : "boot: missing"}</div>
+      <div>{runtime ? `viewport: ${runtime.viewport}` : "viewport: unknown"}</div>
+      <div>{runtime ? `blockers: ${runtime.blockerCount}` : "blockers: unknown"}</div>
+      <div>{runtime ? `tap: ${runtime.lastTap}` : "tap: none"}</div>
+      <div>{runtime ? `top: ${runtime.lastTop}` : "top: none"}</div>
       <div>{info.error ? `error: ${info.error}` : "error: none"}</div>
       <div style={{ opacity: 0.75 }}>{info.userAgent}</div>
     </div>
@@ -92,5 +111,30 @@ function getBaseInfo(): DebugInfo {
     userAgent: typeof navigator !== "undefined" ? navigator.userAgent : "unknown",
     matchMediaEventSupport: `matchMedia.addEventListener: ${hasAddEventListener ? "yes" : "no"}`,
     hydratedAt: `hydrated: ${new Date().toISOString()}`,
+  };
+}
+
+function getRuntimeInfo(): DebugRuntime {
+  if (typeof window === "undefined") {
+    return {
+      bootOk: false,
+      viewport: "unknown",
+      blockerCount: 0,
+      lastTap: "none",
+      lastTop: "none",
+    };
+  }
+  const bootOk =
+    (typeof document !== "undefined" && document.documentElement?.dataset?.clientBoot === "ok") ||
+    Boolean(window.__clientBoot);
+  const viewport = `${window.innerWidth}x${window.innerHeight}`;
+  const blockerCount = Array.isArray(window.__blockerCandidates) ? window.__blockerCandidates.length : 0;
+  const last = Array.isArray(window.__tapProbe) ? window.__tapProbe[window.__tapProbe.length - 1] : null;
+  return {
+    bootOk,
+    viewport,
+    blockerCount,
+    lastTap: last ? `${last.type} ${last.target}` : "none",
+    lastTop: last ? last.top : "none",
   };
 }

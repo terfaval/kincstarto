@@ -1,0 +1,264 @@
+{
+  "id": "STR_2_02_melyaramlas",
+  "title": "Mélyáramlás",
+  "category": "STR",
+  "meditation_mode": "imaginativ",
+  "level": "kozep-halado",
+  "order_in_category": 2,
+  "duration_sec": 900,
+  "summary_short": "Hullámszerű légzésre és testérzetre épülő stresszoldó meditáció az áramlásélmény és a mély elengedés támogatására.",
+  "tone": ["lágy", "áramló", "elmélyülő"],
+  "techniques": [
+    "testpásztázás",
+    "légzésfigyelés",
+    "áramlásérzet",
+    "elengedés",
+    "jelenlét"
+  ],
+  "visual_theme": "default_dark_atmospheric",
+  "status": "optimalizalt",
+  "is_published": true,
+  "campaign_key": null,
+  "source_docx": "STR_2_02_Melyaramlas_Optimalizalt.docx",
+  "reader": {
+    "autoplay": true,
+    "end_behavior": "fade_out",
+    "blocks": [
+      {
+        "type": "text",
+        "content": "Helyezkedj el kényelmesen...",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Hunyd be a szemed, ha jólesik...",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Érezd a tested érintkezését a talajjal...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Mint egy kagyló, ami lassan lesüllyed a tengerfenék puha homokjára...",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Semmit sem kell tenned...",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Semmit sem kell tartanod...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Csak hagyni, hogy a tested megpihenjen az áramlás ölében.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Most figyeld meg a légzésedet...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Ahogy a levegő be- és kiáramlik...",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Mint a hullám, ami először finoman felfut, majd visszahull a part menti homokba.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Belégzés...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "A test megemelkedik egy hajszálnyit...",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Kilégzés...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "A test visszasüllyed a csendbe.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Engedd, hogy tested minden zugát átjárja ez a lágy hullámzás...",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Most észleld a testedet belülről...",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Mint a belső tenger partjának fodrozódásait...",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Lehet, hogy találsz feszültségeket...",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Megszilárdult érzeteket...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell elengedned őket...",
+        "tone": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Nem kell oldanod semmit...",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Csak észlelni, hogy ők is részei a mozgásnak.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Mint hullámokkal ringó apró kagylók a víz alatt...",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most engedd el a tudatos figyelmet...",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Hagyd, hogy tested, légzésed, érzékelésed együtt ringjon az áramlással...",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Semmi nem állandó...",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Minden áramlik...",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Nincs mit tartanod.",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Nincs mit elengedned.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Csak sodródni az áramlással.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Most pihenhetsz ebben a néma ringásban...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 35000
+      }
+    ]
+  }
+}
