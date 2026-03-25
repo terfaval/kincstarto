@@ -1,0 +1,256 @@
+{
+  "id": "SPC_3_01_csontoktol_a_belso_csendig",
+  "title": "Csontoktól a Belső Csendig",
+  "category": "SPC",
+  "meditation_mode": "imaginativ",
+  "level": "halado",
+  "order_in_category": 1,
+  "duration_sec": 1500,
+  "summary_short": "Haladó belső testutazás a fizikai struktúráktól a tiszta figyelem és forma nélküli jelenlét megtapasztalásáig.",
+  "tone": ["mély", "csendes", "feltáró"],
+  "techniques": [
+    "testpásztázás",
+    "belső anatómiai fókusz",
+    "kontemplatív figyelem",
+    "térélmény",
+    "formaoldás"
+  ],
+  "visual_theme": "default_dark_atmospheric",
+  "status": "optimalizalt",
+  "is_published": true,
+  "campaign_key": "gyongyfonal_spc_01",
+  "source_docx": "Csontoktol_a_Belso_Csendig_Export_Ujrageneralva.docx",
+  "reader": {
+    "autoplay": true,
+    "end_behavior": "fade_out",
+    "blocks": [
+      {
+        "type": "text",
+        "content": "Helyezkedj el úgy, hogy a tested teljes súlyával megpihenhessen… Érezd a talajt… a hátad… a kezed… a medencéd érintkezését…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Engedd, hogy a tested lassan megtalálja a saját nyugalmát… ahogy a víz is megtalálja a medrét.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "A figyelmed finoman befelé fordul… és elkezdi felvenni a tested formáját… belülről kifelé.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "A tested… a figyelmed formája lett.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+
+      {
+        "type": "text",
+        "content": "Most hozd a figyelmed a fejed belsejébe… mintha egy csendes, tágas boltozatban lennél…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 12000
+      },
+      {
+        "type": "text",
+        "content": "Nem kívülről nézed… hanem belül vagy.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "A hallójáratok… apró nyílások a térben… a szemgödör… puha üreg… a fogak… mint finom kőcsipkék…",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Az állkapocs… mint egy hangtalan zár… ami mégis megtart mindent.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+
+      {
+        "type": "text",
+        "content": "Most a figyelmed a karodra érkezik… Egészben… jelen…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "A váll… a könyök… az alkar… a kéz… az ujjak…",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Az ujjbegyeknél finom bizsergés… vagy melegség…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Talán érzed az áramlást… ami mozdulatlanul… mégis folyamatosan jelen van benned.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 30000
+      },
+
+      {
+        "type": "text",
+        "content": "A figyelem most lefelé ereszkedik… a combokhoz… a térdekhez… a lábakhoz…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "A sarok… mint egy gyökér… amely a föld csendjéhez kapcsolódik.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "A lábujjak… mint apró kapuk… nyitva a tér felé.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 30000
+      },
+
+      {
+        "type": "text",
+        "content": "Most a figyelmed a hasad belső teréhez érkezik… Mit tapasztalsz?",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell megérteni… csak hagyni, hogy a figyelem ott maradjon.",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 30000
+      },
+
+      {
+        "type": "text",
+        "content": "Most a mellkas… a szív tájéka…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Talán érzel egy pulzálást… egy lágyságot… egy finom áramlást…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Ez most nem szerv… hanem tér…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Egy középpont… ami nem tart… csak nyílik.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 30000
+      },
+
+      {
+        "type": "text",
+        "content": "Most már nincs fókuszpont…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "A figyelem marad.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 30000
+      },
+      {
+        "type": "text",
+        "content": "A csend belül van.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 30000
+      },
+      {
+        "type": "text",
+        "content": "Semmi sem mozdul… de minden nyitott.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 35000
+      }
+    ]
+  }
+}

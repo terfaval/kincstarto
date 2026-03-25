@@ -1,0 +1,205 @@
+{
+  "id": "ALV_2_06_alomkapu_vizualizacio",
+  "title": "Álomkapu Vizualizáció",
+  "category": "ALV",
+  "meditation_mode": "imaginativ",
+  "level": "kozep-halado",
+  "order_in_category": 6,
+  "duration_sec": 720,
+  "summary_short": "Biztonságos belső tér vizualizációjára épülő alvásmeditáció az ébrenlétből az álomba való finom átmenet támogatására.",
+  "tone": ["lágy", "lebegő", "elmélyülő"],
+  "techniques": [
+    "vizualizacio",
+    "testerzet megfigyeles",
+    "belso ter kepzes",
+    "elengedes",
+    "jelenlet"
+  ],
+  "visual_theme": "default_dark_atmospheric",
+  "status": "optimalizalt",
+  "is_published": true,
+  "campaign_key": null,
+  "source_docx": "ALV_2_06_Alomkapu_Vizualizacio_Optimalizalt.docx",
+  "reader": {
+    "autoplay": true,
+    "end_behavior": "fade_out",
+    "blocks": [
+      {
+        "type": "text",
+        "content": "Helyezkedj el kényelmesen az ágyban… Érezd, ahogy a tested puha súllyal belesimul a fekhelybe…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "A figyelmed finoman befelé irányul… és lassan elcsendesedik.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Semmit sem kell most tenni… Semmit sem kell elérni…",
+        "tone": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Csak hagyni, hogy a létezés simogatóan körülöleljen.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Figyeld meg a légzésed lágy áramlását… Mint egy halk fuvallat, amely finoman érinti a mezőt.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Valahol a térben egy kapu sejtése jelenik meg…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Nem kell tisztán látnod… csak hagyni, hogy a formája lassan kibontakozzon.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Milyen anyagból van? Van-e rajta kilincs? Milyen érzés lenne megérinteni?",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Nem kell válaszolni… csak engedd, hogy megjelenjen, ami jön.",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "A kapu barátságos… nyitott… mintha már régóta várna rád.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Ha úgy érzed… finoman közeledhetsz… vagy csak hagyhatod, hogy a jelenléted átsimuljon rajta…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "És amikor észreveszed… már egy másik, csendes, biztonságos térben vagy…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Lehet ez mező… erdő… part… vagy csak egy puha fény, amely körülölel…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Nincs helyes vagy helytelen… ami most megjelenik, az éppen elég.",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Mozoghatsz ezen a tájon… vagy megpihenhetsz benne…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Talán érzed a szelet… a meleget… vagy csak a jelenlét finom hullámzását…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Semmit sem kell követned… Semmit sem kell megtartanod…",
+        "tone": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Csak hagyni, hogy minden megtörténjen.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Ha a képek elhalványulnak… az is rendben van…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Ha a figyelmed elfárad… az is rendben van…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most már nem kell képeket tartani… Nem kell szavakat követni…",
+        "tone": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Csak hagyni, hogy a csend tovább vigyen…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Mint egy lágy álom sodrásában…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      },
+      {
+        "type": "text",
+        "content": "Itt bármikor elengedheted magad… Minden rendben van.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 35000
+      }
+    ]
+  }
+}

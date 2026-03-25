@@ -1,0 +1,19 @@
+﻿
+Key                       Value                                                                                        
+---                       -----                                                                                        
+Age                       0                                                                                            
+Link                      </_next/static/media/Roboto_VariableFont_wdth%2Cwght-s.p.0n~~~a9.83io1.ttf>; rel=preload; ...
+Pragma                    no-cache                                                                                     
+Strict-Transport-Security max-age=63072000; includeSubDomains; preload                                                 
+Vary                      rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch              
+X-Matched-Path            /                                                                                            
+X-Vercel-Cache            MISS                                                                                         
+X-Vercel-Id               fra1::iad1::sxqm5-1774422315666-f534fed3b6ed                                                 
+Transfer-Encoding         chunked                                                                                      
+Cache-Control             private, no-cache, no-store, max-age=0, must-revalidate                                      
+Content-Type              text/html; charset=utf-8                                                                     
+Date                      Wed, 25 Mar 2026 07:05:15 GMT                                                                
+Server                    Vercel                                                                                       
+X-Powered-By              Next.js                                                                                      
+
+

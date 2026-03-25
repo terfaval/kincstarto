@@ -1,0 +1,188 @@
+{
+  "id": "FOK_1_04_erzekter",
+  "title": "Érzéktér",
+  "category": "FOK",
+  "meditation_mode": "imaginativ",
+  "level": "kezdo",
+  "order_in_category": 4,
+  "duration_sec": 660,
+  "summary_short": "Játékos fókuszmeditáció az érzékterek közötti váltáson keresztül, a figyelem irányának és minőségének tudatosítására.",
+  "tone": ["lágy", "kíváncsi", "könnyed"],
+  "techniques": [
+    "erzekszervi fokuszvaltas",
+    "legzeshangolas",
+    "vizualizacio",
+    "testerzet megfigyeles",
+    "jelenlet"
+  ],
+  "visual_theme": "default_dark_atmospheric",
+  "status": "optimalizalt",
+  "is_published": true,
+  "campaign_key": null,
+  "source_docx": "FOK_1_04_Erzektér_Optimalizalt.docx",
+  "reader": {
+    "autoplay": true,
+    "end_behavior": "soft_end",
+    "blocks": [
+      {
+        "type": "text",
+        "content": "Ülj le vagy feküdj le kényelmesen… Engedd, hogy a tested megtalálja a formáját…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 5000
+      },
+      {
+        "type": "text",
+        "content": "Figyeld meg, ahogy a tested érintkezik a felülettel… Van, ahol nyom… van, ahol lebeg…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "A légzésed most a saját tempójában mozdul… Nézd meg: hol kezdődik? Hol ér véget?",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Most engedd, hogy a figyelmed a hangokra irányuljon… Nem kell keresned őket – csak engedd, hogy jöjjenek…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Vannak közeli hangok… vannak távoliak… És vannak hangok, amelyek belül szólalnak meg.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Hallod-e a csendet? A hangok közötti teret? Mintha maga a figyelmed is hang lenne…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Most vidd a figyelmed a bőrödre… Milyen hőmérsékletet érzel?",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Érzed-e a ruhát… az anyagot… a levegőt?",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Most figyeld meg: van-e olyan pont a testeden, ahol nem érzel semmit? Az is része az érzékelésnek.",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Most engedj megjelenni egy belső képet… bármit, ami felbukkan… Nem kell élesnek lennie…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Lehet árnyalat, mozdulat, emlékfoszlány…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Figyeld meg, hogy a képen belül hol van a figyelmed fókusza… Váltakozik? Marad egy ponton?",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Most lassan engedd, hogy ez a kép elhalványuljon.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Most irányítsd a figyelmed az illatokra… Van-e valami, amit érzékelsz?",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Ha nincs – képzelj el egy illatot, amit szeretsz… Nem kell erősnek lennie… csak elég, ha jelen van.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Most engedd, hogy ez az illat is elmosódjon… mint egy álomfoszlány…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Most ismét érezd a tested formáját… A súlyt… az érintkezést… a légzés mozgását…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Ha jól esik, finoman visszatérhetsz a körülötted lévő tér érzékeléséhez…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Engedd, hogy a figyelmed újra kitáguljon a külső világ felé.",
+        "tone": "soft"
+      }
+    ]
+  }
+}

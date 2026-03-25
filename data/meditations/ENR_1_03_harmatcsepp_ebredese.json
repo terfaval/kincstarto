@@ -1,0 +1,205 @@
+{
+  "id": "ENR_1_03_harmatcsepp_ebredese",
+  "title": "Harmatcsepp Ébredése",
+  "category": "ENR",
+  "meditation_mode": "imaginativ",
+  "level": "kezdo",
+  "order_in_category": 3,
+  "duration_sec": 420,
+  "summary_short": "Finom, frissítő reggeli meditáció a belső tisztaság és könnyed jelenlét felébresztésére egy imaginatív harmatcsepp képen keresztül.",
+  "tone": ["lágy", "friss", "könnyed"],
+  "techniques": [
+    "finom testerzekeles",
+    "vizualizacio",
+    "legzesfigyelem",
+    "belso frissesseg erzet",
+    "jelenlet"
+  ],
+  "visual_theme": "default_dark_atmospheric",
+  "status": "optimalizalt",
+  "is_published": true,
+  "campaign_key": null,
+  "source_docx": "Harmatcsepp_Ebredese_Optimalizalt.docx",
+  "reader": {
+    "autoplay": true,
+    "end_behavior": "complete",
+    "blocks": [
+      {
+        "type": "text",
+        "content": "Helyezkedj el kényelmesen… Érezd, hogy a tested még a nyugalom peremén pihen… nem teljesen ébren… de már nem is alszik.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "A légzésed csendesen áramlik… nem kell irányítani… csak észlelni, ahogy megérkezik… és továbbhalad.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Most figyelj egy kicsit finomabban… Észreveheted a levegőt a bőrödön… a hőmérséklet apró különbségeit…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Talán egy enyhe mozdulatot a mellkasodban… vagy a hasad halk hullámzását…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell keresni semmit… csak engedd, hogy az apró részletek maguktól előtűnjenek.",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Mintha a figyelmed is egyre tisztábbá válna… mint a reggeli levegő.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most… valahol benned… megjelenhet egy apró harmatcsepp…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell élesen látnod… elég, ha csak sejted, hogy ott van.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Egyetlen tiszta csepp… csendesen pihen… mintha magában tartaná a reggel minden frissességét.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most figyeld… ahogy ez a csepp lassan életre kel… finoman megmozdul… és frissességet hoz.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Ez a frissesség nem erős… nem sürget… csak jelen van.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Most a harmatcsepp lassan szétterjed benned… egy finom, hűvös érintésként…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "A mellkasban… a vállakban… a karokban… egészen az ujjakig… majd lefelé a testen át…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Ez nem áradás… inkább egy halk szétterülés… mintha belülről tisztulna minden.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most már nem kell a cseppet figyelned… csak azt, ami utána maradt.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Egy könnyű éberség… egy tiszta jelenlét…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "A tested jelen van… de könnyű… a figyelmed nyitott… de nem feszült.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Mint egy reggeli pillanat… amikor még minden friss…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most finoman visszatérhetsz a tested egészének érzékeléséhez… a légzésedhez… a körülötted lévő térhez…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Ha jól esik… finoman megmozdulhat a tested… és vidd magaddal ezt a halk frissességet a napodba.",
+        "tone": "soft"
+      }
+    ]
+  }
+}

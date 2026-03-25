@@ -186,7 +186,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="hu" className={`${sfFontBody.variable} ${sfFontDisplay.variable}`}>
+    <html
+      lang="hu"
+      className={`${sfFontBody.variable} ${sfFontDisplay.variable}`}
+      data-preboot="ok"
+    >
       <body className={`${sfFontBody.className} antialiased`}>
         <Script id="client-error-bootstrap" strategy="beforeInteractive">
           {CLIENT_ERROR_BOOTSTRAP}

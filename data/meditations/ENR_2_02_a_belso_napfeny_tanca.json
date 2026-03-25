@@ -1,0 +1,240 @@
+{
+  "id": "ENR_2_02_a_belso_napfeny_tanca",
+  "title": "A Belső Napfény Tánca",
+  "category": "ENR",
+  "meditation_mode": "imaginativ",
+  "level": "kozep-halado",
+  "order_in_category": 2,
+  "duration_sec": 840,
+  "summary_short": "Vizualizációra és légzéssel hangolt figyelemre épülő energizáló meditáció a belső fény és áramlás megtapasztalására.",
+  "tone": ["lágy", "fényes", "áramló"],
+  "techniques": [
+    "vizualizacio",
+    "legzesfigyelem",
+    "testben mozgo fokusz",
+    "energiaerzet",
+    "jelenlet"
+  ],
+  "visual_theme": "default_dark_atmospheric",
+  "status": "optimalizalt",
+  "is_published": true,
+  "campaign_key": null,
+  "source_docx": "ENR_2_02_A_Belso_Napfeny_Tanca_Optimalizalt.docx",
+  "reader": {
+    "autoplay": true,
+    "end_behavior": "complete",
+    "blocks": [
+      {
+        "type": "text",
+        "content": "Ülj kényelmesen… Érezd, ahogy a test megtámaszkodik a földön…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "A hát egyenes, de nem feszült… csak tart, ahogy tud…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "A figyelmed finoman a belső tér felé irányul… ahogy jólesik.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Semmit nem kell tenned… Semmit nem kell tudnod…",
+        "tone": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Csak észlelni, ahogy vagy.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Fordítsd a figyelmed a légzésedre… Nem kell megváltoztatni… csak követni a mozdulatát.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Belégzés… tágulás…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Kilégzés… ellágyulás…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "A légzés most vezet téged… mint egy finom, természetes ritmus.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Most egy meleg, finom fény sejlik fel a mellkas közepén…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Nem erős… nem vakít… csak jelen van…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Mint egy halk, belső napfény.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Belégzéskor a fény finoman tágul…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Kilégzéskor puhán szétárad…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "A fény most lassan elindul benned… a mellkasból a vállakba…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Onnan a karokon át egészen az ujjhegyek végéig…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Majd lefelé… a hashoz… a combokon át a térdekhez…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "A bokákon túl… egészen a talpakig.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "És vissza… a mozgás lassú, ciklikus… mint a légzés.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Most engedd, hogy a figyelmed együtt mozogjon ezzel a belső áramlással…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Nem kell követni… csak finoman együtt lenni vele.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Belégzés… belülről kifelé…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Kilégzés… kívülről befelé…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Tágul… majd visszatér.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most engedd, hogy minden mozdulat lassan megszelídüljön…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "És a fény finoman megpihenjen a mellkasodban.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell tartani… nem kell őrizni…",
+        "tone": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Csak hagyni, hogy ott legyen…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "mint valami, ami mindig is ott volt.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Ha jól esik, finoman megmozdíthatod a tested…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "És engedd, hogy a figyelmed lassan visszatérjen a körülötted lévő térhez.",
+        "tone": "soft"
+      }
+    ]
+  }
+}

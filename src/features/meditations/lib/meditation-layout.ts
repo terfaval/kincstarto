@@ -61,7 +61,9 @@ export function buildRingLayout(items: Meditation[]): RingLayoutItem[] {
       const levelList = perLevel.get(level) ?? [];
       if (levelList.length === 0) continue;
       const count = levelList.length;
-      const maxSpread = Math.min(14, 4 + count * 2.5);
+      const baseSpread = Math.min(14, 4 + count * 2.5);
+      const levelSpreadMult = 1 + (level - 1) * 0.55;
+      const maxSpread = Math.min(26, baseSpread * levelSpreadMult);
       const step = count === 1 ? 0 : maxSpread / (count - 1);
 
       levelList.forEach((meditation, idx) => {
