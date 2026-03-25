@@ -37,20 +37,73 @@ export const viewport: Viewport = {
 const CLIENT_ERROR_BOOTSTRAP = `
 (function () {
   if (typeof window === "undefined") return;
+
+  // phase 1: direct DOM marker (no storage/network/query parsing)
+  (function () {
+    try {
+      var doc = document;
+      var root = doc && doc.documentElement;
+      if (root) {
+        root.setAttribute("data-inline-start", "1");
+        root.setAttribute("data-inline-phase", "1");
+      }
+      if (doc) {
+        doc.title = "INLINE-START " + (doc.title || "");
+      }
+      var badge = doc && doc.getElementById("inline-phase-badge");
+      if (!badge && doc) {
+        badge = doc.createElement("div");
+        badge.id = "inline-phase-badge";
+        badge.style.position = "fixed";
+        badge.style.top = "32px";
+        badge.style.left = "8px";
+        badge.style.padding = "4px 6px";
+        badge.style.background = "rgba(30, 30, 30, 0.85)";
+        badge.style.color = "#fff";
+        badge.style.fontSize = "11px";
+        badge.style.borderRadius = "6px";
+        badge.style.zIndex = "10001";
+        badge.style.pointerEvents = "none";
+        if (doc.body) {
+          doc.body.appendChild(badge);
+        } else {
+          doc.addEventListener("DOMContentLoaded", function () {
+            if (doc.body && !doc.getElementById("inline-phase-badge")) {
+              doc.body.appendChild(badge);
+            }
+          });
+        }
+      }
+      if (badge) {
+        badge.textContent = "inline-1";
+      }
+    } catch (e) {}
+  })();
+
   if (window.__clientErrorBootstrap) return;
   window.__clientErrorBootstrap = true;
 
-  function getSearch() {
-    try {
-      return window.location && window.location.search ? window.location.search : "";
-    } catch (e) {
-      return "";
-    }
-  }
+  var debugEnabled = false;
 
-  function isDebug(search) {
-    return search && search.indexOf("debug=1") !== -1;
-  }
+  // phase 2: minimal debug param check
+  (function () {
+    try {
+      debugEnabled = !!(
+        window.location &&
+        window.location.search &&
+        window.location.search.indexOf("debug=1") !== -1
+      );
+      var doc = document;
+      var root = doc && doc.documentElement;
+      if (root) {
+        root.setAttribute("data-inline-phase", "2");
+      }
+      var badge = doc && doc.getElementById("inline-phase-badge");
+      if (badge) {
+        badge.textContent = "inline-2";
+      }
+    } catch (e) {}
+  })();
 
   function setPrebootMarker() {
     try {
@@ -60,8 +113,8 @@ const CLIENT_ERROR_BOOTSTRAP = `
     } catch (e) {}
   }
 
-  function insertPrebootDiv(debugEnabled) {
-    if (!debugEnabled) return;
+  function insertPrebootDiv(enabled) {
+    if (!enabled) return;
     try {
       if (document.getElementById("preboot-debug")) return;
       var div = document.createElement("div");
@@ -89,8 +142,6 @@ const CLIENT_ERROR_BOOTSTRAP = `
     } catch (e) {}
   }
 
-  var search = getSearch();
-  var debugEnabled = isDebug(search);
   setPrebootMarker();
   if (debugEnabled) {
     try {
@@ -100,16 +151,8 @@ const CLIENT_ERROR_BOOTSTRAP = `
     } catch (e) {}
   }
   insertPrebootDiv(debugEnabled);
-  window.__prebootOk = true;
-  window.__bootDiag = {
-    ua: navigator && navigator.userAgent ? navigator.userAgent : "unknown",
-    path: window.location ? window.location.pathname : "",
-    search: search,
-    preboot: true,
-    clientBoot: Boolean(window.__clientBoot),
-    firstMount: window.__firstClientMount ? window.__firstClientMount.app : null
-  };
 
+  // phase 3: install error listeners
   function report(type, payload) {
     try {
       if (!window.__firstClientError) {
@@ -138,45 +181,91 @@ const CLIENT_ERROR_BOOTSTRAP = `
     } catch (e) {}
   }
 
-  window.addEventListener("error", function (event) {
-    report("error", {
-      message: event.message,
-      source: event.filename,
-      lineno: event.lineno,
-      colno: event.colno,
-      stack: event.error && event.error.stack
+  var listenersInstalled = false;
+  try {
+    window.addEventListener("error", function (event) {
+      report("error", {
+        message: event.message,
+        source: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+        stack: event.error && event.error.stack
+      });
     });
-  });
 
-  window.addEventListener("error", function (event) {
+    window.addEventListener(
+      "error",
+      function (event) {
+        try {
+          var target = event.target || event.srcElement;
+          if (target && target.tagName && target !== window) {
+            report("resourceerror", {
+              tag: target.tagName,
+              src: target.src || target.href || "",
+              id: target.id || "",
+              className: target.className || ""
+            });
+          }
+        } catch (e) {}
+      },
+      true
+    );
+
+    window.addEventListener("unhandledrejection", function (event) {
+      var reason = event.reason;
+      report("unhandledrejection", {
+        message: reason && reason.message ? reason.message : String(reason),
+        stack: reason && reason.stack
+      });
+    });
+
+    listenersInstalled = true;
+  } catch (e) {}
+
+  if (listenersInstalled) {
     try {
-      var target = event.target || event.srcElement;
-      if (target && target.tagName && target !== window) {
-        report("resourceerror", {
-          tag: target.tagName,
-          src: target.src || target.href || "",
-          id: target.id || "",
-          className: target.className || ""
-        });
+      var doc = document;
+      var root = doc && doc.documentElement;
+      if (root) {
+        root.setAttribute("data-inline-phase", "3");
+      }
+      var badge = doc && doc.getElementById("inline-phase-badge");
+      if (badge) {
+        badge.textContent = "inline-3";
       }
     } catch (e) {}
-  }, true);
-
-  window.addEventListener("unhandledrejection", function (event) {
-    var reason = event.reason;
-    report("unhandledrejection", {
-      message: reason && reason.message ? reason.message : String(reason),
-      stack: reason && reason.stack
-    });
-  });
-
-  if (debugEnabled && window && window.console && window.console.log) {
-    try {
-      console.log("[preboot] ua=" + window.__bootDiag.ua);
-      console.log("[preboot] path=" + window.__bootDiag.path + " search=" + window.__bootDiag.search);
-      console.log("[preboot] preboot=" + window.__bootDiag.preboot + " clientBoot=" + window.__bootDiag.clientBoot);
-    } catch (e) {}
   }
+
+  // phase 4: richer diagnostics
+  try {
+    window.__prebootOk = true;
+    window.__bootDiag = {
+      ua: navigator && navigator.userAgent ? navigator.userAgent : "unknown",
+      path: window.location ? window.location.pathname : "",
+      search: window.location ? window.location.search : "",
+      preboot: true,
+      clientBoot: Boolean(window.__clientBoot),
+      firstMount: window.__firstClientMount ? window.__firstClientMount.app : null
+    };
+
+    if (debugEnabled && window && window.console && window.console.log) {
+      try {
+        console.log("[preboot] ua=" + window.__bootDiag.ua);
+        console.log("[preboot] path=" + window.__bootDiag.path + " search=" + window.__bootDiag.search);
+        console.log("[preboot] preboot=" + window.__bootDiag.preboot + " clientBoot=" + window.__bootDiag.clientBoot);
+      } catch (e) {}
+    }
+
+    var doc = document;
+    var root = doc && doc.documentElement;
+    if (root) {
+      root.setAttribute("data-inline-phase", "ok");
+    }
+    var badge = doc && doc.getElementById("inline-phase-badge");
+    if (badge) {
+      badge.textContent = "inline-ok";
+    }
+  } catch (e) {}
 })();
 `;
 
@@ -189,7 +278,6 @@ export default function RootLayout({
     <html
       lang="hu"
       className={`${sfFontBody.variable} ${sfFontDisplay.variable}`}
-      data-preboot="ok"
     >
       <body className={`${sfFontBody.className} antialiased`}>
         <Script id="client-error-bootstrap" strategy="beforeInteractive">
