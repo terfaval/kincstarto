@@ -1,0 +1,183 @@
+{
+  "id": "ENR_2_04_lotusz_viragzasa",
+  "title": "Lótusz Virágzása",
+  "category": "ENR",
+  "meditation_mode": "imaginativ",
+  "level": "kozep-halado",
+  "order_in_category": 4,
+  "duration_sec": 540,
+  "summary_short": "Finoman kibomló, mellkas-térre épülő energizáló meditáció a belső nyitottság és világosság megtapasztalására.",
+  "tone": ["lágy", "nyíló", "fényes"],
+  "techniques": [
+    "vizualizacio",
+    "belso ter erzekeles",
+    "legzesfigyelem",
+    "fokusz mozgatasa",
+    "jelenlet"
+  ],
+  "visual_theme": "default_dark_atmospheric",
+  "status": "optimalizalt",
+  "is_published": true,
+  "campaign_key": null,
+  "source_docx": "Lotusz_Viragzasa_Optimalizalt.docx",
+  "reader": {
+    "autoplay": true,
+    "end_behavior": "complete",
+    "blocks": [
+      {
+        "type": "text",
+        "content": "Helyezkedj el kényelmesen… Érezd, ahogy a tested megérkezik ebbe a pillanatba… nem sietve… nem erőltetve.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Figyeld a légzésed… ahogy csendesen áramlik… csak figyeld.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Vidd a figyelmed a mellkasod belső terére… érzékeld a teret… nem formaként… inkább mint jelenlétet.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Csendes… nyitott…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Ebben a térben lassan megjelenik egy forma… egy zárt, nyugodt lótusz bimbó…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Nem mozog… nem siet… csak jelen van.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Most figyeld meg… ahogy a bimbó finoman változni kezd…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Az egyik szirom lassan nyílik… majd egy másik…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "A lótusz rétegről rétegre bontakozik ki… nem kell követned… csak együtt lenni vele.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Finom világosság jelenik meg a belsejében… nem erős… nem vakító… de tiszta.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Engedd, hogy ez a világosság lassan feltöltse a mellkasodat…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most engedd el a formát… és figyeld a teret, amit hagyott.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "A világosság már nem a lótuszban van… hanem benned…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell tartani… nem kell mélyíteni… csak észlelni, hogy ott van.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most a figyelmed finoman kitágul a tested egészére…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Érzékeld a határokat… és azt is, ami túl van rajtuk…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Ha jól esik… finoman megmozdulhat a tested…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "És viheted magaddal ezt a csendes nyitottságot… nem mint képet… hanem mint állapotot.",
+        "tone": "soft"
+      }
+    ]
+  }
+}

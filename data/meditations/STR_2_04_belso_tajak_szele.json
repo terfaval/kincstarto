@@ -1,0 +1,201 @@
+{
+  "id": "STR_2_04_belso_tajak_szele",
+  "title": "Belső Tájak Szele",
+  "category": "STR",
+  "meditation_mode": "imaginativ",
+  "level": "kozep-halado",
+  "order_in_category": 4,
+  "duration_sec": 720,
+  "summary_short": "Légzésre és imaginatív szél-metaforára épülő stresszoldó meditáció a belső áramlás és finom átrendeződés támogatására.",
+  "tone": ["lágy", "áramló", "csendes"],
+  "techniques": [
+    "legzesfigyelem",
+    "vizualizacio",
+    "test mint ter erzekelese",
+    "elengedes",
+    "jelenlet"
+  ],
+  "visual_theme": "default_dark_atmospheric",
+  "status": "optimalizalt",
+  "is_published": true,
+  "campaign_key": null,
+  "source_docx": "Belso_Tajak_Szele_Optimalizalt.docx",
+  "reader": {
+    "autoplay": true,
+    "end_behavior": "soft_end",
+    "blocks": [
+      {
+        "type": "text",
+        "content": "Helyezkedj el kényelmesen… Érezd, ahogy a tested megérkezik… nem kell változtatni rajta… csak hagyni, hogy itt legyen.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Figyeld a légzésed… ahogy beáramlik… és kiáramlik.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Most vidd a figyelmed a tested belső terére… nem részekre bontva… inkább mint egy egyben lévő térre.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Mintha egy csendes, nyitott táj lenne benned… nem kell látnod… csak érzékelni.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Most figyeld meg a légzésed egy kicsit másképp… mintha nem csak levegő lenne… hanem egy finom mozgás… ami végigér a testen.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Belégzés… a szél megérkezik… Kilégzés… a szél továbbhalad.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Most hagyd, hogy ez a szél lassan bejárja a tested… nem kell irányítani… csak követni.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Belégzéskor végigsuhan a mellkason… Kilégzéskor lejjebb ereszkedik… majd újra… és újra…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Egy folyamatos, halk mozgás…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most figyeld meg, ahol a szél valami sűrűbbhez ér… egy feszültebb ponthoz… vagy csak egy nehezebb érzethez.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell megváltoztatni… a szél nem áll meg… csak megérinti… és továbbhalad.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Ami mozdul… az mozdulhat… ami nem… az maradhat.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most már nem kell keresni semmit… csak hagyni, hogy a szél járja a teret.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "A légzésed… mint egy finom áramlás… újra és újra végigmegy rajtad.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "És valami közben átrendeződik… nem látványosan… csak csendesen.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most figyeld meg ezt az egész belső teret… ahogy most van.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "A mozgás még jelen van… de már nem zavaró.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "A légzés tovább áramlik… mint egy szél, ami már ismeri az utat.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Ha jól esik… finoman megmozdulhatnak az ujjaid…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "És ez a finom áramlás veled maradhat… nem mint gyakorlat… hanem mint lehetőség.",
+        "tone": "soft"
+      }
+    ]
+  }
+}

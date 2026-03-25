@@ -1,0 +1,30 @@
+{
+  "version": "1.0",
+  "items": {
+    "STR_1_01_nyugalmat_legzek": {
+      "audio": {
+        "scene_profile": {
+          "category_alignment": "STR"
+        },
+        "mix": {
+          "base_gain": 0.25,
+          "fade_in_sec": 6,
+          "fade_out_sec": 10,
+          "end_behavior": "soft_end"
+        },
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_01",
+            "gain": 0.22
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_breath_soft_02",
+            "gain": 0.1
+          }
+        ]
+      }
+    }
+  }
+}

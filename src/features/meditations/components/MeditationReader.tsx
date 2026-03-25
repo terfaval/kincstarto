@@ -1,19 +1,23 @@
 ﻿"use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Meditation, MeditationEndBehavior } from "../lib/meditation-types";
 import { useReaderEngine } from "../hooks/useReaderEngine";
+import { useAudioEngine } from "@/features/audio/hooks/useAudioEngine";
+import type { MeditationAudioConfig } from "@/features/audio/lib/audio-types";
 import ReaderStage from "./ReaderStage";
 import styles from "../styles/meditations.module.css";
 
 type Props = {
   meditation: Meditation;
+  audioConfig: MeditationAudioConfig | null;
   onExit: () => void;
   onComplete: (behavior: MeditationEndBehavior) => void;
 };
 
-export default function MeditationReader({ meditation, onExit, onComplete }: Props) {
+export default function MeditationReader({ meditation, audioConfig, onExit, onComplete }: Props) {
   const { status, currentText, start, restart, stop } = useReaderEngine(meditation);
+  const audioEngine = useAudioEngine();
   const [closing, setClosing] = useState(false);
   const [completed, setCompleted] = useState(false);
 
@@ -24,7 +28,21 @@ export default function MeditationReader({ meditation, onExit, onComplete }: Pro
   }, [start, meditation.id]);
 
   useEffect(() => {
+    if (status !== "running") return;
+    audioEngine.start(audioConfig);
+  }, [audioConfig, audioEngine, status]);
+
+  useEffect(() => {
     if (status !== "ended" || completed) return;
+    if (endBehavior === "soft_end") {
+      audioEngine.fadeOut(5);
+    }
+    if (endBehavior === "fade_out") {
+      audioEngine.fadeOut(10);
+    }
+    if (endBehavior === "complete") {
+      audioEngine.stop();
+    }
     setCompleted(true);
     onComplete(endBehavior);
 
@@ -37,24 +55,24 @@ export default function MeditationReader({ meditation, onExit, onComplete }: Pro
     }
   }, [completed, endBehavior, onComplete, onExit, status]);
 
+  const handleExit = useCallback(() => {
+    audioEngine.stop();
+    stop();
+    onExit();
+  }, [audioEngine, onExit, stop]);
+
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        stop();
-        onExit();
+        handleExit();
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [onExit, stop]);
+  }, [handleExit]);
 
   const showEndPanel = status === "ended" && endBehavior !== "fade_out";
   const endCopy = endBehavior === "complete" ? "Meditacio befejezve." : "Lassan terj vissza.";
-
-  const handleExit = () => {
-    stop();
-    onExit();
-  };
 
   return (
     <div

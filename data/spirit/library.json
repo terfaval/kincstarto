@@ -1559,8 +1559,42 @@
         "mahabharata_ramajana",
         "milarepa_elete"
       ]
+    },
+    {
+      "id": "sziddhartha_hesse",
+      "title": "Sziddhárta",
+      "author": "Hermann Hesse",
+      "tradition": "vegyes",
+      "level": "kezdo",
+      "summary_short": "Irodalmi történet egy belső útról, a megértés és közvetlen tapasztalás kereséséről.",
+      "recommendation": "Akkor ajánlott, ha személyes, élményszerű módon szeretnél kapcsolódni a spirituális úthoz. Nem ideális, ha pontos tanításrendszert vagy történeti buddhista forrást keresel.",
+      "themes": [
+        "irodalmi_spiritualitas",
+        "ontudat_es_en",
+        "nem_kettosseg",
+        "buddhizmus_alapok"
+      ],
+      "language": "hu",
+      "format": "konyv",
+      "status": "befejezett",
+      "summary_long": "A regény egy fiatal kereső útját követi végig, aki különböző tanítókon, élethelyzeteken és tapasztalatokon keresztül próbálja megérteni a létezés természetét. A hangsúly nem a tanítások átvételén, hanem a saját közvetlen felismerésen van. A történet finoman mutat rá arra, hogy a megértés nem átadható, hanem megélt tapasztalatként születik meg.",
+      "cautions": "Könnyű konkrét buddhista tanításként olvasni, miközben inkább egy nyugati, irodalmi értelmezés. Egyszerűsége miatt felszínesnek tűnhet, ha nem hagysz időt a rétegek kibontására.",
+      "tags": [
+        "regeny",
+        "belsout",
+        "klasszikus"
+      ],
+      "related": [
+        "konyv_taburól",
+        "teljesség_felé"
+      ]
     }
   ],
+  "tag_labels": {
+    "regeny": "Regeny",
+    "belsout": "Belsout",
+    "klasszikus": "Klasszikus"
+  },
   "paths": [
     {
       "id": "zen_alaput",

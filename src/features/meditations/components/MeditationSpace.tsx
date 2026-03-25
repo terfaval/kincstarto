@@ -3,30 +3,25 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Meditation, MeditationEndBehavior } from "../lib/meditation-types";
 import { useMeditations } from "../hooks/useMeditations";
-import { initInteractionProbe, markClientBoot, scanForFullScreenBlockers } from "@/lib/debugClient";
 import MeditationCenterFocus from "./MeditationCenterFocus";
 import MeditationRing from "./MeditationRing";
 import MeditationPreviewPanel from "./MeditationPreviewPanel";
 import MeditationReader from "./MeditationReader";
 import styles from "../styles/meditations.module.css";
+import type { MeditationAudioMap } from "@/features/audio/lib/audio-types";
 
 type Props = {
   meditations: Meditation[];
+  audioMap: MeditationAudioMap;
 };
 
-export default function MeditationSpace({ meditations: initialMeditations }: Props) {
+export default function MeditationSpace({ meditations: initialMeditations, audioMap }: Props) {
   const meditations = useMeditations(initialMeditations);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [readerId, setReaderId] = useState<string | null>(null);
   const [readerOpen, setReaderOpen] = useState(false);
   const [readerCompleted, setReaderCompleted] = useState(false);
-
-  useEffect(() => {
-    markClientBoot("MeditationSpace");
-    initInteractionProbe();
-    scanForFullScreenBlockers();
-  }, []);
 
   useEffect(() => {
     const body = document.body;
@@ -72,6 +67,10 @@ export default function MeditationSpace({ meditations: initialMeditations }: Pro
     () => meditations.find((meditation) => meditation.id === readerId) ?? null,
     [meditations, readerId]
   );
+  const readerAudioConfig = useMemo(() => {
+    if (!readerMeditation) return null;
+    return audioMap.items[readerMeditation.id]?.audio ?? null;
+  }, [audioMap, readerMeditation]);
 
   const handleSelect = (id: string) => {
     setSelectedId(id);
@@ -141,6 +140,7 @@ export default function MeditationSpace({ meditations: initialMeditations }: Pro
       {readerOpen && readerMeditation && (
         <MeditationReader
           meditation={readerMeditation}
+          audioConfig={readerAudioConfig}
           onExit={closeReader}
           onComplete={handleReaderComplete}
         />

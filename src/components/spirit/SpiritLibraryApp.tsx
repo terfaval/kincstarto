@@ -19,7 +19,6 @@ import { useRouter } from "next/navigation";
 import type { SpiritBook, SpiritLibrary, SpiritPill, SpiritTradition, SpiritLevel, SpiritPath } from "@/lib/spiritSchema";
 import { buildLearningPath, getNextBookRecommendations, type LearningPathFilters } from "@/lib/learningPathEngine";
 import { resolveTagLabel } from "@/lib/spiritTags";
-import { initInteractionProbe, markClientBoot, scanForFullScreenBlockers } from "@/lib/debugClient";
 import styles from "./SpiritLibraryApp.module.css";
 import SpiritAddBookModal from "./SpiritAddBookModal";
 
@@ -207,12 +206,6 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [viewModeLocked, setViewModeLocked] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    markClientBoot("SpiritLibraryApp");
-    initInteractionProbe();
-    scanForFullScreenBlockers();
-  }, []);
 
   useEffect(() => {
     if (!selectedBook) {

@@ -1,0 +1,410 @@
+{
+  "assets": [
+
+
+    {
+      "id": "accent_chime_soft_02",
+      "role": "accent",
+      "tone": "light",
+      "energy": "low",
+      "motion": "still",
+      "density": "soft",
+      "brightness": "medium",
+      "use_cases": ["SPC", "ENR"],
+      "level_fit": [1, 2, 3],
+      "notes": "Soft chime accent, use sparingly for transitions or openings"
+    },
+    {
+      "id": "accent_resonance_airy_01",
+      "role": "accent",
+      "tone": "ethereal",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "soft",
+      "brightness": "low",
+      "use_cases": ["SPC"],
+      "level_fit": [2, 3],
+      "notes": "Resonant airy tone, good for spacious symbolic meditations"
+    },
+
+
+    {
+      "id": "pad_deep_neutral_01",
+      "role": "foundation",
+      "tone": "dark",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "soft",
+      "brightness": "low",
+      "use_cases": ["ALV", "STR", "SPC"],
+      "level_fit": [1, 2, 3],
+      "notes": "Deep neutral base, stable and non-intrusive"
+    },
+    {
+      "id": "pad_light_airy_01",
+      "role": "foundation",
+      "tone": "airy",
+      "energy": "low",
+      "motion": "still",
+      "density": "soft",
+      "brightness": "medium",
+      "use_cases": ["ENR", "SPC"],
+      "level_fit": [1, 2],
+      "notes": "Light floating base, good for morning and imaginative work"
+    },
+    {
+      "id": "pad_light_expansive_01",
+      "role": "foundation",
+      "tone": "light",
+      "energy": "low",
+      "motion": "slow",
+      "density": "medium",
+      "brightness": "medium",
+      "use_cases": ["ENR", "SPC"],
+      "level_fit": [2, 3],
+      "notes": "Expansive emotional pad, use carefully (slightly more presence)"
+    },
+    {
+      "id": "pad_minimal_near_silence_01",
+      "role": "foundation",
+      "tone": "neutral",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "minimal",
+      "brightness": "low",
+      "use_cases": ["FOK", "SPC"],
+      "level_fit": [2, 3],
+      "notes": "Near silence base, ideal for deep focus and minimal awareness states"
+    },
+    {
+      "id": "pad_neutral_loop_01",
+      "role": "foundation",
+      "tone": "neutral",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "soft",
+      "brightness": "low",
+      "use_cases": ["FOK", "STR"],
+      "level_fit": [1, 2, 3],
+      "notes": "Loop-safe neutral pad"
+    },
+    {
+      "id": "pad_neutral_loop_02",
+      "role": "foundation",
+      "tone": "neutral",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "soft",
+      "brightness": "low",
+      "use_cases": ["FOK", "STR"],
+      "level_fit": [1, 2, 3],
+      "notes": "Alternative neutral loop"
+    },
+    {
+      "id": "pad_neutral_loop_03",
+      "role": "foundation",
+      "tone": "neutral",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "soft",
+      "brightness": "low",
+      "use_cases": ["FOK", "STR"],
+      "level_fit": [1, 2, 3],
+      "notes": "Variant loop, interchangeable"
+    },
+    {
+      "id": "pad_neutral_soft_02",
+      "role": "foundation",
+      "tone": "neutral",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "soft",
+      "brightness": "low",
+      "use_cases": ["STR", "FOK"],
+      "level_fit": [1, 2, 3],
+      "notes": "Soft neutral pad, less spatial than loop variants"
+    },
+    {
+      "id": "pad_neutral_wide_01",
+      "role": "foundation",
+      "tone": "neutral",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "medium",
+      "brightness": "low",
+      "use_cases": ["STR", "SPC"],
+      "level_fit": [2, 3],
+      "notes": "Wide stereo space, good for immersive sessions"
+    },
+    {
+      "id": "pad_warm_fragment_01",
+      "role": "foundation",
+      "tone": "dark_warm",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "soft",
+      "brightness": "low",
+      "use_cases": ["ALV"],
+      "level_fit": [1],
+      "notes": "Short fragment, use only if looped cleanly"
+    },
+    {
+      "id": "pad_warm_soft_01",
+      "role": "foundation",
+      "tone": "dark_warm",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "soft",
+      "brightness": "low",
+      "use_cases": ["ALV", "STR"],
+      "level_fit": [1, 2],
+      "notes": "Warm calming base, good for relaxation"
+    },
+    {
+      "id": "pad_warm_soft_02",
+      "role": "foundation",
+      "tone": "dark_warm",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "soft",
+      "brightness": "low",
+      "use_cases": ["ALV", "STR"],
+      "level_fit": [1, 2],
+      "notes": "Variant warm pad"
+    },
+
+
+    {
+      "id": "motion_breath_soft_02",
+      "role": "motion",
+      "tone": "neutral",
+      "energy": "very_low",
+      "motion": "pulsing",
+      "density": "soft",
+      "brightness": "low",
+      "use_cases": ["STR", "SPC"],
+      "level_fit": [1, 2, 3],
+      "notes": "Breathing-like movement"
+    },
+    {
+      "id": "motion_wave_slow_01",
+      "role": "motion",
+      "tone": "neutral",
+      "energy": "very_low",
+      "motion": "slow",
+      "density": "soft",
+      "brightness": "low",
+      "use_cases": ["STR"],
+      "level_fit": [2, 3],
+      "notes": "Slow wave motion"
+    },
+    {
+      "id": "motion_heartbeat_01",
+      "role": "motion",
+      "tone": "organic",
+      "energy": "low",
+      "motion": "pulsing",
+      "density": "medium",
+      "brightness": "low",
+      "use_cases": ["SPC"],
+      "level_fit": [2, 3],
+      "notes": "Strong bodily cue, use rarely"
+    },
+
+
+    {
+      "id": "nature_night_field_02",
+      "role": "nature",
+      "tone": "dark",
+      "energy": "very_low",
+      "motion": "slow",
+      "density": "soft",
+      "brightness": "low",
+      "use_cases": ["ALV"],
+      "level_fit": [1, 2],
+      "notes": "Night ambience"
+    },
+    {
+      "id": "nature_night_field_03",
+      "role": "nature",
+      "tone": "dark",
+      "energy": "very_low",
+      "motion": "slow",
+      "density": "soft",
+      "brightness": "low",
+      "use_cases": ["ALV"],
+      "level_fit": [1, 2],
+      "notes": "Variant night ambience"
+    },
+    {
+      "id": "nature_water_wave_01",
+      "role": "nature",
+      "tone": "neutral",
+      "energy": "low",
+      "motion": "slow",
+      "density": "soft",
+      "brightness": "medium",
+      "use_cases": ["STR"],
+      "level_fit": [1, 2, 3],
+      "notes": "Gentle water movement"
+    },
+    {
+      "id": "nature_wind_soft_02",
+      "role": "nature",
+      "tone": "neutral",
+      "energy": "very_low",
+      "motion": "slow",
+      "density": "soft",
+      "brightness": "low",
+      "use_cases": ["STR", "ALV"],
+      "level_fit": [1, 2, 3],
+      "notes": "Soft wind"
+    },
+    {
+      "id": "nature_wind_soft_03",
+      "role": "nature",
+      "tone": "neutral",
+      "energy": "very_low",
+      "motion": "slow",
+      "density": "soft",
+      "brightness": "low",
+      "use_cases": ["STR", "ALV"],
+      "level_fit": [1, 2, 3],
+      "notes": "Wind variant"
+    },
+    {
+      "id": "nature_wind_tonal_01",
+      "role": "nature",
+      "tone": "ethereal",
+      "energy": "very_low",
+      "motion": "slow",
+      "density": "soft",
+      "brightness": "medium",
+      "use_cases": ["SPC", "STR"],
+      "level_fit": [2, 3],
+      "notes": "Tonal wind, slightly more character"
+    },
+    {
+      "id": "nature_forest_birds_01",
+      "role": "nature",
+      "tone": "light",
+      "energy": "medium",
+      "motion": "slow",
+      "density": "medium",
+      "brightness": "high",
+      "use_cases": ["ENR"],
+      "level_fit": [1],
+      "notes": "Birds, not sleep safe"
+    },
+
+
+    {
+      "id": "texture_air_light_01",
+      "role": "texture",
+      "tone": "airy",
+      "energy": "low",
+      "motion": "still",
+      "density": "soft",
+      "brightness": "medium",
+      "use_cases": ["ENR", "SPC"],
+      "level_fit": [1, 2],
+      "notes": "Light airy texture"
+    },
+    {
+      "id": "texture_crystal_light_01",
+      "role": "texture",
+      "tone": "light",
+      "energy": "low",
+      "motion": "still",
+      "density": "soft",
+      "brightness": "high",
+      "use_cases": ["ENR"],
+      "level_fit": [1],
+      "notes": "Bright crystalline layer"
+    },
+    {
+      "id": "texture_dark_soft_01",
+      "role": "texture",
+      "tone": "dark",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "soft",
+      "brightness": "low",
+      "use_cases": ["ALV", "SPC"],
+      "level_fit": [2, 3],
+      "notes": "Dark subtle texture"
+    },
+    {
+      "id": "texture_ethereal_soft_01",
+      "role": "texture",
+      "tone": "ethereal",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "soft",
+      "brightness": "medium",
+      "use_cases": ["SPC"],
+      "level_fit": [2, 3],
+      "notes": "Floating ethereal layer"
+    },
+    {
+      "id": "texture_noise_floor_01",
+      "role": "texture",
+      "tone": "neutral",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "minimal",
+      "brightness": "low",
+      "use_cases": ["FOK"],
+      "level_fit": [2, 3],
+      "notes": "Bare noise floor"
+    },
+    {
+      "id": "texture_shimmer_soft_01",
+      "role": "texture",
+      "tone": "light",
+      "energy": "low",
+      "motion": "still",
+      "density": "soft",
+      "brightness": "medium",
+      "use_cases": ["ENR", "SPC"],
+      "level_fit": [1, 2],
+      "notes": "Soft shimmer"
+    },
+    {
+      "id": "texture_space_deep_01",
+      "role": "texture",
+      "tone": "dark",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "soft",
+      "brightness": "low",
+      "use_cases": ["SPC"],
+      "level_fit": [2, 3],
+      "notes": "Deep spatial texture"
+    },
+    {
+      "id": "texture_warm_lift_01",
+      "role": "texture",
+      "tone": "neutral_warm",
+      "energy": "low",
+      "motion": "slow",
+      "density": "soft",
+      "brightness": "medium",
+      "use_cases": ["ENR"],
+      "level_fit": [1, 2],
+      "notes": "Gentle uplifting layer"
+    },
+    {
+      "id": "texture_zen_soft_01",
+      "role": "texture",
+      "tone": "neutral",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "minimal",
+      "brightness": "low",
+      "use_cases": ["FOK", "SPC"],
+      "level_fit": [1, 2, 3],
+      "notes": "Clean zen-like texture"
+    }
+  ]
+}
