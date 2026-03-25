@@ -236,6 +236,39 @@ const CLIENT_ERROR_BOOTSTRAP = `
     } catch (e) {}
   }
 
+  // phase 3.5: warn when client boot is missing
+  (function () {
+    try {
+      if (!debugEnabled) return;
+      setTimeout(function () {
+        try {
+          if (window.__clientBoot) return;
+          var doc = document;
+          if (!doc) return;
+          var warn = doc.getElementById("client-boot-missing");
+          if (!warn) {
+            warn = doc.createElement("div");
+            warn.id = "client-boot-missing";
+            warn.style.position = "fixed";
+            warn.style.top = "64px";
+            warn.style.left = "8px";
+            warn.style.padding = "6px 8px";
+            warn.style.background = "rgba(180, 40, 40, 0.92)";
+            warn.style.color = "#fff";
+            warn.style.fontSize = "12px";
+            warn.style.borderRadius = "6px";
+            warn.style.zIndex = "10002";
+            warn.style.pointerEvents = "none";
+            doc.body && doc.body.appendChild(warn);
+          }
+          if (warn) {
+            warn.textContent = "client boot missing";
+          }
+        } catch (e) {}
+      }, 4000);
+    } catch (e) {}
+  })();
+
   // phase 4: richer diagnostics
   try {
     window.__prebootOk = true;

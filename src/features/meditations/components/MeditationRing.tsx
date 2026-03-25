@@ -40,6 +40,8 @@ export default function MeditationRing({ meditations, hoveredId, selectedId, onH
             onMouseLeave={() => onHover(null)}
             onFocus={() => onHover(meditation.id)}
             onBlur={() => onHover(null)}
+            onPointerDown={() => onSelect(meditation.id)}
+            onTouchStart={() => onSelect(meditation.id)}
             onClick={() => onSelect(meditation.id)}
             aria-label={`${meditation.title} (${meditation.category})`}
           />
