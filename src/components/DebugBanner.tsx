@@ -11,6 +11,8 @@ type DebugInfo = {
 
 type DebugRuntime = {
   bootOk: boolean;
+  prebootOk: boolean;
+  firstMount: string;
   viewport: string;
   blockerCount: number;
   lastTap: string;
@@ -86,6 +88,8 @@ export default function DebugBanner() {
       <div>{info.hydratedAt}</div>
       <div>{info.matchMediaEventSupport}</div>
       <div>{runtime?.bootOk ? "boot: ok" : "boot: missing"}</div>
+      <div>{runtime?.prebootOk ? "preboot: ok" : "preboot: missing"}</div>
+      <div>{runtime ? `first mount: ${runtime.firstMount}` : "first mount: none"}</div>
       <div>{runtime ? `viewport: ${runtime.viewport}` : "viewport: unknown"}</div>
       <div>{runtime ? `blockers: ${runtime.blockerCount}` : "blockers: unknown"}</div>
       <div>{runtime ? `tap: ${runtime.lastTap}` : "tap: none"}</div>
@@ -118,6 +122,8 @@ function getRuntimeInfo(): DebugRuntime {
   if (typeof window === "undefined") {
     return {
       bootOk: false,
+      prebootOk: false,
+      firstMount: "none",
       viewport: "unknown",
       blockerCount: 0,
       lastTap: "none",
@@ -130,8 +136,17 @@ function getRuntimeInfo(): DebugRuntime {
   const viewport = `${window.innerWidth}x${window.innerHeight}`;
   const blockerCount = Array.isArray(window.__blockerCandidates) ? window.__blockerCandidates.length : 0;
   const last = Array.isArray(window.__tapProbe) ? window.__tapProbe[window.__tapProbe.length - 1] : null;
+  const prebootOk =
+    Boolean(window.__prebootOk) ||
+    (typeof document !== "undefined" && document.documentElement?.dataset?.preboot === "ok");
+  const firstMount =
+    (window.__firstClientMount && window.__firstClientMount.app) ||
+    (window.__bootDiag && window.__bootDiag.firstMount) ||
+    "none";
   return {
     bootOk,
+    prebootOk,
+    firstMount,
     viewport,
     blockerCount,
     lastTap: last ? `${last.type} ${last.target}` : "none",

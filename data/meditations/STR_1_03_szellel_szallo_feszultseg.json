@@ -1,0 +1,359 @@
+{
+  "id": "STR_1_03_szellel_szallo_feszultseg",
+  "title": "Széllel Szálló Feszültség",
+  "category": "STR",
+  "meditation_mode": "imaginativ",
+  "level": "kezdo",
+  "order_in_category": 3,
+  "duration_sec": 480,
+  "summary_short": "Kreatív stresszoldó meditáció szellővizualizációval, a feszültségek észlelésére és kilégzéssel történő elengedésére.",
+  "tone": ["lágy", "lebegő", "könnyed"],
+  "techniques": [
+    "légzésfigyelés",
+    "testérzet megfigyelés",
+    "vizualizáció",
+    "elengedés",
+    "jelenlét"
+  ],
+  "visual_theme": "default_dark_atmospheric",
+  "status": "optimalizalt",
+  "is_published": true,
+  "campaign_key": null,
+  "source_docx": "STR_1_03_Szellel_Szallo_Feszultseg_Optimalizalt.docx",
+  "reader": {
+    "autoplay": true,
+    "end_behavior": "soft_end",
+    "blocks": [
+      {
+        "type": "text",
+        "content": "Helyezkedj el kényelmesen...",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Hunyd be a szemed, ha még nem tetted...",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "és egyszerűen csak figyeld meg, ahogy a tested most itt van.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell semmit megváltoztatnod.",
+        "tone": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Nem kell semmit elérned.",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "A tested… találkozik a földdel.",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "A légzésed… magától mozdul.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Figyeld meg a belégzést... a kilégzést... csak úgy, ahogy most van.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most figyeld meg a tested különböző területeit… mintha egy halk megfigyelő járná körbe.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "Kezdd a vállaiddal...",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Van ott valami? Egy súly… egy nyomás… vagy csak egy szokatlan jelenlét?",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Ha nincs semmi, az is teljesen rendben van.",
+        "tone": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Nem keresünk semmit — csak figyelünk.",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most a hasad felé irányítsd a figyelmed.",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Mintha belülről hallgatnád... vagy csak néznéd, mit mesél épp.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Érzed-e ott valami mozdulatlanságot, feszültséget, talán egy sűrűbb levegőt?",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "És lehet, hogy nem érzel semmit. Ez is a tapasztalás része.",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Végül vidd a figyelmed a hátadra… oda, ahol gyakran hordozunk dolgokat, észrevétlenül.",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Csak figyeld meg: van-e ott valami.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Nem baj, ha nincs válasz. A figyelés már önmagában elég.",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Most fordulj vissza ahhoz a ponthoz a testedben, ahol az előbb feszültséget éreztél. Bármelyik lehet.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "Belégzés...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Irányítsd a figyelmed oda. Mintha belülről néznél rá újra.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 4000
+      },
+      {
+        "type": "text",
+        "content": "Kilégzés...",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 3000
+      },
+      {
+        "type": "text",
+        "content": "Képzeld el, hogy ebből a feszültségből indul el egy szellő.",
+        "tone": "deep"
+      },
+      {
+        "type": "text",
+        "content": "Mintha csak elmozdulna… lágyan… szabadon… elkezdene haladni belőled kifelé.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Ismét… belégzés – odafigyelsz.",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Kilégzés – a szellő indul. Abból, ami ott van.",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "A szellő nem pusztít. Csak mozdul.",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Amit lehet, elvisz. A többit… csak megérinti.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 12000
+      },
+      {
+        "type": "text",
+        "content": "Most engedd, hogy a szellő már ne csak egy pontról induljon… hanem keringeni kezdjen benned.",
+        "tone": "deep"
+      },
+      {
+        "type": "text",
+        "content": "A tested, mint egy csendes, szelíd malom, amit a légzésed forgat.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Belégzés… a test belül tágul, a szellő elindul…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Kilégzés… és a mozdulat körbejár.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Mintha finoman simítaná a bordáidat… végigsuhanna a hasadon… elidőzne a kezednél.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "És most… ha a szellő útközben újra valami sűrűbbet, nehezebbet érint…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Emlékezz: kilégzéskor újra elindíthatod onnan. Ahol valami még maradt.",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Nem kell elűzni. Nem kell kitisztítani.",
+        "tone": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Csak… átlélegezni.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "A szellő kering… mint egy halk gondolat a test belső terében.",
+        "tone": "deep"
+      },
+      {
+        "type": "text",
+        "content": "A tested most… egy lélegző táj. Lágyságból formálva. Mozgásban. Befogadásban.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 12000
+      },
+      {
+        "type": "text",
+        "content": "Most figyeld meg, hogy mi változott… ha egyáltalán változott valami.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Talán könnyebb a légzésed. Talán csak csendesebb a figyelmed.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Most nincs szükség mozdulatra… se belül, se kívül.",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "A szellő is megpihent. Csak te vagy… és ez a nyugalom.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 15000
+      },
+      {
+        "type": "text",
+        "content": "Amikor készen állsz, lassan, szelíden, hozd vissza a figyelmed a külvilág felé…",
+        "tone": "soft"
+      }
+    ]
+  }
+}

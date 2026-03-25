@@ -1,0 +1,375 @@
+{
+  "id": "FOK_3_03_a_lang_szeme",
+  "title": "A Láng Szeme",
+  "category": "FOK",
+  "meditation_mode": "imaginativ",
+  "level": "halado",
+  "order_in_category": 3,
+  "duration_sec": 1140,
+  "summary_short": "Haladó kontemplatív fókuszmeditáció a figyelem természetének megtapasztalására egy élő fókuszponton keresztül, majd annak elengedésével.",
+  "tone": ["csendes", "mélyülő", "átlátszó"],
+  "techniques": [
+    "fokuszalt figyelem",
+    "vizualizacio",
+    "formaoldas",
+    "tiszta jelenlet",
+    "kontemplacio"
+  ],
+  "visual_theme": "default_dark_atmospheric",
+  "status": "optimalizalt",
+  "is_published": true,
+  "campaign_key": null,
+  "source_docx": "FOK_3_03_A_Lang_Szeme_Optimalizalt.docx",
+  "reader": {
+    "autoplay": true,
+    "end_behavior": "soft_end",
+    "blocks": [
+      {
+        "type": "text",
+        "content": "Helyezkedj el úgy, hogy a tested teljes súlyával biztonságban érezhesse magát…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Észleled a talajt… A gerinced tartását… A tested belső terét…",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Figyeld meg, hogy a légzés már itt van…",
+        "tone": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Nem kell hívnod. Nem kell változtatnod.",
+        "tone": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Csak engedd, hogy jöjjön és menjen, mint egy ismerős ritmus.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most jelenítsd meg magad előtt egy gyertyaláng képét…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Ha van előtted valódi láng, nézd… Ha nincs, képzeld el.",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Ahogy a fénye rezzenés nélkül áll — mégis él, mégis mozog…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 12000
+      },
+      {
+        "type": "text",
+        "content": "Ez a láng nem csupán fény.",
+        "tone": "deep"
+      },
+      {
+        "type": "text",
+        "content": "Ez a láng a figyelmed formája.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Most engedd, hogy figyelmed a lángra simuljon…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Ne próbáld tartani — inkább hagyd, hogy ő tartson téged.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Figyeld, ahogy mozdul… Figyeld, ahogy nem mozdul…",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Amikor a láng belerezzen a térbe, észrevetted, hogy benned is történik valami?",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "A figyelmed már nem kívül van.",
+        "tone": "deep"
+      },
+      {
+        "type": "text",
+        "content": "Nem nézel — hanem jelen vagy.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Most hagyd, hogy a figyelem még puhábban simuljon rá a lángra…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Nincs mit megtartani… Nincs mit keresni…",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Talán észreveszed, hogy nem is a lángot figyeled már…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "hanem azt, ahogyan figyelsz…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 12000
+      },
+      {
+        "type": "text",
+        "content": "A láng formája elmosódik…",
+        "tone": "deep"
+      },
+      {
+        "type": "text",
+        "content": "de valami mégis él és mozdul…",
+        "tone": "deep"
+      },
+      {
+        "type": "text",
+        "content": "valami, ami nem kívül van és nem belül… csak ott van.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 14000
+      },
+      {
+        "type": "text",
+        "content": "Most nem kell nevet adni annak, ami történik.",
+        "tone": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Csak maradj.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most engedd, hogy a láng lassan elhalványuljon…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "Nem kell elképzelned, nem kell tartanod…",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Mintha kialudna… de még mindig van világosság.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 12000
+      },
+      {
+        "type": "text",
+        "content": "A látás folytatódik. De már nincs tárgya.",
+        "tone": "deep"
+      },
+      {
+        "type": "text",
+        "content": "Csak a tér… a rezgés… a jelenlét…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 12000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell tudnod, mi figyel.",
+        "tone": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Csak észleled, hogy figyelem van.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most már nincs fókusz… nincs mozdulat… csak jelenlét van.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "A figyelem önmagában áll…",
+        "tone": "deep"
+      },
+      {
+        "type": "text",
+        "content": "mint a tó felszíne, mielőtt a reggel megérinti.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 12000
+      },
+      {
+        "type": "text",
+        "content": "Ez a tér nem akar semmit.",
+        "tone": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Nem keres… Nem választ… Nem nevezi meg, amit lát.",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Mégis van benne élet.",
+        "tone": "deep"
+      },
+      {
+        "type": "text",
+        "content": "Valami mozdulatlanul rezdül…",
+        "tone": "deep"
+      },
+      {
+        "type": "text",
+        "content": "Valami figyel, de nem különül el attól, amit figyelne.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 12000
+      },
+      {
+        "type": "text",
+        "content": "Most ebben a térben pihenhetsz…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "ahogy vagy… ahogy nem vagy…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Most lassan engedd, hogy visszatérjen a tested érzete…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "a súly… az ülés vagy fekvés formája…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Figyeld meg a légzésed…",
+        "tone": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "ugyanaz… és mégis tágasabb, tisztább, mint amikor elindultál.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Talán még mindig ott van benned valami abból, ami nem mozdul…",
+        "tone": "deep"
+      },
+      {
+        "type": "text",
+        "content": "ami csend… ami figyel…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "Most, amikor készen állsz, mozgasd meg a kezed… a nyakad…",
+        "tone": "soft"
+      },
+      {
+        "type": "text",
+        "content": "és ha szeretnéd — nyisd ki a szemed.",
+        "tone": "soft"
+      }
+    ]
+  }
+}

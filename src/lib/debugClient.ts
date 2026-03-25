@@ -22,10 +22,20 @@ type BlockerCandidate = {
 declare global {
   interface Window {
     __clientBoot?: boolean;
+    __firstClientMount?: { app: string; ts: string };
+    __prebootOk?: boolean;
     __tapProbe?: TapProbeEntry[];
     __tapProbeInit?: boolean;
     __blockerCandidates?: BlockerCandidate[];
     __blockerScanPath?: string;
+    __bootDiag?: {
+      ua?: string;
+      path?: string;
+      search?: string;
+      preboot?: boolean;
+      clientBoot?: boolean;
+      firstMount?: string | null;
+    };
   }
 }
 
@@ -35,6 +45,15 @@ export function markClientBoot(appName: string) {
     document.documentElement.dataset.clientBoot = "ok";
   }
   window.__clientBoot = true;
+  window.__firstClientMount = { app: appName, ts: new Date().toISOString() };
+  if (window.__bootDiag) {
+    window.__bootDiag.clientBoot = true;
+    window.__bootDiag.firstMount = appName;
+  }
+  const prebootDiv = typeof document !== "undefined" ? document.getElementById("preboot-debug") : null;
+  if (prebootDiv) {
+    prebootDiv.textContent = "boot ok";
+  }
   console.log(`[boot-ok] ${appName}`);
 }
 
