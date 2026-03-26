@@ -15,7 +15,7 @@ async function readBlobJson<T>(pathname: string, access: BlobAccessType) {
 
 async function writeBlobJson(pathname: string, value: unknown, access: BlobAccessType) {
   const payload = JSON.stringify(value, null, 2) + "\n";
-  await put(pathname, payload, { access, contentType: "application/json" });
+  await put(pathname, payload, { access, contentType: "application/json", allowOverwrite: true });
 }
 
 async function readLocalJson<T>(
