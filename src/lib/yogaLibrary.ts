@@ -1,30 +1,28 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import type { YogaLibraryEntry, YogaCategory } from "@/types/activity";
+import { readJsonStore, writeJsonStore } from "@/lib/jsonStore";
 
 const DATA_DIR = join(process.cwd(), "data", "body");
 const LIBRARY_PATH = join(DATA_DIR, "yoga-library.json");
-
-async function ensureStorage() {
-  await mkdir(DATA_DIR, { recursive: true });
-  try {
-    await readFile(LIBRARY_PATH, "utf-8");
-  } catch {
-    await writeFile(LIBRARY_PATH, "[]", "utf-8");
-  }
-}
+const LIBRARY_BLOB_PATH = "body/yoga-library.json";
 
 export async function readYogaLibrary(): Promise<YogaLibraryEntry[]> {
-  await ensureStorage();
-  const raw = await readFile(LIBRARY_PATH, "utf-8");
-  const parsed = JSON.parse(raw);
-  if (!Array.isArray(parsed)) return [];
-  return parsed as YogaLibraryEntry[];
+  const parsed = await readJsonStore<YogaLibraryEntry[]>({
+    blobPath: LIBRARY_BLOB_PATH,
+    filePath: LIBRARY_PATH,
+    fallbackValue: [],
+  });
+  return Array.isArray(parsed) ? parsed : [];
 }
 
 export async function writeYogaLibrary(entries: YogaLibraryEntry[]) {
-  await ensureStorage();
-  await writeFile(LIBRARY_PATH, JSON.stringify(entries, null, 2), "utf-8");
+  await writeJsonStore(
+    {
+      blobPath: LIBRARY_BLOB_PATH,
+      filePath: LIBRARY_PATH,
+    },
+    entries
+  );
 }
 
 export function createYogaId() {

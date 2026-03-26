@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
 import { SpiritDraftPreviewResponseSchema } from "@/lib/spiritDraftSchema";
 import { validateSpiritLibrary } from "@/lib/spiritSchema";
 import { requireAdmin } from "@/lib/adminAuth";
+import { loadSpiritLibrary } from "@/lib/spiritLibrary";
 
-const LIBRARY_PATH = join(process.cwd(), "data", "spirit", "library.json");
+export const runtime = "nodejs";
+
 const IS_DEV = process.env.NODE_ENV !== "production";
 
 type Payload = {
@@ -362,9 +362,7 @@ export async function POST(request: Request) {
 
     let library: ReturnType<typeof validateSpiritLibrary>;
     try {
-      const raw = await readFile(LIBRARY_PATH, "utf-8");
-      const parsed = JSON.parse(raw);
-      library = validateSpiritLibrary(parsed);
+      library = await loadSpiritLibrary();
     } catch (err) {
       const detail = (err as Error)?.message ?? String(err);
       const phase = detail.includes("Spirit library validation failed")

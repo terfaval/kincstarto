@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import { readFile, writeFile } from "node:fs/promises";
-import { join } from "node:path";
-import { SpiritPathSchema, validateSpiritLibrary } from "@/lib/spiritSchema";
+import { SpiritPathSchema } from "@/lib/spiritSchema";
 import { requireAdmin } from "@/lib/adminAuth";
+import { loadSpiritLibrary, saveSpiritLibrary } from "@/lib/spiritLibrary";
 
-const LIBRARY_PATH = join(process.cwd(), "data", "spirit", "library.json");
+export const runtime = "nodejs";
 
 type PathPayload = {
   path?: unknown;
@@ -27,9 +26,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const raw = await readFile(LIBRARY_PATH, "utf-8");
-  const parsed = JSON.parse(raw);
-  const library = validateSpiritLibrary(parsed);
+  const library = await loadSpiritLibrary();
 
   if (payload.path) {
     const pathParse = SpiritPathSchema.safeParse(payload.path);
@@ -44,7 +41,7 @@ export async function POST(request: Request) {
     } else {
       library.paths.unshift(incoming);
     }
-    await writeFile(LIBRARY_PATH, JSON.stringify(library, null, 2) + "\n", "utf-8");
+    await saveSpiritLibrary(library);
     return NextResponse.json({ ok: true });
   }
 
@@ -54,7 +51,7 @@ export async function POST(request: Request) {
 
   if (payload.delete) {
     library.paths = (library.paths ?? []).filter((item) => item.id !== payload.pathId);
-    await writeFile(LIBRARY_PATH, JSON.stringify(library, null, 2) + "\n", "utf-8");
+    await saveSpiritLibrary(library);
     return NextResponse.json({ ok: true });
   }
 
@@ -89,6 +86,6 @@ export async function POST(request: Request) {
     path.items = updatedItems;
   }
 
-  await writeFile(LIBRARY_PATH, JSON.stringify(library, null, 2) + "\n", "utf-8");
+  await saveSpiritLibrary(library);
   return NextResponse.json({ ok: true });
 }

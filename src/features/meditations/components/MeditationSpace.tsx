@@ -13,9 +13,10 @@ import type { MeditationAudioMap } from "@/features/audio/lib/audio-types";
 type Props = {
   meditations: Meditation[];
   audioMap: MeditationAudioMap;
+  isAdmin?: boolean;
 };
 
-export default function MeditationSpace({ meditations: initialMeditations, audioMap }: Props) {
+export default function MeditationSpace({ meditations: initialMeditations, audioMap, isAdmin }: Props) {
   const meditations = useMeditations(initialMeditations);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -143,6 +144,7 @@ export default function MeditationSpace({ meditations: initialMeditations, audio
           audioConfig={readerAudioConfig}
           onExit={closeReader}
           onComplete={handleReaderComplete}
+          isAdmin={isAdmin}
         />
       )}
     </section>

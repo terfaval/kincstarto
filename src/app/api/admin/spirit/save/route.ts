@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
-import { readFile, writeFile, rename } from "node:fs/promises";
-import { join } from "node:path";
 import { SpiritDraftSchema } from "@/lib/spiritDraftSchema";
-import { SpiritBookSchema, validateSpiritLibrary } from "@/lib/spiritSchema";
+import { SpiritBookSchema } from "@/lib/spiritSchema";
 import { buildTagLabel } from "@/lib/spiritTags";
 import { requireAdmin } from "@/lib/adminAuth";
+import { loadSpiritLibrary, saveSpiritLibrary } from "@/lib/spiritLibrary";
 
-const LIBRARY_PATH = join(process.cwd(), "data", "spirit", "library.json");
+export const runtime = "nodejs";
 
 const FORBIDDEN = ["TBD", "TODO", "..."];
 const SLUG_RE = /^[a-z0-9_]+$/;
@@ -99,9 +98,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Forbidden placeholder text" }, { status: 400 });
   }
 
-  const raw = await readFile(LIBRARY_PATH, "utf-8");
-  const libraryRaw = JSON.parse(raw);
-  const library = validateSpiritLibrary(libraryRaw);
+  const library = await loadSpiritLibrary();
 
   const normalizedTitle = normalizeKey(book.title);
   const normalizedAuthor = normalizeKey(book.author);
@@ -160,9 +157,7 @@ export async function POST(request: Request) {
     });
   }
 
-  const tmp = `${LIBRARY_PATH}.tmp`;
-  await writeFile(tmp, JSON.stringify(library, null, 2) + "\n", "utf-8");
-  await rename(tmp, LIBRARY_PATH);
+  await saveSpiritLibrary(library);
 
   return NextResponse.json({ ok: true, id: book.id });
 }

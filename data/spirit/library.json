@@ -1588,12 +1588,230 @@
         "konyv_taburól",
         "teljesség_felé"
       ]
+    },
+    {
+      "id": "uveggyongyjatek_hesse",
+      "title": "Az üveggyöngyjáték",
+      "author": "Hermann Hesse",
+      "tradition": "vegyes",
+      "level": "kozep-halado",
+      "summary_short": "Filozófiai regény a tudás, játék és belső fejlődés kapcsolatáról.",
+      "recommendation": "Akkor ajánlott, ha szereted a lassú, gondolati rétegekben kibontakozó műveket, és érdekel a tudás, spiritualitás és élet közti feszültség. Nem ideális, ha könnyen befogadható, lineáris történetet keresel.",
+      "themes": [
+        "irodalmi_spiritualitas",
+        "ontudat_es_en",
+        "nem_kettosseg",
+        "pszichologia"
+      ],
+      "language": "hu",
+      "format": "konyv",
+      "status": "befejezett",
+      "summary_long": "A regény egy jövőbeli, szellemi elit által működtetett világban játszódik, ahol az „üveggyöngyjáték” a tudás és műveltség legmagasabb formáját képviseli. A főszereplő útja azonban fokozatosan rámutat ennek a rendszernek a korlátaira: a tiszta intellektus és az élettől való elszakadás nem vezet teljességhez. A mű a tudás, a játék, a spiritualitás és az élet közti egyensúlyt vizsgálja, és azt a kérdést teszi fel, hogy a megértés hogyan válhat valódi, megélt tapasztalattá.",
+      "cautions": "Erősen elméleti és lassú tempójú, ezért könnyen nehézkesnek tűnhet. A filozófiai rétegek miatt érdemes többször visszatérni hozzá.",
+      "tags": [
+        "regeny",
+        "filozofia",
+        "belsout"
+      ],
+      "related": [
+        "sziddhartha_hesse",
+        "teljesség_felé"
+      ]
+    },
+    {
+      "id": "agyaggepuska_pelevin",
+      "title": "Agyaggépuska",
+      "author": "Viktor Pelevin",
+      "tradition": "vegyes",
+      "level": "kozep-halado",
+      "summary_short": "Posztmodern regény a valóság, identitás és tudat természetének radikális megkérdőjelezéséről.",
+      "recommendation": "Akkor ajánlott, ha már érdekel a valóság és az én kérdése, és nyitott vagy egy nem lineáris, zavarba hozó megközelítésre. Nem ideális, ha stabil, követhető tanításrendszert keresel.",
+      "themes": [
+        "buddhizmus_alapok",
+        "nem_kettosseg",
+        "ontudat_es_en",
+        "irodalmi_spiritualitas"
+      ],
+      "language": "hu",
+      "format": "konyv",
+      "status": "befejezett",
+      "summary_long": "A regény két idősíkon játszódik, amelyek fokozatosan egymásba csúsznak, miközben a főhős identitása és a valóság stabilitása is folyamatosan megkérdőjeleződik. A buddhista gondolatok – különösen az üresség és az én illuzórikus természete – nem tanításként jelennek meg, hanem a történet szerkezetén keresztül tapasztalhatók meg. A könyv nem magyaráz, hanem kizökkent: arra kényszerít, hogy újragondold, mi tekinthető valósnak.",
+      "cautions": "Szándékosan zavaros és destabilizáló, ezért könnyű elveszíteni benne a kapaszkodókat. Nem tanít rendszert, és félrevezető lehet, ha konkrét filozófiai állításként próbálod értelmezni.",
+      "tags": [
+        "posztmodern",
+        "valosag",
+        "identitas"
+      ],
+      "related": [
+        "konyv_taburól",
+        "sziddhartha_hesse"
+      ]
+    },
+    {
+      "id": "legyozhetetlen_nap_pelevin",
+      "title": "Legyőzhetetlen nap",
+      "author": "Viktor Pelevin",
+      "tradition": "vegyes",
+      "level": "kozep-halado",
+      "summary_short": "Modern regény az identitás, tudat és valóság illuzórikus természetéről.",
+      "recommendation": "Akkor ajánlott, ha már foglalkoztat az én és a valóság kérdése, és nyitott vagy egy ironikus, kortárs megközelítésre. Nem ideális, ha tiszta, strukturált tanítást vagy klasszikus spirituális szöveget keresel.",
+      "themes": [
+        "ontudat_es_en",
+        "nem_kettosseg",
+        "modern_spiritualitas",
+        "pszichologia"
+      ],
+      "language": "hu",
+      "format": "konyv",
+      "status": "befejezett",
+      "summary_long": "A regény egy fiatal nő történetén keresztül vizsgálja, hogyan épül fel az identitás, és mennyiben tekinthető valósnak. Pelevin a modern világ – média, fogyasztás, szerepek – eszközein keresztül mutat rá arra, hogy az „én” nem stabil entitás, hanem folyamatosan konstruált jelenség. A történet mögött végig ott húzódik a kérdés: van-e bármi, ami ezen túl valóban létezik, vagy minden csak rétegek egymásra vetülése.",
+      "cautions": "Ironikus és sokszor cinikus hangvételű, ami könnyen elfedheti a mélyebb rétegeket. Nem ad kapaszkodót vagy gyakorlati irányt, inkább lebont, mint épít.",
+      "tags": [
+        "identitas",
+        "illuzio",
+        "kortars"
+      ],
+      "related": [
+        "agyaggepuska_pelevin",
+        "konyv_taburól",
+        "bizonytalansag_bolcsessege"
+      ]
+    },
+    {
+      "id": "titkos_pillantasok_fudzsi_hegyre_pelevin",
+      "title": "Titkos pillantások a Fudzsi hegyre",
+      "author": "Viktor Pelevin",
+      "tradition": "vegyes",
+      "level": "kozep-halado",
+      "summary_short": "Kortárs regény a tudat, vágy és illúzió kapcsolatáról a modern világban.",
+      "recommendation": "Akkor ajánlott, ha érdekel, hogyan torzul a tudat a modern élet és vágystruktúrák hatására. Nem ideális, ha letisztult spirituális tanítást vagy egyértelmű üzenetet keresel.",
+      "themes": [
+        "modern_spiritualitas",
+        "pszichologia",
+        "ontudat_es_en"
+      ],
+      "language": "hu",
+      "format": "konyv",
+      "status": "befejezett",
+      "summary_long": "A regény több szálon keresztül mutatja be, hogyan formálják a vágyak, a társadalmi struktúrák és a tudatállapotok az egyén valóságélményét. Pelevin itt kevésbé filozófiai rendszerként, inkább szétszórt tükrök sorozataként közelít a tudathoz: különböző karaktereken és helyzeteken keresztül villantja fel, mennyire instabil az, amit valóságnak érzékelünk. A buddhista és taoista motívumok inkább háttérként jelennek meg, mint explicit tanításként.",
+      "cautions": "Fragmentált és időnként szándékosan zavaró szerkezetű, ezért könnyű elveszíteni a fókuszt. A spirituális réteg nem mindig egyértelmű, és könnyen háttérbe szorul a szatirikus felszín mögött.",
+      "tags": [
+        "kortars",
+        "valosag",
+        "szatirikus"
+      ],
+      "related": [
+        "legyozhetetlen_nap_pelevin",
+        "agyaggepuska_pelevin"
+      ]
+    },
+    {
+      "id": "metamor_szent_konyve_pelevin",
+      "title": "A Metamor szent könyve",
+      "author": "Viktor Pelevin",
+      "tradition": "vegyes",
+      "level": "kozep-halado",
+      "summary_short": "Regény az identitás fluiditásáról és az én radikális átalakulásáról.",
+      "recommendation": "Akkor ajánlott, ha nyitott vagy az identitás teljes feloldásának gondolatára és egy erősen szimbolikus, szokatlan történetvezetésre. Nem ideális, ha stabil jelentéseket vagy klasszikus spirituális keretet keresel.",
+      "themes": [
+        "ontudat_es_en",
+        "nem_kettosseg",
+        "irodalmi_spiritualitas",
+        "pszichologia"
+      ],
+      "language": "hu",
+      "format": "konyv",
+      "status": "befejezett",
+      "summary_long": "A történet egy alakváltó lény perspektíváján keresztül vizsgálja az identitás természetét és annak határait. Pelevin itt az „én” fogalmát nemcsak megkérdőjelezi, hanem teljesen instabillá teszi: a szereplő létezése folyamatos átalakulás, amelyben nincs fix referenciapont. A regény így nem tanít, hanem szétszedi az identitásról alkotott megszokott képet, és egy sokkal tágabb, bizonytalanabb térbe helyezi az olvasót.",
+      "cautions": "Erősen szimbolikus és szokatlan nézőpontú, ezért könnyen idegen vagy nehezen értelmezhető lehet. Nem kapcsolódik közvetlenül klasszikus spirituális tanításokhoz, inkább metaforikus és dekonstruktív jellegű.",
+      "tags": [
+        "identitas",
+        "atalakulas",
+        "szimbolikus"
+      ],
+      "related": [
+        "agyaggepuska_pelevin",
+        "legyozhetetlen_nap_pelevin"
+      ]
+    },
+    {
+      "id": "aranytemplom_mishima",
+      "title": "Aranytemplom",
+      "author": "Misima Jukió",
+      "tradition": "vegyes",
+      "level": "kozep-halado",
+      "summary_short": "Regény a szépség, megszállottság és pusztítás kapcsolatáról egy zen környezetben.",
+      "recommendation": "Akkor ajánlott, ha érdekel a szépséghez, tökéletességhez és identitáshoz való torzult viszony vizsgálata. Nem ideális, ha spirituális útmutatást vagy kiegyensúlyozó hatású olvasmányt keresel.",
+      "themes": [
+        "irodalmi_spiritualitas",
+        "ontudat_es_en",
+        "pszichologia",
+        "zen_gyakorlat"
+      ],
+      "language": "hu",
+      "format": "konyv",
+      "status": "befejezett",
+      "summary_long": "A regény egy fiatal szerzetes történetén keresztül mutatja be, hogyan válhat a szépség nem inspirációvá, hanem megszállottsággá. Az Aranytemplom nemcsak esztétikai ideál, hanem olyan abszolútum, amely elviselhetetlenné válik a főhős számára. A történet így nem spirituális felemelkedésről, hanem a tudat torzulásáról szól: arról, hogyan válhat a tökéletesség iránti vágy pusztító erővé.",
+      "cautions": "Sötét hangulatú és pszichológiailag intenzív, ezért könnyen nyomasztó lehet. A zen háttér inkább díszlet, mint valódi tanítási keret, így félrevezető lehet spirituális könyvként kezelni.",
+      "tags": [
+        "japan_irodalom",
+        "szepseg",
+        "megszallottsag"
+      ],
+      "related": [
+        "uveggyongyjatek_hesse",
+        "sziddhartha_hesse"
+      ]
+    },
+    {
+      "id": "az_ember_es_szimbolumai_jung",
+      "title": "Az ember és szimbólumai",
+      "author": "Carl Gustav Jung",
+      "tradition": "vegyes",
+      "level": "kozep-halado",
+      "summary_short": "Bevezetés Jung szimbolikus gondolkodásába és a tudattalan működésébe.",
+      "recommendation": "Akkor ajánlott, ha szeretnéd megérteni, hogyan jelenik meg a tudattalan képekben és szimbólumokban, különösen álmokban. Nem ideális, ha közvetlen spirituális gyakorlatot keresel.",
+      "themes": [
+        "pszichologia",
+        "ontudat_es_en",
+        "mitologia",
+        "tudomany"
+      ],
+      "language": "hu",
+      "format": "konyv",
+      "status": "olvasatlan",
+      "summary_long": "A könyv Jung gondolkodásának egyik legközérthetőbb összefoglalása, amely a tudattalan működését a szimbólumokon keresztül mutatja be. Külön hangsúlyt kapnak az álmok, a mítoszok és az archetipikus képek, amelyek nemcsak személyes, hanem kollektív jelentéssel is bírnak. A szöveg segít megérteni, hogy a tudat nem kizárólag racionális módon működik, hanem képi és szimbolikus struktúrákon keresztül is.",
+      "cautions": "Pszichológiai keretben mozog, ezért nem spirituális tanításként értelmezendő. A szimbólumok jelentése nem rögzített, így könnyű túl leegyszerűsíteni vagy félreérteni őket.",
+      "tags": [
+        "jung",
+        "szimbolum",
+        "tudattalan"
+      ],
+      "related": [
+        "meditaciorol_erthetoen",
+        "teljesség_felé"
+      ]
     }
   ],
   "tag_labels": {
     "regeny": "Regeny",
     "belsout": "Belsout",
-    "klasszikus": "Klasszikus"
+    "klasszikus": "Klasszikus",
+    "filozofia": "Filozofia",
+    "posztmodern": "Posztmodern",
+    "valosag": "Valosag",
+    "identitas": "Identitás",
+    "illuzio": "Illuzio",
+    "kortars": "Kortars",
+    "szatirikus": "Szatirikus",
+    "atalakulas": "Atalakulas",
+    "szimbolikus": "Szimbolikus",
+    "japan_irodalom": "Japan irodalom",
+    "szepseg": "Szepseg",
+    "megszallottsag": "Megszallottsag",
+    "jung": "Jung",
+    "szimbolum": "Szimbolum",
+    "tudattalan": "Tudattalan"
   },
   "paths": [
     {

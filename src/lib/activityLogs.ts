@@ -1,30 +1,28 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import type { ActivityLogRow } from "@/types/activity";
+import { readJsonStore, writeJsonStore } from "@/lib/jsonStore";
 
 const DATA_DIR = join(process.cwd(), "data", "body");
 const LOGS_PATH = join(DATA_DIR, "activity-logs.json");
-
-async function ensureStorage() {
-  await mkdir(DATA_DIR, { recursive: true });
-  try {
-    await readFile(LOGS_PATH, "utf-8");
-  } catch {
-    await writeFile(LOGS_PATH, "[]", "utf-8");
-  }
-}
+const LOGS_BLOB_PATH = "body/activity-logs.json";
 
 export async function readActivityLogs(): Promise<ActivityLogRow[]> {
-  await ensureStorage();
-  const raw = await readFile(LOGS_PATH, "utf-8");
-  const parsed = JSON.parse(raw);
-  if (!Array.isArray(parsed)) return [];
-  return parsed as ActivityLogRow[];
+  const parsed = await readJsonStore<ActivityLogRow[]>({
+    blobPath: LOGS_BLOB_PATH,
+    filePath: LOGS_PATH,
+    fallbackValue: [],
+  });
+  return Array.isArray(parsed) ? parsed : [];
 }
 
 export async function writeActivityLogs(logs: ActivityLogRow[]) {
-  await ensureStorage();
-  await writeFile(LOGS_PATH, JSON.stringify(logs, null, 2), "utf-8");
+  await writeJsonStore(
+    {
+      blobPath: LOGS_BLOB_PATH,
+      filePath: LOGS_PATH,
+    },
+    logs
+  );
 }
 
 export function createLogId() {
@@ -35,4 +33,3 @@ export function createLogId() {
   const rand = Math.random().toString(36).slice(2, 8);
   return `log_${stamp}_${rand}`;
 }
-

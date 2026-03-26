@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import { readFile, writeFile } from "node:fs/promises";
-import { join } from "node:path";
-import { SpiritStatusEnum, validateSpiritLibrary } from "@/lib/spiritSchema";
+import { SpiritStatusEnum } from "@/lib/spiritSchema";
 import { requireAdmin } from "@/lib/adminAuth";
+import { loadSpiritLibrary, saveSpiritLibrary } from "@/lib/spiritLibrary";
 
-const LIBRARY_PATH = join(process.cwd(), "data", "spirit", "library.json");
+export const runtime = "nodejs";
 
 type Payload = {
   bookId: string;
@@ -39,9 +38,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
 
-  const raw = await readFile(LIBRARY_PATH, "utf-8");
-  const parsed = JSON.parse(raw);
-  const library = validateSpiritLibrary(parsed);
+  const library = await loadSpiritLibrary();
 
   const book = library.books.find((item) => item.id === payload.bookId);
   if (!book) {
@@ -61,7 +58,7 @@ export async function POST(request: Request) {
     }
   }
 
-  await writeFile(LIBRARY_PATH, JSON.stringify(library, null, 2) + "\n", "utf-8");
+  await saveSpiritLibrary(library);
 
   return NextResponse.json({ ok: true, status: book.status, notes: book.notes ?? "" });
 }
