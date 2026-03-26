@@ -1,0 +1,187 @@
+{
+  "id": "ENR_3_03_a_tudat_langja",
+  "title": "A Tudat Lángja",
+  "category": "ENR",
+  "meditation_mode": "imaginativ",
+  "level": "halado",
+  "order_in_category": 3,
+  "duration_sec": 600,
+  "summary_short": "Haladó, kontemplatív meditáció a tiszta figyelem és éberség közvetlen megtapasztalására mint belső energiaforrás.",
+  "tone": ["csendes", "tiszta", "mély"],
+  "techniques": [
+    "figyelem eszlelese",
+    "kontemplacio",
+    "metafora elengedese",
+    "tiszta jelenlet"
+  ],
+  "visual_theme": "default_dark_atmospheric",
+  "status": "optimalizalt",
+  "is_published": true,
+  "campaign_key": null,
+  "source_docx": "A_tudat_langja_Optimalizalt.docx",
+  "reader": {
+    "autoplay": true,
+    "end_behavior": "fade_out",
+    "blocks": [
+      {
+        "type": "text",
+        "content": "Helyezkedj el… Nem kell külön felkészülnöd… Csak vedd észre, hogy már jelen vagy.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+
+      {
+        "type": "text",
+        "content": "Most ne azt figyeld, amit érzékelsz…",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "hanem azt, hogy figyelsz.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Nem a légzést… nem a testedet… hanem magát a figyelmet.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+
+      {
+        "type": "text",
+        "content": "Mintha ez a figyelem egy láng lenne…",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "nem nagy… nem látványos… csak él.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Nem világít rá semmire… mégis jelen van.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+
+      {
+        "type": "text",
+        "content": "Ez a láng nem mozog úgy, mint a szél…",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "nem áramlik… nem keres.",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Mégis élő… és éber.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell tartanod… nem kell erősítened.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+
+      {
+        "type": "text",
+        "content": "Most engedd el a láng képét… és figyeld meg, mi marad.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Nem egy dolog… nem egy kép… hanem maga az éberség.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 12000
+      },
+
+      {
+        "type": "text",
+        "content": "Ez az éberség nem feszül… nem irányul… mégis tiszta.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell megtartanod… mert nem tűnik el.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 12000
+      },
+
+      {
+        "type": "text",
+        "content": "Most nincs mit tenni… nincs mit követni…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "csak ez az élő, csendes jelenlét.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 15000
+      }
+    ]
+  }
+}

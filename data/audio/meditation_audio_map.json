@@ -454,6 +454,105 @@
     ]
   }
 },
+"ENR_3_03_a_tudat_langja": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "ENR",
+      "energy": "low",
+      "motion": "almost_still",
+      "density": "minimal",
+      "tone": "neutral",
+      "imagery_support": "very_subtle"
+    },
+    "mix": {
+      "base_gain": 0.24,
+      "pause_gain": 0.33,
+      "fade_in_sec": 8,
+      "fade_out_sec": 12,
+      "end_behavior": "soft_end"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_neutral_loop_02",
+        "gain": 0.13
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 20],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_02",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.035
+          }
+        ]
+      },
+      {
+        "block_range": [21, 50],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_02",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_ethereal_soft_01",
+            "gain": 0.025
+          }
+        ]
+      },
+      {
+        "block_range": [51, 90],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_03",
+            "gain": 0.12
+          }
+        ]
+      },
+      {
+        "block_range": [91, 140],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_03",
+            "gain": 0.11
+          }
+        ]
+      },
+      {
+        "block_range": [141, 180],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_01",
+            "gain": 0.12
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.03
+          }
+        ]
+      }
+    ]
+  }
+},
 
 "ALV_1_01_alomba_simulo_legzes": {
   "audio": {

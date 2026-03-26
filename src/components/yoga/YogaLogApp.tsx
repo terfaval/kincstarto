@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { BookOpen, ChevronLeft, ChevronRight, Info, LogOut, Pencil, Plus, Trash2 } from "lucide-react";
+import { BookOpen, Brain, ChevronLeft, ChevronRight, Info, LogOut, Pencil, Plus, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "./YogaLogApp.module.css";
@@ -1414,6 +1414,14 @@ export default function YogaLogApp() {
           title="Vissza a konyvekhez"
         >
           <BookOpen size={18} />
+        </Link>
+        <Link
+          href="/admin/yogis-choice"
+          className={styles.addFab}
+          aria-label="Yogi's choice"
+          title="Yogi's choice"
+        >
+          <Brain size={18} />
         </Link>
         <button
           type="button"
