@@ -1,0 +1,215 @@
+{
+  "id": "STR_3_05_szelcsend",
+  "title": "Szélcsend",
+  "category": "STR",
+  "meditation_mode": "imaginativ",
+  "level": "halado",
+  "order_in_category": 5,
+  "duration_sec": 600,
+  "summary_short": "Haladó, csendbe oldódó meditáció a belső mozgás finomodásán keresztül a forma nélküli jelenlét megtapasztalására.",
+  "tone": ["csendes", "finom", "mély"],
+  "techniques": [
+    "legzes eszleles",
+    "imaginativ metafora",
+    "figyelem finomitasa",
+    "elengedes",
+    "kontemplativ jelenlet"
+  ],
+  "visual_theme": "default_dark_atmospheric",
+  "status": "optimalizalt",
+  "is_published": true,
+  "campaign_key": null,
+  "source_docx": "Szelcsend_Optimalizalt.docx",
+  "reader": {
+    "autoplay": true,
+    "end_behavior": "fade_out",
+    "blocks": [
+      {
+        "type": "text",
+        "content": "Helyezkedj el… Nem kell külön megérkezni… Már itt vagy.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+
+      {
+        "type": "text",
+        "content": "Talán még érzed a mozgást… a légzés halk áramlását… ahogy finoman végigér benned.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell követni… csak észrevenni, hogy történik.",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+
+      {
+        "type": "text",
+        "content": "Most figyeld meg… ahogy ez a mozgás egyre finomabbá válik.",
+        "tone": "soft"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 8000
+      },
+      {
+        "type": "text",
+        "content": "Már nem áramlás… inkább csak rezdülés.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Ha figyeled… szinte el is tűnik.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+
+      {
+        "type": "text",
+        "content": "Most már nem kell a légzéshez kötni a figyelmet…",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 6000
+      },
+      {
+        "type": "text",
+        "content": "de észreveheted… hogy még mindig van valami finom történés.",
+        "tone": "neutral"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Talán mozgás… talán csak emléke a mozgásnak.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+
+      {
+        "type": "text",
+        "content": "És egyszer csak… nem történik semmi külön.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "A mozgás nem tűnt el… csak már nincs benne feszültség.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Mintha a szél megpihent volna… de a tér ugyanúgy jelen van.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 15000
+      },
+      {
+        "type": "text",
+        "content": "És te is jelen vagy benne.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 15000
+      },
+
+      {
+        "type": "text",
+        "content": "Most nincs mit követni… de a figyelem nem tűnik el.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Nem irányul… de észlel.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 12000
+      },
+      {
+        "type": "text",
+        "content": "Nem kell megtartani ezt az állapotot… mert nincs, ami kibillentené.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 15000
+      },
+
+      {
+        "type": "text",
+        "content": "Itt nincs következő lépés.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "De a figyelem nem szűnik meg.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 10000
+      },
+      {
+        "type": "text",
+        "content": "Nincs lezárás… csak egy nyitott, nyugodt tér…",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 12000
+      },
+      {
+        "type": "text",
+        "content": "ahol semminek nem kell történnie.",
+        "tone": "deep"
+      },
+      {
+        "type": "pause",
+        "duration_ms": 25000
+      }
+    ]
+  }
+}

@@ -1,7 +1,26 @@
+export type LayerStart = {
+  mode: "block_index";
+  index: number;
+  fade_in_sec?: number;
+};
+
+export type LayerEnd =
+  | {
+      mode: "block_index";
+      index: number;
+      fade_out_sec?: number;
+    }
+  | {
+      mode: "meditation_end";
+      fade_out_sec?: number;
+    };
+
 export type AudioLayerConfig = {
-  slot?: string;
+  slot: "foundation" | "texture" | "nature" | "motion" | "accent";
   asset_id: string;
-  gain?: number;
+  gain: number;
+  start?: LayerStart;
+  end?: LayerEnd;
 };
 
 export type AudioMixConfig = {

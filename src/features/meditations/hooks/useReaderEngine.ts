@@ -9,6 +9,7 @@ export function useReaderEngine(meditation: Meditation | null) {
   const [status, setStatus] = useState<ReaderStatus>("idle");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentText, setCurrentText] = useState<ReaderTextBlock | null>(null);
+  const [currentBlockIndex, setCurrentBlockIndex] = useState<number | null>(null);
   const timerRef = useRef<number | null>(null);
 
   const clearTimer = useCallback(() => {
@@ -22,6 +23,7 @@ export function useReaderEngine(meditation: Meditation | null) {
     clearTimer();
     setCurrentIndex(0);
     setCurrentText(null);
+    setCurrentBlockIndex(null);
     setStatus("idle");
   }, [clearTimer]);
 
@@ -61,6 +63,7 @@ export function useReaderEngine(meditation: Meditation | null) {
     }
 
     const block = blocks[currentIndex];
+    setCurrentBlockIndex(currentIndex);
     if (block.type === "text") {
       setCurrentText(block);
       setCurrentIndex((index) => index + 1);
@@ -81,6 +84,7 @@ export function useReaderEngine(meditation: Meditation | null) {
   return {
     status,
     currentText,
+    currentBlockIndex,
     start,
     stop,
     restart,

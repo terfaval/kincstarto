@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import type { MeditationAudioConfig, MeditationAudioMap, MeditationAudioMapItem } from "./audio-types";
+import type { LayerEnd, LayerStart, MeditationAudioConfig, MeditationAudioMap, MeditationAudioMapItem } from "./audio-types";
 
 const AUDIO_MAP_PATH = join(process.cwd(), "data", "audio", "meditation_audio_map.json");
 const KNOWN_PREFIXES = ["pad_", "texture_", "nature_", "motion_", "accent_"];
@@ -11,6 +11,52 @@ function isObject(value: unknown): value is Record<string, unknown> {
 
 function isKnownAssetId(assetId: string) {
   return KNOWN_PREFIXES.some((prefix) => assetId.startsWith(prefix));
+}
+
+function parseLayerStart(raw: unknown, meditationId: string): LayerStart | null | undefined {
+  if (raw === undefined) return undefined;
+  if (!isObject(raw)) {
+    console.warn(`[audio] Invalid layer start for ${meditationId}.`);
+    return null;
+  }
+  if (raw.mode !== "block_index") {
+    console.warn(`[audio] Invalid layer start mode for ${meditationId}.`);
+    return null;
+  }
+  const index = typeof raw.index === "number" ? raw.index : Number.NaN;
+  if (!Number.isFinite(index) || index < 0) {
+    console.warn(`[audio] Invalid layer start index for ${meditationId}.`);
+    return null;
+  }
+  const fadeIn = typeof raw.fade_in_sec === "number" && raw.fade_in_sec >= 0 ? raw.fade_in_sec : undefined;
+  return { mode: "block_index", index, fade_in_sec: fadeIn };
+}
+
+function parseLayerEnd(raw: unknown, start: LayerStart | undefined, meditationId: string): LayerEnd | null | undefined {
+  if (raw === undefined) return undefined;
+  if (!isObject(raw)) {
+    console.warn(`[audio] Invalid layer end for ${meditationId}.`);
+    return null;
+  }
+  if (raw.mode === "meditation_end") {
+    const fadeOut = typeof raw.fade_out_sec === "number" && raw.fade_out_sec >= 0 ? raw.fade_out_sec : undefined;
+    return { mode: "meditation_end", fade_out_sec: fadeOut };
+  }
+  if (raw.mode !== "block_index") {
+    console.warn(`[audio] Invalid layer end mode for ${meditationId}.`);
+    return null;
+  }
+  const index = typeof raw.index === "number" ? raw.index : Number.NaN;
+  if (!Number.isFinite(index) || index < 0) {
+    console.warn(`[audio] Invalid layer end index for ${meditationId}.`);
+    return null;
+  }
+  if (start && index < start.index) {
+    console.warn(`[audio] Layer end index precedes start index for ${meditationId}.`);
+    return null;
+  }
+  const fadeOut = typeof raw.fade_out_sec === "number" && raw.fade_out_sec >= 0 ? raw.fade_out_sec : undefined;
+  return { mode: "block_index", index, fade_out_sec: fadeOut };
 }
 
 function parseAudioConfig(raw: unknown, source: string, meditationId: string): MeditationAudioConfig | null {
@@ -40,10 +86,25 @@ function parseAudioConfig(raw: unknown, source: string, meditationId: string): M
       if (!isKnownAssetId(assetId)) {
         console.warn(`[audio] Unknown asset prefix for ${meditationId}: ${assetId}`);
       }
+      const start = parseLayerStart(layer.start, meditationId);
+      if (start === null) return null;
+      const end = parseLayerEnd(layer.end, start ?? undefined, meditationId);
+      if (end === null) return null;
+      const gain = typeof layer.gain === "number" ? layer.gain : 0.2;
+      const slot =
+        layer.slot === "foundation" ||
+        layer.slot === "texture" ||
+        layer.slot === "nature" ||
+        layer.slot === "motion" ||
+        layer.slot === "accent"
+          ? layer.slot
+          : "texture";
       return {
-        slot: typeof layer.slot === "string" ? layer.slot : undefined,
+        slot,
         asset_id: assetId,
-        gain: typeof layer.gain === "number" ? layer.gain : undefined,
+        gain,
+        start,
+        end,
       };
     })
     .filter((layer): layer is NonNullable<typeof layer> => Boolean(layer));

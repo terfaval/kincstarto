@@ -356,6 +356,13 @@
   width: 100%;
 }
 
+.previewButton.btn--primary:not(:hover):not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.9);
+  color: #ffffff;
+  background: transparent;
+  box-shadow: none;
+}
+
 .readerOverlay {
   position: fixed;
   inset: 0;
@@ -394,6 +401,38 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   cursor: pointer;
+}
+
+.readerMuteFab {
+  position: fixed;
+  right: clamp(1.5rem, 4vw, 2.5rem);
+  bottom: clamp(1.5rem, 4vw, 2.5rem);
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(8, 12, 18, 0.9);
+  color: rgba(230, 238, 246, 0.85);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 18px 40px rgba(2, 4, 10, 0.45);
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  z-index: 45;
+}
+
+.readerMuteFab:hover,
+.readerMuteFab:focus-visible {
+  outline: none;
+  transform: translateY(-2px);
+  color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.readerMuteFab svg {
+  width: 22px;
+  height: 22px;
 }
 
 .readerStage {

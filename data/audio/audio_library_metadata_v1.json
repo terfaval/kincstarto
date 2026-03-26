@@ -405,6 +405,18 @@
       "use_cases": ["FOK", "SPC"],
       "level_fit": [1, 2, 3],
       "notes": "Clean zen-like texture"
-    }
+    },
+    {
+  "id": "texture_sub_drift_01",
+  "role": "texture",
+  "tone": "dark",
+  "energy": "very_low",
+  "motion": "very_slow",
+  "density": "minimal",
+  "brightness": "very_low",
+  "use_cases": ["ALV"],
+  "level_fit": [1, 2, 3],
+  "notes": "Almost inaudible low drift, more felt than heard, supports falling asleep"
+}
   ]
 }

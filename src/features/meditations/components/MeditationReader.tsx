@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { Volume2, VolumeX } from "lucide-react";
 import type { Meditation, MeditationEndBehavior } from "../lib/meditation-types";
 import { useReaderEngine } from "../hooks/useReaderEngine";
 import { useAudioEngine } from "@/features/audio/hooks/useAudioEngine";
@@ -16,7 +17,7 @@ type Props = {
 };
 
 export default function MeditationReader({ meditation, audioConfig, onExit, onComplete }: Props) {
-  const { status, currentText, start, restart, stop } = useReaderEngine(meditation);
+  const { status, currentText, currentBlockIndex, start, restart, stop } = useReaderEngine(meditation);
   const audioEngine = useAudioEngine();
   const [closing, setClosing] = useState(false);
   const [completed, setCompleted] = useState(false);
@@ -31,6 +32,11 @@ export default function MeditationReader({ meditation, audioConfig, onExit, onCo
     if (status !== "running") return;
     audioEngine.start(audioConfig);
   }, [audioConfig, audioEngine, status]);
+
+  useEffect(() => {
+    if (status !== "running" || currentBlockIndex === null) return;
+    audioEngine.updateBlockIndex(currentBlockIndex);
+  }, [audioEngine, currentBlockIndex, status]);
 
   useEffect(() => {
     if (status !== "ended" || completed) return;
@@ -100,6 +106,17 @@ export default function MeditationReader({ meditation, audioConfig, onExit, onCo
           </div>
         )}
       </div>
+      <button
+        type="button"
+        className={styles.readerMuteFab}
+        aria-label={audioEngine.isMuted ? "Hang visszakapcsolasa" : "Hang elnemitasa"}
+        onClick={(event) => {
+          event.stopPropagation();
+          audioEngine.setMuted(!audioEngine.isMuted);
+        }}
+      >
+        {audioEngine.isMuted ? <VolumeX /> : <Volume2 />}
+      </button>
     </div>
   );
 }

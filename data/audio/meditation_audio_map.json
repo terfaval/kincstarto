@@ -1,30 +1,2413 @@
 {
   "version": "1.0",
   "items": {
-    "STR_1_01_nyugalmat_legzek": {
+    "ENR_1_01_reggeli_feny_jateka": {
       "audio": {
+        "version": "1.1",
         "scene_profile": {
-          "category_alignment": "STR"
+          "category_alignment": "ENR",
+          "energy": "low",
+          "motion": "still",
+          "density": "soft",
+          "tone": "airy",
+          "imagery_support": "subtle"
         },
         "mix": {
           "base_gain": 0.25,
+          "pause_gain": 0.34,
           "fade_in_sec": 6,
-          "fade_out_sec": 10,
-          "end_behavior": "soft_end"
+          "fade_out_sec": 8,
+          "end_behavior": "complete"
         },
         "layers": [
           {
             "slot": "foundation",
-            "asset_id": "pad_neutral_loop_01",
-            "gain": 0.22
+            "asset_id": "pad_light_airy_01",
+            "gain": 0.20
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_air_light_01",
+            "gain": 0.09
+          },
+          {
+            "slot": "accent",
+            "asset_id": "accent_chime_soft_02",
+            "gain": 0.05
+          }
+        ],
+        "staging": [
+          {
+            "block_range": [0, 12],
+            "mode": "replace",
+            "layers": [
+              {
+                "slot": "foundation",
+                "asset_id": "pad_light_airy_01",
+                "gain": 0.20
+              },
+              {
+                "slot": "texture",
+                "asset_id": "texture_air_light_01",
+                "gain": 0.09
+              }
+            ]
+          },
+          {
+            "block_range": [12, 34],
+            "mode": "replace",
+            "layers": [
+              {
+                "slot": "foundation",
+                "asset_id": "pad_light_airy_01",
+                "gain": 0.20
+              },
+              {
+                "slot": "texture",
+                "asset_id": "texture_shimmer_soft_01",
+                "gain": 0.08
+              },
+              {
+                "slot": "motion",
+                "asset_id": "motion_breath_soft_02",
+                "gain": 0.06
+              }
+            ]
+          },
+          {
+            "block_range": [34, 44],
+            "mode": "replace",
+            "layers": [
+              {
+                "slot": "foundation",
+                "asset_id": "pad_light_airy_01",
+                "gain": 0.18
+              },
+              {
+                "slot": "texture",
+                "asset_id": "texture_warm_lift_01",
+                "gain": 0.07
+              },
+              {
+                "slot": "accent",
+                "asset_id": "accent_chime_soft_02",
+                "gain": 0.04
+              }
+            ],
+            "mix_override": {
+              "pause_gain": 0.36
+            }
+          }
+        ]
+      }
+    },
+
+    "ENR_2_02_a_belso_napfeny_tanca": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "ENR",
+      "energy": "low",
+      "motion": "slow",
+      "density": "soft",
+      "tone": "airy",
+      "imagery_support": "present"
+    },
+    "mix": {
+      "base_gain": 0.25,
+      "pause_gain": 0.35,
+      "fade_in_sec": 7,
+      "fade_out_sec": 10,
+      "end_behavior": "complete"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_light_airy_01",
+        "gain": 0.18
+      },
+      {
+        "slot": "texture",
+        "asset_id": "texture_air_light_01",
+        "gain": 0.07
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 13],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_light_airy_01",
+            "gain": 0.18
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_air_light_01",
+            "gain": 0.07
+          }
+        ]
+      },
+      {
+        "block_range": [14, 20],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_light_expansive_01",
+            "gain": 0.17
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_shimmer_soft_01",
+            "gain": 0.08
           },
           {
             "slot": "motion",
             "asset_id": "motion_breath_soft_02",
-            "gain": 0.1
+            "gain": 0.05
+          }
+        ]
+      },
+      {
+        "block_range": [21, 35],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_light_expansive_01",
+            "gain": 0.18
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_warm_lift_01",
+            "gain": 0.09
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_breath_soft_02",
+            "gain": 0.06
+          }
+        ]
+      },
+      {
+        "block_range": [36, 45],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_light_airy_01",
+            "gain": 0.16
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_air_light_01",
+            "gain": 0.06
+          },
+          {
+            "slot": "accent",
+            "asset_id": "accent_chime_soft_02",
+            "gain": 0.04
           }
         ]
       }
-    }
+    ]
+  }
+    },
+    "ENR_2_04_lotusz_viragzasa": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "ENR",
+      "energy": "low",
+      "motion": "slow",
+      "density": "soft",
+      "tone": "light",
+      "imagery_support": "present"
+    },
+    "mix": {
+      "base_gain": 0.24,
+      "pause_gain": 0.35,
+      "fade_in_sec": 8,
+      "fade_out_sec": 10,
+      "end_behavior": "complete"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_light_airy_01",
+        "gain": 0.17
+      },
+      {
+        "slot": "texture",
+        "asset_id": "texture_air_light_01",
+        "gain": 0.07
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 7],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_light_airy_01",
+            "gain": 0.17
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.05
+          }
+        ]
+      },
+      {
+        "block_range": [8, 15],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_light_expansive_01",
+            "gain": 0.16
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_ethereal_soft_01",
+            "gain": 0.07
+          }
+        ]
+      },
+      {
+        "block_range": [16, 23],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_light_expansive_01",
+            "gain": 0.17
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_shimmer_soft_01",
+            "gain": 0.08
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_breath_soft_02",
+            "gain": 0.05
+          }
+        ]
+      },
+      {
+        "block_range": [24, 33],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_light_airy_01",
+            "gain": 0.16
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_air_light_01",
+            "gain": 0.06
+          }
+        ]
+      },
+      {
+        "block_range": [34, 40],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_light_airy_01",
+            "gain": 0.15
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_air_light_01",
+            "gain": 0.05
+          },
+          {
+            "slot": "accent",
+            "asset_id": "accent_chime_soft_02",
+            "gain": 0.04
+          }
+        ]
+      }
+    ]
+  }
+},
+
+"ENR_1_03_harmatcsepp_ebredese": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "ENR",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "minimal",
+      "tone": "cool",
+      "imagery_support": "subtle"
+    },
+    "mix": {
+      "base_gain": 0.23,
+      "pause_gain": 0.34,
+      "fade_in_sec": 7,
+      "fade_out_sec": 9,
+      "end_behavior": "complete"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_light_airy_01",
+        "gain": 0.16
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 9],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_light_airy_01",
+            "gain": 0.16
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.05
+          }
+        ]
+      },
+      {
+        "block_range": [10, 17],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_light_airy_01",
+            "gain": 0.16
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_air_light_01",
+            "gain": 0.06
+          }
+        ]
+      },
+      {
+        "block_range": [18, 27],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_light_airy_01",
+            "gain": 0.15
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_shimmer_soft_01",
+            "gain": 0.05
+          }
+        ]
+      },
+      {
+        "block_range": [28, 41],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_light_airy_01",
+            "gain": 0.14
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.04
+          }
+        ]
+      },
+      {
+        "block_range": [42, 52],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_light_airy_01",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_air_light_01",
+            "gain": 0.05
+          },
+          {
+            "slot": "accent",
+            "asset_id": "accent_chime_soft_02",
+            "gain": 0.035
+          }
+        ]
+      }
+    ]
+  }
+},
+
+"ALV_1_01_alomba_simulo_legzes": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "ALV",
+      "energy": "very_low",
+      "motion": "very_slow",
+      "density": "soft",
+      "tone": "dark_warm",
+      "imagery_support": "minimal"
+    },
+    "mix": {
+      "base_gain": 0.22,
+      "pause_gain": 0.36,
+      "fade_in_sec": 10,
+      "fade_out_sec": 20,
+      "end_behavior": "fade_out"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_warm_soft_01",
+        "gain": 0.16
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 13],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_01",
+            "gain": 0.16
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_dark_soft_01",
+            "gain": 0.06
+          }
+        ]
+      },
+      {
+        "block_range": [14, 33],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_01",
+            "gain": 0.15
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_dark_soft_01",
+            "gain": 0.05
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_breath_soft_02",
+            "gain": 0.04
+          }
+        ]
+      },
+      {
+        "block_range": [34, 55],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_02",
+            "gain": 0.14
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_dark_soft_01",
+            "gain": 0.04
+          }
+        ]
+      },
+      {
+        "block_range": [56, 80],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_deep_neutral_01",
+            "gain": 0.12
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.03
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_sub_drift_01",
+            "gain": 0.02
+          }
+        ]
+      },
+      {
+        "block_range": [81, 110],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_minimal_near_silence_01",
+            "gain": 0.10
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_sub_drift_01",
+            "gain": 0.015
+          }
+        ]
+      }
+    ]
+  }
+},
+"ALV_1_05_alomkerti_seta": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "ALV",
+      "energy": "very_low",
+      "motion": "very_slow",
+      "density": "soft",
+      "tone": "dark",
+      "imagery_support": "soft"
+    },
+    "mix": {
+      "base_gain": 0.22,
+      "pause_gain": 0.37,
+      "fade_in_sec": 10,
+      "fade_out_sec": 25,
+      "end_behavior": "fade_out"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_warm_soft_01",
+        "gain": 0.15
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 9],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_01",
+            "gain": 0.15
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_dark_soft_01",
+            "gain": 0.06
+          }
+        ]
+      },
+      {
+        "block_range": [10, 18],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_02",
+            "gain": 0.14
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_dark_soft_01",
+            "gain": 0.05
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_ethereal_soft_01",
+            "gain": 0.04
+          }
+        ]
+      },
+      {
+        "block_range": [19, 27],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_02",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_ethereal_soft_01",
+            "gain": 0.035
+          }
+        ]
+      },
+      {
+        "block_range": [28, 40],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_deep_neutral_01",
+            "gain": 0.12
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.03
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_sub_drift_01",
+            "gain": 0.02
+          }
+        ]
+      },
+      {
+        "block_range": [41, 60],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_minimal_near_silence_01",
+            "gain": 0.10
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_sub_drift_01",
+            "gain": 0.015
+          }
+        ]
+      }
+    ]
+  }
+},
+"ALV_2_02_ejjeli_csend_fenye": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "ALV",
+      "energy": "very_low",
+      "motion": "very_slow",
+      "density": "soft",
+      "tone": "dark",
+      "imagery_support": "subtle"
+    },
+    "mix": {
+      "base_gain": 0.22,
+      "pause_gain": 0.38,
+      "fade_in_sec": 12,
+      "fade_out_sec": 30,
+      "end_behavior": "fade_out"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_warm_soft_01",
+        "gain": 0.15
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 14],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_01",
+            "gain": 0.15
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_dark_soft_01",
+            "gain": 0.06
+          }
+        ]
+      },
+      {
+        "block_range": [15, 28],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_02",
+            "gain": 0.14
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_dark_soft_01",
+            "gain": 0.05
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_breath_soft_02",
+            "gain": 0.035
+          }
+        ]
+      },
+      {
+        "block_range": [29, 48],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_deep_neutral_01",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_ethereal_soft_01",
+            "gain": 0.04
+          }
+        ]
+      },
+      {
+        "block_range": [49, 70],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_deep_neutral_01",
+            "gain": 0.12
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.03
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_sub_drift_01",
+            "gain": 0.02
+          }
+        ]
+      },
+      {
+        "block_range": [71, 95],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_minimal_near_silence_01",
+            "gain": 0.10
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_sub_drift_01",
+            "gain": 0.015
+          }
+        ]
+      }
+    ]
+  }
+},
+"ALV_2_03_ejjeli_csend_melysege": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "ALV",
+      "energy": "very_low",
+      "motion": "very_slow",
+      "density": "minimal",
+      "tone": "dark",
+      "imagery_support": "subtle"
+    },
+    "mix": {
+      "base_gain": 0.21,
+      "pause_gain": 0.38,
+      "fade_in_sec": 12,
+      "fade_out_sec": 35,
+      "end_behavior": "fade_out"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_warm_soft_01",
+        "gain": 0.14
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 14],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_01",
+            "gain": 0.14
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_dark_soft_01",
+            "gain": 0.06
+          }
+        ]
+      },
+      {
+        "block_range": [15, 28],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_02",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_dark_soft_01",
+            "gain": 0.05
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_breath_soft_02",
+            "gain": 0.03
+          }
+        ]
+      },
+      {
+        "block_range": [29, 48],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_deep_neutral_01",
+            "gain": 0.12
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_ethereal_soft_01",
+            "gain": 0.035
+          }
+        ]
+      },
+      {
+        "block_range": [49, 70],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_deep_neutral_01",
+            "gain": 0.11
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_dark_soft_01",
+            "gain": 0.035
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_sub_drift_01",
+            "gain": 0.02
+          }
+        ]
+      },
+      {
+        "block_range": [71, 95],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_minimal_near_silence_01",
+            "gain": 0.09
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_sub_drift_01",
+            "gain": 0.015
+          }
+        ]
+      }
+    ]
+  }
+},
+"ALV_2_06_alomkapu_vizualizacio": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "ALV",
+      "energy": "very_low",
+      "motion": "slow",
+      "density": "soft",
+      "tone": "dark",
+      "imagery_support": "present"
+    },
+    "mix": {
+      "base_gain": 0.22,
+      "pause_gain": 0.38,
+      "fade_in_sec": 10,
+      "fade_out_sec": 30,
+      "end_behavior": "fade_out"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_warm_soft_01",
+        "gain": 0.15
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 10],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_01",
+            "gain": 0.15
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_dark_soft_01",
+            "gain": 0.06
+          }
+        ]
+      },
+      {
+        "block_range": [11, 20],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_02",
+            "gain": 0.14
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_ethereal_soft_01",
+            "gain": 0.045
+          }
+        ]
+      },
+      {
+        "block_range": [21, 35],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_light_expansive_01",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_ethereal_soft_01",
+            "gain": 0.04
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_wave_slow_01",
+            "gain": 0.035
+          }
+        ]
+      },
+      {
+        "block_range": [36, 55],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_deep_neutral_01",
+            "gain": 0.12
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.03
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_sub_drift_01",
+            "gain": 0.02
+          }
+        ]
+      },
+      {
+        "block_range": [56, 80],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_minimal_near_silence_01",
+            "gain": 0.10
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_sub_drift_01",
+            "gain": 0.015
+          }
+        ]
+      }
+    ]
+  }
+},
+"ALV_3_04_hatarnelkuli_nyugalom": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "ALV",
+      "energy": "very_low",
+      "motion": "very_slow",
+      "density": "minimal",
+      "tone": "neutral_dark",
+      "imagery_support": "minimal"
+    },
+    "mix": {
+      "base_gain": 0.20,
+      "pause_gain": 0.40,
+      "fade_in_sec": 15,
+      "fade_out_sec": 40,
+      "end_behavior": "fade_out"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_neutral_loop_01",
+        "gain": 0.13
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 20],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_01",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.04
+          }
+        ]
+      },
+      {
+        "block_range": [21, 40],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_02",
+            "gain": 0.12
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.035
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_breath_soft_02",
+            "gain": 0.025
+          }
+        ]
+      },
+      {
+        "block_range": [41, 65],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_02",
+            "gain": 0.11
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.03
+          }
+        ]
+      },
+      {
+        "block_range": [66, 90],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_deep_neutral_01",
+            "gain": 0.10
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_sub_drift_01",
+            "gain": 0.02
+          }
+        ]
+      },
+      {
+        "block_range": [91, 130],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_minimal_near_silence_01",
+            "gain": 0.08
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_sub_drift_01",
+            "gain": 0.012
+          }
+        ]
+      }
+    ]
+  }
+},
+"FOK_1_01_rezdules_kapuja": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "FOK",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "minimal",
+      "tone": "neutral",
+      "imagery_support": "none"
+    },
+    "mix": {
+      "base_gain": 0.24,
+      "pause_gain": 0.32,
+      "fade_in_sec": 6,
+      "fade_out_sec": 6,
+      "end_behavior": "soft_end"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_neutral_loop_01",
+        "gain": 0.14
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 14],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_01",
+            "gain": 0.14
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.04
+          }
+        ]
+      },
+      {
+        "block_range": [15, 30],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_02",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_noise_floor_01",
+            "gain": 0.03
+          }
+        ]
+      },
+      {
+        "block_range": [31, 50],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_02",
+            "gain": 0.12
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_noise_floor_01",
+            "gain": 0.035
+          }
+        ]
+      },
+      {
+        "block_range": [51, 70],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_03",
+            "gain": 0.12
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.03
+          }
+        ]
+      },
+      {
+        "block_range": [71, 90],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_01",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.035
+          }
+        ]
+      }
+    ]
+  }
+},
+"FOK_1_04_erzekter": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "FOK",
+      "energy": "very_low",
+      "motion": "subtle",
+      "density": "minimal",
+      "tone": "neutral",
+      "imagery_support": "light"
+    },
+    "mix": {
+      "base_gain": 0.25,
+      "pause_gain": 0.33,
+      "fade_in_sec": 6,
+      "fade_out_sec": 6,
+      "end_behavior": "soft_end"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_neutral_loop_01",
+        "gain": 0.14
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 12],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_01",
+            "gain": 0.14
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.04
+          }
+        ]
+      },
+      {
+        "block_range": [13, 24],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_02",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_noise_floor_01",
+            "gain": 0.035
+          }
+        ]
+      },
+      {
+        "block_range": [25, 36],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_02",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_air_light_01",
+            "gain": 0.035
+          }
+        ]
+      },
+      {
+        "block_range": [37, 50],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_03",
+            "gain": 0.12
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_ethereal_soft_01",
+            "gain": 0.035
+          }
+        ]
+      },
+      {
+        "block_range": [51, 65],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_02",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.035
+          }
+        ]
+      },
+      {
+        "block_range": [66, 85],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_01",
+            "gain": 0.14
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.04
+          }
+        ]
+      }
+    ]
+  }
+},
+"FOK_2_02_a_csend_szive": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "FOK",
+      "energy": "very_low",
+      "motion": "still",
+      "density": "minimal",
+      "tone": "neutral",
+      "imagery_support": "none"
+    },
+    "mix": {
+      "base_gain": 0.23,
+      "pause_gain": 0.31,
+      "fade_in_sec": 6,
+      "fade_out_sec": 6,
+      "end_behavior": "soft_end"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_neutral_loop_02",
+        "gain": 0.13
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 18],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_02",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.035
+          }
+        ]
+      },
+      {
+        "block_range": [19, 40],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_02",
+            "gain": 0.12
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_noise_floor_01",
+            "gain": 0.025
+          }
+        ]
+      },
+      {
+        "block_range": [41, 65],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_03",
+            "gain": 0.11
+          }
+        ]
+      },
+      {
+        "block_range": [66, 95],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_03",
+            "gain": 0.10
+          }
+        ]
+      },
+      {
+        "block_range": [96, 120],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_01",
+            "gain": 0.12
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.03
+          }
+        ]
+      }
+    ]
+  }
+},
+"FOK_3_03_a_lang_szeme": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "FOK",
+      "energy": "very_low",
+      "motion": "very_subtle",
+      "density": "minimal",
+      "tone": "neutral",
+      "imagery_support": "very_subtle"
+    },
+    "mix": {
+      "base_gain": 0.23,
+      "pause_gain": 0.31,
+      "fade_in_sec": 6,
+      "fade_out_sec": 6,
+      "end_behavior": "soft_end"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_neutral_loop_02",
+        "gain": 0.13
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 18],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_02",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.035
+          }
+        ]
+      },
+      {
+        "block_range": [19, 40],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_02",
+            "gain": 0.12
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_ethereal_soft_01",
+            "gain": 0.03
+          }
+        ]
+      },
+      {
+        "block_range": [41, 70],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_03",
+            "gain": 0.11
+          }
+        ]
+      },
+      {
+        "block_range": [71, 110],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_03",
+            "gain": 0.10
+          }
+        ]
+      },
+      {
+        "block_range": [111, 140],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_01",
+            "gain": 0.12
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.03
+          }
+        ]
+      }
+    ]
+  }
+},
+"STR_1_01_nyugalmat_legzek": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "STR",
+      "energy": "low",
+      "motion": "slow",
+      "density": "soft",
+      "tone": "neutral_warm",
+      "imagery_support": "subtle"
+    },
+    "mix": {
+      "base_gain": 0.26,
+      "pause_gain": 0.34,
+      "fade_in_sec": 6,
+      "fade_out_sec": 10,
+      "end_behavior": "soft_end"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_warm_soft_01",
+        "gain": 0.17
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 12],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_01",
+            "gain": 0.17
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.05
+          }
+        ]
+      },
+      {
+        "block_range": [13, 30],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_01",
+            "gain": 0.16
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_breath_soft_02",
+            "gain": 0.06
+          }
+        ]
+      },
+      {
+        "block_range": [31, 50],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_02",
+            "gain": 0.15
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_breath_soft_02",
+            "gain": 0.05
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_air_light_01",
+            "gain": 0.04
+          }
+        ]
+      },
+      {
+        "block_range": [51, 70],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_02",
+            "gain": 0.14
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_air_light_01",
+            "gain": 0.04
+          }
+        ]
+      },
+      {
+        "block_range": [71, 95],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_01",
+            "gain": 0.15
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.045
+          }
+        ]
+      }
+    ]
+  }
+},
+"STR_1_03_szellel_szallo_feszultseg": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "STR",
+      "energy": "low",
+      "motion": "flowing",
+      "density": "soft",
+      "tone": "neutral_warm",
+      "imagery_support": "present"
+    },
+    "mix": {
+      "base_gain": 0.26,
+      "pause_gain": 0.35,
+      "fade_in_sec": 6,
+      "fade_out_sec": 10,
+      "end_behavior": "soft_end"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_warm_soft_01",
+        "gain": 0.17
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 18],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_01",
+            "gain": 0.17
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.05
+          }
+        ]
+      },
+      {
+        "block_range": [19, 40],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_01",
+            "gain": 0.16
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_breath_soft_02",
+            "gain": 0.06
+          }
+        ]
+      },
+      {
+        "block_range": [41, 70],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_02",
+            "gain": 0.15
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_breath_soft_02",
+            "gain": 0.05
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_air_light_01",
+            "gain": 0.05
+          }
+        ]
+      },
+      {
+        "block_range": [71, 100],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_02",
+            "gain": 0.14
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_air_light_01",
+            "gain": 0.05
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_wave_slow_01",
+            "gain": 0.04
+          }
+        ]
+      },
+      {
+        "block_range": [101, 130],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_01",
+            "gain": 0.15
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.045
+          }
+        ]
+      }
+    ]
+  }
+},
+"STR_2_02_melyaramlas": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "STR",
+      "energy": "very_low",
+      "motion": "continuous_flow",
+      "density": "soft",
+      "tone": "neutral_dark",
+      "imagery_support": "subtle"
+    },
+    "mix": {
+      "base_gain": 0.25,
+      "pause_gain": 0.36,
+      "fade_in_sec": 8,
+      "fade_out_sec": 18,
+      "end_behavior": "fade_out"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_warm_soft_02",
+        "gain": 0.16
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 20],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_02",
+            "gain": 0.16
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_dark_soft_01",
+            "gain": 0.05
+          }
+        ]
+      },
+      {
+        "block_range": [21, 45],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_02",
+            "gain": 0.15
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_breath_soft_02",
+            "gain": 0.05
+          }
+        ]
+      },
+      {
+        "block_range": [46, 80],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_02",
+            "gain": 0.14
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_wave_slow_01",
+            "gain": 0.05
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_air_light_01",
+            "gain": 0.04
+          }
+        ]
+      },
+      {
+        "block_range": [81, 120],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_deep_neutral_01",
+            "gain": 0.13
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_wave_slow_01",
+            "gain": 0.045
+          }
+        ]
+      },
+      {
+        "block_range": [121, 160],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_deep_neutral_01",
+            "gain": 0.12
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_wave_slow_01",
+            "gain": 0.04
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_sub_drift_01",
+            "gain": 0.02
+          }
+        ]
+      },
+      {
+        "block_range": [161, 190],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_minimal_near_silence_01",
+            "gain": 0.10
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_sub_drift_01",
+            "gain": 0.015
+          }
+        ]
+      }
+    ]
+  }
+},
+"STR_2_04_belso_tajak_szele": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "STR",
+      "energy": "very_low",
+      "motion": "spatial_flow",
+      "density": "soft",
+      "tone": "neutral",
+      "imagery_support": "subtle"
+    },
+    "mix": {
+      "base_gain": 0.25,
+      "pause_gain": 0.35,
+      "fade_in_sec": 8,
+      "fade_out_sec": 14,
+      "end_behavior": "soft_end"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_warm_soft_02",
+        "gain": 0.16
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 18],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_02",
+            "gain": 0.16
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.045
+          }
+        ]
+      },
+      {
+        "block_range": [19, 40],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_02",
+            "gain": 0.15
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_breath_soft_02",
+            "gain": 0.05
+          }
+        ]
+      },
+      {
+        "block_range": [41, 70],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_warm_soft_02",
+            "gain": 0.14
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_wave_slow_01",
+            "gain": 0.045
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_air_light_01",
+            "gain": 0.05
+          }
+        ]
+      },
+      {
+        "block_range": [71, 110],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_deep_neutral_01",
+            "gain": 0.13
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_wave_slow_01",
+            "gain": 0.04
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_air_light_01",
+            "gain": 0.045
+          }
+        ]
+      },
+      {
+        "block_range": [111, 140],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_deep_neutral_01",
+            "gain": 0.12
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.035
+          }
+        ]
+      }
+    ]
+  }
+},
+"STR_3_05_szelcsend": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "STR",
+      "energy": "very_low",
+      "motion": "dissolving",
+      "density": "minimal",
+      "tone": "neutral_dark",
+      "imagery_support": "none"
+    },
+    "mix": {
+      "base_gain": 0.23,
+      "pause_gain": 0.38,
+      "fade_in_sec": 10,
+      "fade_out_sec": 30,
+      "end_behavior": "fade_out"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_deep_neutral_01",
+        "gain": 0.13
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 20],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_deep_neutral_01",
+            "gain": 0.13
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_breath_soft_02",
+            "gain": 0.035
+          }
+        ]
+      },
+      {
+        "block_range": [21, 40],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_deep_neutral_01",
+            "gain": 0.12
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_breath_soft_02",
+            "gain": 0.02
+          }
+        ]
+      },
+      {
+        "block_range": [41, 65],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_03",
+            "gain": 0.11
+          }
+        ]
+      },
+      {
+        "block_range": [66, 100],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_03",
+            "gain": 0.10
+          }
+        ]
+      },
+      {
+        "block_range": [101, 140],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_minimal_near_silence_01",
+            "gain": 0.09
+          }
+        ]
+      }
+    ]
+  }
+},
+
+"SPC_1_01_uveggyongyjatek": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "SPC",
+      "energy": "very_low",
+      "motion": "evolving",
+      "density": "minimal_to_subtle",
+      "tone": "neutral_dark",
+      "imagery_support": "dynamic"
+    },
+    "mix": {
+      "base_gain": 0.24,
+      "pause_gain": 0.36,
+      "fade_in_sec": 10,
+      "fade_out_sec": 30,
+      "end_behavior": "fade_out"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_neutral_loop_02",
+        "gain": 0.14
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 30],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_02",
+            "gain": 0.14
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.04
+          }
+        ]
+      },
+      {
+        "block_range": [31, 90],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_02",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_ethereal_soft_01",
+            "gain": 0.04
+          }
+        ]
+      },
+      {
+        "block_range": [91, 160],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_02",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_ethereal_soft_01",
+            "gain": 0.045
+          },
+          {
+            "slot": "motion",
+            "asset_id": "motion_wave_slow_01",
+            "gain": 0.035
+          }
+        ]
+      },
+      {
+        "block_range": [161, 220],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_03",
+            "gain": 0.12
+          }
+        ]
+      },
+      {
+        "block_range": [221, 300],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_03",
+            "gain": 0.11
+          }
+        ]
+      },
+      {
+        "block_range": [301, 360],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_minimal_near_silence_01",
+            "gain": 0.10
+          }
+        ]
+      },
+      {
+        "block_range": [361, 420],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_03",
+            "gain": 0.12
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_zen_soft_01",
+            "gain": 0.035
+          }
+        ]
+      }
+    ]
+  }
+},
+"SPC_3_01_csontoktol_a_csendig": {
+  "audio": {
+    "version": "1.1",
+    "scene_profile": {
+      "category_alignment": "SPC",
+      "energy": "very_low",
+      "motion": "dissolving_spatial",
+      "density": "minimal_to_soft",
+      "tone": "neutral_dark",
+      "imagery_support": "structural"
+    },
+    "mix": {
+      "base_gain": 0.24,
+      "pause_gain": 0.37,
+      "fade_in_sec": 10,
+      "fade_out_sec": 35,
+      "end_behavior": "fade_out"
+    },
+    "layers": [
+      {
+        "slot": "foundation",
+        "asset_id": "pad_neutral_loop_02",
+        "gain": 0.14
+      }
+    ],
+    "staging": [
+      {
+        "block_range": [0, 40],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_02",
+            "gain": 0.14
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_dark_soft_01",
+            "gain": 0.05
+          }
+        ]
+      },
+      {
+        "block_range": [41, 120],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_02",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_noise_floor_01",
+            "gain": 0.035
+          }
+        ]
+      },
+      {
+        "block_range": [121, 220],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_03",
+            "gain": 0.13
+          },
+          {
+            "slot": "texture",
+            "asset_id": "texture_air_light_01",
+            "gain": 0.04
+          }
+        ]
+      },
+      {
+        "block_range": [221, 320],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_neutral_loop_03",
+            "gain": 0.12
+          }
+        ]
+      },
+      {
+        "block_range": [321, 380],
+        "mode": "replace",
+        "layers": [
+          {
+            "slot": "foundation",
+            "asset_id": "pad_minimal_near_silence_01",
+            "gain": 0.10
+          }
+        ]
+      }
+    ]
+  }
+}
+
   }
 }
