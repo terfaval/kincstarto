@@ -3,7 +3,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 
 const BLOB_ENABLED = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
-const DEFAULT_ACCESS: BlobAccessType = "private";
+const DEFAULT_ACCESS: BlobAccessType = "public";
 
 async function readBlobJson<T>(pathname: string, access: BlobAccessType) {
   const result = await get(pathname, { access });
