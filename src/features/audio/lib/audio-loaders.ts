@@ -1,6 +1,13 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import type { LayerEnd, LayerStart, MeditationAudioConfig, MeditationAudioMap, MeditationAudioMapItem } from "./audio-types";
+import type {
+  AudioLayerConfig,
+  LayerEnd,
+  LayerStart,
+  MeditationAudioConfig,
+  MeditationAudioMap,
+  MeditationAudioMapItem,
+} from "./audio-types";
 
 const AUDIO_MAP_PATH = join(process.cwd(), "data", "audio", "meditation_audio_map.json");
 const KNOWN_PREFIXES = ["pad_", "texture_", "nature_", "motion_", "accent_"];
@@ -11,6 +18,10 @@ function isObject(value: unknown): value is Record<string, unknown> {
 
 function isKnownAssetId(assetId: string) {
   return KNOWN_PREFIXES.some((prefix) => assetId.startsWith(prefix));
+}
+
+function isLayerSlot(value: unknown): value is AudioLayerConfig["slot"] {
+  return value === "foundation" || value === "texture" || value === "nature" || value === "motion" || value === "accent";
 }
 
 function parseLayerStart(raw: unknown, meditationId: string): LayerStart | null | undefined {
@@ -91,14 +102,7 @@ function parseAudioConfig(raw: unknown, source: string, meditationId: string): M
       const end = parseLayerEnd(layer.end, start ?? undefined, meditationId);
       if (end === null) return null;
       const gain = typeof layer.gain === "number" ? layer.gain : 0.2;
-      const slot =
-        layer.slot === "foundation" ||
-        layer.slot === "texture" ||
-        layer.slot === "nature" ||
-        layer.slot === "motion" ||
-        layer.slot === "accent"
-          ? layer.slot
-          : "texture";
+      const slot: AudioLayerConfig["slot"] = isLayerSlot(layer.slot) ? layer.slot : "texture";
       return {
         slot,
         asset_id: assetId,
