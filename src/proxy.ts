@@ -16,8 +16,18 @@ function isAssetPath(pathname: string) {
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const adminKey = process.env.ADMIN_KEY ?? process.env.ADMIN_PASSWORD;
+  if (adminKey && !isAssetPath(pathname) && !isProtectedPath(pathname)) {
+    const cookieValue = request.cookies.get(ADMIN_COOKIE)?.value;
+    if (cookieValue === adminKey) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/admin";
+      url.search = "";
+      return NextResponse.redirect(url);
+    }
+  }
+
   if (isProtectedPath(pathname)) {
-    const adminKey = process.env.ADMIN_KEY ?? process.env.ADMIN_PASSWORD;
     if (adminKey) {
       const cookieValue = request.cookies.get(ADMIN_COOKIE)?.value;
       if (cookieValue !== adminKey) {
