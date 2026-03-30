@@ -78,6 +78,31 @@
                 "negative_constraints": {
                   "type": "array",
                   "items": { "type": "string" }
+                },
+                "side_topology": {
+                  "type": "object",
+                  "properties": {
+                    "left_leg_role": {
+                      "type": "string",
+                      "enum": ["front_leg", "back_leg", "support_leg", "lifted_leg", "neutral"]
+                    },
+                    "right_leg_role": {
+                      "type": "string",
+                      "enum": ["front_leg", "back_leg", "support_leg", "lifted_leg", "neutral"]
+                    },
+                    "left_arm_role": {
+                      "type": "string",
+                      "enum": ["support_arm", "reaching_arm", "neutral"]
+                    },
+                    "right_arm_role": {
+                      "type": "string",
+                      "enum": ["support_arm", "reaching_arm", "neutral"]
+                    },
+                    "foreground_side": {
+                      "type": "string",
+                      "enum": ["left", "right", "none"]
+                    }
+                  }
                 }
               }
             }

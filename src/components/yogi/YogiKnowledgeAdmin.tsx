@@ -7,8 +7,10 @@ import {
   YogiKnowledgeCardSheet,
   YogiPoseSheet,
 } from "./YogiKnowledgeSheets";
+import poseSpecsRaw from "../../../data/yogi/pose-image-specs.v1.json";
 import type { Pose } from "@/lib/yogiKnowledgeSchema";
 import { buildAnatomyImageSlot, buildPoseImageSlots } from "@/lib/yogiImagePrompts";
+import { compilePoseSpec } from "@/lib/yogiPosePromptCompiler";
 
 type DraftResponse = {
   entity_type: "pose" | "anatomy" | "knowledge_card";
@@ -32,6 +34,19 @@ type ImageSlotKey =
   | "mannequin_angled"
   | "scientific_image";
 
+type PoseSpecEntry = {
+  id: string;
+  slug: string;
+  aliases?: string[];
+  display_name: string;
+};
+
+type PoseSpecLibrary = {
+  poses: PoseSpecEntry[];
+};
+
+const poseSpecs = poseSpecsRaw as PoseSpecLibrary;
+
 const ENTITY_OPTIONS: Array<{ value: EntityType; label: string }> = [
   { value: "pose", label: "Pose" },
   { value: "anatomy", label: "Anatomy" },
@@ -54,10 +69,21 @@ function readJsonError(payload: any): string {
   return parts.length > 0 ? parts.join(" · ") : "Unknown error";
 }
 
+function normalizeKey(value?: string) {
+  return (value || "")
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export default function YogiKnowledgeAdmin() {
   const [entityType, setEntityType] = useState<EntityType>("pose");
   const [poseMode, setPoseMode] = useState<PoseMode>("known");
   const [inputText, setInputText] = useState("");
+  const [poseSelection, setPoseSelection] = useState("");
   const [lastPayload, setLastPayload] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(false);
   const [draftResponse, setDraftResponse] = useState<DraftResponse | null>(null);
@@ -124,6 +150,8 @@ export default function YogiKnowledgeAdmin() {
     setSaveWarnings([]);
     setLastPayload(null);
     setImageLoading({});
+    setInputText("");
+    setPoseSelection("");
   };
 
   const loadPoseIntoEditor = (pose: Pose) => {
@@ -179,9 +207,16 @@ export default function YogiKnowledgeAdmin() {
   };
 
   const handleGenerate = async () => {
-    const trimmed = inputText.trim();
+    const trimmed =
+      entityType === "pose" && poseMode === "known"
+        ? poseSelection.trim()
+        : inputText.trim();
     if (!trimmed) {
-      setInputError("Adj meg egy rövid inputot a generáláshoz.");
+      setInputError(
+        entityType === "pose" && poseMode === "known"
+          ? "Válassz egy pózt a legördülő listából."
+          : "Adj meg egy rövid inputot a generáláshoz.",
+      );
       return;
     }
 
@@ -511,6 +546,31 @@ export default function YogiKnowledgeAdmin() {
     });
   };
 
+  const handleImageUnverify = (slotKey: ImageSlotKey, label: string) => {
+    updateDraft((draft) => {
+      const slot = (draft as any)[slotKey];
+
+      if (!slot) {
+        setError(`${label} unverify-hoz nincs slot adat.`);
+        return draft;
+      }
+
+      if (slot?.status !== "verified") {
+        setError(`${label} unverify-hoz eloszor verified status szukseges.`);
+        return draft;
+      }
+
+      const nextStatus = slot?.asset_ref ? "generated" : "missing";
+      return {
+        ...draft,
+        [slotKey]: {
+          ...slot,
+          status: nextStatus,
+        },
+      } as Record<string, unknown>;
+    });
+  };
+
   const parsedDraft = useMemo(() => {
     if (!draftText) return null;
 
@@ -520,6 +580,28 @@ export default function YogiKnowledgeAdmin() {
       return null;
     }
   }, [draftText]);
+
+  const availablePoseOptions = useMemo(() => {
+    const generatedKeys = new Set<string>();
+    poses.forEach((pose) => {
+      generatedKeys.add(normalizeKey(pose.slug));
+      generatedKeys.add(normalizeKey(pose.id));
+      generatedKeys.add(normalizeKey(pose.name_en));
+      generatedKeys.add(normalizeKey(pose.name_hu));
+    });
+
+    return (poseSpecs.poses ?? [])
+      .filter((entry) => {
+        const entryKeys = [
+          normalizeKey(entry.slug),
+          normalizeKey(entry.id),
+          normalizeKey(entry.display_name),
+          ...(entry.aliases ?? []).map((alias) => normalizeKey(alias)),
+        ];
+        return !entryKeys.some((key) => key && generatedKeys.has(key));
+      })
+      .sort((a, b) => a.display_name.localeCompare(b.display_name));
+  }, [poses]);
 
   const sheetPreview = useMemo(() => {
     if (!parsedDraft) {
@@ -646,65 +728,96 @@ export default function YogiKnowledgeAdmin() {
         <div className={`admin-card ${styles.panel}`}>
           <div className={styles.panelHeader}>
             <h2 className={styles.panelTitle}>Generálás</h2>
-            <p className="admin-text-muted">Válassz entitást és adj rövid inputot.</p>
+            <p className="admin-text-muted">
+              Válassz pózt vagy adj meg rövid inputot a draft létrehozásához.
+            </p>
           </div>
 
           <div className="admin-stack">
-            <label className="form-field">
-              <span className="form-field__label">Entity type</span>
-              <select
-                className="input"
-                value={entityType}
-                onChange={(event) => {
-                  setEntityType(event.target.value as EntityType);
-                  resetDraftState();
-                }}
-              >
-                {ENTITY_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            {entityType === "pose" && (
+            <div className={styles.inlineRow}>
               <label className="form-field">
-                <span className="form-field__label">Pose mode</span>
+                <span className="form-field__label">Entity type</span>
                 <select
                   className="input"
-                  value={poseMode}
+                  value={entityType}
                   onChange={(event) => {
-                    setPoseMode(event.target.value as PoseMode);
+                    setEntityType(event.target.value as EntityType);
                     resetDraftState();
                   }}
                 >
-                  {POSE_MODE_OPTIONS.map((option) => (
+                  {ENTITY_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
                       {option.label}
                     </option>
                   ))}
                 </select>
               </label>
-            )}
 
-            <label className="form-field">
-              <span className="form-field__label">{inputLabel}</span>
-              <textarea
-                className={`input ${styles.inputTextarea}`}
-                rows={3}
-                value={inputText}
-                onChange={(event) => setInputText(event.target.value)}
-                placeholder="Írd be a rövid inputot..."
-              />
-            </label>
+              {entityType === "pose" && (
+                <label className="form-field">
+                  <span className="form-field__label">Pose mode</span>
+                  <select
+                    className="input"
+                    value={poseMode}
+                    onChange={(event) => {
+                      setPoseMode(event.target.value as PoseMode);
+                      resetDraftState();
+                    }}
+                  >
+                    {POSE_MODE_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+            </div>
+
+            {entityType === "pose" && poseMode === "known" ? (
+              <label className="form-field">
+                <span className="form-field__label">Póz kiválasztása</span>
+                <select
+                  className="input"
+                  value={poseSelection}
+                  onChange={(event) => setPoseSelection(event.target.value)}
+                  disabled={availablePoseOptions.length === 0}
+                >
+                  <option value="">Válassz pózt...</option>
+                  {availablePoseOptions.map((pose) => (
+                    <option key={pose.id} value={pose.slug}>
+                      {pose.display_name} ({pose.slug})
+                    </option>
+                  ))}
+                </select>
+                <p className="admin-text-muted">
+                  {availablePoseOptions.length === 0
+                    ? "Nincs olyan póz a libraryben, ami még nincs generálva."
+                    : `${availablePoseOptions.length} póz elérhető a libraryből.`}
+                </p>
+              </label>
+            ) : (
+              <label className="form-field">
+                <span className="form-field__label">{inputLabel}</span>
+                <textarea
+                  className={`input ${styles.inputTextarea}`}
+                  rows={3}
+                  value={inputText}
+                  onChange={(event) => setInputText(event.target.value)}
+                  placeholder="Írd be a rövid inputot..."
+                />
+              </label>
+            )}
 
             <div className={styles.actionRow}>
               <button
                 type="button"
                 className="btn btn--primary"
                 onClick={handleGenerate}
-                disabled={loading}
+                disabled={
+                  loading ||
+                  (entityType === "pose" && poseMode === "known" && !poseSelection)
+                }
               >
                 {loading ? "Generálás..." : "Draft generálás"}
               </button>
@@ -856,6 +969,7 @@ export default function YogiKnowledgeAdmin() {
                       slotKey === "mannequin_front" ? "Mannequin front (backup)" : "Mannequin angled";
                   const canVerify =
                     slot?.status === "generated" && Boolean(slot?.asset_ref);
+                  const canUnverify = slot?.status === "verified";
                   const isLoading = Boolean(imageLoading[slotKey]);
 
                     return (
@@ -903,6 +1017,15 @@ export default function YogiKnowledgeAdmin() {
                         >
                           Verify
                         </button>
+
+                        <button
+                          type="button"
+                          className="btn btn--ghost"
+                          onClick={() => handleImageUnverify(slotKey, label)}
+                          disabled={!canUnverify}
+                        >
+                          Unverify
+                        </button>
                       </div>
 
                       <label className={`form-field ${styles.imageSlotField}`}>
@@ -935,6 +1058,15 @@ export default function YogiKnowledgeAdmin() {
                         </div>
                       )}
 
+                      {entityType === "pose" && slot?.spec && (
+                        <div className={styles.imageSlotSpec}>
+                          <p className={styles.imageSlotLabel}>Compiled spec</p>
+                          <p className={styles.imageSlotText}>
+                            {compilePoseSpec(slot.spec)}
+                          </p>
+                        </div>
+                      )}
+
                       <div className={styles.imageSlotPrompt}>
                         <p className={styles.imageSlotLabel}>Prompt</p>
                         <p className={styles.imageSlotText}>{slot?.prompt ?? "-"}</p>
@@ -952,6 +1084,7 @@ export default function YogiKnowledgeAdmin() {
                   const label = "Scientific image";
                   const canVerify =
                     slot?.status === "generated" && Boolean(slot?.asset_ref);
+                  const canUnverify = slot?.status === "verified";
                   const isLoading = Boolean(imageLoading[slotKey]);
 
                   return (
@@ -998,6 +1131,15 @@ export default function YogiKnowledgeAdmin() {
                           disabled={!canVerify}
                         >
                           Verify
+                        </button>
+
+                        <button
+                          type="button"
+                          className="btn btn--ghost"
+                          onClick={() => handleImageUnverify(slotKey, label)}
+                          disabled={!canUnverify}
+                        >
+                          Unverify
                         </button>
                       </div>
 

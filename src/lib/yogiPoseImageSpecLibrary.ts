@@ -18,6 +18,13 @@ type PoseSpecVariation = {
   critical_relations?: string[];
   visibility_constraints?: string[];
   negative_constraints?: string[];
+  side_topology?: {
+    left_leg_role?: "front_leg" | "back_leg" | "support_leg" | "lifted_leg" | "neutral";
+    right_leg_role?: "front_leg" | "back_leg" | "support_leg" | "lifted_leg" | "neutral";
+    left_arm_role?: "support_arm" | "reaching_arm" | "neutral";
+    right_arm_role?: "support_arm" | "reaching_arm" | "neutral";
+    foreground_side?: "left" | "right" | "none";
+  };
 };
 
 type PoseSpecEntry = {
@@ -167,17 +174,17 @@ function buildSpecString(entry: PoseSpecEntry, variation: PoseSpecVariation) {
     if (next) parts.push(next);
   });
 
-  variation.critical_relations?.forEach((r: string, i: number) => {
+  variation.critical_relations?.slice(0, 2).forEach((r: string, i: number) => {
     const next = ensureSentence(`Critical Relation ${i + 1} ${r}`);
     if (next) parts.push(next);
   });
 
-  variation.visibility_constraints?.forEach((v: string) => {
+  variation.visibility_constraints?.slice(0, 1).forEach((v: string) => {
     const next = ensureSentence(`Visibility Constraint ${v}`);
     if (next) parts.push(next);
   });
 
-  variation.negative_constraints?.forEach((n: string) => {
+  variation.negative_constraints?.slice(0, 2).forEach((n: string) => {
     const next = ensureSentence(`Negative Constraint ${n}`);
     if (next) parts.push(next);
   });

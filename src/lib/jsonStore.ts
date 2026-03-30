@@ -3,7 +3,8 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 
 const BLOB_ENABLED = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
-const DEFAULT_ACCESS: BlobAccessType = "public";
+const ENV_BLOB_ACCESS = process.env.BLOB_ACCESS?.toLowerCase();
+const DEFAULT_ACCESS: BlobAccessType = ENV_BLOB_ACCESS === "private" ? "private" : "public";
 
 async function readBlobJson<T>(pathname: string, access: BlobAccessType) {
   const result = await get(pathname, { access });
@@ -72,6 +73,11 @@ export async function readJsonStore<T>(options: ReadJsonStoreOptions<T>): Promis
   if (BLOB_ENABLED) {
     const blobValue = await readBlobJson<T>(blobPath, access);
     if (blobValue !== null) return blobValue;
+    if (!options.access) {
+      const alternateAccess: BlobAccessType = access === "public" ? "private" : "public";
+      const alternateValue = await readBlobJson<T>(blobPath, alternateAccess);
+      if (alternateValue !== null) return alternateValue;
+    }
   }
 
   if (filePath) {

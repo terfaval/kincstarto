@@ -65,7 +65,14 @@
             "not pigeon",
             "not downward dog",
             "not symmetrical kneeling"
-          ]
+          ],
+          "side_topology": {
+            "left_leg_role": "front_leg",
+            "right_leg_role": "back_leg",
+            "left_arm_role": "support_arm",
+            "right_arm_role": "support_arm",
+            "foreground_side": "left"
+          }
         }
       ]
     },
@@ -90,29 +97,33 @@
             "arms_shoulders_hands": "hands grounded beside the hips",
             "chest_spine": "chest lifted, spine upright",
             "pelvis_hips": "pelvis low and facing mostly forward",
-            "front_leg": "front knee bent with the entire front shin clearly visible diagonally across the mat in front of the pelvis, extending away from the torso rather than folding underneath it",
+            "front_leg": "front knee deeply bent with the lower leg resting on the mat across the front of the pelvis, with the outer side of the lower leg and foot supported on the mat, and the foot positioned close to the opposite side of the pelvis",
             "back_leg": "back leg extended straight behind, back knee and thigh grounded",
             "base_weight": "weight grounded through pelvis and back thigh",
             "pose_axis": "upright asymmetrical hip opener"
           },
           "critical_relations": [
-            "the full front shin remains clearly visible from knee to ankle",
-            "front shin stays in front of the pelvis and separate from the torso",
-            "front foot is not tucked close beneath the body",
-            "back leg extends directly behind the pelvis in a straight line"
-          ],
+            "the lower leg rests fully on the mat in front of the pelvis",
+            "the front foot stays close to the opposite side of the pelvis rather than extending forward"
+            ],
           "visibility_constraints": [
             "front shin must remain clearly visible",
             "the full front shin must remain clearly visible from knee to ankle"
           ],
           "negative_constraints": [
             "not a lunge",
-            "not a kneeling pose",
             "do not hide any part of the front shin under the torso or front thigh",
             "do not place the front leg directly under the pelvis",
             "do not tuck the front foot close beneath the body",
             "do not tuck the back leg under the body"
-          ]
+          ],
+          "side_topology": {
+            "left_leg_role": "front_leg",
+            "right_leg_role": "back_leg",
+            "left_arm_role": "support_arm",
+            "right_arm_role": "support_arm",
+            "foreground_side": "left"
+          }
         }
       ]
     },
@@ -145,7 +156,14 @@
           "negative_constraints": [
             "not a lunge facing forward",
             "not symmetrical standing"
-          ]
+          ],
+          "side_topology": {
+            "left_leg_role": "front_leg",
+            "right_leg_role": "back_leg",
+            "left_arm_role": "reaching_arm",
+            "right_arm_role": "reaching_arm",
+            "foreground_side": "left"
+          }
         }
       ]
     },
@@ -178,7 +196,14 @@
           "negative_constraints": [
             "not a forward fold",
             "not a lunge"
-          ]
+          ],
+          "side_topology": {
+            "left_leg_role": "front_leg",
+            "right_leg_role": "back_leg",
+            "left_arm_role": "support_arm",
+            "right_arm_role": "reaching_arm",
+            "foreground_side": "left"
+          }
         }
       ]
     }
