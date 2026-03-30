@@ -5,6 +5,7 @@
     radial-gradient(900px circle at 85% 18%, rgba(110, 176, 205, 0.1), transparent 56%),
     linear-gradient(180deg, rgba(242, 231, 214, 0.16) 0%, rgba(227, 207, 182, 0.18) 100%);
   --bg-photo: url("/backgrounds/day/day_default.png");
+  --yoga-bg-photo: url("/backgrounds/day/yoga_background.png");
   --bg-blend-mode: normal, multiply;
   --panel: rgba(255, 242, 220, 0.94);
   --panel-2: rgba(246, 228, 198, 0.95);
@@ -81,6 +82,7 @@
     --level-dot-active-border: #d9deea;
     --path-progress-active: #f2f4f8;
     --bg-photo: url("/backgrounds/night/night_default.png");
+    --yoga-bg-photo: url("/backgrounds/night/yoga_background.png");
     --background: var(--bg);
     --foreground: var(--text);
     color-scheme: dark;
@@ -109,6 +111,7 @@
   --level-dot-active-border: #d9deea;
   --path-progress-active: #f2f4f8;
   --bg-photo: url("/backgrounds/night/night_default.png");
+  --yoga-bg-photo: url("/backgrounds/night/yoga_background.png");
   --background: var(--bg);
   --foreground: var(--text);
   color-scheme: dark;
@@ -140,6 +143,11 @@ body {
   color: var(--foreground);
   font-family: var(--font-body);
   line-height: 1.5;
+}
+
+body.yoga-bg {
+  --bg-photo: var(--yoga-bg-photo);
+  background-image: var(--bg-grad), var(--yoga-bg-photo);
 }
 
 svg,

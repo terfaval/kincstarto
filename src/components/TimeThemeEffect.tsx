@@ -8,6 +8,8 @@ const MINUTE_MS = 60 * 1000;
 
 const DAY_BACKGROUNDS = ["/backgrounds/day/day_default.png"];
 const NIGHT_BACKGROUNDS = ["/backgrounds/night/night_default.png"];
+const DAY_YOGA_BACKGROUND = "/backgrounds/day/yoga_background.png";
+const NIGHT_YOGA_BACKGROUND = "/backgrounds/night/yoga_background.png";
 
 const getDayOfYear = (date: Date) => {
   const start = new Date(date.getFullYear(), 0, 0);
@@ -50,7 +52,10 @@ export default function TimeThemeEffect() {
         safeTheme(theme);
 
         if (typeof document !== "undefined" && document.documentElement) {
-          const bg = pickDailyBackground(theme, now);
+          const useYoga = typeof document.body !== "undefined" && document.body.classList.contains("yoga-bg");
+          const yogaBg = theme === "night" ? NIGHT_YOGA_BACKGROUND : DAY_YOGA_BACKGROUND;
+          const bg = useYoga ? yogaBg : pickDailyBackground(theme, now);
+          document.documentElement.style.setProperty("--yoga-bg-photo", `url("${yogaBg}")`);
           document.documentElement.style.setProperty("--bg-photo", `url("${bg}")`);
         }
       } catch {

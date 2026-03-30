@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createLogId, readActivityLogs, writeActivityLogs } from "@/lib/activityLogs";
 import { createYogaId, findYogaEntry, readYogaLibrary, writeYogaLibrary } from "@/lib/yogaLibrary";
 import { requireAdmin } from "@/lib/adminAuth";
+import { validateYogiKnowledgeMetadata } from "@/lib/yogiKnowledgeMetadata";
 import type { ActivityLogRow, ActivityType, YogaCategory, YogaLibraryEntry } from "@/types/activity";
 
 function toNumber(value: unknown) {
@@ -94,6 +95,12 @@ export async function POST(request: Request) {
 
   const now = new Date().toISOString();
   const metadata = buildMetadata(payload.metadata);
+  if (metadata && "yogi_knowledge" in metadata) {
+    const validation = validateYogiKnowledgeMetadata((metadata as Record<string, unknown>).yogi_knowledge);
+    if (!validation.ok) {
+      return NextResponse.json({ error: "Invalid yogi_knowledge metadata", detail: validation.error }, { status: 400 });
+    }
+  }
   const link = extractLink(metadata);
 
   const newLog: ActivityLogRow = {
@@ -188,6 +195,12 @@ export async function PATCH(request: Request) {
 
   const current = logs[index];
   const metadata = payload.metadata !== undefined ? buildMetadata(payload.metadata) : current.metadata;
+  if (metadata && "yogi_knowledge" in metadata) {
+    const validation = validateYogiKnowledgeMetadata((metadata as Record<string, unknown>).yogi_knowledge);
+    if (!validation.ok) {
+      return NextResponse.json({ error: "Invalid yogi_knowledge metadata", detail: validation.error }, { status: 400 });
+    }
+  }
   const link = extractLink(metadata);
 
   const updated: ActivityLogRow = {

@@ -297,6 +297,14 @@ export default function YogaLogApp() {
     exerciseId: "",
   });
 
+  useEffect(() => {
+    const body = document.body;
+    body.classList.add("yoga-bg");
+    return () => {
+      body.classList.remove("yoga-bg");
+    };
+  }, []);
+
   const renderLogBadge = (meta: { label: string; color: string; icon: string }) => (
     <span
       className={styles.logBadge}
