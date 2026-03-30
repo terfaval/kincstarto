@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import { YogiDraftResponseSchema } from "@/lib/yogiKnowledgeDraftSchema";
-import { PoseSchema, AnatomySchema, KnowledgeCardSchema, type Pose } from "@/lib/yogiKnowledgeSchema";
+import { PoseSchema, AnatomySchema, KnowledgeCardSchema, type Pose, type Anatomy } from "@/lib/yogiKnowledgeSchema";
 import { normalizeSlug, createYogiId } from "@/lib/yogiKnowledgeStore";
 import { validatePoseQuality, validateAnatomyQuality, validateKnowledgeCardQuality } from "@/lib/yogiKnowledgeValidation";
 import { requireAdmin } from "@/lib/adminAuth";
@@ -823,7 +823,7 @@ export async function POST(request: Request) {
       const detail = anatomyParsed.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`).join(" | ");
       return phaseError("draft_schema", "ANATOMY_SCHEMA_INVALID", detail, 400);
     }
-    const anatomyWithSlot = {
+    const anatomyWithSlot: Anatomy = {
       ...anatomyParsed.data,
       status: "draft",
       content_status: anatomyParsed.data.content_status ?? "draft",
