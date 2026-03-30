@@ -31,11 +31,11 @@ export async function POST(request: Request) {
   }
 
   const PoseSpecInputSchema = z.object({
-    name_en: z.string().min(1).optional(),
-    name_hu: z.string().min(1).optional(),
-    slug: z.string().min(1).optional(),
-    setup: z.string().min(1).optional(),
-    entry: z.string().min(1).optional(),
+    name_en: z.string().min(1),
+    name_hu: z.string().min(1),
+    slug: z.string().min(1),
+    setup: z.string().min(1),
+    entry: z.string().min(1),
     hold: z.string().min(1),
   });
 

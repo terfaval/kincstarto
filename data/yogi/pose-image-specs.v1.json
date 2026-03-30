@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "poses": [
+    {
+      "id": "downward_dog",
+      "slug": "downward_facing_dog",
+      "aliases": ["downward dog", "adho mukha svanasana"],
+      "display_name": "Downward Facing Dog",
+      "symmetry": "symmetrical",
+      "mirrorable": false,
+      "default_variation": "default",
+      "variations": [
+        {
+          "id": "default",
+          "body": {
+            "head_neck_gaze": "head relaxed between the arms, neck long, gaze toward the legs",
+            "arms_shoulders_hands": "arms straight, shoulders flexed, hands grounded shoulder-width apart",
+            "chest_spine": "spine long and extended, chest moving toward the thighs",
+            "pelvis_hips": "hips lifted high forming the apex of the pose",
+            "front_leg": "both legs act symmetrically, knees extended or slightly bent, shins angled toward the mat",
+            "back_leg": "both legs act symmetrically, heels moving toward the mat",
+            "base_weight": "weight distributed between hands and feet",
+            "pose_axis": "inverted V shape facing the mat"
+          },
+          "critical_relations": [
+            "hips remain the highest point of the body",
+            "arms and spine form one continuous line"
+          ],
+          "negative_constraints": [
+            "not a plank",
+            "not a kneeling pose",
+            "not a lunge"
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "low_lunge",
+      "slug": "low_lunge",
+      "aliases": ["anjaneyasana"],
+      "display_name": "Low Lunge",
+      "symmetry": "asymmetrical",
+      "mirrorable": true,
+      "default_variation": "hands_down",
+      "variations": [
+        {
+          "id": "hands_down",
+          "match_tokens": ["hands down"],
+          "body": {
+            "head_neck_gaze": "head neutral, gaze forward or slightly down",
+            "arms_shoulders_hands": "both hands grounded on either side of the front foot",
+            "chest_spine": "spine long with slight forward inclination",
+            "pelvis_hips": "pelvis lowered toward the mat, hips moving forward",
+            "front_leg": "front knee bent approximately over the ankle, front shin vertical",
+            "back_leg": "back knee grounded, back thigh angled downward, back foot extended behind",
+            "base_weight": "weight distributed between front foot, back knee, and hands",
+            "pose_axis": "forward facing asymmetrical lunge"
+          },
+          "critical_relations": [
+            "front knee stacks over the ankle",
+            "back knee remains on the floor behind the pelvis"
+          ],
+          "negative_constraints": [
+            "not pigeon",
+            "not downward dog",
+            "not symmetrical kneeling"
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "pigeon",
+      "slug": "pigeon",
+      "aliases": ["eka pada rajakapotasana prep", "galamb"],
+      "display_name": "Pigeon Pose",
+      "symmetry": "asymmetrical",
+      "mirrorable": true,
+      "default_variation": "upright",
+      "view_hints": {
+        "angled": "show the front shin clearly in front of the pelvis"
+      },
+      "variations": [
+        {
+          "id": "upright",
+          "match_tokens": ["upright"],
+          "body": {
+            "head_neck_gaze": "head upright, neck long, gaze forward",
+            "arms_shoulders_hands": "hands grounded beside the hips",
+            "chest_spine": "chest lifted, spine upright",
+            "pelvis_hips": "pelvis low and facing mostly forward",
+            "front_leg": "front knee bent, front shin placed diagonally across the mat in front of the pelvis",
+            "back_leg": "back leg extended straight behind, back knee and thigh grounded",
+            "base_weight": "weight grounded through pelvis and back thigh",
+            "pose_axis": "upright asymmetrical hip opener"
+          },
+          "critical_relations": [
+            "front shin remains in front of the pelvis and separate from the torso",
+            "back leg extends directly behind the body"
+          ],
+          "visibility_constraints": [
+            "front shin must remain clearly visible"
+          ],
+          "negative_constraints": [
+            "not a lunge",
+            "do not hide the front shin under the torso",
+            "do not tuck the back leg under the body"
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "warrior_2",
+      "slug": "warrior_ii",
+      "aliases": ["virabhadrasana 2"],
+      "display_name": "Warrior II",
+      "symmetry": "asymmetrical",
+      "mirrorable": true,
+      "default_variation": "default",
+      "variations": [
+        {
+          "id": "default",
+          "body": {
+            "head_neck_gaze": "head turned to the front, gaze over the front hand",
+            "arms_shoulders_hands": "arms extended horizontally to the sides, shoulders level",
+            "chest_spine": "spine upright, chest open to the side",
+            "pelvis_hips": "pelvis open to the side",
+            "front_leg": "front knee bent over the ankle, front thigh parallel to the floor",
+            "back_leg": "back leg straight with foot angled slightly inward",
+            "base_weight": "weight grounded through both feet",
+            "pose_axis": "wide lateral stance facing the long edge of the mat"
+          },
+          "critical_relations": [
+            "front knee aligns over the ankle",
+            "arms form a straight horizontal line"
+          ],
+          "negative_constraints": [
+            "not a lunge facing forward",
+            "not symmetrical standing"
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "triangle",
+      "slug": "triangle",
+      "aliases": ["trikonasana"],
+      "display_name": "Triangle Pose",
+      "symmetry": "asymmetrical",
+      "mirrorable": true,
+      "default_variation": "default",
+      "variations": [
+        {
+          "id": "default",
+          "body": {
+            "head_neck_gaze": "head neutral or turned upward, gaze toward the top hand",
+            "arms_shoulders_hands": "one hand on the front leg or floor, other arm extended upward",
+            "chest_spine": "spine long with lateral flexion",
+            "pelvis_hips": "pelvis open to the side",
+            "front_leg": "front leg straight, front foot pointing forward",
+            "back_leg": "back leg straight, back foot angled inward",
+            "base_weight": "weight distributed between both feet",
+            "pose_axis": "side bending pose in a wide stance"
+          },
+          "critical_relations": [
+            "torso lengthens over the front leg without collapsing forward",
+            "top arm stacks above the bottom arm"
+          ],
+          "negative_constraints": [
+            "not a forward fold",
+            "not a lunge"
+          ]
+        }
+      ]
+    }
+  ]
+}

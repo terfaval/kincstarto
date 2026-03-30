@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["version", "poses"],
+  "properties": {
+    "version": { "type": "number" },
+    "poses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "slug", "display_name", "symmetry", "variations"],
+        "properties": {
+          "id": { "type": "string" },
+          "slug": { "type": "string" },
+          "aliases": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "display_name": { "type": "string" },
+          "category": { "type": "string" },
+          "symmetry": {
+            "type": "string",
+            "enum": ["symmetrical", "asymmetrical"]
+          },
+          "mirrorable": { "type": "boolean" },
+          "default_variation": { "type": "string" },
+
+          "view_hints": {
+            "type": "object",
+            "properties": {
+              "front": { "type": "string" },
+              "angled": { "type": "string" }
+            }
+          },
+
+          "variations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "body", "critical_relations", "negative_constraints"],
+              "properties": {
+                "id": { "type": "string" },
+                "match_tokens": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "body": {
+                  "type": "object",
+                  "required": [
+                    "head_neck_gaze",
+                    "arms_shoulders_hands",
+                    "chest_spine",
+                    "pelvis_hips",
+                    "front_leg",
+                    "back_leg",
+                    "base_weight",
+                    "pose_axis"
+                  ],
+                  "properties": {
+                    "head_neck_gaze": { "type": "string" },
+                    "arms_shoulders_hands": { "type": "string" },
+                    "chest_spine": { "type": "string" },
+                    "pelvis_hips": { "type": "string" },
+                    "front_leg": { "type": "string" },
+                    "back_leg": { "type": "string" },
+                    "base_weight": { "type": "string" },
+                    "pose_axis": { "type": "string" }
+                  }
+                },
+                "critical_relations": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "visibility_constraints": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "negative_constraints": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
