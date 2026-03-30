@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import { YogiDraftResponseSchema } from "@/lib/yogiKnowledgeDraftSchema";
-import { PoseSchema, AnatomySchema, KnowledgeCardSchema, type Pose, type Anatomy } from "@/lib/yogiKnowledgeSchema";
+import { PoseSchema, AnatomySchema, KnowledgeCardSchema, type Pose, type Anatomy, type KnowledgeCard } from "@/lib/yogiKnowledgeSchema";
 import { normalizeSlug, createYogiId } from "@/lib/yogiKnowledgeStore";
 import { validatePoseQuality, validateAnatomyQuality, validateKnowledgeCardQuality } from "@/lib/yogiKnowledgeValidation";
 import { requireAdmin } from "@/lib/adminAuth";
@@ -849,7 +849,7 @@ export async function POST(request: Request) {
       const detail = cardParsed.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`).join(" | ");
       return phaseError("draft_schema", "CARD_SCHEMA_INVALID", detail, 400);
     }
-    const cardWithStatus = {
+    const cardWithStatus: KnowledgeCard = {
       ...cardParsed.data,
       status: "draft",
       content_status: cardParsed.data.content_status ?? "draft",
