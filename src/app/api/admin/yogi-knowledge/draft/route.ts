@@ -722,16 +722,20 @@ export async function POST(request: Request) {
     const responseFormat = buildResponseFormat(payload.entity_type);
     const response = await client.responses.create({
       model: aiModel,
-      response_format: {
-        type: "json_schema",
-        json_schema: responseFormat,
-      },
       input: [
         {
           role: "user",
           content: prompt,
         },
       ],
+      text: {
+        format: {
+          type: "json_schema",
+          name: responseFormat.name,
+          strict: responseFormat.strict,
+          schema: responseFormat.schema,
+        },
+      },
     });
     responseText = getOutputText(response);
   } catch (err) {
