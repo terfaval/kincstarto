@@ -182,6 +182,7 @@ function deriveRelatedBooks(book: SpiritBook, books: SpiritBook[]) {
 
 export default function SpiritLibraryApp({ library, admin }: Props) {
   const isAdmin = Boolean(admin);
+  const meditationsHref = isAdmin ? "/admin/meditations" : "/meditations";
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -767,7 +768,7 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
           </button>
         )}
         <Link
-          href="/meditations"
+          href={meditationsHref}
           className={styles.addFab}
           aria-label="Meditációs tér"
           title="Meditációs tér"

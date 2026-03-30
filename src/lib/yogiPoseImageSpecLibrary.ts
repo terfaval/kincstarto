@@ -1,4 +1,4 @@
-import poseSpecsRaw from "data/yogi/pose-image-specs.v1.json";
+import poseSpecsRaw from "../../data/yogi/pose-image-specs.v1.json";
 
 type PoseSpecBody = {
   head_neck_gaze: string;
@@ -58,21 +58,63 @@ function normalize(value?: string) {
   return (value || "")
     .normalize("NFKD")
     .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
+    .toLowerCase()
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function equalsNormalized(a?: string, b?: string) {
+  if (!a || !b) return false;
+  return normalize(a) === normalize(b);
+}
+
+function tokenize(value?: string) {
+  const normalized = normalize(value);
+  if (!normalized) return [];
+  return normalized.split(/[^a-z0-9]+/).filter(Boolean);
+}
+
+function containsTokenSequence(tokens: string[], phraseTokens: string[]) {
+  if (phraseTokens.length === 0 || tokens.length < phraseTokens.length) return false;
+  for (let i = 0; i <= tokens.length - phraseTokens.length; i += 1) {
+    let match = true;
+    for (let j = 0; j < phraseTokens.length; j += 1) {
+      if (tokens[i + j] !== phraseTokens[j]) {
+        match = false;
+        break;
+      }
+    }
+    if (match) return true;
+  }
+  return false;
 }
 
 function findPoseEntry(pose: PoseInput): PoseSpecEntry | undefined {
   const slug = normalize(pose.slug);
-  const name = normalize(`${pose.name_en || ""} ${pose.name_hu || ""}`);
+  const nameRaw = `${pose.name_en || ""} ${pose.name_hu || ""}`.trim();
+  const name = normalize(nameRaw);
+  const nameTokens = tokenize(nameRaw);
 
   return poseSpecs.poses.find((p) => {
-    const base = normalize(p.slug);
-    if (base === slug) return true;
+    const displayName = p.display_name || "";
+    const slugName = p.slug?.replace(/[_-]+/g, " ");
 
-    if (p.aliases?.some((a) => normalize(a) === slug)) return true;
+    if (slug && equalsNormalized(slug, p.slug)) return true;
+    if (slug && p.aliases?.some((a) => equalsNormalized(slug, a))) return true;
 
-    if (name.includes(base)) return true;
-    if (p.aliases?.some((a) => name.includes(normalize(a)))) return true;
+    if (name) {
+      if (equalsNormalized(name, displayName)) return true;
+      if (p.aliases?.some((a) => equalsNormalized(name, a))) return true;
+      if (slugName && equalsNormalized(name, slugName)) return true;
+    }
+
+    if (nameTokens.length > 0) {
+      const displayTokens = tokenize(displayName);
+      if (containsTokenSequence(nameTokens, displayTokens)) return true;
+      if (p.aliases?.some((a) => containsTokenSequence(nameTokens, tokenize(a)))) return true;
+      if (slugName && containsTokenSequence(nameTokens, tokenize(slugName))) return true;
+    }
 
     return false;
   });
@@ -94,32 +136,50 @@ function selectVariation(entry: PoseSpecEntry, pose: PoseInput): PoseSpecVariati
   return entry.variations.find((v) => v.id === entry.default_variation) || entry.variations[0];
 }
 
+function ensureSentence(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+  return /[.!?]$/.test(trimmed) ? trimmed : `${trimmed}.`;
+}
+
 function buildSpecString(entry: PoseSpecEntry, variation: PoseSpecVariation) {
   const parts: string[] = [];
 
-  parts.push(`Pose identity: ${entry.display_name}. Do not substitute with a different pose.`);
+  const identity = `Pose identity: ${entry.display_name}. Do not substitute with a different pose.`;
+  const identitySentence = ensureSentence(identity);
+  if (identitySentence) parts.push(identitySentence);
 
   const body = variation.body;
 
-  parts.push(`Head/Neck/Gaze ${body.head_neck_gaze}.`);
-  parts.push(`Arms/Shoulders/Hands ${body.arms_shoulders_hands}.`);
-  parts.push(`Chest/Spine ${body.chest_spine}.`);
-  parts.push(`Pelvis/Hips ${body.pelvis_hips}.`);
-  parts.push(`Front Leg ${body.front_leg}.`);
-  parts.push(`Back Leg ${body.back_leg}.`);
-  parts.push(`Base/Weight ${body.base_weight}.`);
-  parts.push(`Pose Axis ${body.pose_axis}.`);
+  const bodyLines = [
+    `Head/Neck/Gaze ${body.head_neck_gaze}`,
+    `Arms/Shoulders/Hands ${body.arms_shoulders_hands}`,
+    `Chest/Spine ${body.chest_spine}`,
+    `Pelvis/Hips ${body.pelvis_hips}`,
+    `Front Leg ${body.front_leg}`,
+    `Back Leg ${body.back_leg}`,
+    `Base/Weight ${body.base_weight}`,
+    `Pose Axis ${body.pose_axis}`,
+  ];
+
+  bodyLines.forEach((line) => {
+    const next = ensureSentence(line);
+    if (next) parts.push(next);
+  });
 
   variation.critical_relations?.forEach((r: string, i: number) => {
-    parts.push(`Critical Relation ${i + 1} ${r}.`);
+    const next = ensureSentence(`Critical Relation ${i + 1} ${r}`);
+    if (next) parts.push(next);
   });
 
   variation.visibility_constraints?.forEach((v: string) => {
-    parts.push(`Visibility Constraint ${v}.`);
+    const next = ensureSentence(`Visibility Constraint ${v}`);
+    if (next) parts.push(next);
   });
 
   variation.negative_constraints?.forEach((n: string) => {
-    parts.push(`Occlusion Rule ${n}.`);
+    const next = ensureSentence(`Negative Constraint ${n}`);
+    if (next) parts.push(next);
   });
 
   return parts.join(" ");

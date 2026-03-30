@@ -32,12 +32,12 @@ export async function POST(request: Request) {
   }
 
   const PoseSpecInputSchema = z.object({
-    name_en: z.string().min(1),
-    name_hu: z.string().min(1),
-    slug: z.string().min(1),
-    setup: z.string().min(1),
-    entry: z.string().min(1),
-    hold: z.string().min(1),
+    name_en: z.string().optional().default(""),
+    name_hu: z.string().optional().default(""),
+    slug: z.string().optional().default(""),
+    setup: z.string().optional().default(""),
+    entry: z.string().optional().default(""),
+    hold: z.string().optional().default(""),
   });
 
   const parsed = PoseSpecInputSchema.safeParse(payload.pose);
