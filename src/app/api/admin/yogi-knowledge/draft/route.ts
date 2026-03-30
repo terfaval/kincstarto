@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import { YogiDraftResponseSchema } from "@/lib/yogiKnowledgeDraftSchema";
-import { PoseSchema, AnatomySchema, KnowledgeCardSchema } from "@/lib/yogiKnowledgeSchema";
+import { PoseSchema, AnatomySchema, KnowledgeCardSchema, type Pose } from "@/lib/yogiKnowledgeSchema";
 import { normalizeSlug, createYogiId } from "@/lib/yogiKnowledgeStore";
 import { validatePoseQuality, validateAnatomyQuality, validateKnowledgeCardQuality } from "@/lib/yogiKnowledgeValidation";
 import { requireAdmin } from "@/lib/adminAuth";
@@ -790,7 +790,7 @@ export async function POST(request: Request) {
     if (aiSpec?.spec) {
       slots = buildPoseImageSlotsWithSpec(poseParsed.data, aiSpec.spec);
     }
-    const poseWithSlots = {
+    const poseWithSlots: Pose = {
       ...poseParsed.data,
       status: "draft",
       content_status: poseParsed.data.content_status ?? "draft",
