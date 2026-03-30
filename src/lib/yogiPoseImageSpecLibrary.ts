@@ -1,4 +1,42 @@
-import poseSpecs from "@/data/yogi/pose-image-specs.v1.json";
+import poseSpecsRaw from "data/yogi/pose-image-specs.v1.json";
+
+type PoseSpecBody = {
+  head_neck_gaze: string;
+  arms_shoulders_hands: string;
+  chest_spine: string;
+  pelvis_hips: string;
+  front_leg: string;
+  back_leg: string;
+  base_weight: string;
+  pose_axis: string;
+};
+
+type PoseSpecVariation = {
+  id: string;
+  match_tokens?: string[];
+  body: PoseSpecBody;
+  critical_relations?: string[];
+  visibility_constraints?: string[];
+  negative_constraints?: string[];
+};
+
+type PoseSpecEntry = {
+  id: string;
+  slug: string;
+  aliases?: string[];
+  display_name: string;
+  symmetry?: string;
+  mirrorable?: boolean;
+  default_variation?: string;
+  variations?: PoseSpecVariation[];
+};
+
+type PoseSpecLibrary = {
+  version: number;
+  poses: PoseSpecEntry[];
+};
+
+const poseSpecs = poseSpecsRaw as PoseSpecLibrary;
 
 type PoseInput = {
   slug?: string;
@@ -23,7 +61,7 @@ function normalize(value?: string) {
     .toLowerCase();
 }
 
-function findPoseEntry(pose: PoseInput) {
+function findPoseEntry(pose: PoseInput): PoseSpecEntry | undefined {
   const slug = normalize(pose.slug);
   const name = normalize(`${pose.name_en || ""} ${pose.name_hu || ""}`);
 
@@ -40,7 +78,7 @@ function findPoseEntry(pose: PoseInput) {
   });
 }
 
-function selectVariation(entry: any, pose: PoseInput) {
+function selectVariation(entry: PoseSpecEntry, pose: PoseInput): PoseSpecVariation | null {
   const text = normalize(
     `${pose.setup || ""} ${pose.entry || ""} ${pose.hold || ""}`
   );
@@ -53,10 +91,10 @@ function selectVariation(entry: any, pose: PoseInput) {
     }
   }
 
-  return entry.variations.find((v: any) => v.id === entry.default_variation) || entry.variations[0];
+  return entry.variations.find((v) => v.id === entry.default_variation) || entry.variations[0];
 }
 
-function buildSpecString(entry: any, variation: any) {
+function buildSpecString(entry: PoseSpecEntry, variation: PoseSpecVariation) {
   const parts: string[] = [];
 
   parts.push(`Pose identity: ${entry.display_name}. Do not substitute with a different pose.`);
