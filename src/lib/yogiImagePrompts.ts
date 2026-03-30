@@ -96,6 +96,10 @@ function getPoseSpecificPromptGuard(pose: Pose, spec: string) {
       "The back leg must remain clearly separate and extend straight behind the body.",
       "Do not turn the pose into a generic kneeling lunge or folded-leg-under-torso shape.",
       "Do not place the front knee substantially in front of the front ankle.",
+      "The full front shin from knee to ankle must be clearly readable as a separate diagonal line in front of the pelvis.",
+      "The front foot must project outward in front of the body and must not remain tucked close under the pelvis.",
+      "The front leg must create a clear cross-body foreground shape.",
+      "For angled view, do not choose a camera angle that hides the front shin behind the torso or front thigh.",
     ].join(" ");
   }
 
@@ -160,9 +164,12 @@ function buildMannequinPrompt({
   pose: Pose;
 }) {
   const specBlock = `Pose structure: ${spec}`;
-  const poseBlock = poseName
-    ? `Pose identity: ${poseName}. Do not substitute with a different pose.`
-    : "Pose identity must be preserved. Do not substitute with a different pose.";
+  const specHasIdentity = spec.trim().toLowerCase().startsWith("pose identity:");
+  const poseBlock = specHasIdentity
+    ? ""
+    : poseName
+      ? `Pose identity: ${poseName}. Do not substitute with a different pose.`
+      : "Pose identity must be preserved. Do not substitute with a different pose.";
 
   const viewBlock =
     view === "front"

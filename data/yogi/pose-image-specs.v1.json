@@ -90,21 +90,27 @@
             "arms_shoulders_hands": "hands grounded beside the hips",
             "chest_spine": "chest lifted, spine upright",
             "pelvis_hips": "pelvis low and facing mostly forward",
-            "front_leg": "front knee bent, front shin placed diagonally across the mat in front of the pelvis",
+            "front_leg": "front knee bent with the entire front shin clearly visible diagonally across the mat in front of the pelvis, extending away from the torso rather than folding underneath it",
             "back_leg": "back leg extended straight behind, back knee and thigh grounded",
             "base_weight": "weight grounded through pelvis and back thigh",
             "pose_axis": "upright asymmetrical hip opener"
           },
           "critical_relations": [
-            "front shin remains in front of the pelvis and separate from the torso",
-            "back leg extends directly behind the body"
+            "the full front shin remains clearly visible from knee to ankle",
+            "front shin stays in front of the pelvis and separate from the torso",
+            "front foot is not tucked close beneath the body",
+            "back leg extends directly behind the pelvis in a straight line"
           ],
           "visibility_constraints": [
-            "front shin must remain clearly visible"
+            "front shin must remain clearly visible",
+            "the full front shin must remain clearly visible from knee to ankle"
           ],
           "negative_constraints": [
             "not a lunge",
-            "do not hide the front shin under the torso",
+            "not a kneeling pose",
+            "do not hide any part of the front shin under the torso or front thigh",
+            "do not place the front leg directly under the pelvis",
+            "do not tuck the front foot close beneath the body",
             "do not tuck the back leg under the body"
           ]
         }
