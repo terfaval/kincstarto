@@ -35,6 +35,14 @@ function cleanLine(value: string) {
   return value.replace(/\s+/g, " ").trim();
 }
 
+export function normalizeSpecText(value: string) {
+  return value.replace(/\s+/g, " ").trim();
+}
+
+function normalizeSpecMatch(value: string) {
+  return normalize(normalizeSpecText(value));
+}
+
 function toSentence(value: string) {
   const cleaned = cleanLine(value).replace(/[;:]/g, ",");
   if (!cleaned) return "";
@@ -501,6 +509,114 @@ function forceMissingBodyParts(spec: PoseSpec) {
 
   if (!spec.orientation) spec.orientation = "Torso oriented with the pose.";
   if (!spec.symmetry) spec.symmetry = "Left-right alignment preserved where applicable.";
+}
+
+export function isPoseImageSpecLikelyUseful(spec: string): boolean {
+  const normalized = normalizeSpecText(spec);
+  if (!normalized || normalized.length < 140) return false;
+
+  const lower = normalizeSpecMatch(spec);
+  const sentences = splitSentences(spec);
+  const sentenceCount = Math.max(sentences.length, 1);
+
+  const frontIndicators = [
+    "front leg",
+    "front knee",
+    "front shin",
+    "front ankle",
+    "front foot",
+    "front toes",
+  ];
+  const backIndicators = [
+    "back leg",
+    "back knee",
+    "back shin",
+    "back calf",
+    "back ankle",
+    "back foot",
+    "back toes",
+  ];
+  const axisIndicators = [
+    "pose axis",
+    "axis",
+    "orientation",
+    "oriented",
+    "facing",
+    "torso facing",
+    "body facing",
+  ];
+
+  const hasFront = frontIndicators.some((token) => lower.includes(token));
+  const hasBack = backIndicators.some((token) => lower.includes(token));
+  const hasAxis = axisIndicators.some((token) => lower.includes(token));
+
+  if (!hasFront || !hasBack) return false;
+  if (!hasAxis && !lower.includes("front") && !lower.includes("back")) return false;
+
+  const genericPhrases = [
+    "hands clearly placed",
+    "wrists aligned with forearms",
+    "elbows softly extended",
+    "arms long and active",
+    "shoulders stable",
+    "neck long",
+    "head neutral",
+    "gaze steady",
+    "chest open",
+    "feet clearly placed on the mat",
+    "toes aligned with foot direction",
+    "ankles stable",
+    "knees aligned with toes",
+    "legs active",
+    "weight grounded through the base",
+    "hips positioned for the pose",
+    "pelvis positioned for the pose",
+    "core engaged",
+    "spine long",
+    "torso oriented with the pose",
+    "left-right alignment preserved where applicable",
+  ];
+
+  const fillerCount = genericPhrases.filter((phrase) => lower.includes(phrase)).length;
+  const fillerRatio = fillerCount / sentenceCount;
+
+  if (fillerCount >= 10) return false;
+
+  const distinguishingTokens = [
+    "asymmet",
+    "diagonal",
+    "across",
+    "cross",
+    "twist",
+    "rotate",
+    "rotat",
+    "bent",
+    "straight",
+    "extended",
+    "fold",
+    "over",
+    "under",
+    "behind",
+    "in front of",
+    "parallel",
+    "perpendicular",
+    "stacked",
+    "opposite",
+    "left",
+    "right",
+    "front",
+    "back",
+    "lunge",
+    "balance",
+    "single leg",
+  ];
+
+  const hasDistinguishing = distinguishingTokens.some((token) => lower.includes(token));
+
+  if (!hasDistinguishing && fillerRatio >= 0.6) return false;
+  if (!hasDistinguishing && fillerCount >= 6) return false;
+
+  return true;
 }
 
 export function buildPoseImageSpec(pose: Pose) {

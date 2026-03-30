@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/adminAuth";
 import { z } from "zod";
-import { buildPoseImageSpec } from "@/lib/yogiImageSpecs";
+import { buildPoseImageSpec, isPoseImageSpecLikelyUseful } from "@/lib/yogiImageSpecs";
 import { buildPoseImageSlotsWithSpec } from "@/lib/yogiImagePrompts";
 import { generatePoseImageSpecAI } from "@/lib/yogiImageSpecAI";
+import resolvePoseImageSpecFromLibrary from "@/lib/yogiPoseImageSpecLibrary";
 
 export const runtime = "nodejs";
 
@@ -46,15 +47,62 @@ export async function POST(request: Request) {
   }
 
   const pose = parsed.data;
-  const aiSpec = await generatePoseImageSpecAI(pose);
-  const spec = aiSpec?.spec ?? buildPoseImageSpec(pose as any);
+  const library = resolvePoseImageSpecFromLibrary(pose);
+
+  let spec = "";
+  let specSource: "library" | "heuristic" | "ai" | null = null;
+  let matchedPoseId: string | null = null;
+  let matchedVariationId: string | null = null;
+  let warning: string | null = null;
+  let warningDetail: string | null = null;
+
+  if (library?.spec) {
+    spec = library.spec;
+    specSource = "library";
+    matchedPoseId = library.poseId ?? null;
+    matchedVariationId = library.variationId ?? null;
+  } else {
+    const heuristicSpec = buildPoseImageSpec(pose as any);
+
+    if (heuristicSpec && isPoseImageSpecLikelyUseful(heuristicSpec)) {
+      spec = heuristicSpec;
+      specSource = "heuristic";
+    } else {
+      const aiSpec = await generatePoseImageSpecAI(pose);
+
+      if (aiSpec?.spec) {
+        spec = aiSpec.spec;
+        specSource = "ai";
+        warning = aiSpec.warning ?? null;
+        warningDetail = aiSpec.warning_detail ?? null;
+      } else if (heuristicSpec) {
+        spec = heuristicSpec;
+        specSource = "heuristic";
+        warning = "heuristic_spec_used_after_ai_failure";
+        warningDetail = aiSpec?.warning_detail ?? null;
+      }
+    }
+  }
+
+  if (!spec) {
+    return phaseError(
+      "spec_generate",
+      "SPEC_RESOLUTION_FAILED",
+      "Unable to resolve pose image spec from library, heuristic, or AI",
+      500,
+    );
+  }
+
   const slots = buildPoseImageSlotsWithSpec(pose as any, spec);
 
   return NextResponse.json({
     ok: true,
     spec,
+    spec_source: specSource,
+    matched_pose_id: matchedPoseId,
+    matched_variation_id: matchedVariationId,
     slots,
-    warning: aiSpec?.warning ?? null,
-    warning_detail: aiSpec?.warning_detail ?? null,
+    warning,
+    warning_detail: warningDetail,
   });
 }
