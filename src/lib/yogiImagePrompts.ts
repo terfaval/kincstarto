@@ -1,4 +1,4 @@
-import type { Anatomy, Pose } from "./yogiKnowledgeSchema";
+import type { Anatomy, Pose, ImageSlotStatus } from "./yogiKnowledgeSchema";
 import { buildAnatomyImageSpec, buildPoseImageSpec } from "./yogiImageSpecs";
 
 const MANNEQUIN_STYLE_CORE =
@@ -40,6 +40,15 @@ const FORBIDDEN_MANNEQUIN = [
 const FORBIDDEN_ANATOMY = ["full body", "whole body", "arrow", "diagram", "creepy", "horror", "gore"];
 
 type ValidationResult = { hardErrors: string[]; warnings: string[] };
+type ImageSlot = {
+  spec?: string | null;
+  prompt: string;
+  asset_ref: string | null;
+  status: ImageSlotStatus;
+  warning?: string | null;
+  warning_detail?: string | null;
+  prompt_revision?: number | null;
+};
 
 function normalize(value: string) {
   return value
@@ -102,7 +111,10 @@ export function buildPoseImageSlots(pose: Pose) {
   return buildPoseImageSlotsWithSpec(pose, spec);
 }
 
-export function buildPoseImageSlotsWithSpec(pose: Pose, spec: string) {
+export function buildPoseImageSlotsWithSpec(
+  pose: Pose,
+  spec: string
+): { mannequin_front: ImageSlot; mannequin_angled: ImageSlot } {
   const poseName = pose.name_en || pose.name_hu || pose.slug;
   const normalized = cleanSpec(spec);
 
@@ -124,7 +136,7 @@ export function buildPoseImageSlotsWithSpec(pose: Pose, spec: string) {
   };
 }
 
-export function buildAnatomyImageSlot(anatomy: Anatomy) {
+export function buildAnatomyImageSlot(anatomy: Anatomy): ImageSlot {
   const spec = buildAnatomyImageSpec(anatomy);
 
   return {
