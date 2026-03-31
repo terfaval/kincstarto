@@ -3,6 +3,7 @@ import OpenAI from "openai";
 import { YogiDraftResponseSchema } from "@/lib/yogiKnowledgeDraftSchema";
 import { PoseSchema, AnatomySchema, KnowledgeCardSchema, type Pose, type Anatomy, type KnowledgeCard } from "@/lib/yogiKnowledgeSchema";
 import { normalizeSlug, createYogiId } from "@/lib/yogiKnowledgeStore";
+import { KNOWN_POSES, KNOWN_POSE_SANSKRIT } from "@/lib/yogiKnownPoses";
 import { validatePoseQuality, validateAnatomyQuality, validateKnowledgeCardQuality } from "@/lib/yogiKnowledgeValidation";
 import { requireAdmin } from "@/lib/adminAuth";
 import { buildAnatomyImageSlot, buildPoseImageSlots, buildPoseImageSlotsWithSpec, validateAnatomyImageSlot, validatePoseImageSlots } from "@/lib/yogiImagePrompts";
@@ -10,59 +11,6 @@ import { generatePoseImageSpecAI } from "@/lib/yogiImageSpecAI";
 
 export const runtime = "nodejs";
 
-const KNOWN_POSES = [
-  { slug: "downward_facing_dog", name_hu: "Lefele nezo kutya", name_en: "Downward-Facing Dog" },
-  { slug: "child_pose", name_hu: "Gyermekpoz", name_en: "Child's Pose" },
-  { slug: "mountain", name_hu: "Hegyallas", name_en: "Mountain Pose" },
-  { slug: "plank", name_hu: "Plank", name_en: "Plank" },
-  { slug: "chaturanga", name_hu: "Chaturanga", name_en: "Chaturanga" },
-  { slug: "upward_facing_dog", name_hu: "Felfele nezo kutya", name_en: "Upward-Facing Dog" },
-  { slug: "cobra", name_hu: "Kobra", name_en: "Cobra Pose" },
-  { slug: "warrior_i", name_hu: "Harcos I", name_en: "Warrior I" },
-  { slug: "warrior_ii", name_hu: "Harcos II", name_en: "Warrior II" },
-  { slug: "triangle", name_hu: "Haromszog", name_en: "Triangle Pose" },
-  { slug: "tree", name_hu: "Fa", name_en: "Tree Pose" },
-  { slug: "bridge", name_hu: "Hid", name_en: "Bridge Pose" },
-  { slug: "seated_forward_fold", name_hu: "Ulo elorehajlas", name_en: "Seated Forward Fold" },
-  { slug: "cat_cow", name_hu: "Macska-tehen", name_en: "Cat-Cow" },
-  { slug: "low_lunge", name_hu: "Alacsony kitore", name_en: "Low Lunge" },
-  { slug: "high_lunge", name_hu: "Magas kitore", name_en: "High Lunge" },
-  { slug: "pigeon", name_hu: "Galamb", name_en: "Pigeon Pose" },
-  { slug: "garland", name_hu: "Guggolo fuzer", name_en: "Garland Pose" },
-  { slug: "staff", name_hu: "Botpoz", name_en: "Staff Pose" },
-  { slug: "boat", name_hu: "Csonak", name_en: "Boat Pose" },
-  { slug: "half_moon", name_hu: "Felhold", name_en: "Half Moon Pose" },
-  { slug: "extended_side_angle", name_hu: "Nyujtott oldalszog", name_en: "Extended Side Angle" },
-  { slug: "eagle", name_hu: "Sas", name_en: "Eagle Pose" },
-  { slug: "corpse", name_hu: "Hullapoz", name_en: "Corpse Pose" },
-];
-
-const KNOWN_POSE_SANSKRIT: Record<string, string> = {
-  downward_facing_dog: "Adho Mukha Svanasana",
-  child_pose: "Balasana",
-  mountain: "Tadasana",
-  plank: "Phalakasana",
-  chaturanga: "Chaturanga Dandasana",
-  upward_facing_dog: "Urdhva Mukha Svanasana",
-  cobra: "Bhujangasana",
-  warrior_i: "Virabhadrasana I",
-  warrior_ii: "Virabhadrasana II",
-  triangle: "Trikonasana",
-  tree: "Vrksasana",
-  bridge: "Setu Bandha Sarvangasana",
-  seated_forward_fold: "Paschimottanasana",
-  cat_cow: "Marjaryasana-Bitilasana",
-  low_lunge: "Anjaneyasana",
-  high_lunge: "Alanasana",
-  pigeon: "Eka Pada Rajakapotasana",
-  garland: "Malasana",
-  staff: "Dandasana",
-  boat: "Navasana",
-  half_moon: "Ardha Chandrasana",
-  extended_side_angle: "Utthita Parsvakonasana",
-  eagle: "Garudasana",
-  corpse: "Savasana",
-};
 
 const FORBIDDEN_PHRASES = [
   "holisztikus",
@@ -217,12 +165,13 @@ function buildResponseFormat(entityType: Payload["entity_type"]) {
                 ],
               },
               level: { type: "string", enum: ["beginner", "intermediate", "advanced", "all_levels"] },
-              tags: { type: "array", items: { type: "string" } },
+              tags: { type: "array", items: { type: "string" }, minItems: 1 },
               status: { type: "string", enum: ["draft", "active", "archived"] },
               content_status: { type: "string", enum: ["draft", "verified", "published", "archived"] },
               summary: { type: "string" },
               purpose: {
                 type: "array",
+                minItems: 1,
                 items: {
                   type: "string",
                   enum: [
@@ -250,15 +199,15 @@ function buildResponseFormat(entityType: Payload["entity_type"]) {
                   max_seconds: { type: "number" },
                 },
               },
-              attention_points: { type: "array", items: { type: "string" } },
-              alignment_cues: { type: "array", items: { type: "string" } },
-              self_check_statements: { type: "array", items: { type: "string" } },
-              common_mistakes: { type: "array", items: { type: "string" } },
-              stretches: { type: "array", items: { type: "string" } },
+              attention_points: { type: "array", items: { type: "string" }, minItems: 1 },
+              alignment_cues: { type: "array", items: { type: "string" }, minItems: 1 },
+              self_check_statements: { type: "array", items: { type: "string" }, minItems: 1 },
+              common_mistakes: { type: "array", items: { type: "string" }, minItems: 1 },
+              stretches: { type: "array", items: { type: "string" }, minItems: 1 },
               strengthens: { type: "array", items: { type: "string" } },
-              activates: { type: "array", items: { type: "string" } },
+              activates: { type: "array", items: { type: "string" }, minItems: 1 },
               relieves: { type: "array", items: { type: "string" } },
-              body_regions: { type: "array", items: { type: "string" } },
+              body_regions: { type: "array", items: { type: "string" }, minItems: 1 },
               contraindications: { type: "array", items: { type: "string" } },
               caution_areas: { type: "array", items: { type: "string" } },
               modifications: { type: "array", items: { type: "string" } },
@@ -666,7 +615,10 @@ function resolveKnownPoseSlug(payload: PosePayload) {
     const normalized = normalizeSlug(payload.pose_name);
     if (KNOWN_POSES.some((pose) => pose.slug === normalized)) return normalized;
     const byName = KNOWN_POSES.find(
-      (pose) => normalizeSlug(pose.name_en) === normalized || normalizeSlug(pose.name_hu) === normalized
+      (pose) =>
+        normalizeSlug(pose.name_en) === normalized ||
+        normalizeSlug(pose.name_hu) === normalized ||
+        (pose.aliases ?? []).some((alias) => normalizeSlug(alias) === normalized)
     );
     return byName?.slug ?? null;
   }
@@ -788,7 +740,7 @@ export async function POST(request: Request) {
     let slots = buildPoseImageSlots(poseParsed.data);
     const aiSpec = await generatePoseImageSpecAI(poseParsed.data);
     if (aiSpec?.spec) {
-      slots = buildPoseImageSlotsWithSpec(poseParsed.data, aiSpec.spec);
+      slots = buildPoseImageSlotsWithSpec(poseParsed.data, aiSpec.spec, null, null, null);
     }
     const poseWithSlots: Pose = {
       ...poseParsed.data,

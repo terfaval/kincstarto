@@ -3,6 +3,7 @@
 import { Fragment, useMemo, useState, useEffect } from "react";
 import {
   Bookmark,
+  Brain,
   Check,
   Clock,
   Circle,
@@ -774,6 +775,14 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
           title="Meditációs tér"
         >
           <Sparkles size={18} className={styles.fabIcon} />
+        </Link>
+        <Link
+          href="/yogis-choice"
+          className={styles.addFab}
+          aria-label="Yogi's choice"
+          title="Yogi's choice"
+        >
+          <Brain size={18} className={styles.fabIcon} />
         </Link>
         {!isMobile && (
             <button

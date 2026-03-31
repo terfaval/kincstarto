@@ -93,7 +93,13 @@ export async function POST(request: Request) {
     );
   }
 
-  const slots = buildPoseImageSlotsWithSpec(pose as any, spec);
+  const slots = buildPoseImageSlotsWithSpec(
+    pose as any,
+    spec,
+    library?.compiledPrompt ?? null,
+    library?.visibilityConstraints ?? null,
+    library?.negativeConstraints ?? null,
+  );
 
   return NextResponse.json({
     ok: true,

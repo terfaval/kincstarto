@@ -1,0 +1,12 @@
+848:         <div className={styles.poseFilterSummary}>Sz�r�s</div>
+851:             <span className="form-field__label">Keres�s</span>
+857:               placeholder="N�v, slug, c�mke..."
+862:             <span className="form-field__label">Tartalom st�tusz</span>
+870:               <option value="all">�sszes</option>
+888:               <option value="all">�sszes</option>
+898:             <span className="form-field__label">Kateg�ria</span>
+906:               <option value="all">�sszes</option>
+916:             <span className="form-field__label">C�l</span>
+924:               <option value="all">�sszes</option>
+946:             Sz�r�k t�rl�se
+949:             Tal�latok: {filteredPoses.length}

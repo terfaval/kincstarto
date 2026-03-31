@@ -4,6 +4,7 @@
   "required": ["version", "poses"],
   "properties": {
     "version": { "type": "number" },
+
     "poses": {
       "type": "array",
       "items": {
@@ -12,17 +13,23 @@
         "properties": {
           "id": { "type": "string" },
           "slug": { "type": "string" },
+
           "aliases": {
             "type": "array",
             "items": { "type": "string" }
           },
+
           "display_name": { "type": "string" },
+
           "category": { "type": "string" },
+
           "symmetry": {
             "type": "string",
             "enum": ["symmetrical", "asymmetrical"]
           },
+
           "mirrorable": { "type": "boolean" },
+
           "default_variation": { "type": "string" },
 
           "view_hints": {
@@ -37,48 +44,60 @@
             "type": "array",
             "items": {
               "type": "object",
-              "required": ["id", "body", "critical_relations", "negative_constraints"],
+              "required": ["id", "pose_mechanics"],
               "properties": {
                 "id": { "type": "string" },
+
                 "match_tokens": {
                   "type": "array",
                   "items": { "type": "string" }
                 },
-                "body": {
-                  "type": "object",
-                  "required": [
-                    "head_neck_gaze",
-                    "arms_shoulders_hands",
-                    "chest_spine",
-                    "pelvis_hips",
-                    "front_leg",
-                    "back_leg",
-                    "base_weight",
-                    "pose_axis"
-                  ],
-                  "properties": {
-                    "head_neck_gaze": { "type": "string" },
-                    "arms_shoulders_hands": { "type": "string" },
-                    "chest_spine": { "type": "string" },
-                    "pelvis_hips": { "type": "string" },
-                    "front_leg": { "type": "string" },
-                    "back_leg": { "type": "string" },
-                    "base_weight": { "type": "string" },
-                    "pose_axis": { "type": "string" }
-                  }
+
+                "pose_identity": {
+                  "type": "string",
+                  "description": "Optional override of display_name for prompt identity"
                 },
+                "prompt_override": {
+                  "type": "string",
+                  "description": "Optional manual prompt text override that will be injected directly into the prompt."
+                },
+
+                "pose_mechanics": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 5,
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Primary prompt-driving lines. Must be short, concrete, visual, and positive."
+                },
+
                 "critical_relations": {
                   "type": "array",
+                  "maxItems": 3,
                   "items": { "type": "string" }
                 },
+
                 "visibility_constraints": {
                   "type": "array",
+                  "maxItems": 2,
                   "items": { "type": "string" }
                 },
+
                 "negative_constraints": {
                   "type": "array",
+                  "maxItems": 6,
                   "items": { "type": "string" }
                 },
+
+                "view_hints": {
+                  "type": "object",
+                  "properties": {
+                    "front": { "type": "string" },
+                    "angled": { "type": "string" }
+                  }
+                },
+
                 "side_topology": {
                   "type": "object",
                   "properties": {

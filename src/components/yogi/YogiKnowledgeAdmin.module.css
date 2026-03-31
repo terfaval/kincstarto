@@ -5,40 +5,117 @@
 }
 
 .poseGallery {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 2rem;
-}
-
-.poseGalleryHeader {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
   gap: 1rem;
-  flex-wrap: wrap;
+  padding: 1.5rem 0;
 }
 
-.poseGalleryEyebrow {
-  margin: 0 0 0.35rem;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--muted);
+.poseFilterPanel {
+  padding: 0.5rem 1rem 0.75rem;
 }
 
-.poseGalleryTitle {
-  margin: 0;
-  font-size: 1.5rem;
+.poseFilterSummary {
+  cursor: pointer;
   font-weight: 600;
   color: var(--foreground);
+  list-style: none;
+  margin: 0;
 }
 
-.poseGalleryControls {
+.poseFilterSummary::-webkit-details-marker {
+  display: none;
+}
+
+.poseFilterGrid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  margin-top: 0.25rem;
+}
+
+.poseFilterActions {
   display: flex;
-  gap: 0.5rem;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
   flex-wrap: wrap;
+}
+
+.poseFilterCount {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.poseFilterReset {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+}
+
+.poseFilterSelect {
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(15, 23, 42, 0.45);
+  color: var(--foreground);
+  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.1);
+}
+
+.poseFilterSelect:focus {
+  outline: none;
+  border-color: rgba(148, 163, 184, 0.7);
+  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.2);
+}
+
+.poseFilterSelect:disabled {
+  opacity: 0.6;
+}
+
+.poseGalleryShell {
+  display: flex;
+  align-items: stretch;
+  gap: 1rem;
+}
+
+.poseGalleryContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.poseGalleryChevron {
+  width: 48px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.poseGalleryChevron svg {
+  width: 20px;
+  height: 20px;
+  color: #f8fafc;
+}
+
+.poseGalleryChevron svg path {
+  stroke: #f8fafc;
+}
+
+.poseGalleryChevron:hover:not(:disabled) {
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.poseGalleryChevron:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .poseGalleryGrid {
@@ -55,10 +132,42 @@
   color: var(--muted);
 }
 
+.poseGalleryPagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+.poseGalleryDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid var(--panel);
+  background: transparent;
+  padding: 0;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.poseGalleryDot:hover:not(:disabled) {
+  transform: scale(1.2);
+  border-color: var(--panel);
+}
+
+.poseGalleryDot:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.poseGalleryDotActive {
+  background: var(--panel);
+  border-color: var(--panel);
+}
+
 .poseCard {
   border-radius: 16px;
-  border: 1px solid var(--line);
-  background: rgba(15, 23, 42, 0.25);
+  border: none;
+  background: transparent;
   padding: 0;
   text-align: left;
   cursor: pointer;
@@ -66,6 +175,8 @@
   display: flex;
   flex-direction: column;
   transition: border-color 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+  color: inherit;
 }
 
 .poseCard:hover {
@@ -74,11 +185,11 @@
 }
 
 .poseCardImage {
-  height: 220px;
+  height: 250px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at top, rgba(148, 163, 184, 0.18), rgba(15, 23, 42, 0.8));
+  background: transparent;
   color: var(--muted);
   font-size: 0.8rem;
   text-transform: uppercase;
@@ -96,11 +207,14 @@
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
+  background: var(--panel);
+  text-align: center;
 }
 
 .poseCardHeader {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
   gap: 0.75rem;
 }
 
@@ -109,24 +223,14 @@
   font-size: 1rem;
   font-weight: 600;
   color: var(--foreground);
+  text-align: center;
 }
 
 .poseCardSubtitle {
   margin: 0.15rem 0 0;
   font-size: 0.85rem;
   color: var(--muted);
-}
-
-.poseStatusPill {
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  padding: 0.2rem 0.75rem;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--foreground);
-  background: rgba(148, 163, 184, 0.12);
-  height: fit-content;
+  text-align: center;
 }
 
 .poseCardSummary {
@@ -136,16 +240,7 @@
   line-height: 1.5;
   max-height: 4.6em;
   overflow: hidden;
-}
-
-.poseGalleryFooter {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.poseGalleryPage {
-  color: var(--muted);
-  font-size: 0.8rem;
+  text-align: center;
 }
 
 .grid {
@@ -506,6 +601,316 @@
   background: rgba(15, 23, 42, 0.35);
 }
 
+.videoGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.videoCard {
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(15, 23, 42, 0.35);
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.videoCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(148, 163, 184, 0.6);
+}
+
+.videoCardStatic {
+  cursor: default;
+}
+
+.videoCardStatic:hover {
+  transform: none;
+  border-color: var(--line);
+}
+
+.videoCardBody {
+  padding: 1rem 1.1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.videoCardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.videoCategoryPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: fit-content;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  padding: 0.2rem 0.6rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.videoCategoryIcon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-color: currentColor;
+  mask-image: var(--pill-icon);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-image: var(--pill-icon);
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+}
+
+.videoCardTitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.videoCardSubtitle {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.videoCardSummary {
+  margin: 0;
+  color: var(--foreground);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.videoIntensityRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.videoIntensityDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.videoIntensityDotActive {
+  background: var(--level-dot-active);
+  border-color: var(--level-dot-active-border);
+}
+
+.videoPoseRow {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.videoPoseThumb {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(148, 163, 184, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.6rem;
+  text-align: center;
+  padding: 0.25rem;
+}
+
+.videoPoseThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.videoPoseEmpty {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 40;
+}
+
+.modal {
+  width: min(900px, 100%);
+  max-height: 90vh;
+  overflow: auto;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(15, 23, 42, 0.98);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.modalTitle {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.modalSubtitle {
+  margin: 0.2rem 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.modalGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.modalLinkRow {
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(15, 23, 42, 0.35);
+  padding: 0.75rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.modalLinkLabel {
+  margin: 0;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.modalLink {
+  color: var(--foreground);
+  font-size: 0.85rem;
+  word-break: break-word;
+  text-decoration: underline;
+}
+
+.modalLinkMissing {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.modalPoseBlock {
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(15, 23, 42, 0.35);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.modalPoseHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.modalPoseTitle {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.modalPoseActions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.modalPoseEmpty {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.modalPoseList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modalPoseItem {
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  padding: 0.6rem 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.modalPoseMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.modalPoseName {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--foreground);
+}
+
+.modalPoseId {
+  margin: 0;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.modalPoseButtons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.modalFooter {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
 @media (max-width: 960px) {
   .grid {
     grid-template-columns: 1fr;
@@ -521,6 +926,14 @@
   }
 
   .poseGalleryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .poseGalleryChevron {
+    width: 40px;
+  }
+
+  .videoGrid {
     grid-template-columns: 1fr;
   }
 }

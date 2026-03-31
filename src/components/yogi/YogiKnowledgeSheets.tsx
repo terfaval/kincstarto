@@ -152,9 +152,6 @@ function ImageSlotFrame({
           <span className={styles.poseFrameLabel}>{label}</span>
         </div>
       )}
-      <div className={styles.imageFrameStatus}>
-        <HeaderPill tone={tone}>{slot?.status ?? "missing"}</HeaderPill>
-      </div>
     </div>
   );
 }
@@ -164,19 +161,22 @@ export function YogiPoseSheet({ pose }: { pose: Pose }) {
   const subtitle = pose.sanskrit_name ?? pose.name_hu;
   return (
     <div className={styles.sheet}>
-      <div className={styles.poseHeaderBlock}>
-        <p className={styles.nameEn}>{title}</p>
-        <p className={styles.nameHu}>{subtitle}</p>
-        <p className={styles.summary}>{pose.summary}</p>
-        <div className={styles.poseHeaderPills}>
-          <HeaderPill tone="category">{mapCategory(pose.category)}</HeaderPill>
-          <HeaderPill tone="level">{mapLevel(pose.level)}</HeaderPill>
-          <HeaderPill tone="duration">{`${pose.duration.min_seconds}–${pose.duration.max_seconds} mp`}</HeaderPill>
-        </div>
-      </div>
 
       <div className={styles.poseTop}>
         <div className={styles.poseVisual}>
+          <div className={styles.poseHeaderOverlay}>
+            <div className={styles.poseHeaderBlock}>
+              <div className={styles.poseTitleRow}>
+                <p className={styles.nameEn}>{title}</p>
+                <p className={styles.nameHu}>{subtitle}</p>
+              </div>
+              <div className={styles.poseHeaderPills}>
+                <HeaderPill tone="category">{mapCategory(pose.category)}</HeaderPill>
+                <HeaderPill tone="level">{mapLevel(pose.level)}</HeaderPill>
+                <HeaderPill tone="duration">{`${pose.duration.min_seconds}–${pose.duration.max_seconds} mp`}</HeaderPill>
+              </div>
+            </div>
+          </div>
           <div className={styles.mannequinGrid}>
             {pose.mannequin_angled?.status === "verified" && (
               <ImageSlotFrame
@@ -206,11 +206,9 @@ export function YogiPoseSheet({ pose }: { pose: Pose }) {
           </div>
           <div className={styles.posePills}>
             <div className={styles.posePillGroup}>
-              <p className={styles.metaLabel}>{"Purpose"}</p>
               <Pills items={pose.purpose.map(mapPurpose)} tone="purpose" />
             </div>
             <div className={styles.posePillGroup}>
-              <p className={styles.metaLabel}>{"Tags"}</p>
               <Pills items={pose.tags.map(mapTag)} tone="tag" />
             </div>
           </div>
@@ -219,23 +217,23 @@ export function YogiPoseSheet({ pose }: { pose: Pose }) {
         <div className={styles.poseIntro}>
           <div className={styles.fieldStack}>
             <div>
-              <p className={styles.metaLabel}>{"Setup"}</p>
+              <p className={styles.metaLabel}>{"Kiindulás"}</p>
               <TextBlock value={pose.setup} />
             </div>
             <div>
-              <p className={styles.metaLabel}>{"Entry"}</p>
+              <p className={styles.metaLabel}>{"Belépés"}</p>
               <TextBlock value={pose.entry} />
             </div>
             <div>
-              <p className={styles.metaLabel}>{"Hold"}</p>
+              <p className={styles.metaLabel}>{"Kitartás"}</p>
               <TextBlock value={pose.hold} />
             </div>
             <div>
-              <p className={styles.metaLabel}>{"Exit"}</p>
+              <p className={styles.metaLabel}>{"Kilépés"}</p>
               <TextBlock value={pose.exit} />
             </div>
             <div>
-              <p className={styles.metaLabel}>{"Breath"}</p>
+              <p className={styles.metaLabel}>{"Légzés"}</p>
               <TextBlock value={pose.breath} />
             </div>
           </div>
@@ -245,99 +243,80 @@ export function YogiPoseSheet({ pose }: { pose: Pose }) {
       <SheetSection title="Megfigyelés">
         <div className={styles.tripleCol}>
           <div>
-            <p className={styles.metaLabel}>{"Attention points"}</p>
-            <List items={pose.attention_points} />
-          </div>
-          <div>
-            <p className={styles.metaLabel}>{"Self-check"}</p>
+            <p className={styles.metaLabel}>{"Figyeld meg"}</p>
             <List items={pose.self_check_statements} />
           </div>
           <div>
-            <p className={styles.metaLabel}>{"Common mistakes"}</p>
+            <p className={styles.metaLabel}>{"Gyakori hibák"}</p>
             <List items={pose.common_mistakes} />
           </div>
         </div>
       </SheetSection>
 
-      <SheetSection title="Alignment cues">
-        <List items={pose.alignment_cues} />
-      </SheetSection>
-
-      <SheetSection title="Body effects">
+      <SheetSection title="Testhatások">
         <div className={styles.effectsGrid}>
           <div>
-            <p className={styles.metaLabel}>{"Stretches"}</p>
+            <p className={styles.metaLabel}>{"Nyújtja"}</p>
             <List items={pose.stretches} />
           </div>
           <div>
-            <p className={styles.metaLabel}>{"Strengthens"}</p>
+            <p className={styles.metaLabel}>{"Erősíti"}</p>
             <List items={pose.strengthens} />
           </div>
           <div>
-            <p className={styles.metaLabel}>{"Activates"}</p>
+            <p className={styles.metaLabel}>{"Aktiválja"}</p>
             <List items={pose.activates} />
           </div>
           <div>
-            <p className={styles.metaLabel}>{"Relieves"}</p>
+            <p className={styles.metaLabel}>{"Enyhíti"}</p>
             <List items={pose.relieves} />
           </div>
         </div>
       </SheetSection>
 
-      <SheetSection title="Caution areas">
-        <div className={styles.metaGrid}>
-          <List items={pose.caution_areas} />
-        </div>
-      </SheetSection>
-
-      <SheetSection title="Safety">
-        <div className={styles.safetyGrid}>
-          <div>
-            <p className={styles.metaLabel}>{"Óvatosság"}</p>
-            <List items={pose.contraindications} />
-          </div>
-          <div>
-            <p className={styles.metaLabel}>{"Módosítás"}</p>
-            <List items={pose.modifications} />
-          </div>
-        </div>
-        <div className={styles.painNote}>
-          <p className={styles.metaLabel}>{"Fájdalom esetén"}</p>
-          <TextBlock value={pose.pain_notes} />
-        </div>
-      </SheetSection>
-
-      <SheetSection title="Props">
+      <SheetSection title="Eszközök">
         <div className={styles.metaGrid}>
           <List items={pose.props} />
         </div>
       </SheetSection>
 
-      <SheetSection title="Relations">
+      <SheetSection title="Biztonság">
+        <div>
+          <p className={styles.metaLabel}>{"Legyél óvatos"}</p>
+          <div className={styles.safetyCardGrid}>
+            {pose.contraindications.length > 0 ? (
+              pose.contraindications.map((item) => (
+                <div key={item} className={styles.safetyCard}>
+                  <p className={styles.safetyCardText}>{item}</p>
+                </div>
+              ))
+            ) : (
+              <p className={styles.empty}>{"Nincs megadva."}</p>
+            )}
+          </div>
+        </div>
+        <div className={styles.painNote}>
+          <TextBlock value={pose.pain_notes} />
+        </div>
+        <div className={styles.safetyModifications}>
+          <p className={styles.metaLabel}>{"Enyhítő módosítások"}</p>
+          <List items={pose.modifications} />
+        </div>
+      </SheetSection>
+
+      <SheetSection title="Kapcsolódások">
         <div className={styles.metaGrid}>
           <div>
-            <p className={styles.metaLabel}>{"Anatomy refs"}</p>
+            <p className={styles.metaLabel}>{"Érintett anatómia"}</p>
             <List items={pose.anatomy_refs} />
           </div>
           <div>
-            <p className={styles.metaLabel}>{"Related poses"}</p>
+            <p className={styles.metaLabel}>{"Kapcsolódó pózok"}</p>
             <List items={pose.related_pose_ids} />
           </div>
         </div>
       </SheetSection>
 
-      <SheetSection title="Technical">
-        <div className={styles.metaGrid}>
-          <div>
-            <p className={styles.metaLabel}>{"Mannequin angled prompt"}</p>
-            <TextBlock value={pose.mannequin_angled?.prompt} />
-          </div>
-          <div>
-            <p className={styles.metaLabel}>{"Mannequin front prompt"}</p>
-            <TextBlock value={pose.mannequin_front?.prompt} />
-          </div>
-        </div>
-      </SheetSection>
     </div>
   );
 }
@@ -360,7 +339,7 @@ export function YogiAnatomySheet({ anatomy }: { anatomy: Anatomy }) {
         </p>
         <TextBlock value={anatomy.description} />
         <div>
-          <p className={styles.metaLabel}>{"Role in movement"}</p>
+          <p className={styles.metaLabel}>{"Hogyan vesz részt a mozgásban"}</p>
           <TextBlock value={anatomy.role_in_movement} />
         </div>
         <div className={styles.anatomyHeaderPills}>
@@ -370,15 +349,15 @@ export function YogiAnatomySheet({ anatomy }: { anatomy: Anatomy }) {
         </div>
       </div>
 
-      <SheetSection title="Overview">
+      <SheetSection title="Áttekintés">
         <div className={styles.anatomyOverview}>
           <div className={styles.fieldStack}>
             <div>
-              <p className={styles.metaLabel}>{"Why relevant in yoga"}</p>
+              <p className={styles.metaLabel}>{"Miért fontos jógában"}</p>
               <TextBlock value={anatomy.why_relevant_in_yoga} />
             </div>
             <div>
-              <p className={styles.metaLabel}>{"Common patterns"}</p>
+              <p className={styles.metaLabel}>{"Gyakori minták"}</p>
               <List items={anatomy.common_patterns} />
             </div>
           </div>
@@ -393,59 +372,55 @@ export function YogiAnatomySheet({ anatomy }: { anatomy: Anatomy }) {
         </div>
       </SheetSection>
 
-      <SheetSection title="Patterns & awareness">
+      <SheetSection title="Minták és tudatosítás">
         <div className={styles.tripleCol}>
           <div>
-            <p className={styles.metaLabel}>{"Tension patterns"}</p>
+            <p className={styles.metaLabel}>{"Feszülési minták"}</p>
             <List items={anatomy.tension_patterns} />
           </div>
           <div>
-            <p className={styles.metaLabel}>{"Weakness patterns"}</p>
+            <p className={styles.metaLabel}>{"Gyengeségi minták"}</p>
             <List items={anatomy.weakness_patterns} />
           </div>
           <div>
-            <p className={styles.metaLabel}>{"Awareness"}</p>
+            <p className={styles.metaLabel}>{"Tudatosítási pontok"}</p>
             <List items={anatomy.awareness_cues} />
           </div>
         </div>
       </SheetSection>
 
-      <SheetSection title="Safety">
+      <SheetSection title="Biztonság">
         <div className={styles.fieldStack}>
           <div>
-            <p className={styles.metaLabel}>{"Discomfort notes"}</p>
+            <p className={styles.metaLabel}>{"Diszkomfort jelek"}</p>
             <TextBlock value={anatomy.discomfort_notes} />
           </div>
           <div>
-            <p className={styles.metaLabel}>{"Safe practice notes"}</p>
+            <p className={styles.metaLabel}>{"Biztonságos gyakorlás"}</p>
             <TextBlock value={anatomy.safe_practice_notes} />
           </div>
         </div>
       </SheetSection>
 
-      <SheetSection title="Relations">
+      <SheetSection title="Kapcsolódások">
         <div className={styles.metaGrid}>
           <div>
-            <p className={styles.metaLabel}>{"Stretch pose ids"}</p>
+            <p className={styles.metaLabel}>{"Nyújtó pózok"}</p>
             <List items={anatomy.stretch_pose_ids} />
           </div>
           <div>
-            <p className={styles.metaLabel}>{"Strengthen pose ids"}</p>
+            <p className={styles.metaLabel}>{"Erősítő pózok"}</p>
             <List items={anatomy.strengthen_pose_ids} />
           </div>
           <div>
-            <p className={styles.metaLabel}>{"Mobility pose ids"}</p>
+            <p className={styles.metaLabel}>{"Mobilizáló pózok"}</p>
             <List items={anatomy.mobility_pose_ids} />
           </div>
           <div>
-            <p className={styles.metaLabel}>{"Caution pose ids"}</p>
+            <p className={styles.metaLabel}>{"Óvatosan végzendő pózok"}</p>
             <List items={anatomy.caution_pose_ids} />
           </div>
         </div>
-      </SheetSection>
-
-      <SheetSection title="Image prompt">
-        <TextBlock value={anatomy.scientific_image?.prompt} />
       </SheetSection>
     </div>
   );
@@ -463,22 +438,22 @@ export function YogiKnowledgeCardSheet({ card }: { card: KnowledgeCard }) {
         </div>
       </header>
 
-      <SheetSection title="Summary">
+      <SheetSection title="Összefoglaló">
         <TextBlock value={card.summary} />
       </SheetSection>
 
-      <SheetSection title="Key points">
+      <SheetSection title="Kulcspontok">
         <List items={card.key_points} />
       </SheetSection>
 
-      <SheetSection title="Relations">
+      <SheetSection title="Kapcsolódások">
         <div className={styles.metaGrid}>
           <div>
-            <p className={styles.metaLabel}>{"Related poses"}</p>
+            <p className={styles.metaLabel}>{"Kapcsolódó pózok"}</p>
             <List items={card.related_pose_ids} />
           </div>
           <div>
-            <p className={styles.metaLabel}>{"Related anatomy"}</p>
+            <p className={styles.metaLabel}>{"Kapcsolódó anatómia"}</p>
             <List items={card.related_anatomy_ids} />
           </div>
         </div>
@@ -486,3 +461,5 @@ export function YogiKnowledgeCardSheet({ card }: { card: KnowledgeCard }) {
     </div>
   );
 }
+
+

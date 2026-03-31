@@ -18,7 +18,7 @@
 
 .nameEn {
   margin: 0;
-  color: var(--muted);
+  color: var(--foreground);
   font-size: 1.4rem;
   font-weight: 600;
 }
@@ -179,13 +179,16 @@
 .poseTop {
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: stretch;
 }
 
 .poseVisual {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  position: relative;
+  height: 100%;
 }
 
 .poseFrame {
@@ -202,9 +205,8 @@
 
 .imageFrameInner {
   width: 70%;
-  height: 70%;
+  aspect-ratio: 1 / 1;
   border-radius: 16px;
-  border: 1px dashed rgba(148, 163, 184, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -226,7 +228,7 @@
 .imageFrameImg {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
 }
 
@@ -239,16 +241,17 @@
 .mannequinGrid {
   display: grid;
   gap: 0.75rem;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  flex: 1;
+  align-items: stretch;
 }
 
 .mannequinFrame {
   position: relative;
   overflow: hidden;
   border-radius: 16px;
-  border: 1px solid var(--line);
-  background: radial-gradient(circle at top, rgba(148, 163, 184, 0.18), rgba(15, 23, 42, 0.8));
-  height: 200px;
+  background: transparent;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -258,6 +261,21 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.poseHeaderOverlay {
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  top: 0.75rem;
+  z-index: 2;
+  pointer-events: none;
 }
 
 .posePillGroup {
@@ -270,11 +288,19 @@
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
+  align-self: center;
 }
 
 .poseHeaderBlock {
   display: flex;
   flex-direction: column;
+  gap: 0.35rem;
+}
+
+.poseTitleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
   gap: 0.5rem;
 }
 
@@ -300,6 +326,31 @@
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.safetyCardGrid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.safetyCard {
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  padding: 0.75rem;
+  background: var(--surface-2);
+}
+
+.safetyCardText {
+  margin: 0;
+  color: var(--foreground);
+  line-height: 1.5;
+}
+
+.safetyModifications {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .painNote {

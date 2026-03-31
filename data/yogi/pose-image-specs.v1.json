@@ -1,211 +1,1833 @@
 {
   "version": 1,
   "poses": [
-    {
-      "id": "downward_dog",
-      "slug": "downward_facing_dog",
-      "aliases": ["downward dog", "adho mukha svanasana"],
-      "display_name": "Downward Facing Dog",
-      "symmetry": "symmetrical",
-      "mirrorable": false,
-      "default_variation": "default",
-      "variations": [
-        {
-          "id": "default",
-          "body": {
-            "head_neck_gaze": "head relaxed between the arms, neck long, gaze toward the legs",
-            "arms_shoulders_hands": "arms straight, shoulders flexed, hands grounded shoulder-width apart",
-            "chest_spine": "spine long and extended, chest moving toward the thighs",
-            "pelvis_hips": "hips lifted high forming the apex of the pose",
-            "front_leg": "both legs act symmetrically, knees extended or slightly bent, shins angled toward the mat",
-            "back_leg": "both legs act symmetrically, heels moving toward the mat",
-            "base_weight": "weight distributed between hands and feet",
-            "pose_axis": "inverted V shape facing the mat"
-          },
-          "critical_relations": [
-            "hips remain the highest point of the body",
-            "arms and spine form one continuous line"
-          ],
-          "negative_constraints": [
-            "not a plank",
-            "not a kneeling pose",
-            "not a lunge"
-          ]
-        }
-      ]
-    },
-
-    {
-      "id": "low_lunge",
-      "slug": "low_lunge",
-      "aliases": ["anjaneyasana"],
-      "display_name": "Low Lunge",
-      "symmetry": "asymmetrical",
-      "mirrorable": true,
-      "default_variation": "hands_down",
-      "variations": [
-        {
-          "id": "hands_down",
-          "match_tokens": ["hands down"],
-          "body": {
-            "head_neck_gaze": "head neutral, gaze forward or slightly down",
-            "arms_shoulders_hands": "both hands grounded on either side of the front foot",
-            "chest_spine": "spine long with slight forward inclination",
-            "pelvis_hips": "pelvis lowered toward the mat, hips moving forward",
-            "front_leg": "front knee bent approximately over the ankle, front shin vertical",
-            "back_leg": "back knee grounded, back thigh angled downward, back foot extended behind",
-            "base_weight": "weight distributed between front foot, back knee, and hands",
-            "pose_axis": "forward facing asymmetrical lunge"
-          },
-          "critical_relations": [
-            "front knee stacks over the ankle",
-            "back knee remains on the floor behind the pelvis"
-          ],
-          "negative_constraints": [
-            "not pigeon",
-            "not downward dog",
-            "not symmetrical kneeling"
-          ],
-          "side_topology": {
-            "left_leg_role": "front_leg",
-            "right_leg_role": "back_leg",
-            "left_arm_role": "support_arm",
-            "right_arm_role": "support_arm",
-            "foreground_side": "left"
-          }
-        }
-      ]
-    },
-
-    {
-      "id": "pigeon",
-      "slug": "pigeon",
-      "aliases": ["eka pada rajakapotasana prep", "galamb"],
-      "display_name": "Pigeon Pose",
-      "symmetry": "asymmetrical",
-      "mirrorable": true,
-      "default_variation": "upright",
-      "view_hints": {
-        "angled": "show the front shin clearly in front of the pelvis"
-      },
-      "variations": [
-        {
-          "id": "upright",
-          "match_tokens": ["upright"],
-          "body": {
-            "head_neck_gaze": "head upright, neck long, gaze forward",
-            "arms_shoulders_hands": "hands grounded beside the hips",
-            "chest_spine": "chest lifted, spine upright",
-            "pelvis_hips": "pelvis low and facing mostly forward",
-            "front_leg": "front knee deeply bent with the lower leg resting on the mat across the front of the pelvis, with the outer side of the lower leg and foot supported on the mat, and the foot positioned close to the opposite side of the pelvis",
-            "back_leg": "back leg extended straight behind, back knee and thigh grounded",
-            "base_weight": "weight grounded through pelvis and back thigh",
-            "pose_axis": "upright asymmetrical hip opener"
-          },
-          "critical_relations": [
-            "the lower leg rests fully on the mat in front of the pelvis",
-            "the front foot stays close to the opposite side of the pelvis rather than extending forward"
+      {
+        "id": "downward_dog",
+        "slug": "downward_facing_dog",
+        "aliases": ["downward dog", "adho mukha svanasana"],
+        "display_name": "Downward Facing Dog",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "default",
+        "variations": [
+            {
+            "id": "default",
+            "pose_mechanics": [
+                "hands and feet grounded forming a four-point base",
+                "hips lifted high as the highest point creating an inverted V shape",
+                "arms and spine aligned in one straight line from hands to hips",
+                "legs extended back with heels reaching toward the mat"
             ],
-          "visibility_constraints": [
-            "front shin must remain clearly visible",
-            "the full front shin must remain clearly visible from knee to ankle"
-          ],
-          "negative_constraints": [
-            "not a lunge",
-            "do not hide any part of the front shin under the torso or front thigh",
-            "do not place the front leg directly under the pelvis",
-            "do not tuck the front foot close beneath the body",
-            "do not tuck the back leg under the body"
-          ],
-          "side_topology": {
-            "left_leg_role": "front_leg",
-            "right_leg_role": "back_leg",
-            "left_arm_role": "support_arm",
-            "right_arm_role": "support_arm",
-            "foreground_side": "left"
-          }
-        }
-      ]
-    },
+            "critical_relations": [
+                "hips remain clearly higher than shoulders",
+                "arms and torso form a continuous diagonal line"
+            ],
+            "visibility_constraints": [
+                "both arms and both legs must remain fully visible"
+            ],
+            "negative_constraints": [
+                "not a plank",
+                "not a pike with vertical torso",
+                "not a kneeling pose",
+                "do not bend the knees deeply under the torso"
+            ]
+            }
+        ]
+        },
 
-    {
-      "id": "warrior_2",
-      "slug": "warrior_ii",
-      "aliases": ["virabhadrasana 2"],
-      "display_name": "Warrior II",
-      "symmetry": "asymmetrical",
-      "mirrorable": true,
-      "default_variation": "default",
-      "variations": [
         {
-          "id": "default",
-          "body": {
-            "head_neck_gaze": "head turned to the front, gaze over the front hand",
-            "arms_shoulders_hands": "arms extended horizontally to the sides, shoulders level",
-            "chest_spine": "spine upright, chest open to the side",
-            "pelvis_hips": "pelvis open to the side",
-            "front_leg": "front knee bent over the ankle, front thigh parallel to the floor",
-            "back_leg": "back leg straight with foot angled slightly inward",
-            "base_weight": "weight grounded through both feet",
-            "pose_axis": "wide lateral stance facing the long edge of the mat"
-          },
-          "critical_relations": [
-            "front knee aligns over the ankle",
-            "arms form a straight horizontal line"
-          ],
-          "negative_constraints": [
-            "not a lunge facing forward",
-            "not symmetrical standing"
-          ],
-          "side_topology": {
-            "left_leg_role": "front_leg",
-            "right_leg_role": "back_leg",
-            "left_arm_role": "reaching_arm",
-            "right_arm_role": "reaching_arm",
-            "foreground_side": "left"
-          }
-        }
-      ]
-    },
+        "id": "low_lunge",
+        "slug": "low_lunge",
+        "aliases": ["anjaneyasana"],
+        "display_name": "Low Lunge",
+        "symmetry": "asymmetrical",
+        "mirrorable": true,
+        "default_variation": "hands_down",
+        "variations": [
+            {
+            "id": "hands_down",
+            "match_tokens": ["hands down"],
+            "pose_mechanics": [
+                "front foot grounded with front knee bent directly over the ankle",
+                "back knee resting on the mat with the shin extended straight behind",
+                "hips lowered forward between the legs",
+                "torso angled slightly forward with both hands placed on the floor beside the front foot"
+            ],
+            "critical_relations": [
+                "front knee stacks over the ankle",
+                "back knee remains clearly behind the pelvis"
+            ],
+            "visibility_constraints": [
+                "both the front lower leg and back knee must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not pigeon",
+                "not a high lunge with lifted back knee",
+                "not symmetrical kneeling",
+                "do not place the torso upright without hand support",
+                "do not tuck the back leg under the body"
+            ],
+            "side_topology": {
+                "left_leg_role": "front_leg",
+                "right_leg_role": "back_leg",
+                "left_arm_role": "support_arm",
+                "right_arm_role": "support_arm",
+                "foreground_side": "left"
+            }
+            }
+        ]
+        },
 
-    {
-      "id": "triangle",
-      "slug": "triangle",
-      "aliases": ["trikonasana"],
-      "display_name": "Triangle Pose",
-      "symmetry": "asymmetrical",
-      "mirrorable": true,
-      "default_variation": "default",
-      "variations": [
         {
-          "id": "default",
-          "body": {
-            "head_neck_gaze": "head neutral or turned upward, gaze toward the top hand",
-            "arms_shoulders_hands": "one hand on the front leg or floor, other arm extended upward",
-            "chest_spine": "spine long with lateral flexion",
-            "pelvis_hips": "pelvis open to the side",
-            "front_leg": "front leg straight, front foot pointing forward",
-            "back_leg": "back leg straight, back foot angled inward",
-            "base_weight": "weight distributed between both feet",
-            "pose_axis": "side bending pose in a wide stance"
-          },
-          "critical_relations": [
-            "torso lengthens over the front leg without collapsing forward",
-            "top arm stacks above the bottom arm"
-          ],
-          "negative_constraints": [
-            "not a forward fold",
-            "not a lunge"
-          ],
-          "side_topology": {
-            "left_leg_role": "front_leg",
-            "right_leg_role": "back_leg",
-            "left_arm_role": "support_arm",
-            "right_arm_role": "reaching_arm",
-            "foreground_side": "left"
-          }
-        }
+        "id": "pigeon",
+        "slug": "pigeon",
+        "aliases": ["eka pada rajakapotasana prep", "galamb"],
+        "display_name": "Pigeon Pose",
+        "symmetry": "asymmetrical",
+        "mirrorable": true,
+        "default_variation": "upright",
+        "view_hints": {
+            "angled": "show the front shin clearly in front of the pelvis"
+        },
+        "variations": [
+            {
+            "id": "upright",
+            "match_tokens": ["upright"],
+            "pose_mechanics": [
+                "front leg bent with the shin placed across the front of the pelvis on the mat",
+                "front shin fully grounded and angled diagonally",
+                "back leg extended straight behind with the thigh resting on the mat",
+                "torso upright above the hips"
+            ],
+            "critical_relations": [
+                "front shin positioned clearly in front of the pelvis",
+                "back leg extends directly backward without bending"
+            ],
+            "visibility_constraints": [
+                "entire front shin must remain clearly visible from knee to ankle"
+            ],
+            "negative_constraints": [
+                "not a lunge",
+                "do not hide the front shin under the torso",
+                "do not place the front leg under the pelvis",
+                "do not tuck the back leg under the body",
+                "do not position the front foot directly under the torso"
+            ],
+            "side_topology": {
+                "left_leg_role": "front_leg",
+                "right_leg_role": "back_leg",
+                "left_arm_role": "support_arm",
+                "right_arm_role": "support_arm",
+                "foreground_side": "left"
+            }
+            }
+        ]
+        },
+
+        {
+        "id": "warrior_2",
+        "slug": "warrior_ii",
+        "aliases": ["virabhadrasana 2"],
+        "display_name": "Warrior II",
+        "symmetry": "asymmetrical",
+        "mirrorable": true,
+        "default_variation": "default",
+        "variations": [
+            {
+            "id": "default",
+            "pose_mechanics": [
+                "front knee bent over the ankle with the front foot pointing forward",
+                "back leg straight with the back foot angled inward",
+                "torso upright and facing sideways relative to the legs",
+                "both arms extended horizontally in opposite directions at shoulder height"
+            ],
+            "critical_relations": [
+                "arms form a straight horizontal line from fingertip to fingertip",
+                "pelvis and torso remain open to the side"
+            ],
+            "visibility_constraints": [
+                "both arms must be fully visible in a straight horizontal line"
+            ],
+            "negative_constraints": [
+                "not a forward-facing lunge",
+                "not symmetrical standing",
+                "do not rotate the torso toward the front leg",
+                "do not bend the back knee"
+            ],
+            "side_topology": {
+                "left_leg_role": "front_leg",
+                "right_leg_role": "back_leg",
+                "left_arm_role": "reaching_arm",
+                "right_arm_role": "reaching_arm",
+                "foreground_side": "left"
+            }
+            }
+        ]
+        },
+
+        {
+        "id": "triangle",
+        "slug": "triangle",
+        "aliases": ["trikonasana"],
+        "display_name": "Triangle Pose",
+        "symmetry": "asymmetrical",
+        "mirrorable": true,
+        "default_variation": "default",
+        "variations": [
+            {
+            "id": "default",
+            "pose_mechanics": [
+                "both legs straight with feet wide apart",
+                "torso extended sideways over the front leg without bending forward",
+                "bottom hand resting on the front leg or the floor near the front foot",
+                "top arm extended vertically upward stacked above the bottom arm"
+            ],
+            "critical_relations": [
+                "torso remains in a lateral plane rather than folding forward",
+                "top arm stacks directly above the bottom arm"
+            ],
+            "visibility_constraints": [
+                "both arms must remain clearly visible in a vertical line"
+            ],
+            "negative_constraints": [
+                "not a forward fold",
+                "not a lunge",
+                "do not bend the front knee",
+                "do not collapse the torso toward the floor"
+            ],
+            "side_topology": {
+                "left_leg_role": "front_leg",
+                "right_leg_role": "back_leg",
+                "left_arm_role": "support_arm",
+                "right_arm_role": "reaching_arm",
+                "foreground_side": "left"
+            }
+            }
+        ]
+        },
+
+        {
+        "id": "chair",
+        "slug": "chair_pose",
+        "aliases": ["utkatasana", "awkward chair"],
+        "display_name": "Chair Pose",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "arms_up",
+        "variations": [
+            {
+            "id": "arms_up",
+            "match_tokens": ["arms up", "overhead"],
+            "pose_mechanics": [
+                "both feet grounded parallel on the mat",
+                "knees bent deeply with hips sitting back as if into a chair",
+                "torso inclined slightly forward with a long spine",
+                "both arms reaching upward beside the ears"
+            ],
+            "critical_relations": [
+                "weight shifts back into the heels",
+                "hips stay behind the knees"
+            ],
+            "visibility_constraints": [
+                "both arms and both lower legs must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not a squat with torso collapsed onto the thighs",
+                "not standing upright with straight legs",
+                "do not lift the heels",
+                "do not place the hands at the chest"
+            ]
+            }
+        ]
+        },
+
+        {
+  "id": "plank",
+  "slug": "plank_pose",
+  "aliases": ["high plank", "phalakasana"],
+  "display_name": "Plank Pose",
+  "symmetry": "symmetrical",
+  "mirrorable": false,
+  "default_variation": "high",
+  "variations": [
+    {
+      "id": "high",
+      "match_tokens": ["high plank", "straight arms"],
+      "pose_mechanics": [
+        "hands grounded on the mat directly under the shoulders",
+        "arms straight supporting the torso off the floor",
+        "legs extended straight back with toes tucked under",
+        "head, spine, pelvis, and legs aligned in one straight horizontal line"
+      ],
+      "critical_relations": [
+        "shoulders stack over the wrists",
+        "body remains parallel to the floor"
+      ],
+      "visibility_constraints": [
+        "both arms and both legs must remain fully visible"
+      ],
+      "negative_constraints": [
+        "not downward dog",
+        "not a push-up with bent elbows",
+        "not kneeling",
+        "do not lift the hips into an inverted V",
+        "do not drop the pelvis toward the floor"
       ]
     }
+  ]
+},
+
+        {
+        "id": "cobra",
+        "slug": "cobra_pose",
+        "aliases": ["bhujangasana"],
+        "display_name": "Cobra Pose",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "classic",
+        "variations": [
+            {
+            "id": "classic",
+            "pose_mechanics": [
+                "legs extended straight back with the fronts of the feet on the mat",
+                "pelvis and lower abdomen grounded on the mat",
+                "chest lifted upward from the floor",
+                "hands placed beside the lower ribs with elbows bent close to the body"
+            ],
+            "critical_relations": [
+                "lift comes through the chest while the pelvis stays grounded",
+                "elbows remain bent rather than fully straight"
+            ],
+            "visibility_constraints": [
+                "both bent elbows must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not upward dog",
+                "not sphinx",
+                "do not straighten the arms fully",
+                "do not lift the thighs off the mat"
+            ]
+            }
+        ]
+        },
+
+        {
+        "id": "childs_pose",
+        "slug": "childs_pose",
+        "aliases": ["child's pose", "balasana"],
+        "display_name": "Child's Pose",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "arms_forward",
+        "variations": [
+            {
+            "id": "arms_forward",
+            "match_tokens": ["extended arms", "arms forward"],
+            "pose_mechanics": [
+                "knees bent with shins and tops of the feet resting on the mat",
+                "hips resting back toward the heels",
+                "torso folded forward over or between the thighs",
+                "both arms extended forward along the mat"
+            ],
+            "critical_relations": [
+                "seat lowers back toward the heels",
+                "forehead moves toward or onto the mat"
+            ],
+            "visibility_constraints": [
+                "both arms must remain clearly visible reaching forward"
+            ],
+            "negative_constraints": [
+                "not tabletop",
+                "not a kneeling upright pose",
+                "do not lift the hips high above the heels",
+                "do not support the torso on straight arms"
+            ]
+            }
+        ]
+        },
+
+        {
+        "id": "upward_dog",
+        "slug": "upward_facing_dog",
+        "aliases": ["upward dog", "urdhva mukha svanasana"],
+        "display_name": "Upward Facing Dog",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "default",
+        "variations": [
+            {
+            "id": "default",
+            "pose_mechanics": [
+                "hands grounded beside the waist with arms straight",
+                "chest lifted high and forward",
+                "legs extended straight back with thighs lifted off the mat",
+                "tops of the feet pressing into the mat"
+            ],
+            "critical_relations": [
+                "arms are straight while the thighs remain off the floor",
+                "pelvis does not rest on the mat"
+            ],
+            "visibility_constraints": [
+                "both straight arms and lifted thighs must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not cobra",
+                "not sphinx",
+                "do not keep the pelvis grounded",
+                "do not bend the elbows"
+            ]
+            }
+        ]
+        },
+
+        {
+        "id": "dolphin",
+        "slug": "dolphin_pose",
+        "aliases": ["ardha pincha mayurasana"],
+        "display_name": "Dolphin Pose",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "forearms_down",
+        "variations": [
+            {
+            "id": "forearms_down",
+            "match_tokens": ["forearms down"],
+            "pose_mechanics": [
+                "forearms grounded on the mat shoulder-width apart",
+                "elbows bent at right angles under the shoulders",
+                "hips lifted high as the highest point creating an inverted V shape",
+                "legs extended back with heels reaching toward the mat"
+            ],
+            "critical_relations": [
+                "shoulders stack above the elbows",
+                "forearms stay grounded instead of straight arms"
+            ],
+            "visibility_constraints": [
+                "both forearms must remain fully visible on the mat"
+            ],
+            "negative_constraints": [
+                "not downward dog on the hands",
+                "not plank on the forearms",
+                "not kneeling",
+                "do not lift the forearms off the mat"
+            ]
+            }
+        ]
+        },
+
+        {
+        "id": "seal",
+        "slug": "seal_pose",
+        "aliases": ["seal pose"],
+        "display_name": "Seal Pose",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "default",
+        "variations": [
+            {
+            "id": "default",
+            "pose_mechanics": [
+                "legs extended straight back with the fronts of the feet on the mat",
+                "pelvis and thighs resting on the mat",
+                "hands placed on the floor slightly forward of the shoulders with arms straight",
+                "chest arched upward high above the floor"
+            ],
+            "critical_relations": [
+                "arms are fully straight while the pelvis stays grounded",
+                "backbend is supported through the hands rather than forearms"
+            ],
+            "visibility_constraints": [
+                "both straight arms must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not sphinx",
+                "not upward dog",
+                "do not bend the elbows",
+                "do not lift the thighs off the mat"
+            ]
+            }
+        ]
+        },
+
+        {
+        "id": "warrior_3",
+        "slug": "warrior_iii",
+        "aliases": ["warrior iii", "virabhadrasana 3"],
+        "display_name": "Warrior III",
+        "symmetry": "asymmetrical",
+        "mirrorable": true,
+        "default_variation": "arms_forward",
+        "variations": [
+            {
+            "id": "arms_forward",
+            "match_tokens": ["arms forward", "full expression"],
+            "pose_identity": "Warrior III",
+            "pose_mechanics": [
+                "one leg stands straight as the support leg",
+                "the other leg extends straight back lifted to hip height",
+                "torso leans forward until nearly parallel to the floor",
+                "both arms reach straight forward in line with the torso"
+            ],
+            "critical_relations": [
+                "torso and lifted leg form one long horizontal line",
+                "support leg remains the only leg on the floor"
+            ],
+            "visibility_constraints": [
+                "the full lifted leg must remain clearly visible from hip to foot"
+            ],
+            "negative_constraints": [
+                "not standing split",
+                "not airplane with arms out to the sides",
+                "do not bend the lifted leg",
+                "do not raise the torso upright"
+            ],
+            "side_topology": {
+                "left_leg_role": "support_leg",
+                "right_leg_role": "lifted_leg",
+                "left_arm_role": "reaching_arm",
+                "right_arm_role": "reaching_arm",
+                "foreground_side": "left"
+            }
+            }
+        ]
+        },
+
+        {
+        "id": "lizard",
+        "slug": "lizard_pose",
+        "aliases": ["utthan pristhasana"],
+        "display_name": "Lizard Pose",
+        "symmetry": "asymmetrical",
+        "mirrorable": true,
+        "default_variation": "hands_down",
+        "view_hints": {
+            "angled": "show the front leg fully outside the torso with the back leg extending clearly behind"
+        },
+        "variations": [
+            {
+            "id": "hands_down",
+            "match_tokens": ["hands down"],
+            "pose_mechanics": [
+                "front foot grounded outside the same-side shoulder with the front knee deeply bent",
+                "back leg extended straight behind",
+                "torso low inside the front leg",
+                "both hands grounded on the mat inside the front foot"
+            ],
+            "critical_relations": [
+                "front leg stays clearly outside the torso rather than centered under it",
+                "back leg extends straight behind"
+            ],
+            "visibility_constraints": [
+                "the full front lower leg and foot placement outside the torso must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not a standard low lunge",
+                "not pigeon",
+                "do not place the front foot directly under the pelvis",
+                "do not tuck the back knee under the body",
+                "do not bring the torso upright"
+            ],
+            "side_topology": {
+                "left_leg_role": "front_leg",
+                "right_leg_role": "back_leg",
+                "left_arm_role": "support_arm",
+                "right_arm_role": "support_arm",
+                "foreground_side": "left"
+            }
+            }
+        ]
+        },
+
+        {
+        "id": "mountain",
+        "slug": "mountain_pose",
+        "aliases": ["tadasana"],
+        "display_name": "Mountain Pose",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "arms_down",
+        "variations": [
+            {
+            "id": "arms_down",
+            "pose_mechanics": [
+                "both feet grounded parallel and close together",
+                "legs straight with weight evenly distributed",
+                "torso upright stacked over the hips",
+                "arms resting straight down alongside the body"
+            ],
+            "critical_relations": [
+                "head, shoulders, hips, and ankles align vertically",
+                "weight evenly distributed between both feet"
+            ],
+            "visibility_constraints": [
+                "both arms and both legs must remain fully visible"
+            ],
+            "negative_constraints": [
+                "not walking or stepping",
+                "not a wide stance",
+                "not with bent knees",
+                "not with raised arms"
+            ]
+            }
+        ]
+        },
+
+        {
+        "id": "easy_pose",
+        "slug": "easy_pose",
+        "aliases": ["sukhasana"],
+        "display_name": "Easy Pose",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "hands_on_knees",
+        "variations": [
+            {
+            "id": "hands_on_knees",
+            "pose_mechanics": [
+                "legs crossed loosely with both knees bent outward",
+                "feet resting under the opposite knees",
+                "torso upright stacked over the hips",
+                "hands resting on the knees"
+            ],
+            "critical_relations": [
+                "shins cross in front of the pelvis",
+                "both knees drop toward the floor"
+            ],
+            "visibility_constraints": [
+                "the crossed leg position must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not kneeling on the shins",
+                "not with one leg extended",
+                "not tightly folded into lotus",
+                "not leaning backward"
+            ]
+            }
+        ]
+        },
+
+        {
+        "id": "tabletop",
+        "slug": "tabletop_pose",
+        "aliases": ["all fours"],
+        "display_name": "Tabletop",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "neutral",
+        "variations": [
+            {
+            "id": "neutral",
+            "pose_mechanics": [
+                "hands grounded directly under the shoulders",
+                "knees grounded directly under the hips",
+                "arms straight and vertical",
+                "spine neutral forming a flat horizontal line"
+            ],
+            "critical_relations": [
+                "shoulders stack over wrists",
+                "hips stack over knees"
+            ],
+            "visibility_constraints": [
+                "all four contact points must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not cat pose",
+                "not cow pose",
+                "not plank",
+                "not sitting back toward the heels"
+            ]
+            }
+        ]
+        },
+
+        {
+        "id": "cat",
+        "slug": "cat_pose",
+        "aliases": ["cat stretch"],
+        "display_name": "Cat Pose",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "rounded",
+        "variations": [
+            {
+            "id": "rounded",
+            "pose_mechanics": [
+                "hands and knees grounded in tabletop base",
+                "spine rounded upward forming a dome shape",
+                "head dropped down toward the floor",
+                "tailbone tucked under"
+            ],
+            "critical_relations": [
+                "spine curves upward rather than staying flat",
+                "head lowers below shoulder level"
+            ],
+            "visibility_constraints": [
+                "the rounded spine shape must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not tabletop",
+                "not cow pose",
+                "not a neutral spine",
+                "do not lift the head upward"
+            ]
+            }
+        ]
+        },
+
+        {
+        "id": "cow",
+        "slug": "cow_pose",
+        "aliases": ["cow stretch"],
+        "display_name": "Cow Pose",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "arched",
+        "variations": [
+            {
+            "id": "arched",
+            "pose_mechanics": [
+                "hands and knees grounded in tabletop base",
+                "spine arched downward with the belly dropping toward the floor",
+                "chest lifted forward",
+                "head lifted upward"
+            ],
+            "critical_relations": [
+                "spine curves downward rather than rounding up",
+                "gaze lifts above shoulder level"
+            ],
+            "visibility_constraints": [
+                "the downward arch of the spine must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not tabletop",
+                "not cat pose",
+                "not a flat spine",
+                "do not round the back upward"
+            ]
+            }
+        ]
+        },
+
+        
+
+        {
+        "id": "corpse",
+        "slug": "corpse_pose",
+        "aliases": ["savasana"],
+        "display_name": "Corpse Pose",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "arms_relaxed",
+        "variations": [
+            {
+            "id": "arms_relaxed",
+            "pose_mechanics": [
+                "body lying flat on the back on the mat",
+                "legs extended straight with feet relaxed outward",
+                "arms resting slightly away from the torso",
+                "palms facing upward"
+            ],
+            "critical_relations": [
+                "entire back of the body rests on the floor",
+                "arms and legs remain relaxed and still"
+            ],
+            "visibility_constraints": [
+                "full body must remain visible from head to feet"
+            ],
+            "negative_constraints": [
+                "not a fetal position",
+                "not with bent knees",
+                "not with arms overhead",
+                "not propped up on elbows"
+            ]
+            }
+        ]
+        },
+
+        {
+  "id": "seated_forward_fold",
+  "slug": "seated_forward_fold",
+  "aliases": ["paschimottanasana", "seated fold"],
+  "display_name": "Seated Forward Fold",
+  "symmetry": "symmetrical",
+  "mirrorable": false,
+  "default_variation": "classic",
+  "variations": [
+    {
+      "id": "classic",
+      "pose_mechanics": [
+        "both legs extended straight forward together on the mat",
+        "torso folded forward over the legs",
+        "head moving toward the shins",
+        "hands reaching toward the feet or lower legs"
+      ],
+      "critical_relations": [
+        "both legs remain straight and together",
+        "torso drapes forward over the center line of both legs"
+      ],
+      "visibility_constraints": [
+        "both straight legs must remain clearly visible from hips to feet"
+      ],
+      "negative_constraints": [
+        "not a wide-legged seated fold",
+        "not head-to-knee pose",
+        "not leaning back upright",
+        "do not bend one knee outward to the side"
+      ]
+    }
+  ]
+},
+
+        {
+        "id": "wide_legged_seated_forward_fold",
+        "slug": "wide_legged_seated_forward_fold",
+        "aliases": ["upavistha konasana", "wide-legged seated fold"],
+        "display_name": "Wide-Legged Seated Forward Fold",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "classic",
+        "variations": [
+            {
+            "id": "classic",
+            "pose_mechanics": [
+                "both legs extended straight wide apart on the mat",
+                "torso folding forward between the legs",
+                "head lowering toward the floor between the thighs",
+                "hands reaching forward on the mat between the legs"
+            ],
+            "critical_relations": [
+                "legs open clearly to the sides rather than together",
+                "torso folds forward through the center between both legs"
+            ],
+            "visibility_constraints": [
+                "the full wide leg shape must remain clearly visible from hips to feet"
+            ],
+            "negative_constraints": [
+                "not seated forward fold with legs together",
+                "not bound angle pose",
+                "not head-to-knee pose",
+                "do not bend the knees into a cross-legged shape"
+            ]
+            }
+        ]
+        },
+
+        {
+        "id": "butterfly_pose",
+        "slug": "butterfly_pose",
+        "aliases": ["baddha konasana", "butterfly pose"],
+        "display_name": "Butterfly Pose",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "upright",
+        "variations": [
+            {
+            "id": "upright",
+            "match_tokens": ["upright", "classic"],
+            "pose_mechanics": [
+                "knees bent outward to the sides",
+                "soles of the feet pressed together in front of the pelvis",
+                "heels drawn in toward the body",
+                "torso upright above the hips"
+            ],
+            "critical_relations": [
+                "the feet meet sole to sole rather than crossing",
+                "both knees open outward symmetrically"
+            ],
+            "visibility_constraints": [
+                "the full diamond shape of both legs and joined feet must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not cross-legged seated",
+                "not seated forward fold with straight legs",
+                "not kneeling",
+                "do not place one leg straight out in front"
+            ]
+            }
+        ]
+        },
+
+        {
+        "id": "head_to_knee",
+        "slug": "head_to_knee_pose",
+        "aliases": ["janu sirsasana"],
+        "display_name": "Head-to-Knee Pose",
+        "symmetry": "asymmetrical",
+        "mirrorable": true,
+        "default_variation": "folded",
+        "variations": [
+            {
+            "id": "folded",
+            "match_tokens": ["folded", "classic"],
+            "pose_mechanics": [
+                "one leg extended straight forward on the mat",
+                "the other knee bent outward with the foot drawn in toward the inner thigh",
+                "torso folding forward over the straight leg",
+                "hands reaching toward the straight foot or lower leg"
+            ],
+            "critical_relations": [
+                "one leg stays straight while the other opens outward bent",
+                "torso aligns over the straight leg rather than centered between both legs"
+            ],
+            "visibility_constraints": [
+                "both the straight leg and the bent outward leg shape must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not seated forward fold with both legs straight",
+                "not bound angle pose",
+                "not wide-legged seated fold",
+                "do not center the torso between two straight legs"
+            ],
+            "side_topology": {
+                "left_leg_role": "front_leg",
+                "right_leg_role": "neutral",
+                "left_arm_role": "reaching_arm",
+                "right_arm_role": "reaching_arm",
+                "foreground_side": "left"
+            }
+            }
+        ]
+        },
+
+        {
+        "id": "seated_twist",
+        "slug": "seated_spinal_twist",
+        "aliases": ["ardha matsyendrasana", "seated spinal twist"],
+        "display_name": "Seated Twist",
+        "symmetry": "asymmetrical",
+        "mirrorable": true,
+        "default_variation": "upright",
+        "variations": [
+            {
+            "id": "upright",
+            "match_tokens": ["upright", "classic"],
+            "pose_mechanics": [
+                "one knee bent upright with the foot planted on the mat near the opposite leg",
+                "the opposite leg bent and folded on the floor",
+                "torso upright twisting toward the upright knee",
+                "one arm crossing toward the upright knee while the other hand supports behind the pelvis"
+            ],
+            "critical_relations": [
+                "twist rotates the torso relative to the pelvis",
+                "the upright knee remains the main vertical landmark in front of the torso"
+            ],
+            "visibility_constraints": [
+                "the upright bent knee and the twisting torso must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not an upright cross-legged seat",
+                "not head-to-knee pose",
+                "not with both legs extended straight",
+                "do not fold the torso forward over the legs"
+            ],
+            "side_topology": {
+                "left_leg_role": "front_leg",
+                "right_leg_role": "neutral",
+                "left_arm_role": "reaching_arm",
+                "right_arm_role": "support_arm",
+                "foreground_side": "left"
+            }
+            }
+        ]
+        },
+
+        {
+        "id": "warrior_1",
+        "slug": "warrior_i",
+        "aliases": ["virabhadrasana 1"],
+        "display_name": "Warrior I",
+        "symmetry": "asymmetrical",
+        "mirrorable": true,
+        "default_variation": "arms_up",
+        "variations": [
+            {
+            "id": "arms_up",
+            "pose_mechanics": [
+                "front knee bent with the front foot pointing forward",
+                "back leg straight with the back foot angled inward",
+                "torso facing forward over the front leg",
+                "both arms reaching straight upward beside the ears"
+            ],
+            "critical_relations": [
+                "torso faces forward rather than open to the side",
+                "arms extend vertically overhead"
+            ],
+            "visibility_constraints": [
+                "both arms must remain clearly visible overhead"
+            ],
+            "negative_constraints": [
+                "not warrior ii",
+                "not a low lunge with back knee down",
+                "not arms extended sideways",
+                "do not rotate the torso open to the side"
+            ],
+            "side_topology": {
+                "left_leg_role": "front_leg",
+                "right_leg_role": "back_leg",
+                "left_arm_role": "reaching_arm",
+                "right_arm_role": "reaching_arm",
+                "foreground_side": "left"
+            }
+            }
+        ]
+        },
+
+        {
+        "id": "reverse_warrior",
+        "slug": "reverse_warrior",
+        "aliases": ["reverse warrior pose"],
+        "display_name": "Reverse Warrior",
+        "symmetry": "asymmetrical",
+        "mirrorable": true,
+        "default_variation": "classic",
+        "variations": [
+            {
+            "id": "classic",
+            "pose_mechanics": [
+                "front knee bent deeply over the ankle",
+                "back leg straight with a wide stance",
+                "torso arcing backward over the back leg",
+                "front arm reaching upward while the back hand rests on the back leg"
+            ],
+            "critical_relations": [
+                "front knee remains bent while the torso leans backward",
+                "front arm reaches upward creating a long arc through the side body"
+            ],
+            "visibility_constraints": [
+                "the full arc of the front arm must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not warrior ii with upright torso",
+                "not side angle pose",
+                "do not place the front arm downward",
+                "do not lean the torso forward"
+            ],
+            "side_topology": {
+                "left_leg_role": "front_leg",
+                "right_leg_role": "back_leg",
+                "left_arm_role": "reaching_arm",
+                "right_arm_role": "support_arm",
+                "foreground_side": "left"
+            }
+            }
+        ]
+        },
+
+        {
+        "id": "extended_side_angle",
+        "slug": "extended_side_angle_pose",
+        "aliases": ["utthita parsvakonasana"],
+        "display_name": "Extended Side Angle",
+        "symmetry": "asymmetrical",
+        "mirrorable": true,
+        "default_variation": "forearm_to_thigh",
+        "variations": [
+            {
+            "id": "forearm_to_thigh",
+            "match_tokens": ["forearm support"],
+            "pose_mechanics": [
+                "front knee bent deeply over the ankle",
+                "back leg straight in a wide stance",
+                "front forearm resting on the front thigh",
+                "top arm reaching overhead in a long diagonal line from back foot to fingertips"
+            ],
+            "critical_relations": [
+                "torso lengthens sideways over the front leg",
+                "top arm forms a continuous diagonal line with the body"
+            ],
+            "visibility_constraints": [
+                "the full diagonal line from back leg through top arm must remain visible"
+            ],
+            "negative_constraints": [
+                "not triangle pose",
+                "not reverse warrior",
+                "do not place the bottom hand on the floor in this variation",
+                "do not keep the torso upright"
+            ],
+            "side_topology": {
+                "left_leg_role": "front_leg",
+                "right_leg_role": "back_leg",
+                "left_arm_role": "support_arm",
+                "right_arm_role": "reaching_arm",
+                "foreground_side": "left"
+            }
+            }
+        ]
+        },
+
+        {
+        "id": "half_moon",
+        "slug": "half_moon_pose",
+        "aliases": ["ardha chandrasana"],
+        "display_name": "Half Moon",
+        "symmetry": "asymmetrical",
+        "mirrorable": true,
+        "default_variation": "hand_down",
+        "variations": [
+            {
+            "id": "hand_down",
+            "pose_mechanics": [
+                "one leg grounded straight under the body",
+                "the other leg lifted straight back at hip height",
+                "torso rotated open to the side",
+                "bottom hand placed on the floor while the top arm extends vertically upward"
+            ],
+            "critical_relations": [
+                "torso opens sideways rather than facing down",
+                "lifted leg aligns with the torso at hip height"
+            ],
+            "visibility_constraints": [
+                "the full lifted leg and vertical arm stack must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not triangle pose",
+                "not warrior iii",
+                "not a forward fold",
+                "do not face the torso downward"
+            ],
+            "side_topology": {
+                "left_leg_role": "support_leg",
+                "right_leg_role": "lifted_leg",
+                "left_arm_role": "support_arm",
+                "right_arm_role": "reaching_arm",
+                "foreground_side": "left"
+            }
+            }
+        ]
+        },
+
+        {
+        "id": "standing_forward_fold",
+        "slug": "standing_forward_fold",
+        "aliases": ["uttanasana"],
+        "display_name": "Standing Forward Fold",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "classic",
+        "variations": [
+            {
+            "id": "classic",
+            "pose_mechanics": [
+                "both feet grounded parallel on the mat",
+                "legs straight or slightly bent",
+                "torso folded forward over the legs",
+                "head hanging downward toward the floor"
+            ],
+            "critical_relations": [
+                "torso drapes downward from the hips",
+                "head hangs below hip level"
+            ],
+            "visibility_constraints": [
+                "both legs and the full forward fold shape must remain visible"
+            ],
+            "negative_constraints": [
+                "not a squat",
+                "not a lunge",
+                "not seated forward fold",
+                "do not keep the torso upright"
+            ]
+            }
+        ]
+        },
+
+        {
+        "id": "wide_legged_standing_forward_fold",
+        "slug": "wide_legged_standing_forward_fold",
+        "aliases": ["prasarita padottanasana"],
+        "display_name": "Wide-Legged Standing Forward Fold",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "classic",
+        "variations": [
+            {
+            "id": "classic",
+            "pose_mechanics": [
+                "feet placed wide apart on the mat",
+                "legs straight",
+                "torso folding forward between the legs",
+                "head lowering toward the floor between the feet"
+            ],
+            "critical_relations": [
+                "legs remain wide rather than together",
+                "torso folds centrally between both legs"
+            ],
+            "visibility_constraints": [
+                "the full wide stance and forward fold must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not standing forward fold with feet together",
+                "not a squat",
+                "not a lunge",
+                "do not bring the feet close together"
+            ]
+            }
+        ]
+        },
+
+        {
+        "id": "goddess",
+        "slug": "goddess_pose",
+        "aliases": ["goddess squat"],
+        "display_name": "Goddess Pose",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "arms_bent",
+        "variations": [
+            {
+            "id": "arms_bent",
+            "pose_mechanics": [
+                "feet placed wide apart with toes turned outward",
+                "knees bent deeply outward in a squat position",
+                "torso upright centered between the legs",
+                "arms bent at the elbows with forearms raised vertically"
+            ],
+            "critical_relations": [
+                "knees track outward over the toes",
+                "torso remains upright rather than folding forward"
+            ],
+            "visibility_constraints": [
+                "the full wide squat stance must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not a narrow squat",
+                "not standing upright with straight legs",
+                "not a forward fold",
+                "do not bring the feet parallel"
+            ]
+            }
+        ]
+        },
+
+        {
+  "id": "bridge",
+  "slug": "bridge_pose",
+  "aliases": ["setu bandhasana"],
+  "display_name": "Bridge Pose",
+  "symmetry": "symmetrical",
+  "mirrorable": false,
+  "default_variation": "classic",
+  "variations": [
+    {
+      "id": "classic",
+      "pose_mechanics": [
+        "body lying on the back with knees bent and feet flat on the mat",
+        "feet placed hip-width apart close to the pelvis",
+        "hips lifted upward forming an arch through the torso",
+        "arms resting on the floor alongside the body"
+      ],
+      "critical_relations": [
+        "weight supported through feet and shoulders",
+        "pelvis lifted while shoulders remain grounded"
+      ],
+      "visibility_constraints": [
+        "the lifted pelvis and bent knees must remain clearly visible"
+      ],
+      "negative_constraints": [
+        "not wheel pose",
+        "not lying flat on the floor",
+        "not lifting the shoulders off the mat",
+        "do not straighten the legs"
+      ]
+    }
+  ]
+},
+
+{
+  "id": "wheel",
+  "slug": "wheel_pose",
+  "aliases": ["upward bow", "urdhva dhanurasana"],
+  "display_name": "Wheel Pose",
+  "symmetry": "symmetrical",
+  "mirrorable": false,
+  "default_variation": "full",
+  "variations": [
+    {
+      "id": "full",
+      "pose_mechanics": [
+        "hands and feet grounded on the mat supporting the body",
+        "arms straight pushing the torso upward",
+        "legs bent with feet planted near the hips",
+        "body arched upward forming a high bridge shape"
+      ],
+      "critical_relations": [
+        "weight supported through both hands and feet",
+        "arms remain straight lifting the torso high"
+      ],
+      "visibility_constraints": [
+        "both straight arms and both feet must remain clearly visible"
+      ],
+      "negative_constraints": [
+        "not bridge pose",
+        "not supported on shoulders only",
+        "not with bent elbows",
+        "do not keep the head resting on the floor"
+      ]
+    }
+  ]
+},
+
+        {
+        "id": "camel",
+        "slug": "camel_pose",
+        "aliases": ["ustrasana"],
+        "display_name": "Camel Pose",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "hands_to_heels",
+        "variations": [
+            {
+            "id": "hands_to_heels",
+            "pose_mechanics": [
+                "knees grounded on the mat hip-width apart",
+                "thighs vertical and hips pressing forward",
+                "torso arched backward",
+                "hands reaching back to hold the heels"
+            ],
+            "critical_relations": [
+                "hips remain above the knees rather than sitting back",
+                "backbend originates through the torso while knees stay grounded"
+            ],
+            "visibility_constraints": [
+                "the kneeling base and backward arch must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not a seated backbend",
+                "not bridge or wheel",
+                "not with hips resting on the heels",
+                "do not lean forward"
+            ]
+            }
+        ]
+        },
+
+        {
+        "id": "locust",
+        "slug": "locust_pose",
+        "aliases": ["salabhasana"],
+        "display_name": "Locust Pose",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "arms_back",
+        "variations": [
+            {
+            "id": "arms_back",
+            "pose_mechanics": [
+                "body lying face down on the mat",
+                "legs extended straight back and lifted off the floor",
+                "chest lifted slightly off the mat",
+                "arms extended back alongside the body lifted off the floor"
+            ],
+            "critical_relations": [
+                "both legs lift off the floor rather than staying grounded",
+                "arms reach backward instead of supporting the body"
+            ],
+            "visibility_constraints": [
+                "both lifted legs must remain clearly visible off the mat"
+            ],
+            "negative_constraints": [
+                "not cobra",
+                "not sphinx",
+                "not seal",
+                "do not place hands on the floor for support",
+                "do not keep the legs on the mat"
+            ]
+            }
+        ]
+        },
+
+        {
+        "id": "bow",
+        "slug": "bow_pose",
+        "aliases": ["dhanurasana"],
+        "display_name": "Bow Pose",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "classic",
+        "variations": [
+            {
+            "id": "classic",
+            "pose_mechanics": [
+                "body lying face down on the mat",
+                "knees bent with feet lifted toward the back",
+                "hands reaching back to hold the ankles",
+                "chest and thighs lifted off the floor forming a bow shape"
+            ],
+            "critical_relations": [
+                "hands hold the ankles rather than resting on the floor",
+                "both chest and thighs lift off the mat simultaneously"
+            ],
+            "visibility_constraints": [
+                "the full bent-leg shape and ankle hold must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not locust",
+                "not cobra",
+                "not camel",
+                "do not leave the legs straight",
+                "do not keep the thighs on the floor"
+            ]
+            }
+        ]
+        },
+
+        {
+        "id": "dancer",
+        "slug": "dancer_pose",
+        "aliases": ["natarajasana"],
+        "display_name": "Dancer Pose",
+        "symmetry": "asymmetrical",
+        "mirrorable": true,
+        "default_variation": "classic",
+        "variations": [
+            {
+            "id": "classic",
+            "pose_mechanics": [
+                "one leg stands straight as the support leg",
+                "the other knee bends back with the foot lifted behind",
+                "one hand reaches back holding the lifted foot",
+                "torso upright or slightly forward with the free arm reaching forward or upward"
+            ],
+            "critical_relations": [
+                "hand holds the lifted foot behind the body",
+                "lifted leg bends rather than staying straight"
+            ],
+            "visibility_constraints": [
+                "the full bent lifted leg and foot hold must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not warrior iii",
+                "not standing split",
+                "not tree pose",
+                "do not keep the lifted leg straight",
+                "do not drop the torso downward fully"
+            ],
+            "side_topology": {
+                "left_leg_role": "support_leg",
+                "right_leg_role": "lifted_leg",
+                "left_arm_role": "reaching_arm",
+                "right_arm_role": "reaching_arm",
+                "foreground_side": "left"
+            }
+            }
+        ]
+        },
+
+        {
+        "id": "standing_split",
+        "slug": "standing_split",
+        "aliases": ["urdhva prasarita eka padasana"],
+        "display_name": "Standing Split",
+        "symmetry": "asymmetrical",
+        "mirrorable": true,
+        "default_variation": "hands_down",
+        "variations": [
+            {
+            "id": "hands_down",
+            "pose_mechanics": [
+                "one foot grounded on the mat with the torso folded forward",
+                "both hands placed on the floor near the standing foot",
+                "the other leg lifted straight upward behind toward vertical",
+                "head lowered toward the floor"
+            ],
+            "critical_relations": [
+                "lifted leg rises higher than the hips toward vertical",
+                "torso folds fully downward rather than staying horizontal"
+            ],
+            "visibility_constraints": [
+                "the full vertical lifted leg must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not warrior iii",
+                "not airplane pose",
+                "not a forward fold with both feet on the floor",
+                "do not keep the lifted leg low"
+            ],
+            "side_topology": {
+                "left_leg_role": "support_leg",
+                "right_leg_role": "lifted_leg",
+                "left_arm_role": "support_arm",
+                "right_arm_role": "support_arm",
+                "foreground_side": "left"
+            }
+            }
+        ]
+        },
+
+        {
+        "id": "airplane",
+        "slug": "airplane_pose",
+        "aliases": ["warrior iii arms back"],
+        "display_name": "Airplane Pose",
+        "symmetry": "asymmetrical",
+        "mirrorable": true,
+        "default_variation": "arms_back",
+        "variations": [
+            {
+            "id": "arms_back",
+            "pose_mechanics": [
+                "one leg grounded straight as the support leg",
+                "the other leg extended straight back at hip height",
+                "torso leaning forward parallel to the floor",
+                "both arms extended straight back alongside the body"
+            ],
+            "critical_relations": [
+                "torso and lifted leg form a straight horizontal line",
+                "arms extend backward instead of forward or sideways"
+            ],
+            "visibility_constraints": [
+                "the full horizontal body line must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not warrior iii with arms forward",
+                "not standing split",
+                "not dancer pose",
+                "do not lift the torso upright",
+                "do not raise the arms upward"
+            ],
+            "side_topology": {
+                "left_leg_role": "support_leg",
+                "right_leg_role": "lifted_leg",
+                "left_arm_role": "neutral",
+                "right_arm_role": "neutral",
+                "foreground_side": "left"
+            }
+            }
+        ]
+        },
+
+        {
+        "id": "standing_figure_four",
+        "slug": "standing_figure_four",
+        "aliases": ["standing pigeon"],
+        "display_name": "Standing Figure Four",
+        "symmetry": "asymmetrical",
+        "mirrorable": true,
+        "default_variation": "squat",
+        "variations": [
+            {
+            "id": "squat",
+            "pose_mechanics": [
+                "one leg stands as the support leg",
+                "the other ankle rests across the opposite thigh forming a figure-four shape",
+                "support leg bends into a shallow squat",
+                "torso leans slightly forward"
+            ],
+            "critical_relations": [
+                "lifted foot crosses horizontally over the opposite thigh",
+                "support knee bends while maintaining balance"
+            ],
+            "visibility_constraints": [
+                "the full crossed leg figure-four shape must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not tree pose",
+                "not seated figure four",
+                "not with the lifted foot placed on the inner thigh",
+                "do not stand fully upright with straight support leg"
+            ],
+            "side_topology": {
+                "left_leg_role": "support_leg",
+                "right_leg_role": "lifted_leg",
+                "left_arm_role": "neutral",
+                "right_arm_role": "neutral",
+                "foreground_side": "left"
+            }
+            }
+        ]
+        },
+
+        {
+        "id": "side_plank",
+        "slug": "side_plank",
+        "aliases": ["vasisthasana"],
+        "display_name": "Side Plank",
+        "symmetry": "asymmetrical",
+        "mirrorable": true,
+        "default_variation": "stacked",
+        "variations": [
+            {
+            "id": "stacked",
+            "pose_mechanics": [
+                "one hand grounded on the mat under the shoulder",
+                "both legs extended and stacked on top of each other",
+                "body forming a straight diagonal line from feet to head",
+                "top arm extended upward"
+            ],
+            "critical_relations": [
+                "body rotates sideways rather than facing the floor",
+                "legs stack rather than separating"
+            ],
+            "visibility_constraints": [
+                "the full stacked body line and top arm must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not plank",
+                "not forearm plank",
+                "not with hips dropped to the floor",
+                "do not face the torso downward"
+            ],
+            "side_topology": {
+                "left_leg_role": "support_leg",
+                "right_leg_role": "neutral",
+                "left_arm_role": "support_arm",
+                "right_arm_role": "reaching_arm",
+                "foreground_side": "left"
+            }
+            }
+        ]
+        },
+
+        {
+        "id": "forearm_plank",
+        "slug": "forearm_plank",
+        "aliases": ["low plank hold"],
+        "display_name": "Forearm Plank",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "classic",
+        "variations": [
+            {
+            "id": "classic",
+            "pose_mechanics": [
+                "forearms grounded on the mat shoulder-width apart",
+                "elbows positioned under the shoulders",
+                "legs extended straight back with toes on the mat",
+                "body forming a straight horizontal line"
+            ],
+            "critical_relations": [
+                "weight supported on forearms rather than hands",
+                "body remains parallel to the floor"
+            ],
+            "visibility_constraints": [
+                "both forearms and both legs must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not high plank on straight arms",
+                "not dolphin pose",
+                "not kneeling",
+                "do not lift the hips upward"
+            ]
+            }
+        ]
+        },
+
+        {
+        "id": "puppy",
+        "slug": "puppy_pose",
+        "aliases": ["uttana shishosana"],
+        "display_name": "Puppy Pose",
+        "symmetry": "symmetrical",
+        "mirrorable": false,
+        "default_variation": "classic",
+        "variations": [
+            {
+            "id": "classic",
+            "pose_mechanics": [
+                "knees grounded under the hips",
+                "arms extended forward on the mat",
+                "chest lowering toward the floor",
+                "hips remaining lifted above the knees"
+            ],
+            "critical_relations": [
+                "hips stay high above the knees",
+                "torso lengthens forward toward the floor"
+            ],
+            "visibility_constraints": [
+                "the lifted hips and extended arms must remain clearly visible"
+            ],
+            "negative_constraints": [
+                "not child's pose",
+                "not downward dog",
+                "not tabletop",
+                "do not sit the hips back toward the heels"
+            ]
+          }
+        ]
+    },
+
+    {
+  "id": "happy_baby",
+  "slug": "happy_baby_pose",
+  "aliases": ["ananda balasana"],
+  "display_name": "Happy Baby",
+  "symmetry": "symmetrical",
+  "mirrorable": false,
+  "default_variation": "classic",
+  "variations": [
+    {
+      "id": "classic",
+      "pose_mechanics": [
+        "body lying on the back on the mat",
+        "knees bent and drawn toward the chest",
+        "feet lifted upward with soles facing the ceiling",
+        "hands holding the outer edges of the feet"
+      ],
+      "critical_relations": [
+        "knees bend outward toward the armpits",
+        "feet stack above the knees rather than forward"
+      ],
+      "visibility_constraints": [
+        "both feet and both hands holding them must remain clearly visible"
+      ],
+      "negative_constraints": [
+        "not knees-to-chest with arms wrapped around legs",
+        "not a seated pose",
+        "do not extend the legs straight upward",
+        "do not place the feet on the floor"
+      ]
+    }
+  ]
+},
+
+{
+  "id": "knees_to_chest",
+  "slug": "knees_to_chest",
+  "aliases": ["apanasana"],
+  "display_name": "Knees to Chest",
+  "symmetry": "symmetrical",
+  "mirrorable": false,
+  "default_variation": "hug",
+  "variations": [
+    {
+      "id": "hug",
+      "pose_mechanics": [
+        "body lying flat on the back",
+        "both knees drawn inward toward the chest",
+        "arms wrapped around the shins or knees",
+        "head resting on the floor"
+      ],
+      "critical_relations": [
+        "knees move toward the torso rather than outward",
+        "arms hug the legs instead of holding the feet"
+      ],
+      "visibility_constraints": [
+        "both bent knees and arm wrap must remain clearly visible"
+      ],
+      "negative_constraints": [
+        "not happy baby",
+        "not a forward fold",
+        "not seated",
+        "do not lift the head"
+      ]
+    }
+  ]
+},
+
+{
+  "id": "reclined_twist",
+  "slug": "reclined_spinal_twist",
+  "aliases": ["supta matsyendrasana"],
+  "display_name": "Reclined Twist",
+  "symmetry": "asymmetrical",
+  "mirrorable": true,
+  "default_variation": "bent_knee",
+  "variations": [
+    {
+      "id": "bent_knee",
+      "pose_mechanics": [
+        "body lying on the back",
+        "one knee bent and drawn across the body toward the opposite side",
+        "opposite shoulder remaining grounded",
+        "arms extended outward in a T shape"
+      ],
+      "critical_relations": [
+        "spine rotates while shoulders stay grounded",
+        "bent knee crosses the midline of the body"
+      ],
+      "visibility_constraints": [
+        "the twisted leg and open arm position must remain clearly visible"
+      ],
+      "negative_constraints": [
+        "not knees-to-chest",
+        "not a seated twist",
+        "not both knees centered",
+        "do not keep the torso facing straight upward without rotation"
+      ],
+      "side_topology": {
+        "left_leg_role": "neutral",
+        "right_leg_role": "front_leg",
+        "left_arm_role": "reaching_arm",
+        "right_arm_role": "reaching_arm",
+        "foreground_side": "left"
+      }
+    }
+  ]
+},
+
+{
+  "id": "supine_figure_four",
+  "slug": "supine_figure_four",
+  "aliases": ["reclined pigeon"],
+  "display_name": "Supine Figure Four",
+  "symmetry": "asymmetrical",
+  "mirrorable": true,
+  "default_variation": "threaded",
+  "variations": [
+    {
+      "id": "threaded",
+      "pose_mechanics": [
+        "body lying on the back",
+        "one ankle crossed over the opposite thigh forming a figure-four shape",
+        "support leg bent with the foot lifted",
+        "hands reaching through to hold the back of the thigh or shin"
+      ],
+      "critical_relations": [
+        "crossed ankle rests on the opposite thigh",
+        "support leg lifts toward the torso"
+      ],
+      "visibility_constraints": [
+        "the full figure-four shape must remain clearly visible"
+      ],
+      "negative_constraints": [
+        "not standing figure four",
+        "not bound angle pose",
+        "not knees-to-chest",
+        "do not place the foot on the floor"
+      ],
+      "side_topology": {
+        "left_leg_role": "lifted_leg",
+        "right_leg_role": "support_leg",
+        "left_arm_role": "support_arm",
+        "right_arm_role": "support_arm",
+        "foreground_side": "left"
+      }
+    }
+  ]
+},
+
+{
+  "id": "staff",
+  "slug": "staff_pose",
+  "aliases": ["dandasana"],
+  "display_name": "Staff Pose",
+  "symmetry": "symmetrical",
+  "mirrorable": false,
+  "default_variation": "hands_down",
+  "variations": [
+    {
+      "id": "hands_down",
+      "pose_mechanics": [
+        "legs extended straight forward together on the mat",
+        "feet flexed with toes pointing upward",
+        "torso upright stacked over the hips",
+        "hands placed on the floor beside the hips"
+      ],
+      "critical_relations": [
+        "spine remains vertical rather than leaning back",
+        "legs stay fully straight and together"
+      ],
+      "visibility_constraints": [
+        "both legs must remain fully visible from hips to feet"
+      ],
+      "negative_constraints": [
+        "not leaning back on straight arms",
+        "not cross-legged",
+        "not with bent knees",
+        "not a forward fold"
+      ]
+    }
+  ]
+}
+
   ]
 }

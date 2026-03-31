@@ -1,5 +1,6 @@
 import { join } from "node:path";
 import { readJsonStore, writeJsonStore } from "./jsonStore";
+import { normalizeSlug } from "./slug";
 import type { Anatomy, KnowledgeCard, Pose } from "./yogiKnowledgeSchema";
 
 export type YogiCollectionKey = "poses" | "anatomy" | "knowledge_cards";
@@ -79,12 +80,4 @@ export function createYogiId(prefix: "pose" | "anat" | "card", slug: string) {
   return `${prefix}_${slug}`;
 }
 
-export function normalizeSlug(value: string) {
-  return value
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-zA-Z0-9\s_-]/g, "")
-    .trim()
-    .replace(/[\s_-]+/g, "_")
-    .toLowerCase();
-}
+export { normalizeSlug };
