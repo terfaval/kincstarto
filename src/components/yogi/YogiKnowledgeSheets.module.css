@@ -66,6 +66,12 @@
   gap: 0.85rem;
 }
 
+.sectionTransparent {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
 .sectionTitle {
   margin: 0;
   font-size: 0.95rem;
@@ -308,6 +314,106 @@
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
+}
+
+.relatedHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.relatedNav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.relatedChevron {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--foreground);
+  border-radius: 999px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.relatedChevron:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.relatedGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.relatedCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.relatedCardLink {
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.relatedCardLink:hover {
+  transform: translateY(-2px);
+  opacity: 0.95;
+}
+
+.relatedImage {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 14px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.relatedImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.relatedText {
+  text-align: center;
+}
+
+.relatedTitle {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.relatedSubtitle {
+  margin: 0.15rem 0 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+@media (max-width: 960px) {
+  .relatedGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .tripleCol {

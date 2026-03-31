@@ -1,16 +1,19 @@
-"use client";
+﻿"use client";
 
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import type { Anatomy, KnowledgeCard, Pose } from "@/lib/yogiKnowledgeSchema";
 import styles from "./YogiKnowledgeSheets.module.css";
 
 type SheetProps = {
   title?: string;
   children: React.ReactNode;
+  className?: string;
 };
 
-function SheetSection({ title, children }: SheetProps) {
+function SheetSection({ title, children, className }: SheetProps) {
   return (
-    <section className={styles.section}>
+    <section className={`${styles.section} ${className ?? ""}`}>
       {title && <h3 className={styles.sectionTitle}>{title}</h3>}
       {children}
     </section>
@@ -159,6 +162,40 @@ function ImageSlotFrame({
 export function YogiPoseSheet({ pose }: { pose: Pose }) {
   const title = pose.name_en;
   const subtitle = pose.sanskrit_name ?? pose.name_hu;
+  const [relatedPoses, setRelatedPoses] = useState<Pose[]>([]);
+  const [relatedIndex, setRelatedIndex] = useState(0);
+  const relatedPageSize = 5;
+
+  useEffect(() => {
+    let active = true;
+    const loadRelated = async () => {
+      try {
+        const response = await fetch("/api/yogi-knowledge/poses");
+        const data = await response.json().catch(() => null);
+        if (!response.ok || !Array.isArray(data?.poses)) return;
+        const published = (data.poses as Pose[]).filter(
+          (item) => item.content_status === "published",
+        );
+        const related = published.filter((item) => pose.related_pose_ids.includes(item.id));
+        related.sort((a, b) => a.name_en.localeCompare(b.name_en, "en"));
+        if (active) setRelatedPoses(related);
+      } catch {
+        if (active) setRelatedPoses([]);
+      }
+    };
+    if (pose.related_pose_ids.length > 0) {
+      loadRelated();
+    } else {
+      setRelatedPoses([]);
+    }
+    return () => {
+      active = false;
+    };
+  }, [pose.related_pose_ids]);
+
+  useEffect(() => {
+    setRelatedIndex(0);
+  }, [relatedPoses]);
   return (
     <div className={styles.sheet}>
 
@@ -304,18 +341,81 @@ export function YogiPoseSheet({ pose }: { pose: Pose }) {
         </div>
       </SheetSection>
 
-      <SheetSection title="Kapcsolódások">
-        <div className={styles.metaGrid}>
-          <div>
-            <p className={styles.metaLabel}>{"Érintett anatómia"}</p>
-            <List items={pose.anatomy_refs} />
+      <SheetSection title="Kapcsolódó pózok" className={styles.sectionTransparent}>
+        {relatedPoses.length > relatedPageSize && (
+          <div className={styles.relatedHeaderRow}>
+            <div className={styles.relatedNav}>
+              <button
+                type="button"
+                className={styles.relatedChevron}
+                onClick={() => setRelatedIndex(Math.max(0, relatedIndex - relatedPageSize))}
+                disabled={relatedIndex === 0}
+                aria-label="Előző"
+              >
+                <span aria-hidden="true">{"<"}</span>
+              </button>
+              <button
+                type="button"
+                className={styles.relatedChevron}
+                onClick={() =>
+                  setRelatedIndex(
+                    Math.min(
+                      Math.max(0, relatedPoses.length - relatedPageSize),
+                      relatedIndex + relatedPageSize,
+                    ),
+                  )
+                }
+                disabled={relatedIndex + relatedPageSize >= relatedPoses.length}
+                aria-label="Következő"
+              >
+                <span aria-hidden="true">{">"}</span>
+              </button>
+            </div>
           </div>
-          <div>
-            <p className={styles.metaLabel}>{"Kapcsolódó pózok"}</p>
-            <List items={pose.related_pose_ids} />
+        )}
+
+        {relatedPoses.length === 0 ? (
+          <p className={styles.empty}>{"Nincs megadva."}</p>
+        ) : (
+          <div className={styles.relatedGrid}>
+            {relatedPoses
+              .slice(relatedIndex, relatedIndex + relatedPageSize)
+              .map((related) => {
+                const slot = related.mannequin_angled;
+                const hasImage = slot?.status === "verified" && Boolean(slot?.asset_ref);
+                const token = related.slug || related.id;
+                const idParam = related.id ? `?id=${encodeURIComponent(related.id)}` : "";
+                const href = `/yogis-choice/poses/${encodeURIComponent(token)}${idParam}`;
+                return (
+                  <Link
+                    key={related.id}
+                    href={href}
+                    className={styles.relatedCardLink}
+                    aria-label={`${related.name_en} – ${related.sanskrit_name ?? related.name_hu}`}
+                  >
+                    <div className={styles.relatedCard}>
+                      <div className={styles.relatedImage}>
+                        {hasImage ? (
+                          <img src={slot?.asset_ref ?? ""} alt={related.name_en} />
+                        ) : (
+                          <span>Mannequin</span>
+                        )}
+                      </div>
+                      <div className={styles.relatedText}>
+                        <p className={styles.relatedTitle}>{related.name_en}</p>
+                        <p className={styles.relatedSubtitle}>
+                          {related.sanskrit_name ?? related.name_hu}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
           </div>
-        </div>
+        )}
       </SheetSection>
+
+      
 
     </div>
   );
@@ -401,7 +501,6 @@ export function YogiAnatomySheet({ anatomy }: { anatomy: Anatomy }) {
           </div>
         </div>
       </SheetSection>
-
       <SheetSection title="Kapcsolódások">
         <div className={styles.metaGrid}>
           <div>
@@ -422,6 +521,8 @@ export function YogiAnatomySheet({ anatomy }: { anatomy: Anatomy }) {
           </div>
         </div>
       </SheetSection>
+
+      
     </div>
   );
 }
@@ -461,5 +562,7 @@ export function YogiKnowledgeCardSheet({ card }: { card: KnowledgeCard }) {
     </div>
   );
 }
+
+
 
 

@@ -72,6 +72,25 @@
   opacity: 0.6;
 }
 
+.publicSheetCard {
+  background: transparent;
+}
+
+.publicBackLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--foreground);
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: -2rem;
+  margin-left: -2.5rem;
+}
+
+.publicBackLink:hover {
+  color: var(--accent-foreground, var(--foreground));
+}
+
 .poseGalleryShell {
   display: flex;
   align-items: stretch;
@@ -207,7 +226,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
-  background: var(--panel);
+  background: transparent;
   text-align: center;
 }
 

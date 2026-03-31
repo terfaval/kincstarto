@@ -1108,10 +1108,9 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
     [activeVideoId, yogaTemplates],
   );
   const poseDetailHref = (pose: Pose) => {
-    const raw = (pose.slug || pose.id || "").trim();
-    const normalized = normalizeSlug(raw);
-    const token = normalized || raw || pose.name_en || pose.name_hu || pose.id;
-    return `/yogis-choice/poses/${encodeURIComponent(token)}`;
+    const token = (pose.slug && pose.slug.trim()) || (pose.id && pose.id.trim()) || "";
+    const idParam = pose.id ? `?id=${encodeURIComponent(pose.id)}` : "";
+    return `/yogis-choice/poses/${encodeURIComponent(token)}${idParam}`;
   };
 
   return (
