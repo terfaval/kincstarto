@@ -204,6 +204,7 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
   const [poseLoading, setPoseLoading] = useState(false);
   const [poseError, setPoseError] = useState<string | null>(null);
   const [posePage, setPosePage] = useState(0);
+  const [posePageSize, setPosePageSize] = useState(3);
   const [promptOverrides, setPromptOverrides] = useState<Record<string, string>>({});
   const [poseQuery, setPoseQuery] = useState("");
   const [poseContentStatusFilter, setPoseContentStatusFilter] =
@@ -233,6 +234,8 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
   );
   const [publicVideoDurationFilter, setPublicVideoDurationFilter] = useState("all");
   const [publicVideoIntensityFilter, setPublicVideoIntensityFilter] = useState("all");
+  const [showPoseFilters, setShowPoseFilters] = useState(false);
+  const [showVideoFilters, setShowVideoFilters] = useState(false);
 
   useEffect(() => {
     const body = document.body;
@@ -333,7 +336,22 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
     poseLevelFilter,
     poseCategoryFilter,
     posePurposeFilter,
+    posePageSize,
   ]);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 720px)");
+    const sync = () => {
+      setPosePageSize(media.matches ? 1 : 3);
+      if (!media.matches) {
+        setShowPoseFilters(false);
+        setShowVideoFilters(false);
+      }
+    };
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
 
   const inputLabel = useMemo(() => {
     if (entityType === "pose") {
@@ -1178,7 +1196,6 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
     posePurposeFilter,
   ]);
 
-  const posePageSize = 3;
   const poseTotalPages =
     filteredPoses.length === 0 ? 0 : Math.ceil(filteredPoses.length / posePageSize);
   const safePosePage = poseTotalPages === 0 ? 0 : Math.min(posePage, poseTotalPages - 1);
@@ -1365,7 +1382,18 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
   return (
     <section className={`admin-stack ${styles.page} ${styles.yogiPage}`}>
       <div className={`admin-card ${styles.poseFilterPanel} ${styles.poseFilterPanelCompact}`}>
-        <div className={styles.poseFilterGrid}>
+        <button
+          type="button"
+          className={`${styles.filterToggle} ${showPoseFilters ? styles.filterToggleActive : ""}`}
+          onClick={() => setShowPoseFilters((prev) => !prev)}
+        >
+          {showPoseFilters ? "Szűrők elrejtése" : "Szűrők megnyitása"}
+        </button>
+        <div
+          className={`${styles.poseFilterGrid} ${
+            showPoseFilters ? "" : styles.filterPanelCollapsed
+          }`}
+        >
           {isAdmin && (
             <label className="form-field">
               <span className="form-field__label">Tartalom státusz</span>
@@ -1449,7 +1477,7 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
           </label>
           <button
             type="button"
-            className={`btn btn--ghost ${styles.poseFilterReset} ${styles.poseFilterResetSmall}`}
+            className={`btn btn--ghost ${styles.filterResetButton}`}
             onClick={() => {
               setPoseQuery("");
               setPoseContentStatusFilter("all");
@@ -1648,7 +1676,20 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
           <>
             {!isAdmin && (
               <div className={styles.poseFilterPanel}>
-                <div className={styles.videoFilterGrid}>
+                <button
+                  type="button"
+                  className={`${styles.filterToggle} ${
+                    showVideoFilters ? styles.filterToggleActive : ""
+                  }`}
+                  onClick={() => setShowVideoFilters((prev) => !prev)}
+                >
+                  {showVideoFilters ? "Szűrők elrejtése" : "Szűrők megnyitása"}
+                </button>
+                <div
+                  className={`${styles.videoFilterGrid} ${
+                    showVideoFilters ? "" : styles.filterPanelCollapsed
+                  }`}
+                >
                   <label className="form-field">
                     <span className="form-field__label">Kategória</span>
                     <select
@@ -1716,7 +1757,7 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
                   </label>
                   <button
                     type="button"
-                    className={`btn btn--ghost ${styles.poseFilterReset} ${styles.poseFilterResetSmall}`}
+                    className={`btn btn--ghost ${styles.filterResetButton}`}
                     onClick={() => {
                       setPublicVideoCategoryFilter("all");
                       setPublicVideoStyleFilter("all");

@@ -32,10 +32,45 @@
 }
 
 .poseFilterGrid {
-  display: grid;
+  display: flex;
   gap: 0.75rem;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  flex-wrap: wrap;
+  align-items: flex-end;
   margin-top: 0.25rem;
+}
+
+.poseFilterGrid :global(.form-field) {
+  min-width: 200px;
+  flex: 1 1 200px;
+}
+
+.poseFilterGrid .filterResetButton {
+  justify-self: start;
+  align-self: end;
+  flex: 0 0 auto;
+}
+
+.filterToggle {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--yogi-line, var(--line));
+  background: transparent;
+  color: var(--foreground);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.55rem 0.9rem;
+}
+
+.filterToggleActive {
+  border-color: rgba(148, 163, 184, 0.6);
+}
+
+.filterPanelCollapsed {
+  display: flex;
 }
 
 .videoFilterGrid {
@@ -44,15 +79,15 @@
   gap: 0.75rem;
   flex-wrap: nowrap;
   margin-top: 0.25rem;
-  overflow-x: auto;
+  overflow-x: hidden;
 }
 
-.videoFilterGrid .form-field {
-  min-width: 220px;
-  flex: 1 1 220px;
+.videoFilterGrid :global(.form-field) {
+  min-width: 160px;
+  flex: 1 1 160px;
 }
 
-.videoFilterGrid .form-field select {
+.videoFilterGrid :global(.form-field) select {
   width: 100%;
 }
 
@@ -83,16 +118,19 @@
   font-size: 0.85rem;
 }
 
-.poseFilterReset {
-  padding: 0.35rem 0.75rem;
-  font-size: 0.65rem;
-  letter-spacing: 0.1em;
-}
-
-.poseFilterResetSmall {
-  padding: 0.25rem 0.6rem;
+.filterResetButton {
+  padding: 0.3rem 0.7rem !important;
   font-size: 0.6rem;
   letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  border: 1px solid var(--yogi-line, var(--line));
+  background: transparent;
+  min-height: 32px;
+}
+
+.filterResetButton:hover {
+  border-color: rgba(148, 163, 184, 0.55);
 }
 
 .poseFilterSelect {
@@ -790,6 +828,125 @@
   -webkit-mask-size: contain;
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
+}
+
+@media (max-width: 720px) {
+  .filterToggle {
+    display: inline-flex;
+  }
+
+  .filterPanelCollapsed {
+    display: none;
+  }
+
+  .page {
+    padding: 2.5rem 1rem 3rem;
+  }
+
+  .poseFilterPanel {
+    padding: 0.6rem 0.8rem 0.3rem;
+  }
+
+  .poseFilterGrid {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.2rem;
+  }
+
+  .poseFilterGrid :global(.form-field) {
+    gap: 0.2rem;
+  }
+
+  .poseFilterGrid :global(.form-field__label) {
+    margin-bottom: 0;
+  }
+
+  .poseFilterGrid :global(.form-field) {
+    min-width: 0;
+    width: 100%;
+    flex: 0 0 auto;
+  }
+
+  .poseFilterGrid .filterResetButton {
+    width: 100%;
+  }
+
+  .poseFilterActions {
+    gap: 0.5rem;
+  }
+
+  .poseFilterActionRow {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .poseGalleryShell {
+    gap: 0.5rem;
+  }
+
+  .poseGalleryChevron {
+    width: 38px;
+    height: 38px;
+    align-self: center;
+  }
+
+  .poseGalleryGrid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .poseCardImage {
+    height: 190px;
+  }
+
+  .poseGalleryPagination {
+    display: none;
+  }
+
+  .poseGalleryDot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .poseGalleryDotActive {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+  }
+
+  .videoGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .videoFilterGrid {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .videoFilterGrid :global(.form-field) {
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+
+  .videoFilterGrid .filterResetButton {
+    width: 100%;
+  }
+
+  .videoCardBody {
+    padding: 0.85rem 0.9rem 0.95rem;
+  }
+
+  .videoPoseRow {
+    gap: 0.3rem;
+  }
+
+  .videoPoseThumb {
+    width: 50px;
+    height: 50px;
+  }
+
+  .publicVideoPoseThumbLarge {
+    width: 68px;
+    height: 68px;
+  }
 }
 
 .videoCardTitle {
