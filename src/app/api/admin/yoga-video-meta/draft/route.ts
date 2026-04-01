@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import { requireAdmin } from "@/lib/adminAuth";
 import { YogaVideoStyleEnum } from "@/lib/yogaVideoMetaSchema";
+import { getYogiKnowledgeStore } from "@/lib/yogiKnowledgeStore";
 
 export const runtime = "nodejs";
 
@@ -14,6 +15,7 @@ type Payload = {
   link?: string | null;
   channel?: string | null;
   source_description?: string | null;
+  pose_ids?: string[] | null;
 };
 
 type DraftResponse = {
@@ -50,7 +52,28 @@ function parseStrictJson(text: string) {
   return JSON.parse(trimmed);
 }
 
-function buildPrompt(payload: Payload) {
+function buildPoseInsights(poses: Array<{ purpose: string[]; tags: string[]; stretches: string[]; strengthens: string[]; activates: string[]; relieves: string[] }>) {
+  const uniq = (items: string[]) => Array.from(new Set(items.filter(Boolean)));
+  const purposes = uniq(poses.flatMap((pose) => pose.purpose ?? []));
+  const tags = uniq(poses.flatMap((pose) => pose.tags ?? []));
+  const stretches = uniq(poses.flatMap((pose) => pose.stretches ?? []));
+  const strengthens = uniq(poses.flatMap((pose) => pose.strengthens ?? []));
+  const activates = uniq(poses.flatMap((pose) => pose.activates ?? []));
+  const relieves = uniq(poses.flatMap((pose) => pose.relieves ?? []));
+
+  return [
+    purposes.length ? `Célok (összesített): ${purposes.join(", ")}` : null,
+    tags.length ? `Fókusz területek (összesített): ${tags.join(", ")}` : null,
+    stretches.length ? `Nyújtás: ${stretches.join(", ")}` : null,
+    strengthens.length ? `Erősítés: ${strengthens.join(", ")}` : null,
+    activates.length ? `Aktiválás: ${activates.join(", ")}` : null,
+    relieves.length ? `Enyhítés: ${relieves.join(", ")}` : null,
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+function buildPrompt(payload: Payload, poseContext?: string) {
   const details = [
     `Cím: ${payload.title}`,
     `Kategória: ${payload.category}`,
@@ -63,9 +86,11 @@ function buildPrompt(payload: Payload) {
     .join("\n");
 
   const source = payload.source_description?.trim();
+  const poseBlock = !source && poseContext ? `\nPózok alapján készült összesítés (ne nevezz meg pózokat!):\n${poseContext}\n` : "";
 
   return `Feladat: adj meta leírást egy YouTube jóga videóhoz.
 Kimenet legyen rövid, természetes hangvételű magyar szöveg. Kerüld a gyógyhatás/egészségügyi ígéreteket.
+Ha nincs forrás leírás, akkor a pózok összesített jellemzői alapján írj kedvcsináló összefoglalót, de NE nevezd meg a pózokat és ne sorolj pózokat.
 Adj:
 - description_short: 1 mondat, max 140 karakter
 - description_long: 4-6 mondat
@@ -74,7 +99,7 @@ Adj:
 
 Videó adatok:
 ${details}
-${source ? `\nForrás leírás (YouTube):\n${source}\n` : ""}
+${source ? `\nForrás leírás (YouTube):\n${source}\n` : ""}${poseBlock}
 `;
 }
 
@@ -102,7 +127,18 @@ export async function POST(request: Request) {
   }
 
   const client = new OpenAI({ apiKey });
-  const prompt = buildPrompt(payload);
+  let poseContext = "";
+  if (!payload.source_description && payload.pose_ids?.length) {
+    try {
+      const store = getYogiKnowledgeStore();
+      const poses = await store.listPoses();
+      const related = poses.filter((pose) => payload.pose_ids?.includes(pose.id));
+      poseContext = buildPoseInsights(related as any);
+    } catch {
+      poseContext = "";
+    }
+  }
+  const prompt = buildPrompt(payload, poseContext);
 
   let responseText = "";
   try {

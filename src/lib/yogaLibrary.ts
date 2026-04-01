@@ -11,6 +11,8 @@ export async function readYogaLibrary(): Promise<YogaLibraryEntry[]> {
     blobPath: LIBRARY_BLOB_PATH,
     filePath: LIBRARY_PATH,
     fallbackValue: [],
+    seedIfMissing: false,
+    createIfMissing: false,
   });
   return Array.isArray(parsed) ? parsed : [];
 }

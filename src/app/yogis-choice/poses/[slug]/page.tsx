@@ -3,8 +3,9 @@ import { getYogiKnowledgeStore } from "@/lib/yogiKnowledgeStore";
 import { normalizeSlug } from "@/lib/slug";
 import { YogiPoseSheet } from "@/components/yogi/YogiKnowledgeSheets";
 import styles from "@/components/yogi/YogiKnowledgeAdmin.module.css";
+import backStyles from "@/features/meditations/styles/meditations.module.css";
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import YogiChoiceBodyEffect from "@/components/yogi/YogiChoiceBodyEffect";
 
 export const dynamic = "force-dynamic";
 
@@ -64,9 +65,12 @@ export default async function YogisChoicePosePage({ params, searchParams }: Prop
 
   return (
     <section className={`admin-stack ${styles.page}`}>
-      <Link href="/yogis-choice" className={styles.publicBackLink} aria-label="Vissza">
-        <ChevronLeft size={18} />
-        Vissza
+      <YogiChoiceBodyEffect />
+      <Link href="/yogis-choice" className={backStyles.backLink} aria-label="Vissza">
+        <span className={backStyles.backIcon} aria-hidden="true">
+          ‹
+        </span>
+        <span className={backStyles.backLabel}>vissza</span>
       </Link>
       <div className={`admin-card ${styles.publicSheetCard}`}>
         <YogiPoseSheet pose={pose} />

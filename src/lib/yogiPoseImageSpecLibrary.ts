@@ -6,7 +6,17 @@ type PoseSpecVariation = {
   match_tokens?: string[];
   pose_identity?: string;
   prompt_override?: string;
-  pose_mechanics: string[];
+  pose_mechanics?: string[];
+  body?: {
+    head_neck_gaze?: string;
+    arms_shoulders_hands?: string;
+    chest_spine?: string;
+    pelvis_hips?: string;
+    front_leg?: string;
+    back_leg?: string;
+    base_weight?: string;
+    pose_axis?: string;
+  };
   critical_relations?: string[];
   visibility_constraints?: string[];
   negative_constraints?: string[];
@@ -74,6 +84,12 @@ function normalize(value?: string) {
     .trim();
 }
 
+function normalizeSlugSuffix(value?: string) {
+  const normalized = normalize(value);
+  if (!normalized) return normalized;
+  return normalized.endsWith(" pose") ? normalized.replace(/\s+pose$/, "") : normalized;
+}
+
 function equalsNormalized(a?: string, b?: string) {
   if (!a || !b) return false;
   return normalize(a) === normalize(b);
@@ -135,20 +151,43 @@ function buildNameCandidates(pose: PoseInput) {
   ]);
 }
 
+function scoreTokenSequenceMatch(candidate: string, targetTokens: string[]) {
+  if (targetTokens.length === 0) return 0;
+  const candidateTokens = tokenize(candidate);
+  if (!containsTokenSequence(candidateTokens, targetTokens)) return 0;
+  return 60 + Math.min(targetTokens.length, 8);
+}
+
+function scoreAllTokensMatch(allCandidateTokens: string[], targetTokens: string[]) {
+  if (targetTokens.length === 0) return 0;
+  if (!hasAllTokens(allCandidateTokens, targetTokens)) return 0;
+  return 50 + Math.min(targetTokens.length, 8);
+}
+
 function findPoseEntry(pose: PoseInput): PoseSpecEntry | undefined {
   const slug = normalize(pose.slug);
+  const slugSansPose = normalizeSlugSuffix(pose.slug);
   const nameCandidates = buildNameCandidates(pose);
   const allCandidateTokens = uniqueNormalized(nameCandidates).flatMap((candidate) => tokenize(candidate));
 
-  return poseSpecs.poses.find((p) => {
+  let best: { entry: PoseSpecEntry; score: number } | null = null;
+
+  for (const p of poseSpecs.poses) {
     const displayName = p.display_name || "";
     const slugName = p.slug?.replace(/[_-]+/g, " ") || "";
     const aliases = p.aliases || [];
 
     const directNames = [p.slug, displayName, slugName, ...aliases];
+    const entrySlugSansPose = normalizeSlugSuffix(p.slug);
+
+    let score = 0;
 
     if (slug && directNames.some((candidate) => equalsNormalized(slug, candidate))) {
-      return true;
+      score = Math.max(score, 100);
+    }
+
+    if (slugSansPose && entrySlugSansPose && slugSansPose === entrySlugSansPose) {
+      score = Math.max(score, 95);
     }
 
     if (
@@ -156,29 +195,27 @@ function findPoseEntry(pose: PoseInput): PoseSpecEntry | undefined {
         directNames.some((target) => equalsNormalized(candidate, target))
       )
     ) {
-      return true;
+      score = Math.max(score, 90);
     }
 
     const targetTokenGroups = uniqueNormalized([displayName, slugName, ...aliases]).map((value) =>
       tokenize(value)
     );
 
-    if (
-      targetTokenGroups.some((tokens) =>
-        nameCandidates.some((candidate) => containsTokenSequence(tokenize(candidate), tokens))
-      )
-    ) {
-      return true;
+    for (const tokens of targetTokenGroups) {
+      for (const candidate of nameCandidates) {
+        score = Math.max(score, scoreTokenSequenceMatch(candidate, tokens));
+      }
+      score = Math.max(score, scoreAllTokensMatch(allCandidateTokens, tokens));
     }
 
-    if (
-      targetTokenGroups.some((tokens) => hasAllTokens(allCandidateTokens, tokens))
-    ) {
-      return true;
+    if (score <= 0) continue;
+    if (!best || score > best.score) {
+      best = { entry: p, score };
     }
+  }
 
-    return false;
-  });
+  return best?.entry;
 }
 
 function selectVariation(entry: PoseSpecEntry, pose: PoseInput): PoseSpecVariation | null {
@@ -195,6 +232,37 @@ function selectVariation(entry: PoseSpecEntry, pose: PoseInput): PoseSpecVariati
   }
 
   return entry.variations.find((variation) => variation.id === entry.default_variation) || entry.variations[0];
+}
+
+function buildBodyMechanics(body?: PoseSpecVariation["body"]) {
+  if (!body) return [];
+  const ordered: Array<[keyof NonNullable<PoseSpecVariation["body"]>, string]> = [
+    ["head_neck_gaze", "Head/Neck/Gaze"],
+    ["arms_shoulders_hands", "Arms/Shoulders/Hands"],
+    ["chest_spine", "Chest/Spine"],
+    ["pelvis_hips", "Pelvis/Hips"],
+    ["front_leg", "Front Leg"],
+    ["back_leg", "Back Leg"],
+    ["base_weight", "Base/Weight"],
+    ["pose_axis", "Pose Axis"],
+  ];
+
+  const lines: string[] = [];
+
+  for (const [key, label] of ordered) {
+    const value = body[key];
+    if (!value || !value.trim()) continue;
+    lines.push(`${label} ${value.trim()}`);
+  }
+
+  return lines;
+}
+
+function resolvePoseMechanics(variation: PoseSpecVariation): string[] {
+  if (variation.pose_mechanics && variation.pose_mechanics.length > 0) {
+    return variation.pose_mechanics;
+  }
+  return buildBodyMechanics(variation.body);
 }
 
 function ensureSentence(value: string) {
@@ -214,7 +282,7 @@ function buildSpecString(entry: PoseSpecEntry, variation: PoseSpecVariation) {
   const identity = variation.pose_identity || entry.display_name;
   pushSentence(parts, `Pose identity: ${identity}. Do not substitute with a different pose.`);
 
-  (variation.pose_mechanics || [])
+  resolvePoseMechanics(variation)
     .forEach((line) => pushSentence(parts, line));
 
   (variation.critical_relations || [])
@@ -254,7 +322,7 @@ export function resolvePoseImageSpecFromLibrary(pose: PoseInput): ResolvedSpec {
   const spec = buildSpecString(entry, variation);
   // compiledPrompt is the primary runtime prompt input; spec is a secondary debug/fallback artifact.
   const compiledPrompt =
-    variation.prompt_override?.trim() || compilePoseSpecFromLines(variation.pose_mechanics);
+    variation.prompt_override?.trim() || compilePoseSpecFromLines(resolvePoseMechanics(variation));
 
   return {
     spec,

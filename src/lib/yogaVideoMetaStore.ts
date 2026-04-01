@@ -11,6 +11,8 @@ export async function readYogaVideoMeta(): Promise<YogaVideoMeta[]> {
     blobPath: META_BLOB_PATH,
     filePath: META_PATH,
     fallbackValue: [],
+    seedIfMissing: false,
+    createIfMissing: false,
   });
   return Array.isArray(parsed) ? parsed : [];
 }

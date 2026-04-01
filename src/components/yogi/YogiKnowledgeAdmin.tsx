@@ -25,6 +25,7 @@ import {
   type YogaVideoStyle,
 } from "@/lib/yogaVideoMetaSchema";
 import { ACTIVITY_CATEGORY_META } from "@/types/activity";
+import { Plus } from "lucide-react";
 
 type DraftResponse = {
   entity_type: "pose" | "anatomy" | "knowledge_card";
@@ -63,6 +64,7 @@ type YogaTemplate = {
 
 type YogaVideoForm = {
   yoga_id: string;
+  title_override: string;
   channel: string;
   style: YogaVideoStyle | "";
   description_short: string;
@@ -86,6 +88,47 @@ const POSE_MODE_OPTIONS: Array<{ value: PoseMode; label: string }> = [
   { value: "known", label: "Known" },
   { value: "functional", label: "Functional" },
 ];
+
+const CONTENT_STATUS_LABELS: Record<ContentStatusFilter, string> = {
+  all: "Összes",
+  draft: "Piszkozat",
+  verified: "Ellenőrzött",
+  published: "Publikált",
+  archived: "Archivált",
+};
+
+const POSE_LEVEL_LABELS: Record<PoseLevelFilter, string> = {
+  all: "Összes",
+  beginner: "Kezdő",
+  intermediate: "Középhaladó",
+  advanced: "Haladó",
+  all_levels: "Minden szint",
+};
+
+const POSE_CATEGORY_LABELS: Record<PoseCategoryFilter, string> = {
+  all: "Összes",
+  standing: "Álló",
+  seated: "Ülő",
+  supine: "Fekvő hanyatt",
+  prone: "Fekvő hason",
+  kneeling: "Térdelő",
+  balance: "Egyensúly",
+  twist: "Csavarás",
+  backbend: "Hátrahajlás",
+  forward_fold: "Előrehajlás",
+  restorative: "Regeneráló",
+};
+
+const POSE_PURPOSE_LABELS: Record<PosePurposeFilter, string> = {
+  all: "Összes",
+  mobilizing: "Mobilizáló",
+  stretching: "Nyújtó",
+  strengthening: "Erősítő",
+  stabilizing: "Stabilizáló",
+  restorative: "Regeneráló",
+  grounding: "Földelő",
+  energizing: "Energizáló",
+};
 
 
 function readJsonError(payload: any): string {
@@ -125,6 +168,22 @@ function hexToRgba(hex: string, alpha: number) {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+const VIDEO_STYLE_META: Record<YogaVideoStyle, { label: string; color: string }> = {
+  flow: { label: "Flow", color: "#14b8a6" },
+  vinyasa: { label: "Vinyasa", color: "#f97316" },
+  yin: { label: "Yin", color: "#6366f1" },
+  restorative: { label: "Restorative", color: "#22c55e" },
+  power: { label: "Power", color: "#ef4444" },
+  mobility: { label: "Mobility", color: "#0ea5e9" },
+  stretch: { label: "Stretch", color: "#a855f7" },
+  breath: { label: "Breath", color: "#84cc16" },
+};
+
+function resolveImageUrl(url?: string | null) {
+  if (!url) return "";
+  return `/api/yogi-knowledge/image-proxy?url=${encodeURIComponent(url)}`;
+}
+
 export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdminProps) {
   const isAdmin = mode === "admin";
   const [entityType, setEntityType] = useState<EntityType>("pose");
@@ -159,17 +218,29 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
   const [videoMetaLoading, setVideoMetaLoading] = useState(false);
   const [videoMetaError, setVideoMetaError] = useState<string | null>(null);
   const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
+  const [publicVideoId, setPublicVideoId] = useState<string | null>(null);
   const [videoForm, setVideoForm] = useState<YogaVideoForm | null>(null);
   const [videoFormError, setVideoFormError] = useState<string | null>(null);
   const [videoSaveMessage, setVideoSaveMessage] = useState<string | null>(null);
   const [videoDraftLoading, setVideoDraftLoading] = useState(false);
-  const [poseToAdd, setPoseToAdd] = useState("");
+  const [posePickerQuery, setPosePickerQuery] = useState("");
+  const [poseRelinkLoading, setPoseRelinkLoading] = useState(false);
+  const [poseRelinkMessage, setPoseRelinkMessage] = useState<string | null>(null);
+  const [poseRelinkError, setPoseRelinkError] = useState<string | null>(null);
+  const [publicVideoCategoryFilter, setPublicVideoCategoryFilter] = useState("all");
+  const [publicVideoStyleFilter, setPublicVideoStyleFilter] = useState<YogaVideoStyle | "all">(
+    "all",
+  );
+  const [publicVideoDurationFilter, setPublicVideoDurationFilter] = useState("all");
+  const [publicVideoIntensityFilter, setPublicVideoIntensityFilter] = useState("all");
 
   useEffect(() => {
     const body = document.body;
     body.classList.add("yoga-bg");
+    body.classList.add("yogi-palette");
     return () => {
       body.classList.remove("yoga-bg");
+      body.classList.remove("yogi-palette");
     };
   }, []);
 
@@ -414,6 +485,29 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
         setSaveWarnings(data.warnings);
       }
 
+      if (data?.id) {
+        const normalizedSlug =
+          typeof (parsed as any)?.slug === "string"
+            ? normalizeSlug((parsed as any).slug)
+            : (parsed as any)?.slug;
+        const nextItem = {
+          ...(parsed as Record<string, unknown>),
+          id: data.id,
+          slug: normalizedSlug,
+        } as Record<string, unknown>;
+
+        setDraftText(JSON.stringify(nextItem, null, 2));
+
+        if (entityType === "pose") {
+          setPoses((prev) => {
+            const next = [...prev];
+            const idx = next.findIndex((item) => item.id === data.id);
+            if (idx === -1) next.push(nextItem as Pose);
+            else next[idx] = nextItem as Pose;
+            return next;
+          });
+        }
+      }
       setSaveMessage(intent === "publish" ? "Publikálva." : "Mentve.");
     } catch (err) {
       setError((err as Error)?.message ?? "Save failed");
@@ -749,6 +843,7 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
     const existing = yogaVideoMetaMap.get(yogaId);
     return {
       yoga_id: yogaId,
+      title_override: existing?.title_override ?? "",
       channel: existing?.channel ?? "",
       style: existing?.style ?? "",
       description_short: existing?.description_short ?? "",
@@ -761,11 +856,13 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
 
   const normalizeVideoForm = (form: YogaVideoForm): YogaVideoMeta => {
     const channel = form.channel.trim();
+    const titleOverride = form.title_override.trim();
     const descriptionShort = form.description_short.trim();
     const descriptionLong = form.description_long.trim();
     const language = form.language.trim();
     return {
       yoga_id: form.yoga_id,
+      title_override: titleOverride ? titleOverride : null,
       channel: channel ? channel : null,
       style: form.style ? form.style : null,
       description_short: descriptionShort ? descriptionShort : null,
@@ -780,7 +877,6 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
     setVideoForm(buildVideoForm(yogaId));
     setVideoFormError(null);
     setVideoSaveMessage(null);
-    setPoseToAdd("");
   };
 
   const closeVideoModal = () => {
@@ -788,7 +884,6 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
     setVideoForm(null);
     setVideoFormError(null);
     setVideoSaveMessage(null);
-    setPoseToAdd("");
   };
 
   const handleSaveVideoMeta = async () => {
@@ -837,7 +932,7 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           yoga_id: template.id,
-          title: template.label,
+          title: videoForm.title_override.trim() || template.label,
           category: template.category,
           duration_minutes: template.duration_minutes,
           intensity: template.intensity,
@@ -846,6 +941,7 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
           source_description: videoForm.source_description.trim()
             ? videoForm.source_description.trim()
             : null,
+          pose_ids: videoForm.pose_ids,
         }),
       });
 
@@ -879,20 +975,6 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
     } finally {
       setVideoDraftLoading(false);
     }
-  };
-
-  const handleAddPoseToVideo = () => {
-    if (!videoForm) return;
-    const poseId = poseToAdd.trim();
-    if (!poseId) return;
-    if (videoForm.pose_ids.includes(poseId)) {
-      setVideoFormError("Ez a póz már szerepel.");
-      return;
-    }
-    setVideoForm((prev) =>
-      prev ? { ...prev, pose_ids: [...prev.pose_ids, poseId] } : prev,
-    );
-    setPoseToAdd("");
   };
 
   const handleMoveVideoPose = (index: number, direction: -1 | 1) => {
@@ -1107,15 +1189,182 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
       activeVideoId ? yogaTemplates.find((item) => item.id === activeVideoId) ?? null : null,
     [activeVideoId, yogaTemplates],
   );
+  const publicTemplate = useMemo(
+    () =>
+      publicVideoId ? yogaTemplates.find((item) => item.id === publicVideoId) ?? null : null,
+    [publicVideoId, yogaTemplates],
+  );
+  const publicMeta = useMemo(
+    () => (publicTemplate ? yogaVideoMetaMap.get(publicTemplate.id) ?? null : null),
+    [publicTemplate, yogaVideoMetaMap],
+  );
+  const publicCategoryMeta = useMemo(() => {
+    if (!publicTemplate) return null;
+    const categoryKey =
+      publicTemplate.category === "relax" || publicTemplate.category === "strong"
+        ? (publicTemplate.category as "relax" | "strong")
+        : "relax";
+    return ACTIVITY_CATEGORY_META.yoga[categoryKey];
+  }, [publicTemplate]);
+  const publicStyleMeta = useMemo(() => {
+    const styleKey = publicMeta?.style ?? null;
+    return styleKey ? VIDEO_STYLE_META[styleKey] : null;
+  }, [publicMeta]);
+  const publicStyleLabel = publicStyleMeta?.label ?? (publicMeta?.style ?? "nincs stílus");
+  const publicDurationLabel = publicTemplate
+    ? publicTemplate.duration_minutes !== null && publicTemplate.duration_minutes !== undefined
+      ? `${publicTemplate.duration_minutes} perc`
+      : "Ismeretlen hossz"
+    : "";
+  const sortedYogaTemplates = useMemo(() => {
+    const scoreMeta = (meta?: YogaVideoMeta) => {
+      if (!meta) return 0;
+      let score = 0;
+      if (meta.title_override?.trim()) score += 2;
+      if (meta.channel?.trim()) score += 1;
+      if (meta.style) score += 1;
+      if (meta.description_short?.trim()) score += 2;
+      if (meta.description_long?.trim()) score += 2;
+      if (meta.pose_ids && meta.pose_ids.length > 0) score += 1;
+      if (meta.language?.trim()) score += 1;
+      return score;
+    };
+    return [...yogaTemplates].sort((a, b) => {
+      const scoreA = scoreMeta(yogaVideoMetaMap.get(a.id));
+      const scoreB = scoreMeta(yogaVideoMetaMap.get(b.id));
+      if (scoreA !== scoreB) return scoreB - scoreA;
+      return a.label.localeCompare(b.label, "hu");
+    });
+  }, [yogaTemplates, yogaVideoMetaMap]);
+
+  const publicVideoCategories = useMemo(() => {
+    const set = new Set<string>();
+    yogaTemplates.forEach((template) => {
+      if (template.category) set.add(template.category);
+    });
+    return Array.from(set).sort((a, b) => a.localeCompare(b, "hu"));
+  }, [yogaTemplates]);
+
+  const publicVideoDurationOptions = useMemo(() => {
+    const options = new Set<string>();
+    yogaTemplates.forEach((template) => {
+      const minutes = template.duration_minutes;
+      if (minutes === null || minutes === undefined) {
+        options.add("unknown");
+        return;
+      }
+      if (minutes <= 10) options.add("0-10");
+      else if (minutes <= 20) options.add("10-20");
+      else if (minutes <= 35) options.add("20-35");
+      else options.add("35+");
+    });
+    const order = ["0-10", "10-20", "20-35", "35+", "unknown"];
+    return order.filter((value) => options.has(value));
+  }, [yogaTemplates]);
+
+  const publicFilteredYogaTemplates = useMemo(() => {
+    if (isAdmin) return sortedYogaTemplates;
+    return sortedYogaTemplates.filter((template) => {
+      if (publicVideoCategoryFilter !== "all" && template.category !== publicVideoCategoryFilter) {
+        return false;
+      }
+      if (publicVideoStyleFilter !== "all") {
+        const meta = yogaVideoMetaMap.get(template.id);
+        if (meta?.style !== publicVideoStyleFilter) return false;
+      }
+      if (publicVideoIntensityFilter !== "all") {
+        const intensity = template.intensity ?? null;
+        if (publicVideoIntensityFilter === "unknown" && intensity !== null) return false;
+        if (publicVideoIntensityFilter !== "unknown" && intensity !== Number(publicVideoIntensityFilter)) {
+          return false;
+        }
+      }
+      if (publicVideoDurationFilter !== "all") {
+        const minutes = template.duration_minutes ?? null;
+        if (publicVideoDurationFilter === "unknown" && minutes !== null) return false;
+        if (publicVideoDurationFilter !== "unknown") {
+          if (minutes === null) return false;
+          if (publicVideoDurationFilter === "0-10" && !(minutes <= 10)) return false;
+          if (publicVideoDurationFilter === "10-20" && !(minutes > 10 && minutes <= 20)) return false;
+          if (publicVideoDurationFilter === "20-35" && !(minutes > 20 && minutes <= 35)) return false;
+          if (publicVideoDurationFilter === "35+" && !(minutes > 35)) return false;
+        }
+      }
+      return true;
+    });
+  }, [
+    isAdmin,
+    sortedYogaTemplates,
+    publicVideoCategoryFilter,
+    publicVideoStyleFilter,
+    publicVideoDurationFilter,
+    publicVideoIntensityFilter,
+    yogaVideoMetaMap,
+  ]);
+  const posePickerItems = useMemo(() => {
+    const query = posePickerQuery.trim().toLowerCase();
+    const base = query
+      ? poses.filter((pose) => {
+          const haystack = [
+            pose.name_hu,
+            pose.name_en,
+            pose.sanskrit_name ?? "",
+            pose.slug,
+            pose.id,
+          ]
+            .join(" ")
+            .toLowerCase();
+          return haystack.includes(query);
+        })
+      : poses;
+    return [...base].sort((a, b) => a.name_en.localeCompare(b.name_en, "en"));
+  }, [poses, posePickerQuery]);
   const poseDetailHref = (pose: Pose) => {
     const token = (pose.slug && pose.slug.trim()) || (pose.id && pose.id.trim()) || "";
     const idParam = pose.id ? `?id=${encodeURIComponent(pose.id)}` : "";
     return `/yogis-choice/poses/${encodeURIComponent(token)}${idParam}`;
   };
 
+  const handleRelinkPoses = async () => {
+    if (!isAdmin) return;
+    if (!window.confirm("Biztosan újraszámoljuk a kapcsolódó pózokat minden elemnél?")) {
+      return;
+    }
+
+    setPoseRelinkLoading(true);
+    setPoseRelinkMessage(null);
+    setPoseRelinkError(null);
+
+    try {
+      const response = await fetch("/api/admin/yogi-knowledge/poses-relink", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json().catch(() => null);
+      if (!response.ok) {
+        setPoseRelinkError(readJsonError(data));
+        return;
+      }
+      if (Array.isArray(data?.poses)) {
+        setPoses(data.poses as Pose[]);
+      }
+      const updated = typeof data?.updated === "number" ? data.updated : null;
+      const total = typeof data?.total === "number" ? data.total : null;
+      if (updated !== null && total !== null) {
+        setPoseRelinkMessage(`Kapcsolódó pózok frissítve (${updated}/${total}).`);
+      } else {
+        setPoseRelinkMessage("Kapcsolódó pózok frissítve.");
+      }
+    } catch (err) {
+      setPoseRelinkError((err as Error)?.message ?? "Relink failed");
+    } finally {
+      setPoseRelinkLoading(false);
+    }
+  };
+
   return (
-    <section className={`admin-stack ${styles.page}`}>
-      <div className={`admin-card ${styles.poseFilterPanel}`}>
+    <section className={`admin-stack ${styles.page} ${styles.yogiPage}`}>
+      <div className={`admin-card ${styles.poseFilterPanel} ${styles.poseFilterPanelCompact}`}>
         <div className={styles.poseFilterGrid}>
           {isAdmin && (
             <label className="form-field">
@@ -1127,10 +1376,10 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
                   setPoseContentStatusFilter(event.target.value as ContentStatusFilter)
                 }
               >
-                <option value="all">Összes</option>
+                <option value="all">{CONTENT_STATUS_LABELS.all}</option>
                 {ContentStatusEnum.options.map((status) => (
                   <option key={status} value={status}>
-                    {status}
+                    {CONTENT_STATUS_LABELS[status]}
                   </option>
                 ))}
               </select>
@@ -1146,14 +1395,14 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
                 setPoseLevelFilter(event.target.value as PoseLevelFilter)
               }
             >
-              <option value="all">Összes</option>
+              <option value="all">{POSE_LEVEL_LABELS.all}</option>
               {PoseLevelEnum.options.map((level) => (
                 <option
                   key={level}
                   value={level}
                   disabled={(optionCounts.countByLevel.get(level) ?? 0) === 0}
                 >
-                  {level}
+                  {POSE_LEVEL_LABELS[level]}
                 </option>
               ))}
             </select>
@@ -1168,12 +1417,12 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
                 setPoseCategoryFilter(event.target.value as PoseCategoryFilter)
               }
             >
-              <option value="all">Összes</option>
+              <option value="all">{POSE_CATEGORY_LABELS.all}</option>
               {PoseCategoryEnum.options.filter(
                 (category) => (optionCounts.countByCategory.get(category) ?? 0) > 0,
               ).map((category) => (
                 <option key={category} value={category}>
-                  {category}
+                  {POSE_CATEGORY_LABELS[category]}
                 </option>
               ))}
             </select>
@@ -1188,19 +1437,19 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
                 setPosePurposeFilter(event.target.value as PosePurposeFilter)
               }
             >
-              <option value="all">Összes</option>
+              <option value="all">{POSE_PURPOSE_LABELS.all}</option>
               {PosePurposeEnum.options.filter(
                 (purpose) => (optionCounts.countByPurpose.get(purpose) ?? 0) > 0,
               ).map((purpose) => (
                 <option key={purpose} value={purpose}>
-                  {purpose}
+                  {POSE_PURPOSE_LABELS[purpose]}
                 </option>
               ))}
             </select>
           </label>
           <button
             type="button"
-            className={`btn btn--ghost ${styles.poseFilterReset}`}
+            className={`btn btn--ghost ${styles.poseFilterReset} ${styles.poseFilterResetSmall}`}
             onClick={() => {
               setPoseQuery("");
               setPoseContentStatusFilter("all");
@@ -1211,6 +1460,26 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
           >
             Szűrők törlése
           </button>
+        </div>
+        <div className={styles.poseFilterActions}>
+          {isAdmin && (
+            <div className={styles.poseFilterActionRow}>
+              <button
+                type="button"
+                className="btn btn--ghost"
+                onClick={handleRelinkPoses}
+                disabled={poseRelinkLoading}
+              >
+                {poseRelinkLoading ? "Újralinkelés..." : "Kapcsolódó pózok újralinkelése"}
+              </button>
+              {poseRelinkError && (
+                <span className={styles.poseFilterCount}>{poseRelinkError}</span>
+              )}
+              {poseRelinkMessage && (
+                <span className={styles.poseFilterCount}>{poseRelinkMessage}</span>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -1260,7 +1529,7 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
                     <>
                       <div className={styles.poseCardImage}>
                         {hasImage ? (
-                          <img src={imageSlot.asset_ref ?? ""} alt={pose.name_en} />
+                          <img src={resolveImageUrl(imageSlot.asset_ref)} alt={pose.name_en} />
                         ) : (
                           <span>Mannequin 3/4</span>
                         )}
@@ -1343,9 +1612,19 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
       </div>
       <div className={`admin-card ${styles.panel}`}>
         <div className={styles.panelHeader}>
-          <h2 className={styles.panelTitle}>YouTube jógák</h2>
+          <h2 className={styles.panelTitle}>Jóga videók</h2>
+          {isAdmin && (
+            <Link
+              href="/admin/yoga"
+              className={styles.panelAddButton}
+              aria-label="Új YouTube jóga"
+              title="Új YouTube jóga hozzáadása"
+            >
+              <Plus size={16} />
+            </Link>
+          )}
           <p className="admin-text-muted">
-            A yoga naplóban rögzített videók, meta leírással és póz linkekkel.
+            Válogatott gyakorlások leírással, stílussal és a kapcsolódó pózokkal.
           </p>
         </div>
 
@@ -1366,39 +1645,151 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
         )}
 
         {!yogaTemplatesError && !yogaTemplatesLoading && yogaTemplates.length > 0 && (
-          <div className={styles.videoGrid}>
-            {yogaTemplates.map((template) => {
+          <>
+            {!isAdmin && (
+              <div className={styles.poseFilterPanel}>
+                <div className={styles.videoFilterGrid}>
+                  <label className="form-field">
+                    <span className="form-field__label">Kategória</span>
+                    <select
+                      className={`input ${styles.poseFilterSelect}`}
+                      value={publicVideoCategoryFilter}
+                      onChange={(event) => setPublicVideoCategoryFilter(event.target.value)}
+                    >
+                      <option value="all">Összes</option>
+                      {publicVideoCategories.map((category) => (
+                        <option key={category} value={category}>
+                          {category}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="form-field">
+                    <span className="form-field__label">Stílus</span>
+                    <select
+                      className={`input ${styles.poseFilterSelect}`}
+                      value={publicVideoStyleFilter}
+                      onChange={(event) =>
+                        setPublicVideoStyleFilter(event.target.value as YogaVideoStyle | "all")
+                      }
+                    >
+                      <option value="all">Összes</option>
+                      {YogaVideoStyleEnum.options.map((style) => (
+                        <option key={style} value={style}>
+                          {VIDEO_STYLE_META[style]?.label ?? style}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="form-field">
+                    <span className="form-field__label">Hossz</span>
+                    <select
+                      className={`input ${styles.poseFilterSelect}`}
+                      value={publicVideoDurationFilter}
+                      onChange={(event) => setPublicVideoDurationFilter(event.target.value)}
+                    >
+                      <option value="all">Összes</option>
+                      {publicVideoDurationOptions.map((value) => (
+                        <option key={value} value={value}>
+                          {value === "0-10" && "0–10 perc"}
+                          {value === "10-20" && "10–20 perc"}
+                          {value === "20-35" && "20–35 perc"}
+                          {value === "35+" && "35+ perc"}
+                          {value === "unknown" && "Ismeretlen"}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="form-field">
+                    <span className="form-field__label">Intenzitás</span>
+                    <select
+                      className={`input ${styles.poseFilterSelect}`}
+                      value={publicVideoIntensityFilter}
+                      onChange={(event) => setPublicVideoIntensityFilter(event.target.value)}
+                    >
+                      <option value="all">Összes</option>
+                      <option value="1">1 pont</option>
+                      <option value="2">2 pont</option>
+                      <option value="3">3 pont</option>
+                      <option value="unknown">Ismeretlen</option>
+                    </select>
+                  </label>
+                  <button
+                    type="button"
+                    className={`btn btn--ghost ${styles.poseFilterReset} ${styles.poseFilterResetSmall}`}
+                    onClick={() => {
+                      setPublicVideoCategoryFilter("all");
+                      setPublicVideoStyleFilter("all");
+                      setPublicVideoDurationFilter("all");
+                      setPublicVideoIntensityFilter("all");
+                    }}
+                  >
+                    Szűrők törlése
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div className={styles.videoGrid}>
+              {publicFilteredYogaTemplates.map((template) => {
               const meta = yogaVideoMetaMap.get(template.id);
               const categoryKey =
                 template.category === "relax" || template.category === "strong"
                   ? (template.category as "relax" | "strong")
                   : "relax";
               const categoryMeta = ACTIVITY_CATEGORY_META.yoga[categoryKey];
+              const styleKey = meta?.style ?? null;
+              const styleMeta = styleKey ? VIDEO_STYLE_META[styleKey] : null;
+              const styleLabel = styleMeta?.label ?? (styleKey ?? "nincs stílus");
+              const durationLabel =
+                template.duration_minutes !== null && template.duration_minutes !== undefined
+                  ? `${template.duration_minutes} perc`
+                  : "Ismeretlen hossz";
               const poseThumbs = (meta?.pose_ids ?? [])
                 .map((poseId) => poseMap.get(poseId))
                 .filter(Boolean)
-                .slice(0, 4) as Pose[];
+                .slice(0, 5) as Pose[];
               const cardBody = (
                 <div className={styles.videoCardBody}>
                   <div className={styles.videoCardHeader}>
                     <div>
-                      <p className={styles.videoCardTitle}>{template.label}</p>
-                      <p className={styles.videoCardSubtitle}>
-                        {template.category} · {meta?.style ?? "nincs stílus"}
+                      <p className={styles.videoCardTitle}>
+                        {meta?.title_override ?? template.label}
                       </p>
+                      <div className={styles.videoCardSubtitlePills}>
+                        <span
+                          className={styles.videoCategoryPill}
+                          style={{
+                            borderColor: categoryMeta.color,
+                            backgroundColor: hexToRgba(categoryMeta.color, 0.12),
+                            color: categoryMeta.color,
+                            ["--pill-icon" as any]: `url(${categoryMeta.icon})`,
+                          }}
+                        >
+                          <span className={styles.videoCategoryIcon} aria-hidden="true" />
+                          {categoryMeta.label}
+                        </span>
+                        <span
+                          className={`${styles.videoMetaPill} ${
+                            styleMeta ? "" : styles.videoMetaPillMuted
+                          }`}
+                          style={
+                            styleMeta
+                              ? {
+                                  borderColor: styleMeta.color,
+                                  backgroundColor: hexToRgba(styleMeta.color, 0.12),
+                                  color: styleMeta.color,
+                                }
+                              : undefined
+                          }
+                        >
+                          {styleLabel}
+                        </span>
+                        <span className={`${styles.videoMetaPill} ${styles.videoMetaPillNeutral}`}>
+                          {durationLabel}
+                        </span>
+                      </div>
                     </div>
-                    <span
-                      className={styles.videoCategoryPill}
-                      style={{
-                        borderColor: categoryMeta.color,
-                        backgroundColor: hexToRgba(categoryMeta.color, 0.12),
-                        color: categoryMeta.color,
-                        ["--pill-icon" as any]: `url(${categoryMeta.icon})`,
-                      }}
-                    >
-                      <span className={styles.videoCategoryIcon} aria-hidden="true" />
-                      {categoryMeta.label}
-                    </span>
                   </div>
                   <div
                     className={styles.videoIntensityRow}
@@ -1432,7 +1823,7 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
                       return (
                         <div key={pose.id} className={styles.videoPoseThumb}>
                           {hasImage ? (
-                            <img src={slot.asset_ref ?? ""} alt={pose.name_en} />
+                            <img src={resolveImageUrl(slot.asset_ref)} alt={pose.name_en} />
                           ) : (
                             <span>{pose.name_en}</span>
                           )}
@@ -1453,15 +1844,19 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
                   {cardBody}
                 </button>
               ) : (
-                <div
+                <button
                   key={template.id}
+                  type="button"
                   className={`${styles.videoCard} ${styles.videoCardStatic}`}
+                  onClick={() => setPublicVideoId(template.id)}
+                  aria-label={`YouTube jóga: ${template.label}`}
                 >
                   {cardBody}
-                </div>
+                </button>
               );
             })}
-          </div>
+            </div>
+          </>
         )}
 
         {videoMetaError && (
@@ -1727,7 +2122,7 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
                       <div key={slotKey} className={styles.imageSlotCard}>
                         <div className={styles.imageSlotPreview}>
                           {slot?.asset_ref ? (
-                            <img src={slot.asset_ref} alt={label} />
+                            <img src={resolveImageUrl(slot.asset_ref)} alt={label} />
                           ) : (
                             <span className={styles.imageSlotPlaceholder}>{label}</span>
                           )}
@@ -1907,7 +2302,7 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
                     <div key={slotKey} className={styles.imageSlotCard}>
                       <div className={styles.imageSlotPreview}>
                         {slot?.asset_ref ? (
-                          <img src={slot.asset_ref} alt={label} />
+                          <img src={resolveImageUrl(slot.asset_ref)} alt={label} />
                         ) : (
                           <span className={styles.imageSlotPlaceholder}>{label}</span>
                         )}
@@ -2127,6 +2522,21 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
 
             <div className={styles.modalGrid}>
               <label className="form-field">
+                <span className="form-field__label">Cím (felülírható)</span>
+                <input
+                  className="input"
+                  type="text"
+                  value={videoForm.title_override}
+                  onChange={(event) =>
+                    setVideoForm((prev) =>
+                      prev ? { ...prev, title_override: event.target.value } : prev,
+                    )
+                  }
+                  placeholder={activeTemplate.label}
+                />
+              </label>
+
+              <label className="form-field">
                 <span className="form-field__label">Csatorna</span>
                 <input
                   className="input"
@@ -2229,24 +2639,47 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
 
             <div className={styles.modalPoseBlock}>
               <div className={styles.modalPoseHeader}>
-                <p className={styles.modalPoseTitle}>Póz sorrend</p>
-                <div className={styles.modalPoseActions}>
-                  <select
-                    className="input"
-                    value={poseToAdd}
-                    onChange={(event) => setPoseToAdd(event.target.value)}
-                  >
-                    <option value="">Válassz pózt</option>
-                    {poses.map((pose) => (
-                      <option key={pose.id} value={pose.id}>
-                        {pose.name_hu} · {pose.name_en}
-                      </option>
-                    ))}
-                  </select>
-                  <button type="button" className="btn btn--ghost" onClick={handleAddPoseToVideo}>
-                    Póz hozzáadása
-                  </button>
-                </div>
+                <p className={styles.modalPoseTitle}>Póz kiválasztás</p>
+              </div>
+              <label className={`form-field ${styles.modalPoseSearch}`}>
+                <span className="form-field__label">Keresés pózok között</span>
+                <input
+                  className="input"
+                  type="text"
+                  value={posePickerQuery}
+                  onChange={(event) => setPosePickerQuery(event.target.value)}
+                  placeholder="Név, szanszkrit vagy slug..."
+                />
+              </label>
+              <div className={styles.modalPoseGrid}>
+                {posePickerItems.map((pose) => {
+                  const slot = pose.mannequin_angled;
+                  const hasImage = slot?.status === "verified" && slot?.asset_ref;
+                  const isSelected = videoForm.pose_ids.includes(pose.id);
+                  return (
+                    <button
+                      key={pose.id}
+                      type="button"
+                      className={`${styles.modalPoseTile} ${
+                        isSelected ? styles.modalPoseTileSelected : ""
+                      }`}
+                      onClick={() => {
+                        if (isSelected) return;
+                        setVideoForm((prev) =>
+                          prev ? { ...prev, pose_ids: [...prev.pose_ids, pose.id] } : prev,
+                        );
+                      }}
+                      aria-pressed={isSelected}
+                      title={`${pose.name_hu} · ${pose.name_en}`}
+                    >
+                      {hasImage ? (
+                        <img src={resolveImageUrl(slot.asset_ref)} alt={pose.name_en} />
+                      ) : (
+                        <span>{pose.name_en}</span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
 
               {videoForm.pose_ids.length === 0 && (
@@ -2310,6 +2743,134 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
                 Meta mentése
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {!isAdmin && publicTemplate && (
+        <div className={styles.modalOverlay} onClick={() => setPublicVideoId(null)}>
+          <div
+            className={`${styles.modal} ${styles.publicVideoModal}`}
+            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label="YouTube jóga részletek"
+          >
+            <div className={styles.modalHeader}>
+              <div className={styles.publicVideoHeader}>
+                <div className={styles.publicVideoTitleRow}>
+                  <p className={styles.publicVideoTitle}>
+                    {publicMeta?.title_override ?? publicTemplate.label}
+                  </p>
+                  <div
+                    className={styles.videoIntensityRow}
+                    style={
+                      publicCategoryMeta
+                        ? {
+                            ["--level-dot-active" as any]: publicCategoryMeta.color,
+                            ["--level-dot-active-border" as any]: publicCategoryMeta.color,
+                          }
+                        : undefined
+                    }
+                  >
+                    {Array.from({ length: 3 }).map((_, index) => {
+                      const isActive = publicTemplate.intensity
+                        ? index < publicTemplate.intensity
+                        : false;
+                      return (
+                        <span
+                          key={`${publicTemplate.id}-public-intensity-${index}`}
+                          className={`${styles.videoIntensityDot} ${
+                            isActive ? styles.videoIntensityDotActive : ""
+                          }`}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+                <p className={styles.publicVideoChannel}>
+                  {publicMeta?.channel ?? "Nincs megadva csatorna"}
+                </p>
+                <div className={styles.publicVideoPills}>
+                  {publicCategoryMeta && (
+                    <span
+                      className={styles.videoCategoryPill}
+                      style={{
+                        borderColor: publicCategoryMeta.color,
+                        backgroundColor: hexToRgba(publicCategoryMeta.color, 0.12),
+                        color: publicCategoryMeta.color,
+                        ["--pill-icon" as any]: `url(${publicCategoryMeta.icon})`,
+                      }}
+                    >
+                      <span className={styles.videoCategoryIcon} aria-hidden="true" />
+                      {publicCategoryMeta.label}
+                    </span>
+                  )}
+                  <span
+                    className={`${styles.videoMetaPill} ${
+                      publicStyleMeta ? "" : styles.videoMetaPillMuted
+                    }`}
+                    style={
+                      publicStyleMeta
+                        ? {
+                            borderColor: publicStyleMeta.color,
+                            backgroundColor: hexToRgba(publicStyleMeta.color, 0.12),
+                            color: publicStyleMeta.color,
+                          }
+                        : undefined
+                    }
+                  >
+                    {publicStyleLabel}
+                  </span>
+                  <span className={`${styles.videoMetaPill} ${styles.videoMetaPillNeutral}`}>
+                    {publicDurationLabel}
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="btn btn--ghost"
+                onClick={() => setPublicVideoId(null)}
+              >
+                Bezárás
+              </button>
+            </div>
+
+            <p className={styles.publicVideoText}>
+              {yogaVideoMetaMap.get(publicTemplate.id)?.description_long ??
+                "Nincs hosszabb leírás."}
+            </p>
+
+            <div className={styles.publicVideoPoseRow}>
+              {(yogaVideoMetaMap.get(publicTemplate.id)?.pose_ids ?? [])
+                .map((poseId) => poseMap.get(poseId))
+                .filter(Boolean)
+                .slice(0, 12)
+                .map((pose) => {
+                  const slot = pose!.mannequin_angled;
+                  const hasImage = slot?.status === "verified" && slot?.asset_ref;
+                  return (
+                    <div key={pose!.id} className={styles.publicVideoPoseThumbLarge}>
+                      {hasImage ? (
+                        <img src={resolveImageUrl(slot!.asset_ref)} alt={pose!.name_en} />
+                      ) : (
+                        <span>{pose!.name_en}</span>
+                      )}
+                    </div>
+                  );
+                })}
+            </div>
+
+            {publicTemplate.link && (
+              <a
+                className={styles.publicVideoLink}
+                href={publicTemplate.link}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Videó megnyitása
+              </a>
+            )}
           </div>
         </div>
       )}

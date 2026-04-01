@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
-import { YogiDraftResponseSchema } from "@/lib/yogiKnowledgeDraftSchema";
-import { PoseSchema, AnatomySchema, KnowledgeCardSchema, type Pose, type Anatomy, type KnowledgeCard } from "@/lib/yogiKnowledgeSchema";
+import { PoseDraftSchema, YogiDraftResponseSchema } from "@/lib/yogiKnowledgeDraftSchema";
+import { AnatomySchema, KnowledgeCardSchema, type Pose, type Anatomy, type KnowledgeCard } from "@/lib/yogiKnowledgeSchema";
 import { normalizeSlug, createYogiId } from "@/lib/yogiKnowledgeStore";
 import { KNOWN_POSES, KNOWN_POSE_SANSKRIT } from "@/lib/yogiKnownPoses";
 import { validatePoseQuality, validateAnatomyQuality, validateKnowledgeCardQuality } from "@/lib/yogiKnowledgeValidation";
@@ -400,25 +400,30 @@ ${userLine}
 Known poses list (slug | name_hu | name_en):
 ${poseList}
 
-Hard rules:
-- Output JSON only, no markdown.
-- Never invent a fantasy pose.
-- Keep language practical, yoga-focused, not medical, not marketing.
-- Do not use these phrases: ${FORBIDDEN_PHRASES.join(", ")}.
-- self_check_statements MUST be statements, not questions.
-- Human-facing Hungarian text must include proper accents.
-- Technical fields (slug/id/enums) must be ASCII canonical values.
-- Less is more: pick only the most important items, do not be exhaustive.
-- Do not repeat the same idea across multiple fields.
-- attention_points = what the practitioner feels/observes.
-- alignment_cues = what is physically adjusted.
-- Avoid Latin muscle names; prefer common Hungarian terms.
+  Hard rules:
+  - Output JSON only, no markdown.
+  - Never invent a fantasy pose.
+  - Keep language practical, yoga-focused, not medical, not marketing.
+  - Do not use these phrases: ${FORBIDDEN_PHRASES.join(", ")}.
+  - Avoid medical language entirely (e.g., diagnosis, treatment, cure, therapy, medical, or their Hungarian forms).
+  - self_check_statements MUST be statements, not questions.
+  - Human-facing Hungarian text must include proper accents.
+  - Technical fields (slug/id/enums) must be ASCII canonical values.
+  - Less is more: pick only the most important items, do not be exhaustive.
+  - Do not repeat the same idea across multiple fields.
+  - attention_points = what the practitioner feels/observes.
+  - alignment_cues = what is physically adjusted.
+  - Avoid Latin muscle names; prefer common Hungarian terms.
 
-Limits (max):
-- purpose: 3
-- attention_points: 4
-- alignment_cues: 4
-- self_check_statements: 5
+  Required non-empty lists (min 1 item):
+  - tags, purpose, attention_points, alignment_cues, self_check_statements, common_mistakes
+  - stretches, activates, body_regions
+
+  Limits (max):
+  - purpose: 3
+  - attention_points: 4
+  - alignment_cues: 4
+  - self_check_statements: 5
 - common_mistakes: 4
 - stretches: 4
 - strengthens: 4
@@ -443,7 +448,7 @@ Return JSON with this shape:
     "sanskrit_name": null,
     "category": "standing | seated | supine | prone | kneeling | balance | twist | backbend | forward_fold | restorative",
     "level": "beginner | intermediate | advanced | all_levels",
-    "tags": [],
+    "tags": ["pelda cimke"],
     "status": "draft",
     "content_status": "draft",
     "content_status": "draft",
@@ -455,15 +460,15 @@ Return JSON with this shape:
     "exit": "",
     "breath": "",
     "duration": { "min_seconds": 0, "max_seconds": 0 },
-    "attention_points": [],
-    "alignment_cues": [],
-    "self_check_statements": [],
-    "common_mistakes": [],
-    "stretches": [],
+    "attention_points": ["pelda erzet vagy megfigyeles"],
+    "alignment_cues": ["pelda igazitas"],
+    "self_check_statements": ["pelda allitas, nem kerdes"],
+    "common_mistakes": ["pelda gyakori hiba"],
+    "stretches": ["pelda nyujtas"],
     "strengthens": [],
-    "activates": [],
+    "activates": ["pelda aktivacio"],
     "relieves": [],
-    "body_regions": [],
+    "body_regions": ["pelda testresz"],
     "contraindications": [],
     "caution_areas": [],
     "modifications": [],
@@ -732,7 +737,7 @@ export async function POST(request: Request) {
 
   const draft = validated.data.draft;
   if (payload.entity_type === "pose") {
-    const poseParsed = PoseSchema.safeParse(draft);
+    const poseParsed = PoseDraftSchema.safeParse(draft);
     if (!poseParsed.success) {
       const detail = poseParsed.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`).join(" | ");
       return phaseError("draft_schema", "POSE_SCHEMA_INVALID", detail, 400);

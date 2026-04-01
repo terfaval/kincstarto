@@ -15,6 +15,7 @@ export type YogaVideoStyle = z.infer<typeof YogaVideoStyleEnum>;
 
 export const YogaVideoMetaSchema = z.object({
   yoga_id: z.string().min(1),
+  title_override: z.string().min(1).nullable().optional(),
   channel: z.string().min(1).nullable().optional(),
   style: YogaVideoStyleEnum.nullable().optional(),
   description_short: z.string().min(1).nullable().optional(),

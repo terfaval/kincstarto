@@ -2,16 +2,26 @@ import { get, put, type BlobAccessType } from "@vercel/blob";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 
-const BLOB_ENABLED = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+const BLOB_WRITE_ENABLED = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+const BLOB_READ_ENABLED = true;
 const ENV_BLOB_ACCESS = process.env.BLOB_ACCESS?.toLowerCase();
 const DEFAULT_ACCESS: BlobAccessType = ENV_BLOB_ACCESS === "private" ? "private" : "public";
 
 async function readBlobJson<T>(pathname: string, access: BlobAccessType) {
-  const result = await get(pathname, { access });
-  if (!result || result.statusCode !== 200 || !result.stream) return null;
-  const text = await new Response(result.stream).text();
-  if (!text) return null;
-  return JSON.parse(text) as T;
+  try {
+    const result = await get(pathname, { access });
+    if (!result || result.statusCode !== 200 || !result.stream) return null;
+    const text = await new Response(result.stream).text();
+    if (!text) return null;
+    return JSON.parse(text) as T;
+  } catch (err) {
+    const status = (err as { statusCode?: number; status?: number })?.statusCode ?? (err as { status?: number })?.status;
+    if (status === 403 || status === 404) return null;
+    const message = (err as { message?: string })?.message ?? "";
+    if (message.toLowerCase().includes("token")) return null;
+    if (message.includes("403") || message.includes("404")) return null;
+    throw err;
+  }
 }
 
 async function writeBlobJson(pathname: string, value: unknown, access: BlobAccessType) {
@@ -57,7 +67,7 @@ type WriteJsonStoreOptions = {
 };
 
 export function isBlobEnabled() {
-  return BLOB_ENABLED;
+  return BLOB_WRITE_ENABLED;
 }
 
 export async function readJsonStore<T>(options: ReadJsonStoreOptions<T>): Promise<T> {
@@ -70,7 +80,7 @@ export async function readJsonStore<T>(options: ReadJsonStoreOptions<T>): Promis
     createIfMissing = true,
   } = options;
 
-  if (BLOB_ENABLED) {
+  if (BLOB_READ_ENABLED) {
     const blobValue = await readBlobJson<T>(blobPath, access);
     if (blobValue !== null) return blobValue;
     if (!options.access) {
@@ -82,7 +92,7 @@ export async function readJsonStore<T>(options: ReadJsonStoreOptions<T>): Promis
 
   if (filePath) {
     const localValue = await readLocalJson<T>(filePath, fallbackValue, { createIfMissing });
-    if (BLOB_ENABLED && seedIfMissing) {
+    if (BLOB_WRITE_ENABLED && seedIfMissing) {
       await writeBlobJson(blobPath, localValue, access);
     }
     return localValue;
@@ -94,7 +104,7 @@ export async function readJsonStore<T>(options: ReadJsonStoreOptions<T>): Promis
 export async function writeJsonStore(options: WriteJsonStoreOptions, value: unknown) {
   const { blobPath, filePath, access = DEFAULT_ACCESS } = options;
 
-  if (BLOB_ENABLED) {
+  if (BLOB_WRITE_ENABLED) {
     await writeBlobJson(blobPath, value, access);
     return;
   }
