@@ -26,7 +26,7 @@ import {
   type YogaVideoStyle,
 } from "@/lib/yogaVideoMetaSchema";
 import { ACTIVITY_CATEGORY_META } from "@/types/activity";
-import { Plus } from "lucide-react";
+import { Grid2X2, Plus, RotateCcw } from "lucide-react";
 
 type DraftResponse = {
   entity_type: "pose" | "anatomy" | "knowledge_card";
@@ -130,6 +130,16 @@ const POSE_PURPOSE_LABELS: Record<PosePurposeFilter, string> = {
   restorative: "Regeneráló",
   grounding: "Földelő",
   energizing: "Energizáló",
+};
+
+const POSE_PURPOSE_COLORS: Record<(typeof PosePurposeEnum.options)[number], string> = {
+  mobilizing: "#38bdf8",
+  stretching: "#f97316",
+  strengthening: "#22c55e",
+  stabilizing: "#a855f7",
+  restorative: "#14b8a6",
+  grounding: "#f59e0b",
+  energizing: "#ef4444",
 };
 
 
@@ -243,6 +253,7 @@ export default function YogiKnowledgeAdmin({
   const [showPoseFilters, setShowPoseFilters] = useState(false);
   const [showVideoFilters, setShowVideoFilters] = useState(false);
   const [propImageErrors, setPropImageErrors] = useState<Record<string, boolean>>({});
+  const [poseGridView, setPoseGridView] = useState(false);
 
   useEffect(() => {
     const body = document.body;
@@ -354,6 +365,16 @@ export default function YogiKnowledgeAdmin({
         setShowPoseFilters(false);
         setShowVideoFilters(false);
       }
+    };
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 960px)");
+    const sync = () => {
+      if (media.matches) setPoseGridView(false);
     };
     sync();
     media.addEventListener("change", sync);
@@ -1353,6 +1374,24 @@ export default function YogiKnowledgeAdmin({
     return [...base].sort((a, b) => a.name_en.localeCompare(b.name_en, "en"));
   }, [poses, posePickerQuery]);
   const propCatalog = useMemo(() => collectPropCatalog(poses), [poses]);
+
+  const poseGridGroups = useMemo(() => {
+    if (isAdmin) return [];
+    const byCategory = new Map<Pose["category"], Pose[]>();
+    filteredPoses.forEach((pose) => {
+      const key = pose.category;
+      const list = byCategory.get(key) ?? [];
+      list.push(pose);
+      byCategory.set(key, list);
+    });
+    return PoseCategoryEnum.options
+      .map((category) => ({
+        category,
+        label: POSE_CATEGORY_LABELS[category],
+        poses: byCategory.get(category) ?? [],
+      }))
+      .filter((group) => group.poses.length > 0);
+  }, [filteredPoses, isAdmin]);
   const propListText = useMemo(
     () =>
       propCatalog
@@ -1499,19 +1538,36 @@ export default function YogiKnowledgeAdmin({
               ))}
             </select>
           </label>
-          <button
-            type="button"
-            className={`btn btn--ghost ${styles.filterResetButton}`}
-            onClick={() => {
-              setPoseQuery("");
-              setPoseContentStatusFilter("all");
-              setPoseLevelFilter("all");
-              setPoseCategoryFilter("all");
-              setPosePurposeFilter("all");
-            }}
-          >
-            Szűrők törlése
-          </button>
+          <div className={styles.poseFilterInlineButtons}>
+            <button
+              type="button"
+              className={`btn btn--ghost ${styles.filterResetButton}`}
+              onClick={() => {
+                setPoseQuery("");
+                setPoseContentStatusFilter("all");
+                setPoseLevelFilter("all");
+                setPoseCategoryFilter("all");
+                setPosePurposeFilter("all");
+              }}
+              aria-label="Szűrők törlése"
+              title="Szűrők törlése"
+            >
+              <RotateCcw size={16} aria-hidden="true" />
+            </button>
+
+            {!isAdmin && (
+              <button
+                type="button"
+                className={`btn btn--ghost ${styles.poseViewToggleButton}`}
+                onClick={() => setPoseGridView((prev) => !prev)}
+                aria-pressed={poseGridView}
+                aria-label={poseGridView ? "Lapozós nézet" : "Grid nézet"}
+                title={poseGridView ? "Lapozós nézet" : "Grid nézet"}
+              >
+                <Grid2X2 size={16} aria-hidden="true" />
+              </button>
+            )}
+          </div>
         </div>
         <div className={styles.poseFilterActions}>
           {isAdmin && (
@@ -1536,27 +1592,8 @@ export default function YogiKnowledgeAdmin({
       </div>
 
       <div className={styles.poseGallery}>
-        <div className={styles.poseGalleryShell}>
-          <button
-            type="button"
-            className={styles.poseGalleryChevron}
-            disabled={safePosePage === 0}
-            onClick={() => setPosePage(Math.max(0, safePosePage - 1))}
-            aria-label="Előző oldal"
-          >
-            <svg viewBox="0 0 20 20" aria-hidden="true">
-              <path
-                d="M12.5 4.5L7.5 10l5 5.5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
-
-          <div className={styles.poseGalleryContent}>
+        {poseGridView && !isAdmin ? (
+          <div className={styles.poseGridView}>
             {poseError && (
               <div className={styles.poseGalleryEmpty}>
                 Nem sikerült betölteni a pózokat.
@@ -1567,100 +1604,236 @@ export default function YogiKnowledgeAdmin({
               <div className={styles.poseGalleryEmpty}>Betöltés...</div>
             )}
 
-            {!poseError && !poseLoading && poseSlice.length === 0 && (
+            {!poseError && !poseLoading && filteredPoses.length === 0 && (
               <div className={styles.poseGalleryEmpty}>Még nincs generált póz.</div>
             )}
 
-            {!poseError && !poseLoading && poseSlice.length > 0 && (
-              <div className={styles.poseGalleryGrid}>
-                {poseSlice.map((pose) => {
-                  const subtitle = pose.sanskrit_name ?? pose.name_hu;
-                  const imageSlot = pose.mannequin_angled;
-                  const hasImage = imageSlot?.status === "verified" && imageSlot.asset_ref;
-                  const cardBody = (
-                    <>
-                      <div className={styles.poseCardImage}>
-                        {hasImage ? (
-                          <img src={resolveImageUrl(imageSlot.asset_ref)} alt={pose.name_en} />
-                        ) : (
-                          <span>Mannequin 3/4</span>
-                        )}
-                      </div>
-                      <div className={styles.poseCardBody}>
-                        <div className={styles.poseCardHeader}>
-                          <div>
-                            <p className={styles.poseCardTitle}>{pose.name_en}</p>
-                            <p className={styles.poseCardSubtitle}>{subtitle}</p>
-                          </div>
-                        </div>
-                        <p className={styles.poseCardSummary}>{pose.summary}</p>
-                      </div>
-                    </>
-                  );
-
-                  return isAdmin ? (
-                    <button
-                      key={pose.id}
-                      type="button"
-                      className={styles.poseCard}
-                      onClick={() => loadPoseIntoEditor(pose)}
-                    >
-                      {cardBody}
-                    </button>
-                  ) : (
-                    <Link
-                      key={pose.id}
-                      href={poseDetailHref(pose)}
-                      className={styles.poseCard}
-                      aria-label={`${pose.name_en} – ${subtitle}`}
-                    >
-                      {cardBody}
-                    </Link>
-                  );
-                })}
-              </div>
+            {!poseError && !poseLoading && filteredPoses.length > 0 && (
+              <>
+                {poseGridGroups.map((group) => (
+                  <div key={group.category} className={styles.poseCategoryGroup}>
+                    <div className={styles.poseCategoryHeader}>
+                      <p className={styles.poseCategoryTitle}>{group.label}</p>
+                      <span className={styles.poseCategoryCount}>
+                        {group.poses.length} póz
+                      </span>
+                    </div>
+                    <div className={styles.poseCategoryGrid}>
+                      {group.poses.map((pose) => {
+                        const subtitle = pose.sanskrit_name ?? pose.name_hu;
+                        const imageSlot = pose.mannequin_angled;
+                        const hasImage =
+                          imageSlot?.status === "verified" && imageSlot.asset_ref;
+                        const primaryPurpose = pose.purpose?.[0] ?? null;
+                        const purposeLabel = primaryPurpose
+                          ? POSE_PURPOSE_LABELS[primaryPurpose as PosePurposeFilter]
+                          : null;
+                        const purposeColor = primaryPurpose
+                          ? POSE_PURPOSE_COLORS[primaryPurpose]
+                          : null;
+                        return (
+                          <Link
+                            key={pose.id}
+                            href={poseDetailHref(pose)}
+                            className={`${styles.poseCard} ${styles.poseCardCompact}`}
+                            aria-label={`${pose.name_en} – ${subtitle}`}
+                          >
+                            <div
+                              className={`${styles.poseCardImage} ${styles.poseCardImageCompact}`}
+                            >
+                              {hasImage ? (
+                                <img
+                                  src={resolveImageUrl(imageSlot.asset_ref)}
+                                  alt={pose.name_en}
+                                />
+                              ) : (
+                                <span>Mannequin 3/4</span>
+                              )}
+                              {purposeLabel && purposeColor && (
+                                <span
+                                  className={styles.posePurposePill}
+                                  style={{
+                                    borderColor: purposeColor,
+                                    backgroundColor: hexToRgba(purposeColor, 0.28),
+                                    color: purposeColor,
+                                  }}
+                                >
+                                  {purposeLabel}
+                                </span>
+                              )}
+                            </div>
+                            <div
+                              className={`${styles.poseCardBody} ${styles.poseCardBodyCompact}`}
+                            >
+                              <div className={styles.poseCardHeader}>
+                                <div>
+                                  <p className={styles.poseCardTitle}>{pose.name_en}</p>
+                                  <p className={styles.poseCardSubtitle}>{subtitle}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </>
             )}
           </div>
+        ) : (
+          <div className={styles.poseGalleryShell}>
+            <button
+              type="button"
+              className={styles.poseGalleryChevron}
+              disabled={safePosePage === 0}
+              onClick={() => setPosePage(Math.max(0, safePosePage - 1))}
+              aria-label="Előző oldal"
+            >
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path
+                  d="M12.5 4.5L7.5 10l5 5.5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
 
-          <button
-            type="button"
-            className={styles.poseGalleryChevron}
-            disabled={safePosePage >= poseTotalPages - 1}
-            onClick={() => setPosePage(Math.min(poseTotalPages - 1, safePosePage + 1))}
-            aria-label="Következő oldal"
-          >
-            <svg viewBox="0 0 20 20" aria-hidden="true">
-              <path
-                d="M7.5 4.5L12.5 10l-5 5.5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
-        </div>
+            <div className={styles.poseGalleryContent}>
+              {poseError && (
+                <div className={styles.poseGalleryEmpty}>
+                  Nem sikerült betölteni a pózokat.
+                </div>
+              )}
 
-        <div className={styles.poseGalleryPagination}>
-          {Array.from({ length: Math.max(1, poseTotalPages) }).map((_, index) => {
-            const isDisabled = poseTotalPages === 0;
-            const isActive = index === safePosePage && !isDisabled;
-            return (
-              <button
-                key={`pose-dot-${index}`}
-                type="button"
-                className={`${styles.poseGalleryDot} ${isActive ? styles.poseGalleryDotActive : ""}`}
-                disabled={isDisabled}
-                onClick={() => {
-                  if (!isDisabled) setPosePage(index);
-                }}
-                aria-label={`Oldal ${index + 1}`}
-                aria-current={isActive ? "page" : undefined}
-              />
-            );
-          })}
-        </div>
+              {!poseError && poseLoading && (
+                <div className={styles.poseGalleryEmpty}>Betöltés...</div>
+              )}
+
+              {!poseError && !poseLoading && poseSlice.length === 0 && (
+                <div className={styles.poseGalleryEmpty}>Még nincs generált póz.</div>
+              )}
+
+              {!poseError && !poseLoading && poseSlice.length > 0 && (
+                <div className={styles.poseGalleryGrid}>
+                  {poseSlice.map((pose) => {
+                    const subtitle = pose.sanskrit_name ?? pose.name_hu;
+                    const imageSlot = pose.mannequin_angled;
+                    const hasImage = imageSlot?.status === "verified" && imageSlot.asset_ref;
+                    const primaryPurpose = pose.purpose?.[0] ?? null;
+                    const purposeLabel = primaryPurpose
+                      ? POSE_PURPOSE_LABELS[primaryPurpose as PosePurposeFilter]
+                      : null;
+                    const purposeColor = primaryPurpose
+                      ? POSE_PURPOSE_COLORS[primaryPurpose]
+                      : null;
+                    const cardBody = (
+                      <>
+                        <div className={styles.poseCardImage}>
+                          {hasImage ? (
+                            <img
+                              src={resolveImageUrl(imageSlot.asset_ref)}
+                              alt={pose.name_en}
+                            />
+                          ) : (
+                            <span>Mannequin 3/4</span>
+                          )}
+                          {purposeLabel && purposeColor && (
+                            <span
+                              className={styles.posePurposePill}
+                              style={{
+                                borderColor: purposeColor,
+                                backgroundColor: hexToRgba(purposeColor, 0.28),
+                                color: purposeColor,
+                              }}
+                            >
+                              {purposeLabel}
+                            </span>
+                          )}
+                        </div>
+                        <div className={styles.poseCardBody}>
+                          <div className={styles.poseCardHeader}>
+                            <div>
+                              <p className={styles.poseCardTitle}>{pose.name_en}</p>
+                              <p className={styles.poseCardSubtitle}>{subtitle}</p>
+                            </div>
+                          </div>
+                          <p className={styles.poseCardSummary}>{pose.summary}</p>
+                        </div>
+                      </>
+                    );
+
+                    return isAdmin ? (
+                      <button
+                        key={pose.id}
+                        type="button"
+                        className={styles.poseCard}
+                        onClick={() => loadPoseIntoEditor(pose)}
+                      >
+                        {cardBody}
+                      </button>
+                    ) : (
+                      <Link
+                        key={pose.id}
+                        href={poseDetailHref(pose)}
+                        className={styles.poseCard}
+                        aria-label={`${pose.name_en} – ${subtitle}`}
+                      >
+                        {cardBody}
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            <button
+              type="button"
+              className={styles.poseGalleryChevron}
+              disabled={safePosePage >= poseTotalPages - 1}
+              onClick={() => setPosePage(Math.min(poseTotalPages - 1, safePosePage + 1))}
+              aria-label="Következő oldal"
+            >
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path
+                  d="M7.5 4.5L12.5 10l-5 5.5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+        )}
+
+        {!poseGridView && (
+          <div className={styles.poseGalleryPagination}>
+            {Array.from({ length: Math.max(1, poseTotalPages) }).map((_, index) => {
+              const isDisabled = poseTotalPages === 0;
+              const isActive = index === safePosePage && !isDisabled;
+              return (
+                <button
+                  key={`pose-dot-${index}`}
+                  type="button"
+                  className={`${styles.poseGalleryDot} ${
+                    isActive ? styles.poseGalleryDotActive : ""
+                  }`}
+                  disabled={isDisabled}
+                  onClick={() => {
+                    if (!isDisabled) setPosePage(index);
+                  }}
+                  aria-label={`Oldal ${index + 1}`}
+                  aria-current={isActive ? "page" : undefined}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {showPropCatalog && (
@@ -1852,8 +2025,10 @@ export default function YogiKnowledgeAdmin({
                       setPublicVideoDurationFilter("all");
                       setPublicVideoIntensityFilter("all");
                     }}
+                    aria-label="Szűrők törlése"
+                    title="Szűrők törlése"
                   >
-                    Szűrők törlése
+                    <RotateCcw size={16} aria-hidden="true" />
                   </button>
                 </div>
               </div>
