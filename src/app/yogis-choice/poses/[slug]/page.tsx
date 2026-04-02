@@ -4,6 +4,7 @@ import { normalizeSlug } from "@/lib/slug";
 import { YogiPoseSheet } from "@/components/yogi/YogiKnowledgeSheets";
 import styles from "@/components/yogi/YogiKnowledgeAdmin.module.css";
 import backStyles from "@/features/meditations/styles/meditations.module.css";
+import yogiStyles from "@/components/yogi/YogiKnowledgeAdmin.module.css";
 import Link from "next/link";
 import YogiChoiceBodyEffect from "@/components/yogi/YogiChoiceBodyEffect";
 
@@ -66,7 +67,11 @@ export default async function YogisChoicePosePage({ params, searchParams }: Prop
   return (
     <section className={`admin-stack ${styles.page}`}>
       <YogiChoiceBodyEffect />
-      <Link href="/yogis-choice" className={backStyles.backLink} aria-label="Vissza">
+      <Link
+        href="/yogis-choice"
+        className={`${backStyles.backLink} ${yogiStyles.yogiBackLink}`}
+        aria-label="Vissza"
+      >
         <span className={backStyles.backIcon} aria-hidden="true">
           ‹
         </span>

@@ -15,6 +15,7 @@ type Payload = {
   entity_type: "pose" | "anatomy";
   slot: "mannequin_front" | "mannequin_angled" | "scientific_image";
   prompt: string;
+  review_instruction?: string;
   slug?: string;
 };
 
@@ -37,6 +38,82 @@ function getViewType(slot: Payload["slot"]): "front" | "angled" | null {
   if (slot === "mannequin_front") return "front";
   if (slot === "mannequin_angled") return "angled";
   return null;
+}
+
+function getOutputText(response: any) {
+  const direct = response?.output_text;
+  if (typeof direct === "string" && direct.length > 0) return direct;
+  const items = Array.isArray(response?.output) ? response.output : [];
+  for (const item of items) {
+    if (item?.type !== "message" || !Array.isArray(item?.content)) continue;
+    const textPart = item.content.find(
+      (part: any) => part?.type === "output_text" || part?.type === "text",
+    );
+    if (textPart?.text) return textPart.text as string;
+  }
+  return "";
+}
+
+async function revisePrompt(input: {
+  client: OpenAI;
+  model: string;
+  prompt: string;
+  instruction: string;
+  entityType: Payload["entity_type"];
+  viewType: "front" | "angled" | null;
+}) {
+  const systemRules =
+    input.entityType === "pose"
+      ? "Preserve all mannequin prompt blocks, camera/mat constraints, and negative rules. Keep block order and style instructions intact."
+      : "Preserve all anatomy image constraints (region-only, desaturated surroundings, subtle highlight, minimal Latin labels, transparent background).";
+
+  const response = await input.client.responses.create({
+    model: input.model,
+    input: [
+      {
+        role: "user",
+        content: [
+          "You edit an existing image prompt with minimal changes.",
+          "Apply the instruction precisely and only where needed.",
+          systemRules,
+          input.viewType ? `View type: ${input.viewType}.` : "",
+          "",
+          "Return JSON with fields: revised_prompt, summary.",
+          "",
+          "Instruction:",
+          input.instruction,
+          "",
+          "Current prompt:",
+          input.prompt,
+        ]
+          .filter(Boolean)
+          .join("\n"),
+      },
+    ],
+    text: {
+      format: {
+        name: "yogi_prompt_review_v1",
+        type: "json_schema",
+        strict: true,
+        schema: {
+          type: "object",
+          additionalProperties: false,
+          required: ["revised_prompt", "summary"],
+          properties: {
+            revised_prompt: { type: "string" },
+            summary: { type: "string" },
+          },
+        },
+      },
+    },
+  });
+
+  const text = getOutputText(response);
+  const parsed = JSON.parse(text);
+  return {
+    revisedPrompt: String(parsed.revised_prompt ?? "").trim(),
+    summary: String(parsed.summary ?? "").trim(),
+  };
 }
 
 
@@ -73,10 +150,39 @@ export async function POST(request: Request) {
   }
 
   const viewType = getViewType(slot);
+  const reviewInstruction = payload.review_instruction?.trim();
+  let promptToUse = rawPrompt;
+  let reviewSummary: string | null = null;
+
+  if (reviewInstruction) {
+    const reviewModel = process.env.YOGI_PROMPT_REVIEW_MODEL || process.env.YOGI_AI_MODEL;
+    if (!reviewModel) {
+      return phaseError(
+        "image_prompt",
+        "PROMPT_REVIEW_DISABLED",
+        "Missing YOGI_PROMPT_REVIEW_MODEL (or YOGI_AI_MODEL).",
+        400
+      );
+    }
+    const { revisedPrompt, summary } = await revisePrompt({
+      client: new OpenAI({ apiKey: process.env.OPENAI_API_KEY }),
+      model: reviewModel,
+      prompt: rawPrompt,
+      instruction: reviewInstruction,
+      entityType: payload.entity_type,
+      viewType,
+    });
+    if (!revisedPrompt) {
+      return phaseError("image_prompt", "PROMPT_REVIEW_EMPTY", "Review returned empty prompt.", 400);
+    }
+    promptToUse = revisedPrompt;
+    reviewSummary = summary || null;
+  }
+
   const mannequinPrompt =
     payload.entity_type === "pose" && viewType
-      ? ensureMannequinPrompt(rawPrompt, viewType)
-      : rawPrompt;
+      ? ensureMannequinPrompt(promptToUse, viewType)
+      : promptToUse;
 
   if (payload.entity_type === "pose") {
     const check = validateMannequinPrompt(mannequinPrompt, viewType ?? undefined);
@@ -84,7 +190,7 @@ export async function POST(request: Request) {
       return phaseError("image_prompt", "POSE_IMAGE_PROMPT_INVALID", check.hardErrors.join(" | "), 400);
     }
   } else {
-    const check = validateAnatomyImageSlot({ prompt: rawPrompt });
+    const check = validateAnatomyImageSlot({ prompt: mannequinPrompt });
     if (check.hardErrors.length > 0) {
       return phaseError("image_prompt", "ANATOMY_IMAGE_PROMPT_INVALID", check.hardErrors.join(" | "), 400);
     }
@@ -123,7 +229,8 @@ export async function POST(request: Request) {
         status: "generated",
         warning: undefined,
         warning_detail: undefined,
-        prompt_used: payload.entity_type === "pose" ? mannequinPrompt : rawPrompt,
+        prompt_used: mannequinPrompt,
+        prompt_review: reviewSummary,
       });
     }
 
@@ -142,7 +249,8 @@ export async function POST(request: Request) {
       status: "generated",
       warning: undefined,
       warning_detail: undefined,
-      prompt_used: payload.entity_type === "pose" ? mannequinPrompt : rawPrompt,
+      prompt_used: mannequinPrompt,
+      prompt_review: reviewSummary,
     });
   } catch (err) {
     return phaseError("image_generate", "IMAGE_API_ERROR", (err as Error)?.message ?? "Image API failed", 502);

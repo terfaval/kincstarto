@@ -204,6 +204,10 @@ function normalizeToken(value: string) {
     .trim();
 }
 
+function propLabelToSlug(label: string) {
+  return normalizeToken(label).replace(/ /g, "-");
+}
+
 function buildTagSet(pose: Pose) {
   return new Set(
     (pose.tags ?? [])
@@ -374,7 +378,7 @@ function ImageSlotFrame({
   );
 }
 
-export function YogiPoseSheet({ pose }: { pose: Pose }) {
+export function YogiPoseSheet({ pose, showProps = true }: { pose: Pose; showProps?: boolean }) {
   const title = pose.name_en;
   const subtitle = pose.sanskrit_name ?? pose.name_hu;
   const [relatedPoses, setRelatedPoses] = useState<Pose[]>([]);
@@ -630,11 +634,28 @@ export function YogiPoseSheet({ pose }: { pose: Pose }) {
         </div>
       </SheetSection>
 
-      <SheetSection title="Eszközök">
-        <div className={styles.metaGrid}>
-          <List items={pose.props} />
-        </div>
-      </SheetSection>
+      {showProps && (
+        <SheetSection title="Eszközök, amik segíthetnek">
+          {pose.props.length === 0 ? (
+            <p className={styles.empty}>{"Nincs megadva."}</p>
+          ) : (
+            <div className={styles.propGrid}>
+              {pose.props.map((prop) => {
+                const slug = propLabelToSlug(prop);
+                const imagePath = `/yogi/props/${slug}.png`;
+                return (
+                  <div key={prop} className={styles.propCard}>
+                    <div className={styles.propImage}>
+                      <img src={imagePath} alt={prop} />
+                    </div>
+                    <p className={styles.propLabel}>{prop}</p>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </SheetSection>
+      )}
 
       <SheetSection title="Biztonság">
         <div>

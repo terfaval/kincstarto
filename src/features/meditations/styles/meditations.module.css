@@ -59,6 +59,7 @@
   overflow: visible;
 }
 
+
 .backIcon {
   font-size: 1.6rem;
   line-height: 1;
@@ -78,10 +79,12 @@
   pointer-events: none;
 }
 
+
 .backLink:hover {
   transform: translateY(-1px);
   color: rgba(255, 255, 255, 0.95);
 }
+
 
 .backLink:hover .backLabel {
   opacity: 1;

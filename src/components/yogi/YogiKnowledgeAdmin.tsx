@@ -19,6 +19,7 @@ import { buildAnatomyImageSlot, buildPoseImageSlots } from "@/lib/yogiImagePromp
 import { compilePoseSpec } from "@/lib/yogiPosePromptCompiler";
 import { KNOWN_POSES } from "@/lib/yogiKnownPoses";
 import { normalizeSlug } from "@/lib/slug";
+import { collectPropCatalog } from "@/lib/yogiPropCatalog";
 import {
   YogaVideoStyleEnum,
   type YogaVideoMeta,
@@ -76,6 +77,7 @@ type YogaVideoForm = {
 
 type YogiKnowledgeAdminProps = {
   mode?: "admin" | "public";
+  showPropCatalog?: boolean;
 };
 
 const ENTITY_OPTIONS: Array<{ value: EntityType; label: string }> = [
@@ -184,7 +186,10 @@ function resolveImageUrl(url?: string | null) {
   return `/api/yogi-knowledge/image-proxy?url=${encodeURIComponent(url)}`;
 }
 
-export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdminProps) {
+export default function YogiKnowledgeAdmin({
+  mode = "admin",
+  showPropCatalog = true,
+}: YogiKnowledgeAdminProps) {
   const isAdmin = mode === "admin";
   const [entityType, setEntityType] = useState<EntityType>("pose");
   const [poseMode, setPoseMode] = useState<PoseMode>("known");
@@ -206,6 +211,7 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
   const [posePage, setPosePage] = useState(0);
   const [posePageSize, setPosePageSize] = useState(3);
   const [promptOverrides, setPromptOverrides] = useState<Record<string, string>>({});
+  const [promptReviews, setPromptReviews] = useState<Record<string, string>>({});
   const [poseQuery, setPoseQuery] = useState("");
   const [poseContentStatusFilter, setPoseContentStatusFilter] =
     useState<ContentStatusFilter>("all");
@@ -236,6 +242,7 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
   const [publicVideoIntensityFilter, setPublicVideoIntensityFilter] = useState("all");
   const [showPoseFilters, setShowPoseFilters] = useState(false);
   const [showVideoFilters, setShowVideoFilters] = useState(false);
+  const [propImageErrors, setPropImageErrors] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const body = document.body;
@@ -371,10 +378,11 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
     setSaveWarnings([]);
     setLastPayload(null);
     setImageLoading({});
-    setInputText("");
-    setPoseSelection("");
-    setPromptOverrides({});
-  };
+      setInputText("");
+      setPoseSelection("");
+      setPromptOverrides({});
+      setPromptReviews({});
+    };
 
   const loadPoseIntoEditor = (pose: Pose) => {
     setEntityType("pose");
@@ -565,7 +573,11 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
     updateDraft((draft) => ({ ...draft, content_status: "verified" }));
   };
 
-  const handleGenerateImage = async (slotKey: ImageSlotKey, promptOverride?: string) => {
+  const handleGenerateImage = async (
+    slotKey: ImageSlotKey,
+    promptOverride?: string,
+    reviewInstruction?: string,
+  ) => {
     setError(null);
     setInputError(null);
 
@@ -573,7 +585,9 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
       const parsed = JSON.parse(draftText) as Record<string, unknown>;
       const slot = (parsed as any)[slotKey];
       const override = promptOverride?.trim();
-      const prompt = override || (typeof slot?.prompt === "string" ? slot.prompt.trim() : "");
+      const review = reviewInstruction?.trim();
+      const promptBase = typeof slot?.prompt === "string" ? slot.prompt.trim() : "";
+      const prompt = override || promptBase;
 
       if (!prompt) {
         setError("Hiányzik az image prompt a generáláshoz.");
@@ -584,7 +598,7 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
 
       setImageLoading((prev) => ({ ...prev, [slotKey]: true }));
 
-      if (override) {
+      if (override && !review) {
         updateDraft((draft) => {
           const current = (draft as any)[slotKey] ?? {};
           return {
@@ -606,6 +620,7 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
           slot: slotKey,
           prompt,
           slug,
+          review_instruction: review,
         }),
       });
 
@@ -622,7 +637,8 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
           ...draft,
           [slotKey]: {
             ...current,
-            prompt: current.prompt ?? prompt,
+            prompt: review ? data?.prompt_used ?? current.prompt ?? prompt : current.prompt ?? prompt,
+            ...(review ? { prompt_revision: Date.now() } : {}),
             asset_ref: data.asset_ref,
             status: "generated",
             warning: data.warning ?? null,
@@ -1336,6 +1352,14 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
       : poses;
     return [...base].sort((a, b) => a.name_en.localeCompare(b.name_en, "en"));
   }, [poses, posePickerQuery]);
+  const propCatalog = useMemo(() => collectPropCatalog(poses), [poses]);
+  const propListText = useMemo(
+    () =>
+      propCatalog
+        .map((prop) => `${prop.label} | /yogi/props/${prop.slug}.png`)
+        .join("\n"),
+    [propCatalog],
+  );
   const poseDetailHref = (pose: Pose) => {
     const token = (pose.slug && pose.slug.trim()) || (pose.id && pose.id.trim()) || "";
     const idParam = pose.id ? `?id=${encodeURIComponent(pose.id)}` : "";
@@ -1638,6 +1662,70 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
           })}
         </div>
       </div>
+
+      {showPropCatalog && (
+        <div className={`admin-card ${styles.panel}`}>
+          <div className={styles.panelHeader}>
+            <h2 className={styles.panelTitle}>Eszközök (props)</h2>
+            <p className="admin-text-muted">
+              Egységesített eszközlista a pózokból. A képeket mentsd a public alá:
+              `public/yogi/props/[slug].png`.
+            </p>
+          </div>
+
+          {propCatalog.length === 0 && (
+            <div className={styles.poseGalleryEmpty}>Még nincs eszköz lista.</div>
+          )}
+
+          {propCatalog.length > 0 && (
+            <>
+              <div className={styles.propGrid}>
+                {propCatalog.map((prop) => {
+                  const imagePath = `/yogi/props/${prop.slug}.png`;
+                  const isMissing = propImageErrors[prop.slug];
+                  return (
+                    <div key={prop.key} className={styles.propCard}>
+                      <div className={styles.propImage}>
+                        {!isMissing && (
+                          <img
+                            src={imagePath}
+                            alt={prop.label}
+                            onError={() =>
+                              setPropImageErrors((prev) => ({
+                                ...prev,
+                                [prop.slug]: true,
+                              }))
+                            }
+                          />
+                        )}
+                        {isMissing && (
+                          <span className={styles.propPlaceholder}>{prop.label}</span>
+                        )}
+                      </div>
+                      <div className={styles.propMeta}>
+                        <p className={styles.propLabel}>{prop.label}</p>
+                        <p className={styles.propCount}>{prop.count} póz</p>
+                        <p className={styles.propPath}>{imagePath}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <label className="form-field">
+                <span className="form-field__label">Lista képgeneráláshoz</span>
+                <textarea
+                  className={`input ${styles.inputTextarea}`}
+                  rows={Math.min(10, Math.max(4, propCatalog.length))}
+                  readOnly
+                  value={propListText}
+                />
+              </label>
+            </>
+          )}
+        </div>
+      )}
+
       <div className={`admin-card ${styles.panel}`}>
         <div className={styles.panelHeader}>
           <h2 className={styles.panelTitle}>Jóga videók</h2>
@@ -2270,59 +2358,106 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
                         />
                       </label>
 
-                      <div className={styles.imageSlotActions}>
-                        <button
-                          type="button"
-                          className="btn btn--ghost"
-                          onClick={() => {
-                            const override = promptOverrides[slotKey]?.trim();
-                            if (!override) {
-                              setError("Nincs megadva override prompt.");
-                              return;
+                        <div className={styles.imageSlotActions}>
+                          <button
+                            type="button"
+                            className="btn btn--ghost"
+                            onClick={() => {
+                              const override = promptOverrides[slotKey]?.trim();
+                              if (!override) {
+                                setError("Nincs megadva override prompt.");
+                                return;
+                              }
+                              updateDraft((draft) => {
+                                const current = (draft as any)[slotKey] ?? {};
+                                return {
+                                  ...draft,
+                                  [slotKey]: {
+                                    ...current,
+                                    prompt: override,
+                                    prompt_revision: Date.now(),
+                                  },
+                                } as Record<string, unknown>;
+                              });
+                            }}
+                          >
+                            Override beírása
+                          </button>
+
+                          <button
+                            type="button"
+                            className="btn btn--primary"
+                            onClick={() => handleGenerateImage(slotKey, promptOverrides[slotKey])}
+                            disabled={isLoading}
+                          >
+                            Generálás override-dal
+                          </button>
+
+                          <button
+                            type="button"
+                            className="btn btn--ghost"
+                            onClick={() =>
+                              setPromptOverrides((prev) => ({
+                                ...prev,
+                                [slotKey]: "",
+                              }))
                             }
-                            updateDraft((draft) => {
-                              const current = (draft as any)[slotKey] ?? {};
-                              return {
-                                ...draft,
-                                [slotKey]: {
-                                  ...current,
-                                  prompt: override,
-                                  prompt_revision: Date.now(),
-                                },
-                              } as Record<string, unknown>;
-                            });
-                          }}
-                        >
-                          Override beírása
-                        </button>
+                          >
+                            Override törlése
+                          </button>
+                        </div>
 
-                        <button
-                          type="button"
-                          className="btn btn--primary"
-                          onClick={() => handleGenerateImage(slotKey, promptOverrides[slotKey])}
-                          disabled={isLoading}
-                        >
-                          Generálás override-dal
-                        </button>
+                        <label className={`form-field ${styles.imageSlotField}`}>
+                          <span className="form-field__label">Review instruction (HU/EN)</span>
+                          <textarea
+                            className={`input ${styles.inputTextarea}`}
+                            rows={3}
+                            value={promptReviews[slotKey] ?? ""}
+                            onChange={(event) =>
+                              setPromptReviews((prev) => ({
+                                ...prev,
+                                [slotKey]: event.target.value,
+                              }))
+                            }
+                            placeholder="Írd le röviden, mit kell módosítani a prompton..."
+                          />
+                        </label>
 
-                        <button
-                          type="button"
-                          className="btn btn--ghost"
-                          onClick={() =>
-                            setPromptOverrides((prev) => ({
-                              ...prev,
-                              [slotKey]: "",
-                            }))
-                          }
-                        >
-                          Override törlése
-                        </button>
-                      </div>
+                        <div className={styles.imageSlotActions}>
+                          <button
+                            type="button"
+                            className="btn btn--primary"
+                            onClick={() => {
+                              const review = promptReviews[slotKey]?.trim();
+                              if (!review) {
+                                setError("Nincs megadva review instruction.");
+                                return;
+                              }
+                              handleGenerateImage(slotKey, undefined, review);
+                            }}
+                            disabled={isLoading}
+                          >
+                            Generálás review-val
+                          </button>
 
-                      <div className={styles.imageSlotPrompt}>
-                        <p className={styles.imageSlotLabel}>Prompt</p>
-                        <p className={styles.imageSlotText}>{slot?.prompt ?? "-"}</p>
-                      </div>
+                          <button
+                            type="button"
+                            className="btn btn--ghost"
+                            onClick={() =>
+                              setPromptReviews((prev) => ({
+                                ...prev,
+                                [slotKey]: "",
+                              }))
+                            }
+                          >
+                            Review törlése
+                          </button>
+                        </div>
+
+                        <div className={styles.imageSlotPrompt}>
+                          <p className={styles.imageSlotLabel}>Prompt</p>
+                          <p className={styles.imageSlotText}>{slot?.prompt ?? "-"}</p>
+                        </div>
                     </div>
                   );
                 })}
@@ -2441,59 +2576,106 @@ export default function YogiKnowledgeAdmin({ mode = "admin" }: YogiKnowledgeAdmi
                         />
                       </label>
 
-                      <div className={styles.imageSlotActions}>
-                        <button
-                          type="button"
-                          className="btn btn--ghost"
-                          onClick={() => {
-                            const override = promptOverrides[slotKey]?.trim();
-                            if (!override) {
-                              setError("Nincs megadva override prompt.");
-                              return;
+                        <div className={styles.imageSlotActions}>
+                          <button
+                            type="button"
+                            className="btn btn--ghost"
+                            onClick={() => {
+                              const override = promptOverrides[slotKey]?.trim();
+                              if (!override) {
+                                setError("Nincs megadva override prompt.");
+                                return;
+                              }
+                              updateDraft((draft) => {
+                                const current = (draft as any)[slotKey] ?? {};
+                                return {
+                                  ...draft,
+                                  [slotKey]: {
+                                    ...current,
+                                    prompt: override,
+                                    prompt_revision: Date.now(),
+                                  },
+                                } as Record<string, unknown>;
+                              });
+                            }}
+                          >
+                            Override beĂ­rĂˇsa
+                          </button>
+
+                          <button
+                            type="button"
+                            className="btn btn--primary"
+                            onClick={() => handleGenerateImage(slotKey, promptOverrides[slotKey])}
+                            disabled={isLoading}
+                          >
+                            GenerĂˇlĂˇs override-dal
+                          </button>
+
+                          <button
+                            type="button"
+                            className="btn btn--ghost"
+                            onClick={() =>
+                              setPromptOverrides((prev) => ({
+                                ...prev,
+                                [slotKey]: "",
+                              }))
                             }
-                            updateDraft((draft) => {
-                              const current = (draft as any)[slotKey] ?? {};
-                              return {
-                                ...draft,
-                                [slotKey]: {
-                                  ...current,
-                                  prompt: override,
-                                  prompt_revision: Date.now(),
-                                },
-                              } as Record<string, unknown>;
-                            });
-                          }}
-                        >
-                          Override beĂ­rĂˇsa
-                        </button>
+                          >
+                            Override tĂ¶rlĂ©se
+                          </button>
+                        </div>
 
-                        <button
-                          type="button"
-                          className="btn btn--primary"
-                          onClick={() => handleGenerateImage(slotKey, promptOverrides[slotKey])}
-                          disabled={isLoading}
-                        >
-                          GenerĂˇlĂˇs override-dal
-                        </button>
+                        <label className={`form-field ${styles.imageSlotField}`}>
+                          <span className="form-field__label">Review instruction (HU/EN)</span>
+                          <textarea
+                            className={`input ${styles.inputTextarea}`}
+                            rows={3}
+                            value={promptReviews[slotKey] ?? ""}
+                            onChange={(event) =>
+                              setPromptReviews((prev) => ({
+                                ...prev,
+                                [slotKey]: event.target.value,
+                              }))
+                            }
+                            placeholder="Írd le röviden, mit kell módosítani a prompton..."
+                          />
+                        </label>
 
-                        <button
-                          type="button"
-                          className="btn btn--ghost"
-                          onClick={() =>
-                            setPromptOverrides((prev) => ({
-                              ...prev,
-                              [slotKey]: "",
-                            }))
-                          }
-                        >
-                          Override tĂ¶rlĂ©se
-                        </button>
-                      </div>
+                        <div className={styles.imageSlotActions}>
+                          <button
+                            type="button"
+                            className="btn btn--primary"
+                            onClick={() => {
+                              const review = promptReviews[slotKey]?.trim();
+                              if (!review) {
+                                setError("Nincs megadva review instruction.");
+                                return;
+                              }
+                              handleGenerateImage(slotKey, undefined, review);
+                            }}
+                            disabled={isLoading}
+                          >
+                            Generálás review-val
+                          </button>
 
-                      <div className={styles.imageSlotPrompt}>
-                        <p className={styles.imageSlotLabel}>Prompt</p>
-                        <p className={styles.imageSlotText}>{slot?.prompt ?? "-"}</p>
-                      </div>
+                          <button
+                            type="button"
+                            className="btn btn--ghost"
+                            onClick={() =>
+                              setPromptReviews((prev) => ({
+                                ...prev,
+                                [slotKey]: "",
+                              }))
+                            }
+                          >
+                            Review törlése
+                          </button>
+                        </div>
+
+                        <div className={styles.imageSlotPrompt}>
+                          <p className={styles.imageSlotLabel}>Prompt</p>
+                          <p className={styles.imageSlotText}>{slot?.prompt ?? "-"}</p>
+                        </div>
                     </div>
                   );
                 })}

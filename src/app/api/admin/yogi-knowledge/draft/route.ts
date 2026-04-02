@@ -8,6 +8,7 @@ import { validatePoseQuality, validateAnatomyQuality, validateKnowledgeCardQuali
 import { requireAdmin } from "@/lib/adminAuth";
 import { buildAnatomyImageSlot, buildPoseImageSlots, buildPoseImageSlotsWithSpec, validateAnatomyImageSlot, validatePoseImageSlots } from "@/lib/yogiImagePrompts";
 import { generatePoseImageSpecAI } from "@/lib/yogiImageSpecAI";
+import { ALLOWED_PROPS } from "@/lib/yogiPropCatalog";
 
 export const runtime = "nodejs";
 
@@ -414,6 +415,7 @@ ${poseList}
   - attention_points = what the practitioner feels/observes.
   - alignment_cues = what is physically adjusted.
   - Avoid Latin muscle names; prefer common Hungarian terms.
+  - Props must be chosen ONLY from this list (or empty): ${ALLOWED_PROPS.join(", ")}.
 
   Required non-empty lists (min 1 item):
   - tags, purpose, attention_points, alignment_cues, self_check_statements, common_mistakes

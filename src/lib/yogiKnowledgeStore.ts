@@ -2,6 +2,8 @@ import { join } from "node:path";
 import { readJsonStore, writeJsonStore } from "./jsonStore";
 import { normalizeSlug } from "./slug";
 import type { Anatomy, KnowledgeCard, Pose } from "./yogiKnowledgeSchema";
+import { normalizePoseProps } from "./yogiPropCatalog";
+import { applyPoseOverrides } from "./yogiPoseOverrides";
 
 export type YogiCollectionKey = "poses" | "anatomy" | "knowledge_cards";
 
@@ -63,7 +65,14 @@ function createJsonStore(): YogiKnowledgeStore {
   return {
     readCollection,
     writeCollection,
-    listPoses: () => readCollection<Pose>("poses", []),
+    listPoses: async () => {
+      const base = await readCollection<Pose>("poses", []);
+      const overridden = await applyPoseOverrides(base);
+      return overridden.map((pose) => ({
+        ...pose,
+        props: normalizePoseProps(pose.props),
+      }));
+    },
     listAnatomy: () => readCollection<Anatomy>("anatomy", []),
     listKnowledgeCards: () => readCollection<KnowledgeCard>("knowledge_cards", []),
     savePoses: (items) => writeCollection<Pose>("poses", items),

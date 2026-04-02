@@ -1943,6 +1943,239 @@
 },
 
 {
+    "id": "seated_side_stretch",
+    "slug": "seated_side_stretch",
+    "aliases": [
+      "seated side stretch",
+      "seated side stretch one leg extended",
+      "one leg extended side stretch"
+    ],
+    "display_name": "Seated Side Stretch",
+  "category": "seated",
+  "symmetry": "asymmetrical",
+  "mirrorable": true,
+  "default_variation": "default",
+  "view_hints": {
+    "angled": "show one leg extended and the other folded, with a clear side bend over the extended leg"
+  },
+  "variations": [
+    {
+      "id": "default",
+        "body": {
+          "head_neck_gaze": "head following the side bend, gaze downward or toward the extended leg",
+          "arms_shoulders_hands": "one arm reaching overhead toward the extended leg, the other hand grounded beside the hip (not behind the body)",
+          "chest_spine": "spine laterally flexed toward the extended leg",
+          "pelvis_hips": "pelvis grounded with one hip slightly lifting as the torso bends sideways",
+          "front_leg": "one leg extended straight to the side with foot relaxed or flexed",
+          "back_leg": "opposite leg bent and folded inward in a cross-legged position",
+          "base_weight": "weight grounded through sitting bones and bent leg",
+          "pose_axis": "seated lateral side bend toward one extended leg"
+        },
+        "critical_relations": [
+          "one leg remains clearly extended while the other stays folded",
+          "torso bends sideways rather than folding forward",
+          "top arm reaches over the head toward the extended leg",
+          "supporting hand stays beside the hip rather than behind the torso"
+        ],
+        "visibility_constraints": [
+          "both legs must remain clearly distinguishable in their roles",
+          "supporting hand beside the hip must be visible"
+        ],
+        "negative_constraints": [
+          "not forward fold",
+          "not janu sirsasana",
+          "not wide leg straddle",
+          "not symmetrical seated pose",
+          "not supported seated side bend with a hand behind the body"
+        ],
+      "side_topology": {
+        "left_leg_role": "lifted_leg",
+        "right_leg_role": "neutral",
+        "left_arm_role": "neutral",
+        "right_arm_role": "reaching_arm",
+        "foreground_side": "left"
+      }
+    }
+  ]
+},
+
+{
+    "id": "seated_side_bend_supported",
+    "slug": "seated_side_bend_supported",
+    "aliases": [
+      "supported seated side bend",
+      "seated side bend supported",
+      "seated side bend with hand behind"
+    ],
+    "display_name": "Seated Side Bend (Supported)",
+  "category": "seated",
+  "symmetry": "asymmetrical",
+  "mirrorable": true,
+  "default_variation": "default",
+  "view_hints": {
+    "angled": "show one leg extended and the other folded, with the lower hand supporting behind the body and the top arm arcing overhead"
+  },
+  "variations": [
+    {
+      "id": "default",
+      "body": {
+        "head_neck_gaze": "head following the side bend, gaze downward or slightly upward under the top arm",
+        "arms_shoulders_hands": "one hand grounded behind the body for support, opposite arm reaching overhead in an arc",
+        "chest_spine": "spine in lateral flexion creating a smooth side curve",
+        "pelvis_hips": "pelvis grounded with slight weight shift toward the supporting side",
+        "front_leg": "one leg extended straight to the side with foot relaxed or flexed",
+        "back_leg": "opposite leg bent and folded inward",
+        "base_weight": "weight grounded through sitting bones and the supporting hand",
+        "pose_axis": "seated lateral side bend with rear support"
+      },
+        "critical_relations": [
+          "one hand supports behind the body",
+          "top arm arcs overhead toward the extended leg",
+          "torso bends sideways rather than forward",
+          "supporting hand is clearly behind the torso, not beside the hip"
+        ],
+        "visibility_constraints": [
+          "supporting hand must be visible behind the body",
+          "both legs clearly distinguishable in position"
+        ],
+        "negative_constraints": [
+          "not forward fold",
+          "not janu sirsasana",
+          "not upright seated pose",
+          "not both hands reaching overhead",
+          "not unsupported seated side stretch with a hand beside the hip"
+        ],
+      "side_topology": {
+        "left_leg_role": "lifted_leg",
+        "right_leg_role": "neutral",
+        "left_arm_role": "neutral",
+        "right_arm_role": "reaching_arm",
+        "foreground_side": "left"
+      }
+    }
+  ]
+},
+
+{
+  "id": "fish",
+  "slug": "fish_pose",
+  "aliases": [
+    "matsyasana",
+    "fish pose"
+  ],
+  "display_name": "Fish Pose",
+  "category": "backbend",
+  "symmetry": "symmetrical",
+  "mirrorable": false,
+  "default_variation": "legs_extended",
+  "view_hints": {
+    "angled": "show the lifted chest and the crown of the head lightly touching the floor"
+  },
+  "variations": [
+    {
+      "id": "legs_extended",
+      "match_tokens": ["legs straight"],
+      "body": {
+        "head_neck_gaze": "head dropped back with the crown lightly touching the floor, throat open",
+        "arms_shoulders_hands": "arms alongside the body with forearms and elbows pressing into the mat",
+        "chest_spine": "chest lifted strongly upward creating an arch in the upper spine",
+        "pelvis_hips": "pelvis grounded or lightly lifted",
+        "front_leg": "both legs extended straight on the mat",
+        "back_leg": "both legs act symmetrically with feet relaxed or pointed",
+        "base_weight": "weight distributed between forearms and pelvis, with minimal pressure on the head",
+        "pose_axis": "supine backbend with chest lifted and head dropped back"
+      },
+      "critical_relations": [
+        "chest lifts higher than the head",
+        "crown of the head lightly touches the floor without bearing weight",
+        "forearms press into the mat to support the lift"
+      ],
+      "visibility_constraints": [
+        "the lifted chest arch must be clearly visible"
+      ],
+      "negative_constraints": [
+        "not bridge pose",
+        "not lying flat",
+        "not supported only on the head",
+        "not wheel pose"
+      ]
+    },
+    {
+      "id": "lotus_legs",
+      "match_tokens": ["lotus", "padmasana"],
+      "body": {
+        "head_neck_gaze": "head dropped back with crown on the floor",
+        "arms_shoulders_hands": "hands holding the feet or resting on thighs",
+        "chest_spine": "chest lifted in a deep backbend",
+        "pelvis_hips": "pelvis grounded",
+        "front_leg": "legs folded in lotus position",
+        "back_leg": "both legs act symmetrically",
+        "base_weight": "weight supported through pelvis and arms",
+        "pose_axis": "supine backbend with crossed legs"
+      },
+      "critical_relations": [
+        "legs are clearly in lotus position",
+        "chest lifts upward creating a strong arch"
+      ],
+      "negative_constraints": [
+        "not simple cross-legged lying",
+        "not forward fold",
+        "not seated pose"
+      ]
+    }
+  ]
+},
+
+{
+  "id": "plow_pose_bent_knees_supported",
+  "slug": "plow_pose_bent_knees_supported",
+  "aliases": [
+    "halasana",
+    "plow pose",
+    "supported plow",
+    "bent knee plow"
+  ],
+  "display_name": "Plow Pose (Bent Knees, Supported)",
+  "category": "inversion",
+  "symmetry": "symmetrical",
+  "mirrorable": false,
+  "default_variation": "default",
+  "view_hints": {
+    "angled": "show the legs folding over the head with knees bent and hands supporting the lower back"
+  },
+  "variations": [
+    {
+      "id": "default",
+      "body": {
+        "head_neck_gaze": "head neutral on the floor, gaze upward",
+        "arms_shoulders_hands": "hands supporting the lower back or hips",
+        "chest_spine": "spine deeply flexed with weight through upper back and shoulders",
+        "pelvis_hips": "pelvis lifted above the shoulders",
+        "front_leg": "both legs bent at the knees, thighs moving toward the face",
+        "back_leg": "lower legs extending beyond the head, feet hovering or lightly touching the floor behind",
+        "base_weight": "weight supported on shoulders and upper arms, not the neck",
+        "pose_axis": "inverted forward fold with legs moving over the head"
+      },
+      "critical_relations": [
+        "hips lifted above the shoulders",
+        "legs pass over the head toward the floor behind",
+        "weight rests on shoulders rather than neck"
+      ],
+      "visibility_constraints": [
+        "the inverted fold shape must be clearly visible"
+      ],
+      "negative_constraints": [
+        "not shoulder stand with vertical legs",
+        "not lying flat",
+        "not knees toward chest without inversion"
+      ]
+    }
+  ]
+},
+
+
+
+{
   "id": "reverse_tabletop",
   "slug": "reverse_tabletop",
   "aliases": [
