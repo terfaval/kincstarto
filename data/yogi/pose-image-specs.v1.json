@@ -2000,6 +2000,190 @@
 },
 
 {
+  "id": "gate",
+  "slug": "gate_pose",
+  "aliases": [
+    "parighasana",
+    "gate pose"
+  ],
+  "display_name": "Gate Pose",
+  "category": "kneeling",
+  "symmetry": "asymmetrical",
+  "mirrorable": true,
+  "default_variation": "default",
+  "view_hints": {
+    "angled": "show one knee grounded and the opposite leg extended to the side with a clear side bend"
+  },
+  "variations": [
+    {
+      "id": "default",
+      "body": {
+        "head_neck_gaze": "head follows the side bend, gaze upward or sideways under the top arm",
+        "arms_shoulders_hands": "one hand resting on the extended leg, opposite arm reaching overhead in an arc",
+        "chest_spine": "spine in lateral flexion toward the extended leg",
+        "pelvis_hips": "pelvis stacked over the grounded knee, hips facing mostly forward",
+        "front_leg": "one leg extended straight to the side with foot grounded",
+        "back_leg": "opposite knee grounded under the hip",
+        "base_weight": "weight grounded through the knee and the extended foot",
+        "pose_axis": "kneeling lateral side bend toward extended leg"
+      },
+      "critical_relations": [
+        "one knee remains grounded while the opposite leg extends to the side",
+        "torso bends sideways rather than forward",
+        "top arm arcs over the head toward the extended leg"
+      ],
+      "visibility_constraints": [
+        "the extended leg and grounded knee must be clearly visible"
+      ],
+      "negative_constraints": [
+        "not triangle pose",
+        "not seated side stretch",
+        "not low lunge",
+        "not side lunge"
+      ],
+      "side_topology": {
+        "left_leg_role": "lifted_leg",
+        "right_leg_role": "support_leg",
+        "left_arm_role": "neutral",
+        "right_arm_role": "reaching_arm",
+        "foreground_side": "left"
+      }
+    }
+  ]
+},
+
+{
+  "id": "side_lying_hip_opener_prep",
+  "slug": "side_lying_hip_opener_prep",
+  "aliases": [
+    "side lying hip opener",
+    "side lying leg prep"
+  ],
+  "display_name": "Side-Lying Hip Opener (Prep)",
+  "category": "mobility",
+  "symmetry": "asymmetrical",
+  "mirrorable": true,
+  "default_variation": "default",
+  "variations": [
+    {
+      "id": "default",
+      "body": {
+        "head_neck_gaze": "head supported by the arm or neutral, gaze forward",
+        "arms_shoulders_hands": "one forearm grounded supporting the torso",
+        "chest_spine": "spine neutral in side-lying position",
+        "pelvis_hips": "pelvis stacked sideways on the mat",
+        "front_leg": "top leg bent with foot placed in front of the body",
+        "back_leg": "bottom leg extended straight on the mat",
+        "base_weight": "weight supported on the side of the body and forearm",
+        "pose_axis": "side-lying setup with bent top leg"
+      },
+      "critical_relations": [
+        "torso remains side-lying",
+        "top leg is bent and placed forward"
+      ],
+      "negative_constraints": [
+        "not seated",
+        "not kneeling",
+        "not supine"
+      ],
+      "side_topology": {
+        "left_leg_role": "lifted_leg",
+        "right_leg_role": "neutral",
+        "left_arm_role": "neutral",
+        "right_arm_role": "support_arm",
+        "foreground_side": "left"
+      }
+    }
+  ]
+},
+
+{
+  "id": "side_lying_quad_hold",
+  "slug": "side_lying_quad_hold",
+  "aliases": [
+    "side lying quad stretch",
+    "side lying hip opener hold"
+  ],
+  "display_name": "Side-Lying Quad Stretch Hold",
+  "category": "mobility",
+  "symmetry": "asymmetrical",
+  "mirrorable": true,
+  "default_variation": "default",
+  "variations": [
+    {
+      "id": "default",
+      "body": {
+        "head_neck_gaze": "head supported by the lower arm, gaze downward",
+        "arms_shoulders_hands": "one arm supports the head, the other hand holds the top foot",
+        "chest_spine": "spine neutral in side-lying position",
+        "pelvis_hips": "pelvis stacked with slight backward opening as the leg lifts",
+        "front_leg": "top leg bent and lifted, foot held by the hand",
+        "back_leg": "bottom leg extended straight on the mat",
+        "base_weight": "weight supported along the side of the body",
+        "pose_axis": "side-lying with bent leg lifted and held"
+      },
+      "critical_relations": [
+        "hand holds the same-side foot",
+        "top knee remains bent and lifted",
+        "torso stays side-lying"
+      ],
+      "visibility_constraints": [
+        "hand-foot connection must be visible"
+      ],
+      "negative_constraints": [
+        "not tiger pose",
+        "not dancer pose",
+        "not prone quad stretch"
+      ],
+      "side_topology": {
+        "left_leg_role": "lifted_leg",
+        "right_leg_role": "neutral",
+        "left_arm_role": "reaching_arm",
+        "right_arm_role": "support_arm",
+        "foreground_side": "left"
+      }
+    }
+  ]
+},
+
+{
+  "id": "supported_side_plank",
+  "slug": "supported_side_plank",
+  "aliases": ["supported side plank", "side plank on knee", "kneeling side plank"],
+  "display_name": "Supported Side Plank",
+  "category": "kneeling",
+  "symmetry": "asymmetrical",
+  "mirrorable": true,
+  "default_variation": "default",
+  "variations": [
+    {
+      "id": "default",
+      "match_tokens": ["supported", "side plank variation"],
+      "body": {
+        "head_neck_gaze": "head neutral or slightly turned upward",
+        "arms_shoulders_hands": "one hand grounded under the shoulder supporting the torso, opposite arm reaching overhead",
+        "chest_spine": "spine long with slight lateral arc",
+        "pelvis_hips": "pelvis lifted away from the grounded knee creating a diagonal line",
+        "front_leg": "one leg extended to the side with foot grounded",
+        "back_leg": "opposite knee grounded under the hip",
+        "base_weight": "weight supported through one hand, one knee, and the extended foot",
+        "pose_axis": "kneeling side plank with lateral extension"
+      },
+      "critical_relations": [
+        "one hand supports the body weight",
+        "pelvis lifts away from the floor",
+        "one leg remains extended to the side"
+      ],
+      "negative_constraints": [
+        "not full side plank with both legs straight",
+        "not seated side bend",
+        "not low lunge"
+      ]
+    }
+  ]
+},
+
+{
     "id": "seated_side_bend_supported",
     "slug": "seated_side_bend_supported",
     "aliases": [
