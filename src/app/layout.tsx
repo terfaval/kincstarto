@@ -2,6 +2,7 @@
 import Script from "next/script";
 import localFont from "next/font/local";
 import TimeThemeEffect from "@/components/TimeThemeEffect";
+import ClientBootMarker from "@/components/ClientBootMarker";
 import "./globals.css";
 
 const sfFontBody = localFont({
@@ -202,7 +203,25 @@ export default function RootLayout({
             `,
           }}
         />
+        <noscript>
+          <div
+            style={{
+              position: "fixed",
+              top: "8px",
+              left: "8px",
+              padding: "6px 8px",
+              background: "rgba(180, 40, 40, 0.92)",
+              color: "#fff",
+              fontSize: "12px",
+              borderRadius: "6px",
+              zIndex: 10000,
+            }}
+          >
+            {"JS disabled or blocked"}
+          </div>
+        </noscript>
         <TimeThemeEffect />
+        <ClientBootMarker />
         {children}
       </body>
     </html>
