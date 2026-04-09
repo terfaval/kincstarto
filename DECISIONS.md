@@ -129,3 +129,18 @@ Indok: a regressziók tipikusan layout/touch problémákból jönnek.
 
 ### Indok
 - A hibás kódolás és a nem megfelelő fontok vizuális és tartalmi hibákat okoznak.
+
+---
+
+## D62 – Deploy routing: proxy-only, middleware tiltás
+
+**Status:** Accepted  
+**Date:** 2026-04-08
+
+### Döntés
+1) A deploy útvonalkezelés **proxy-n keresztül** történik, **Next.js middleware-t nem használunk**.
+2) Debug / diagnosztika során **nem vezetünk be middleware-t**, még ideiglenesen sem.
+
+### Indok
+- A proxy és a middleware együtt **kiszerelhetetlen, rejtett hibákat** okoz (cache/edge eltérés, kérés-útvonal elcsúszás).
+- A csapat többször beleszaladt ebbe; mostantól explicit szabály.
