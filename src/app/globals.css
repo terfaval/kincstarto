@@ -401,8 +401,8 @@ select.input optgroup {
   gap: 48px;
   background-image: url("/backgrounds/landing_background.png");
   background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+  background-position: center 65%;
+  background-size: cover;
 }
 
 .landing-hero {
@@ -461,19 +461,6 @@ select.input optgroup {
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }
 
-.landing-shell::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-image: url("/backgrounds/landing_background.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  filter: blur(18px);
-  transform: scale(1.02);
-  opacity: 0.85;
-}
 
 .landing-icon {
   width: 84px;
