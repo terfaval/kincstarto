@@ -392,6 +392,8 @@ select.input optgroup {
   min-height: 100svh;
   min-height: 100dvh;
   width: 100%;
+  position: relative;
+  isolation: isolate;
   padding: 64px 24px 80px;
   display: flex;
   flex-direction: column;
@@ -400,7 +402,7 @@ select.input optgroup {
   background-image: url("/backgrounds/landing_background.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: cover;
+  background-size: contain;
 }
 
 .landing-hero {
@@ -457,6 +459,20 @@ select.input optgroup {
   text-decoration: none;
   box-shadow: var(--shadow);
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.landing-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: url("/backgrounds/landing_background.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  filter: blur(18px);
+  transform: scale(1.02);
+  opacity: 0.85;
 }
 
 .landing-icon {
