@@ -43,6 +43,7 @@ export default function RootLayout({
     <html
       lang="hu"
       className={`${sfFontBody.variable} ${sfFontDisplay.variable}`}
+      data-preboot="ok"
     >
       <body className={`${sfFontBody.className} antialiased`}>
         <Script
