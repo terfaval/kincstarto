@@ -3,7 +3,6 @@
 import { Fragment, useMemo, useState, useEffect } from "react";
 import {
   Bookmark,
-  Brain,
   Check,
   Clock,
   Circle,
@@ -12,9 +11,9 @@ import {
   LogOut,
   Route,
   SlidersHorizontal,
-  Sparkles,
   X,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { SpiritBook, SpiritLibrary, SpiritPill, SpiritTradition, SpiritLevel, SpiritPath } from "@/lib/spiritSchema";
@@ -774,7 +773,14 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
           aria-label="Meditációs tér"
           title="Meditációs tér"
         >
-          <Sparkles size={18} className={styles.fabIcon} />
+          <Image
+            src="/icons/meditations.svg"
+            alt=""
+            width={18}
+            height={18}
+            className={styles.fabIcon}
+            aria-hidden
+          />
         </Link>
         <Link
           href="/yogis-choice"
@@ -782,7 +788,14 @@ export default function SpiritLibraryApp({ library, admin }: Props) {
           aria-label="Yogi's choice"
           title="Yogi's choice"
         >
-          <Brain size={18} className={styles.fabIcon} />
+          <Image
+            src="/icons/yoga.svg"
+            alt=""
+            width={18}
+            height={18}
+            className={styles.fabIcon}
+            aria-hidden
+          />
         </Link>
         {!isMobile && (
             <button
