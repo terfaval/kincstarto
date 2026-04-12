@@ -467,6 +467,36 @@ select.input optgroup {
   height: 84px;
 }
 
+:root[data-time-theme="night"] .landing-shell {
+  position: relative;
+  isolation: isolate;
+}
+
+:root[data-time-theme="night"] .landing-shell {
+  background-image: url("/backgrounds/landing_night.png");
+}
+
+:root[data-time-theme="night"] .landing-shell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(120% 120% at 20% 10%, rgba(8, 20, 36, 0.45), transparent 60%),
+    linear-gradient(135deg, rgba(8, 20, 36, 0.45), rgba(8, 20, 36, 0.25));
+  pointer-events: none;
+}
+
+:root[data-time-theme="night"] .landing-hero,
+:root[data-time-theme="night"] .landing-cards {
+  position: relative;
+  z-index: 1;
+}
+
+:root[data-time-theme="night"] .landing-brand img,
+:root[data-time-theme="night"] .landing-icon {
+  filter: brightness(0) invert(1);
+}
+
 .landing-card:hover {
   transform: translateY(-4px);
   border-color: rgba(var(--brand-ink-rgb), 0.3);
