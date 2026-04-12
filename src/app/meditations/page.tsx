@@ -17,7 +17,7 @@ export default async function MeditationPage() {
   const isAdmin = await isAdminRequest();
   return (
     <>
-      <Link href="/" className={styles.backLink} aria-label="Vissza a főoldalra">
+      <Link href="/library" className={styles.backLink} aria-label="Vissza a főoldalra">
         <span className={styles.backIcon} aria-hidden="true">
           ‹
         </span>

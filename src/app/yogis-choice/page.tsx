@@ -13,7 +13,7 @@ export default function YogisChoicePublicPage() {
   return (
     <>
       <Link
-        href="/"
+        href="/library"
         className={`${styles.backLink} ${yogiStyles.yogiBackLink}`}
         aria-label="Vissza a főoldalra"
       >
