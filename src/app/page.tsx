@@ -12,8 +12,8 @@ export default function LandingPage() {
           <Image
             src="/favicon.svg"
             alt="Kincstartó"
-            width={140}
-            height={140}
+            width={120}
+            height={120}
             priority
           />
           <h1>Kincstartó</h1>
