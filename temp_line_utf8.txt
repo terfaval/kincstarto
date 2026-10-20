@@ -1,1 +1,0 @@
-        <div className={styles.poseFilterSummary}>Sz?r?s</div>
