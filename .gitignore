@@ -46,3 +46,6 @@ next-env.d.ts
 
 # D26 distribution region catalogs (large; stored in Supabase by default)
 /data/distribution-region-catalog/v1/*.json
+
+# generated assistant source/patch ZIP archives
+/kincstarto-*.zip

@@ -27,6 +27,10 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.svg",
   },
+  appleWebApp: {
+    capable: true,
+    title: "Kincstartó",
+  },
 };
 
 export const viewport: Viewport = {
