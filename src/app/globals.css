@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --bg: #efddc6;
   --bg-grad:
     radial-gradient(1200px circle at 12% 10%, rgba(255, 200, 140, 0.12), transparent 60%),
@@ -126,6 +126,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  background: var(--background);
+  color: var(--foreground);
 }
 
 body {

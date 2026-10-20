@@ -44,3 +44,8 @@ No new dependencies, runtime audio logic, or UI changes. Verify the Home Screen 
 Fresh source ZIP -> smallest scoped implementation -> changed-files-only patch -> user applies files to repository -> focused local verification -> next fresh ZIP when necessary. The newest supplied ZIP supersedes older unpacked copies.
 
 `Base` omits large media by design, so when the requested work involves precise sound/image assets, ask for a targeted `Custom` archive or use `Full`; never infer media deletion from its absence.
+
+
+## Update — App icon follow-up
+- The repository now contains the user-selected `src/app/apple-icon.png`; do not overwrite it in future icon patches unless explicitly asked.
+- iPhone/Safari web-app colors were tuned so the browser chrome and standalone launch colors better match the site's night palette.

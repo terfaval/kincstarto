@@ -1,4 +1,4 @@
-﻿import type { Metadata, Viewport } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import localFont from "next/font/local";
 import TimeThemeEffect from "@/components/TimeThemeEffect";
@@ -21,6 +21,9 @@ const sfFontDisplay = localFont({
   style: "normal",
 });
 
+const DAY_THEME_COLOR = "#efddc6";
+const NIGHT_THEME_COLOR = "#0a1324";
+
 export const metadata: Metadata = {
   title: "Kincstartó",
   description: "Spirituális könyvtár szűréssel és AI-tervezett bejegyzésekkel",
@@ -30,12 +33,18 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     title: "Kincstartó",
+    statusBarStyle: "black-translucent",
   },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: DAY_THEME_COLOR },
+    { media: "(prefers-color-scheme: dark)", color: NIGHT_THEME_COLOR },
+  ],
 };
 
 export default function RootLayout({
@@ -50,6 +59,34 @@ export default function RootLayout({
       data-preboot="ok"
     >
       <body className={`${sfFontBody.className} antialiased`}>
+        <Script
+          id="time-theme-bootstrap"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+(function () {
+  try {
+    var prefersDark = typeof window.matchMedia === "function"
+      ? window.matchMedia("(prefers-color-scheme: dark)").matches
+      : false;
+    var hour = new Date().getHours();
+    var theme = prefersDark || hour >= 18 || hour < 6 ? "night" : "day";
+    var color = theme === "night" ? "${NIGHT_THEME_COLOR}" : "${DAY_THEME_COLOR}";
+    if (document && document.documentElement) {
+      document.documentElement.setAttribute("data-time-theme", theme);
+    }
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", "theme-color");
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", color);
+  } catch (e) {}
+})();
+            `,
+          }}
+        />
         <Script
           id="client-error-bootstrap"
           strategy="beforeInteractive"

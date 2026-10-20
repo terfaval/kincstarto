@@ -5,6 +5,8 @@ import { useEffect } from "react";
 const DAY_START = 6;
 const NIGHT_START = 18;
 const MINUTE_MS = 60 * 1000;
+const DAY_THEME_COLOR = "#efddc6";
+const NIGHT_THEME_COLOR = "#0a1324";
 
 const DAY_BACKGROUNDS = ["/backgrounds/day/day_default.png"];
 const NIGHT_BACKGROUNDS = ["/backgrounds/night/night_default.png"];
@@ -28,9 +30,22 @@ const pickDailyBackground = (theme: string, date: Date) => {
   return list[dayIndex];
 };
 
+const syncThemeMetaColor = (theme: string) => {
+  if (typeof document === "undefined") return;
+  const color = theme === "night" ? NIGHT_THEME_COLOR : DAY_THEME_COLOR;
+  let meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+  if (!meta) {
+    meta = document.createElement("meta");
+    meta.name = "theme-color";
+    document.head.appendChild(meta);
+  }
+  meta.content = color;
+};
+
 const applyTheme = (theme: string) => {
   if (typeof document === "undefined" || !document.documentElement) return;
   document.documentElement.setAttribute("data-time-theme", theme);
+  syncThemeMetaColor(theme);
 };
 
 export default function TimeThemeEffect() {
