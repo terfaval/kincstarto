@@ -7,6 +7,8 @@ export type RingLayoutItem = {
   angle: number;
   index: number;
   radiusMult: number;
+  mobileAngle: number;
+  mobileRadiusMult: number;
   category: MeditationCategory;
   meditation: Meditation;
 };
@@ -15,6 +17,18 @@ const LEVEL_RADIUS: Record<MeditationLevel, number> = {
   1: 0.62,
   2: 0.82,
   3: 1,
+};
+
+// A little more angular room for beads on narrow screens; desktop geometry is untouched.
+const MOBILE_SPACING: Record<MeditationLevel, number> = {
+  1: 32,
+  2: 26,
+  3: 20,
+};
+const MOBILE_RADIUS: Record<MeditationLevel, number> = {
+  1: 0.6,
+  2: 0.82,
+  3: 1.02,
 };
 
 export function getCategoryAngle(category: MeditationCategory) {
@@ -73,6 +87,8 @@ export function buildRingLayout(items: Meditation[]): RingLayoutItem[] {
           angle: baseAngle + offset,
           index,
           radiusMult: LEVEL_RADIUS[meditation.level] ?? 1,
+          mobileAngle: baseAngle + (idx - (count - 1) / 2) * MOBILE_SPACING[level],
+          mobileRadiusMult: MOBILE_RADIUS[meditation.level],
           category: meditation.category,
           meditation,
         });

@@ -1,11 +1,11 @@
-﻿import type { MeditationCategory } from "./meditation-types";
+import type { MeditationCategory } from "./meditation-types";
 
 const CATEGORY_LABELS: Record<MeditationCategory, string> = {
-  ALV: "Alvas",
+  ALV: "Alvás",
   STR: "Stressz",
-  FOK: "Fokusz",
+  FOK: "Fókusz",
   ENR: "Energia",
-  SPC: "Special",
+  SPC: "Speciális",
 };
 
 const CATEGORY_COLORS: Record<MeditationCategory, string> = {
