@@ -236,3 +236,9 @@
   cursor: pointer;
 }
 .cuePreviewButton:focus-visible { outline: 2px solid #dceaf5; outline-offset: 2px; }
+
+/* Prevent automatic iOS Safari zoom when editing a preset or a stage. */
+@media (max-width: 600px) {
+  .field input,
+  .field select { font-size: 16px; }
+}

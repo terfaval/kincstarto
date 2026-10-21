@@ -15,7 +15,6 @@ type Props = {
 };
 
 type PlayerPhase = "running" | "paused" | "finishing" | "paused-finishing";
-type ConfirmAction = "exit" | "restart";
 
 export default function CustomMeditationPlayer({ preset, cues, openingError = false, onExit }: Props) {
   const boundaries = useMemo(() => stageBoundaries(preset.stages), [preset]);
@@ -29,9 +28,7 @@ export default function CustomMeditationPlayer({ preset, cues, openingError = fa
   const mountedRef = useRef(false);
   const mainButtonRef = useRef<HTMLButtonElement>(null);
   const [soundError, setSoundError] = useState(false);
-  const [confirmAction, setConfirmAction] = useState<ConfirmAction | null>(null);
-  const wasPlayingBeforeConfirmRef = useRef(false);
-  const confirmCancelRef = useRef<HTMLButtonElement>(null);
+  const [wakeLockUnavailable, setWakeLockUnavailable] = useState(false);
   const exitRef = useRef(onExit);
   useEffect(() => { exitRef.current = onExit; }, [onExit]);
 
@@ -87,36 +84,24 @@ export default function CustomMeditationPlayer({ preset, cues, openingError = fa
     }
   }, [changePhase, cues]);
 
-  const requestAction = (action: ConfirmAction) => {
-    wasPlayingBeforeConfirmRef.current = phaseRef.current === "running" || phaseRef.current === "finishing";
-    if (wasPlayingBeforeConfirmRef.current) pause();
-    setConfirmAction(action);
+  const exitMeditation = () => {
+    runIdRef.current++;
+    pendingFinishRef.current = false;
+    cues.dispose();
+    exitRef.current();
   };
 
-  const cancelAction = () => {
-    setConfirmAction(null);
-    if (wasPlayingBeforeConfirmRef.current) resume();
-  };
-
-  const confirmRequestedAction = () => {
-    const action = confirmAction;
-    setConfirmAction(null);
-    if (action === "exit") {
-      runIdRef.current++;
-      pendingFinishRef.current = false;
-      cues.dispose();
-      exitRef.current();
-    } else if (action === "restart") {
-      runIdRef.current++;
-      pendingFinishRef.current = false;
-      cues.stopSources();
-      cues.resume();
-      setSoundError(false);
-      void cues.playOpening(() => setSoundError(true));
-      elapsedMsRef.current = 0;
-      startedAtRef.current = performance.now();
-      changePhase("running");
-    }
+  const restartMeditation = () => {
+    runIdRef.current++;
+    pendingFinishRef.current = false;
+    cues.stopSources();
+    setSoundError(false);
+    // Gesture-bound opening playback; no confirmation or additional prompt.
+    cues.playOpening(() => setSoundError(true));
+    cues.resume();
+    elapsedMsRef.current = 0;
+    startedAtRef.current = performance.now();
+    changePhase("running");
   };
 
   useEffect(() => {
@@ -140,24 +125,40 @@ export default function CustomMeditationPlayer({ preset, cues, openingError = fa
     };
   }, [cues, pause, tick]);
 
+  // Keep the screen awake only while meditation is active. Wake locks
+  // are revocable by the OS, and unsupported/older Home Screen Web Apps may
+  // still lock; do not claim guaranteed background execution.
   useEffect(() => {
-    if (!confirmAction) return;
-    confirmCancelRef.current?.focus();
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        cancelAction();
+    const active = phase === "running" || phase === "finishing";
+    if (!active || document.visibilityState !== "visible") return;
+    let cancelled = false;
+    let lock: WakeLockSentinel | null = null;
+    const acquire = async () => {
+      if (!navigator.wakeLock?.request) {
+        if (!cancelled) setWakeLockUnavailable(true);
+        return;
+      }
+      try {
+        const acquired = await navigator.wakeLock.request("screen");
+        if (cancelled) { void acquired.release(); return; }
+        lock = acquired;
+        setWakeLockUnavailable(false);
+      } catch {
+        if (!cancelled) setWakeLockUnavailable(true);
       }
     };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [confirmAction]);
+    void acquire();
+    return () => {
+      cancelled = true;
+      if (lock) void lock.release().catch(() => {});
+    };
+  }, [phase]);
 
   const isPaused = phase === "paused" || phase === "paused-finishing";
   return (
     <div className={styles.player} role="region" aria-label={`${preset.title} – saját meditáció lejátszó`}>
       <div className={styles.controls}>
-        <button className={styles.smallButton} onClick={() => requestAction("exit")} type="button" aria-label="Kilépés a meditációból" title="Kilépés">
+        <button className={styles.smallButton} onClick={exitMeditation} type="button" aria-label="Kilépés a meditációból" title="Kilépés">
           <X size={26} strokeWidth={1.5} aria-hidden="true" />
         </button>
         <button ref={mainButtonRef} className={styles.mainButton} onClick={isPaused ? resume : pause} type="button"
@@ -165,29 +166,15 @@ export default function CustomMeditationPlayer({ preset, cues, openingError = fa
           title={isPaused ? "Folytatás" : "Szünet"}>
           {isPaused ? <Play size={32} strokeWidth={1.6} fill="currentColor" aria-hidden="true" /> : <Pause size={32} strokeWidth={1.6} aria-hidden="true" />}
         </button>
-        <button className={styles.smallButton} onClick={() => requestAction("restart")} type="button" aria-label="Meditáció újrakezdése" title="Újrakezdés">
+        <button className={styles.smallButton} onClick={restartMeditation} type="button" aria-label="Meditáció újrakezdése" title="Újrakezdés">
           <RotateCcw size={25} strokeWidth={1.5} aria-hidden="true" />
         </button>
       </div>
-      {confirmAction && (
-        <div className={styles.confirmBackdrop}>
-          <div className={styles.confirmDialog} role="alertdialog" aria-modal="true" aria-labelledby="meditation-confirm-title">
-            <h2 id="meditation-confirm-title">
-              {confirmAction === "exit" ? "Kilépsz a meditációból?" : "Elölről kezded a meditációt?"}
-            </h2>
-            <div className={styles.confirmActions}>
-              <button ref={confirmCancelRef} type="button" onClick={cancelAction}>Mégse</button>
-              <button type="button" onClick={confirmRequestedAction}>
-                {confirmAction === "exit" ? "Kilépés" : "Újrakezdés"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
       <span className={styles.srOnly} role="status" aria-live="polite">
         {isPaused ? "A meditáció szünetel." : phase === "finishing" ? "A meditáció lezárása." : "A meditáció folyamatban van."}
       </span>
-      {(soundError || openingError) && <p className={styles.soundError} role="alert">Egy hangjelzés nem érhető el. Az időzítés ettől még folytatódik.</p>}
+      {(soundError || openingError) && <p className={styles.soundError} role="alert">A hangjelzés nem indult el. Ellenőrizd a /audio/timer/ hangfájlok elérhetőségét.</p>}
+      {wakeLockUnavailable && !isPaused && <p className={styles.wakeLockWarning} role="status">A kijelző ébren tartása ezen az eszközön nem garantált.</p>}
     </div>
   );
 }

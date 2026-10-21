@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { SlidersHorizontal } from "lucide-react";
 import type { CSSProperties } from "react";
 import type { Meditation, MeditationCategory, MeditationEndBehavior } from "../lib/meditation-types";
 import { CATEGORY_ORDER, getCategoryAngle } from "../lib/meditation-layout";
@@ -29,6 +30,7 @@ export default function MeditationSpace({ meditations: initialMeditations, audio
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<MeditationCategory | null>(null);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const { collection, defaultPreset, ready: customReady, error: customError, save, remove, setDefault } = useCustomMeditations();
   const [customDialog, setCustomDialog] = useState<"new" | "list" | null>(null);
   const [customPlayback, setCustomPlayback] = useState<{
@@ -131,6 +133,7 @@ export default function MeditationSpace({ meditations: initialMeditations, audio
 
   const chooseCategory = (category: MeditationCategory | null) => {
     setActiveCategory(category);
+    setFiltersOpen(false);
     setSelectedId(null);
     setHoveredId(null);
   };
@@ -171,7 +174,18 @@ export default function MeditationSpace({ meditations: initialMeditations, audio
     <section className={`${styles.space} ${readerOpen ? styles.spaceReaderOpen : ""}`}>
       <div className={styles.spaceInner}>
         <div className={styles.ringArea}>
-          <nav className={styles.categoryFilters} aria-label="Meditációk tematikus szűrése">
+          <button
+            type="button"
+            className={`${styles.categoryToggle} ${activeCategory ? styles.categoryToggleActive : ""}`}
+            onClick={() => setFiltersOpen((open) => !open)}
+            aria-expanded={filtersOpen}
+            aria-controls="meditation-category-filters"
+            aria-label={filtersOpen ? "Tematikus szűrők bezárása" : "Tematikus szűrők megnyitása"}
+            title="Tematikus szűrők"
+          >
+            <SlidersHorizontal size={21} strokeWidth={1.6} aria-hidden="true" />
+          </button>
+          <nav id="meditation-category-filters" className={`${styles.categoryFilters} ${filtersOpen ? styles.categoryFiltersOpen : ""}`} aria-label="Meditációk tematikus szűrése">
             <button
               type="button"
               className={`${styles.categoryChip} ${activeCategory === null ? styles.categoryChipActive : ""}`}
@@ -214,9 +228,9 @@ export default function MeditationSpace({ meditations: initialMeditations, audio
               <MeditationCenterFocus meditation={focused} />
               {!focused && (
                 <div className={styles.desktopCustomEntry}>
-                  {defaultPreset && <span className={styles.customPresetSummary}>{defaultPreset.title} · {formatCustomDuration(durationOfPreset(defaultPreset))}</span>}
+                  {defaultPreset && <span className={styles.customPresetSummary}>{formatCustomDuration(durationOfPreset(defaultPreset))}</span>}
                   <button type="button" className={styles.customStartButton} disabled={!customReady} onClick={() => defaultPreset ? startCustomMeditation() : openCustomConfig("new")}>
-                    {defaultPreset ? "Saját meditáció indítása" : "Első saját meditáció beállítása"}
+                    {defaultPreset ? `${defaultPreset.title} indítása` : "Első saját meditáció beállítása"}
                   </button>
                   <button type="button" className={styles.customSettingsLink} disabled={!customReady} onClick={() => openCustomConfig("list")}>Gyakorlásaim beállítása</button>
                 </div>
@@ -229,9 +243,9 @@ export default function MeditationSpace({ meditations: initialMeditations, audio
                 <div className={styles.mobileHome}>
                   <MeditationCenterFocus meditation={null} />
                   <div className={styles.customMeditationEntry}>
-                    {defaultPreset && <span className={styles.customPresetSummary}>{defaultPreset.title} · {formatCustomDuration(durationOfPreset(defaultPreset))}</span>}
+                    {defaultPreset && <span className={styles.customPresetSummary}>{formatCustomDuration(durationOfPreset(defaultPreset))}</span>}
                     <button type="button" className={styles.customStartButton} disabled={!customReady} onClick={() => defaultPreset ? startCustomMeditation() : openCustomConfig("new")}>
-                      {defaultPreset ? "Saját meditáció indítása" : "Első saját meditáció beállítása"}
+                      {defaultPreset ? `${defaultPreset.title} indítása` : "Első saját meditáció beállítása"}
                     </button>
                     <button type="button" className={styles.customSettingsLink} disabled={!customReady} onClick={() => openCustomConfig("list")}>
                       Gyakorlásaim beállítása

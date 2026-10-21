@@ -9,6 +9,8 @@ export class CustomMeditationCues {
   private context: AudioContext | null = null;
   private cache = new Map<string, Promise<AudioBuffer | null>>();
   private sources = new Set<AudioScheduledSourceNode>();
+  private openingAudio: HTMLAudioElement | null = null;
+  private onOpeningError: (() => void) | null = null;
   private generation = 0;
   private disposed = false;
 
@@ -22,24 +24,49 @@ export class CustomMeditationCues {
 
   get supported() { return this.context !== null; }
 
-  /** The exclusive opening signature is played once for Start/Restart. */
-  async playOpening(onMissing: () => void = () => {}) {
-    const context = this.context;
-    if (!context || this.disposed) { onMissing(); return; }
-    const token = this.generation;
-    // Resume inside the user's click before awaiting the file load.
-    try { await context.resume(); } catch { onMissing(); return; }
-    const buffer = await this.load(CUSTOM_OPENING_PATH);
-    if (this.disposed || token !== this.generation) return;
-    if (!buffer) { onMissing(); return; }
-    const source = context.createBufferSource();
-    source.buffer = buffer;
-    const gain = context.createGain();
-    gain.gain.value = 0.7;
-    source.connect(gain);
-    gain.connect(context.destination);
-    this.track(source);
-    source.start();
+  /** Start the dedicated signature synchronously from the tap/click on iOS.
+   * HTMLMediaElement.play() is invoked BEFORE any asynchronous work, so Safari
+   * does not lose its user activation while fetching/decoding the MP3.
+   */
+  playOpening(onMissing: () => void = () => {}) {
+    if (this.disposed) { onMissing(); return; }
+    this.stopOpening();
+    // Unlock stage-cue Web Audio in the same gesture as the opening MP3.
+    if (this.context) void this.context.resume().catch(onMissing);
+    this.onOpeningError = onMissing;
+    let audio: HTMLAudioElement;
+    try {
+      audio = new Audio(CUSTOM_OPENING_PATH);
+      audio.preload = "auto";
+      audio.volume = 0.7;
+    } catch {
+      this.onOpeningError = null;
+      onMissing();
+      return;
+    }
+    this.openingAudio = audio;
+    const fail = () => {
+      if (this.openingAudio !== audio) return;
+      this.stopOpening();
+      onMissing();
+    };
+    audio.onerror = fail;
+    audio.onended = () => {
+      if (this.openingAudio === audio) this.stopOpening();
+    };
+    // Safari must receive play() in the initiating user gesture.
+    void audio.play().catch(fail);
+  }
+
+  private stopOpening() {
+    const audio = this.openingAudio;
+    this.openingAudio = null;
+    this.onOpeningError = null;
+    if (!audio) return;
+    audio.onerror = null;
+    audio.onended = null;
+    audio.pause();
+    try { audio.currentTime = 0; } catch { /* asset may not have loaded */ }
   }
 
   prepare(cueIds: (CustomCueId | null)[]) {
@@ -102,10 +129,27 @@ export class CustomMeditationCues {
     }
   }
 
-  pause() { if (this.context && !this.disposed) void this.context.suspend().catch(() => {}); }
-  resume() { if (this.context && !this.disposed) void this.context.resume().catch(() => {}); }
+  pause() {
+    this.openingAudio?.pause();
+    if (this.context && !this.disposed) void this.context.suspend().catch(() => {});
+  }
+  resume() {
+    // Called from the user's Resume tap; keep the opening cue in sync.
+    const audio = this.openingAudio;
+    if (audio && audio.paused && !audio.ended) {
+      const onError = this.onOpeningError;
+      void audio.play().catch(() => {
+        if (this.openingAudio === audio) {
+          this.stopOpening();
+          onError?.();
+        }
+      });
+    }
+    if (this.context && !this.disposed) void this.context.resume().catch(() => {});
+  }
 
   stopSources() {
+    this.stopOpening();
     this.generation++;
     for (const source of this.sources) {
       try { source.stop(); } catch { /* already ended */ }

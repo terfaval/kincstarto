@@ -103,3 +103,12 @@ Prepared against `kincstarto-main(4).zip`, which already contains Patch 05 and p
 - The custom stage editor now supports a one-shot sound preview; it stops previews on selection changes, exit and unmount.
 - Exit/restart in the custom player use a compact in-app confirmation overlay instead of OS-native confirm dialogs. Timer/audio pauses during confirmation and resumes only when cancelled from a running session.
 - Browser screen-lock background audio is still out of scope. Verify on iPhone with the screen awake; local `tsc`/`next build` checks remain user-side where dependencies are installed.
+
+## Checkpoint: Patch 07 - mobile meditation refinement (2026-10-21)
+
+- Mobile meditation ring uses a collapsed filter button at upper right; expanded pills sit in a single horizontally scrollable row and do not collide with the back-to-home control (`/`).
+- Mobile lower zone is transparent and shares the same cool blue image overlay as the ring and the full-screen custom meditation player. Ring/copy/custom-action vertical spacing has been adjusted without changing the desktop ring.
+- Custom start button includes the saved default preset title (`<name> indítása`); the line above displays duration only. Existing browser-local presets remain untouched.
+- Custom-player Exit and Restart happen immediately without confirmation modals. The opening signature starts through an HTML audio element's `play()` invoked synchronously on the user's tap; Web Audio remains unlocked for stage endings. Playback failure reports an asset warning.
+- A Screen Wake Lock is requested only while the custom timer is running or finishing and released when paused/exited. Browser/OS support, especially older iOS installed web apps, can prevent acquisition; background playback is still intentionally unsupported and requires real-device QA.
+- The ZIP is code-only and does not include `/public/audio/timer/` media; validate deployed MP3 URLs independently.
