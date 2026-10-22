@@ -98,7 +98,6 @@ export default function CustomMeditationPlayer({ preset, cues, openingError = fa
     setSoundError(false);
     // Gesture-bound opening playback; no confirmation or additional prompt.
     cues.playOpening(() => setSoundError(true));
-    cues.resume();
     elapsedMsRef.current = 0;
     startedAtRef.current = performance.now();
     changePhase("running");

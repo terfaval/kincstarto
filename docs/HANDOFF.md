@@ -112,3 +112,11 @@ Prepared against `kincstarto-main(4).zip`, which already contains Patch 05 and p
 - Custom-player Exit and Restart happen immediately without confirmation modals. The opening signature starts through an HTML audio element's `play()` invoked synchronously on the user's tap; Web Audio remains unlocked for stage endings. Playback failure reports an asset warning.
 - A Screen Wake Lock is requested only while the custom timer is running or finishing and released when paused/exited. Browser/OS support, especially older iOS installed web apps, can prevent acquisition; background playback is still intentionally unsupported and requires real-device QA.
 - The ZIP is code-only and does not include `/public/audio/timer/` media; validate deployed MP3 URLs independently.
+
+
+## Checkpoint: custom meditation stage audio — Patch 07a
+
+- Symptom reported on iPhone after Patch 07: `opening-signature.mp3` audibly plays, but configured stage-end cues are inaudible despite successful TypeScript/build checks.
+- Source-level risk: opening used user-initiated HTMLAudioElement playback, while stage cues used an independent Web Audio AudioContext (which can be inaudible/paused on iOS Safari, e.g. silent-mode and interrupted session issues).
+- Replace custom-timer stage Web Audio with the **same, reusable HTMLAudioElement** initialized and played by the Start click. Change `src` on the existing element at stage boundaries; keep repetition, pause/resume, restart, cleanup, and on-failure final-stage completion. No changes to the guided meditation audio engine, stored cue IDs, presets or MP3 assets.
+- Stage and opening playback are now a single media path; do not add new audio elements at delayed stage boundaries (risk of iOS playback authorization failure). This is a compatibility fix, not proof of behavior on a physical iPhone. Verify in a visible Home Screen webapp with a 15-second practice, including iPhone silent mode.

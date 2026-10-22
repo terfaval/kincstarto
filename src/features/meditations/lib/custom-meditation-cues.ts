@@ -1,166 +1,159 @@
 import { CUSTOM_OPENING_PATH, getCustomCuePath, type CustomCueId } from "./custom-meditation-types";
 
 /**
- * A one-shot Web Audio player, deliberately separate from the looping reader engine.
- * Creation and playOpening() happen inside the user's Start click to unlock iOS audio.
- * The dedicated file is reserved for the start only: never a stage option.
+ * One reusable HTMLAudioElement for both the opening signature and stage cues.
+ *
+ * iOS Safari can mute/interupt Web Audio independently from regular media
+ * elements (including when the phone's silent switch is enabled). The first
+ * play() is called synchronously from Start, giving this same element its
+ * initial user activation before any timer-based stage cues are requested.
+ *
+ * We reuse that element when the source changes. Creating a new Audio object
+ * at a later stage boundary would lose the user-activated playback path.
  */
 export class CustomMeditationCues {
-  private context: AudioContext | null = null;
-  private cache = new Map<string, Promise<AudioBuffer | null>>();
-  private sources = new Set<AudioScheduledSourceNode>();
-  private openingAudio: HTMLAudioElement | null = null;
-  private onOpeningError: (() => void) | null = null;
+  private audio: HTMLAudioElement | null = null;
   private generation = 0;
   private disposed = false;
+  private remainingPlays = 0;
+  private active = false;
 
-  constructor() {
+  get supported() { return typeof Audio !== "undefined"; }
+
+  private getAudio(): HTMLAudioElement | null {
+    if (this.disposed) return null;
+    if (this.audio) return this.audio;
+    if (!this.supported) return null;
     try {
-      this.context = typeof AudioContext !== "undefined" ? new AudioContext() : null;
+      const audio = new Audio();
+      audio.preload = "auto";
+      audio.volume = 0.7;
+      this.audio = audio;
+      return audio;
     } catch {
-      this.context = null;
+      return null;
     }
   }
 
-  get supported() { return this.context !== null; }
-
-  /** Start the dedicated signature synchronously from the tap/click on iOS.
-   * HTMLMediaElement.play() is invoked BEFORE any asynchronous work, so Safari
-   * does not lose its user activation while fetching/decoding the MP3.
-   */
+  /** Start immediately inside the Start/Restart click; do not await loading. */
   playOpening(onMissing: () => void = () => {}) {
-    if (this.disposed) { onMissing(); return; }
-    this.stopOpening();
-    // Unlock stage-cue Web Audio in the same gesture as the opening MP3.
-    if (this.context) void this.context.resume().catch(onMissing);
-    this.onOpeningError = onMissing;
-    let audio: HTMLAudioElement;
-    try {
-      audio = new Audio(CUSTOM_OPENING_PATH);
-      audio.preload = "auto";
-      audio.volume = 0.7;
-    } catch {
-      this.onOpeningError = null;
-      onMissing();
-      return;
-    }
-    this.openingAudio = audio;
+    this.stopSources();
+    const token = this.generation;
+    const audio = this.getAudio();
+    if (!audio) { onMissing(); return; }
+    this.active = true;
+    this.remainingPlays = 1;
     const fail = () => {
-      if (this.openingAudio !== audio) return;
-      this.stopOpening();
+      if (this.disposed || token !== this.generation) return;
+      this.stopSources();
       onMissing();
     };
     audio.onerror = fail;
     audio.onended = () => {
-      if (this.openingAudio === audio) this.stopOpening();
+      if (this.disposed || token !== this.generation) return;
+      this.active = false;
+      this.remainingPlays = 0;
+      audio.onended = null;
+      audio.onerror = null;
     };
-    // Safari must receive play() in the initiating user gesture.
-    void audio.play().catch(fail);
+    try {
+      audio.src = CUSTOM_OPENING_PATH;
+      // Safari must receive play() before the initiating click returns.
+      void audio.play().catch(fail);
+    } catch {
+      fail();
+    }
   }
 
-  private stopOpening() {
-    const audio = this.openingAudio;
-    this.openingAudio = null;
-    this.onOpeningError = null;
-    if (!audio) return;
-    audio.onerror = null;
-    audio.onended = null;
-    audio.pause();
-    try { audio.currentTime = 0; } catch { /* asset may not have loaded */ }
-  }
-
+  /** Warm the HTTP cache without spawning additional, locked audio players. */
   prepare(cueIds: (CustomCueId | null)[]) {
-    for (const cueId of cueIds) if (cueId) void this.load(getCustomCuePath(cueId));
+    if (typeof fetch === "undefined") return;
+    for (const id of new Set(cueIds.filter((cue): cue is CustomCueId => cue !== null))) {
+      void fetch(getCustomCuePath(id)).catch(() => {});
+    }
   }
 
-  private load(path: string): Promise<AudioBuffer | null> {
-    const existing = this.cache.get(path);
-    if (existing) return existing;
-    const context = this.context;
-    const promise = (async () => {
-      if (!context) return null;
-      try {
-        const response = await fetch(path);
-        if (!response.ok) return null;
-        return await context.decodeAudioData(await response.arrayBuffer());
-      } catch {
-        return null;
-      }
-    })();
-    this.cache.set(path, promise);
-    return promise;
-  }
-
-  private track(source: AudioScheduledSourceNode) {
-    this.sources.add(source);
-    source.addEventListener("ended", () => this.sources.delete(source), { once: true });
-  }
-
-  /** Earlier cue tails are cancelled when the next boundary arrives. */
-  async playStageCue(id: CustomCueId | null, repeats: number, onDone: () => void, onMissing: () => void) {
+  /** The final onDone fires after the last complete recording, not on cue start. */
+  playStageCue(id: CustomCueId | null, repeats: number, onDone: () => void, onMissing: () => void) {
     this.stopSources();
     const token = this.generation;
     if (!id) { onDone(); return; }
-    const buffer = await this.load(getCustomCuePath(id));
-    if (this.disposed || token !== this.generation) return;
-    const context = this.context;
-    if (!buffer || !context) {
+    const audio = this.getAudio();
+    if (!audio) { onMissing(); onDone(); return; }
+
+    this.active = true;
+    this.remainingPlays = Math.max(1, Math.min(8, Math.trunc(repeats) || 1));
+
+    const fail = () => {
+      if (this.disposed || token !== this.generation) return;
+      this.stopSources();
       onMissing();
-      onDone();
-      return;
-    }
-    const count = Math.max(1, Math.min(8, Math.trunc(repeats)));
-    const intervalSec = buffer.duration + 0.65;
-    const start = context.currentTime + 0.03;
-    const cueGain = context.createGain();
-    cueGain.gain.value = 0.7;
-    cueGain.connect(context.destination);
-    for (let index = 0; index < count; index++) {
-      const source = context.createBufferSource();
-      source.buffer = buffer;
-      source.connect(cueGain);
-      this.track(source);
-      if (index === count - 1) {
-        source.addEventListener("ended", () => {
-          if (!this.disposed && token === this.generation) onDone();
-        }, { once: true });
+      onDone(); // A missing/broken file must not strand the final stage.
+    };
+    const playAgain = () => {
+      if (this.disposed || token !== this.generation || !this.active) return;
+      try { audio.currentTime = 0; } catch { /* media metadata may not be ready yet */ }
+      try {
+        void audio.play().catch(fail);
+      } catch {
+        fail();
       }
-      source.start(start + index * intervalSec);
+    };
+    audio.onerror = fail;
+    audio.onended = () => {
+      if (this.disposed || token !== this.generation || !this.active) return;
+      this.remainingPlays--;
+      if (this.remainingPlays > 0) {
+        playAgain();
+        return;
+      }
+      this.active = false;
+      audio.onerror = null;
+      audio.onended = null;
+      onDone();
+    };
+    try {
+      // Reuse the user-unlocked opening element instead of Web Audio.
+      audio.src = getCustomCuePath(id);
+      playAgain();
+    } catch {
+      fail();
     }
   }
 
   pause() {
-    this.openingAudio?.pause();
-    if (this.context && !this.disposed) void this.context.suspend().catch(() => {});
+    if (this.active) this.audio?.pause();
   }
+
   resume() {
-    // Called from the user's Resume tap; keep the opening cue in sync.
-    const audio = this.openingAudio;
-    if (audio && audio.paused && !audio.ended) {
-      const onError = this.onOpeningError;
-      void audio.play().catch(() => {
-        if (this.openingAudio === audio) {
-          this.stopOpening();
-          onError?.();
-        }
-      });
-    }
-    if (this.context && !this.disposed) void this.context.resume().catch(() => {});
+    const audio = this.audio;
+    if (!this.active || !audio || !audio.paused || this.disposed) return;
+    // Resume is itself initiated by a user tap.
+    void audio.play().catch(() => {
+      // Playback can fail after an iOS audio interruption: use the same
+      // per-clip error callback so the user sees an explicit warning.
+      audio.onerror?.(new Event("error"));
+    });
   }
 
   stopSources() {
-    this.stopOpening();
     this.generation++;
-    for (const source of this.sources) {
-      try { source.stop(); } catch { /* already ended */ }
-    }
-    this.sources.clear();
+    this.active = false;
+    this.remainingPlays = 0;
+    const audio = this.audio;
+    if (!audio) return;
+    audio.onended = null;
+    audio.onerror = null;
+    audio.pause();
+    try { audio.currentTime = 0; } catch { /* not yet loaded */ }
   }
 
   dispose() {
     if (this.disposed) return;
-    this.disposed = true;
     this.stopSources();
-    if (this.context) void this.context.close().catch(() => {});
+    this.disposed = true;
+    const audio = this.audio;
+    this.audio = null;
+    if (audio) audio.removeAttribute("src");
   }
 }
