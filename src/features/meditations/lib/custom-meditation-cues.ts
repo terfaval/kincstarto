@@ -1,24 +1,49 @@
-import { CUSTOM_OPENING_PATH, getCustomCuePath, type CustomCueId } from "./custom-meditation-types";
+import type { CustomCueId } from "./custom-meditation-types";
 
 /**
- * One reusable HTMLAudioElement for both the opening signature and stage cues.
+ * Audio sprite: seven 7-second recordings, each followed by 2 seconds of
+ * silence, then a 90-second virtually silent loop zone. The MP3 is bundled
+ * with this module's patch and generated from the user's selected sounds.
  *
- * iOS Safari can mute/interupt Web Audio independently from regular media
- * elements (including when the phone's silent switch is enabled). The first
- * play() is called synchronously from Start, giving this same element its
- * initial user activation before any timer-based stage cues are requested.
- *
- * We reuse that element when the source changes. Creating a new Audio object
- * at a later stage boundary would lose the user-activated playback path.
+ * On iOS, playing a second MP3 after the first ends can be blocked even when
+ * it reuses the original Audio element. Keep ONE media file continuously
+ * playing after the user-initiated Start tap, and seek within it for cues.
+ * Stage boundaries NEVER change src and NEVER invoke play().
  */
+const SPRITE_PATH = "/audio/timer/meditation-sprite.mp3";
+const CLIP_SECONDS = 7;
+const SLOT_SECONDS = 9;
+const SILENCE_START = SLOT_SECONDS * 7; // 63s
+const SILENCE_END = SILENCE_START + 90;
+
+const CUE_OFFSETS: Record<CustomCueId, number> = {
+  bells: SLOT_SECONDS,
+  cymbal: SLOT_SECONDS * 2,
+  windchime: SLOT_SECONDS * 3,
+  "singing-bowl-hit": SLOT_SECONDS * 4,
+  "bell-hit-crown-chakra": SLOT_SECONDS * 5,
+  "bell-hit-root-chakra": SLOT_SECONDS * 6,
+};
+
+type Mode = "idle" | "opening" | "silent" | "cue";
+type CuePlayback = { start: number; end: number; remaining: number; done: () => void; missing: () => void };
+
 export class CustomMeditationCues {
   private audio: HTMLAudioElement | null = null;
-  private generation = 0;
+  private timer: ReturnType<typeof setInterval> | null = null;
+  private mode: Mode = "idle";
+  private activeCue: CuePlayback | null = null;
+  private openingMissing: (() => void) | null = null;
   private disposed = false;
-  private remainingPlays = 0;
-  private active = false;
+  private playbackAttempt = 0;
 
   get supported() { return typeof Audio !== "undefined"; }
+
+  private diagnostic(message: string) {
+    if (typeof window !== "undefined" && new URLSearchParams(window.location.search).get("meditationAudioDebug") === "1") {
+      console.info(`[meditation-audio] ${message}`);
+    }
+  }
 
   private getAudio(): HTMLAudioElement | null {
     if (this.disposed) return null;
@@ -28,6 +53,10 @@ export class CustomMeditationCues {
       const audio = new Audio();
       audio.preload = "auto";
       audio.volume = 0.7;
+      audio.src = SPRITE_PATH; // assigned once; never replaced at stage boundaries
+      audio.ontimeupdate = () => this.monitor();
+      audio.onerror = () => this.handleFailure("audio error");
+      audio.onended = () => this.handleFailure("sprite unexpectedly ended");
       this.audio = audio;
       return audio;
     } catch {
@@ -35,125 +64,169 @@ export class CustomMeditationCues {
     }
   }
 
-  /** Start immediately inside the Start/Restart click; do not await loading. */
+  private startMonitor() {
+    if (!this.timer && typeof window !== "undefined") {
+      this.timer = window.setInterval(() => this.monitor(), 100);
+    }
+  }
+
+  private seek(seconds: number): boolean {
+    const audio = this.audio;
+    if (!audio) return false;
+    try {
+      audio.currentTime = seconds;
+      return true;
+    } catch {
+      this.handleFailure("seek error");
+      return false;
+    }
+  }
+
+  private toSilence() {
+    this.mode = "silent";
+    this.diagnostic("silent bed");
+    this.seek(SILENCE_START + 0.25);
+  }
+
+  private finishCue() {
+    const cue = this.activeCue;
+    if (!cue) return;
+    cue.remaining -= 1;
+    if (cue.remaining > 0) {
+      this.diagnostic(`repeat cue (${cue.remaining} left)`);
+      this.seek(cue.start);
+      return;
+    }
+    this.activeCue = null;
+    this.toSilence();
+    this.diagnostic("cue finished");
+    cue.done();
+  }
+
+  private monitor() {
+    const audio = this.audio;
+    if (this.disposed || !audio || audio.paused || audio.seeking) return;
+    const position = audio.currentTime;
+    if (this.mode === "opening" && position >= CLIP_SECONDS) {
+      this.openingMissing = null;
+      this.toSilence();
+    } else if (this.mode === "cue" && this.activeCue && position >= this.activeCue.end) {
+      this.finishCue();
+    } else if (this.mode === "silent" && position >= SILENCE_END - 2) {
+      this.seek(SILENCE_START + 0.25);
+    }
+  }
+
+  private handleFailure(reason: string) {
+    if (this.disposed || this.mode === "idle") return;
+    this.diagnostic(`failure: ${reason}`);
+    const cue = this.activeCue;
+    const openingMissing = this.openingMissing;
+    this.activeCue = null;
+    this.openingMissing = null;
+    this.mode = "idle";
+    this.audio?.pause();
+    if (cue) { cue.missing(); cue.done(); }
+    else openingMissing?.();
+  }
+
+  /** Called synchronously inside the Start/Restart user click. */
   playOpening(onMissing: () => void = () => {}) {
     this.stopSources();
-    const token = this.generation;
     const audio = this.getAudio();
     if (!audio) { onMissing(); return; }
-    this.active = true;
-    this.remainingPlays = 1;
-    const fail = () => {
-      if (this.disposed || token !== this.generation) return;
-      this.stopSources();
-      onMissing();
-    };
-    audio.onerror = fail;
-    audio.onended = () => {
-      if (this.disposed || token !== this.generation) return;
-      this.active = false;
-      this.remainingPlays = 0;
-      audio.onended = null;
-      audio.onerror = null;
-    };
+    this.mode = "opening";
+    this.openingMissing = onMissing;
+    this.diagnostic("opening started");
+    // On first play, currentTime is already zero. On restart, seek while the
+    // same user gesture is active; this is not a new resource/playback session.
+    if (audio.currentTime !== 0 && !this.seek(0)) return;
+    this.startMonitor();
+    const attempt = ++this.playbackAttempt;
     try {
-      audio.src = CUSTOM_OPENING_PATH;
-      // Safari must receive play() before the initiating click returns.
-      void audio.play().catch(fail);
+      void audio.play().catch(() => {
+        if (attempt === this.playbackAttempt) this.handleFailure("play blocked");
+      });
     } catch {
-      fail();
+      this.handleFailure("play threw");
     }
   }
 
-  /** Warm the HTTP cache without spawning additional, locked audio players. */
-  prepare(cueIds: (CustomCueId | null)[]) {
-    if (typeof fetch === "undefined") return;
-    for (const id of new Set(cueIds.filter((cue): cue is CustomCueId => cue !== null))) {
-      void fetch(getCustomCuePath(id)).catch(() => {});
-    }
+  /** Prefetch the one audio resource; no separate per-cue audio players. */
+  prepare(_cueIds: (CustomCueId | null)[]) {
+    // getAudio() already assigns preload=auto and src. No fetch() is needed.
   }
 
-  /** The final onDone fires after the last complete recording, not on cue start. */
+  /**
+   * Jump within the ALREADY PLAYING sprite. A stage's cue begins when its
+   * configured duration has elapsed, regardless of the 7-second opening sound.
+   * The final onDone fires after the last 7-second recording completes.
+   */
   playStageCue(id: CustomCueId | null, repeats: number, onDone: () => void, onMissing: () => void) {
-    this.stopSources();
-    const token = this.generation;
-    if (!id) { onDone(); return; }
-    const audio = this.getAudio();
-    if (!audio) { onMissing(); onDone(); return; }
-
-    this.active = true;
-    this.remainingPlays = Math.max(1, Math.min(8, Math.trunc(repeats) || 1));
-
-    const fail = () => {
-      if (this.disposed || token !== this.generation) return;
-      this.stopSources();
-      onMissing();
-      onDone(); // A missing/broken file must not strand the final stage.
-    };
-    const playAgain = () => {
-      if (this.disposed || token !== this.generation || !this.active) return;
-      try { audio.currentTime = 0; } catch { /* media metadata may not be ready yet */ }
-      try {
-        void audio.play().catch(fail);
-      } catch {
-        fail();
-      }
-    };
-    audio.onerror = fail;
-    audio.onended = () => {
-      if (this.disposed || token !== this.generation || !this.active) return;
-      this.remainingPlays--;
-      if (this.remainingPlays > 0) {
-        playAgain();
-        return;
-      }
-      this.active = false;
-      audio.onerror = null;
-      audio.onended = null;
+    if (this.disposed) { onMissing(); onDone(); return; }
+    this.activeCue = null;
+    if (!id) {
+      if (this.mode !== "idle") this.toSilence();
+      this.diagnostic("silent stage boundary");
       onDone();
-    };
-    try {
-      // Reuse the user-unlocked opening element instead of Web Audio.
-      audio.src = getCustomCuePath(id);
-      playAgain();
-    } catch {
-      fail();
+      return;
     }
+    const audio = this.audio;
+    if (!audio || this.mode === "idle" || audio.paused) {
+      this.diagnostic("cue requested but audio session is inactive");
+      onMissing();
+      onDone();
+      return;
+    }
+    const start = CUE_OFFSETS[id];
+    if (start === undefined) { onMissing(); onDone(); return; }
+    this.activeCue = {
+      start, end: start + CLIP_SECONDS,
+      remaining: Math.max(1, Math.min(8, Math.trunc(repeats) || 1)),
+      done: onDone, missing: onMissing,
+    };
+    this.mode = "cue";
+    this.diagnostic(`cue ${id}, repeats ${this.activeCue.remaining}`);
+    // Crucially: do not call play() or change audio.src here.
+    this.seek(start);
   }
 
-  pause() {
-    if (this.active) this.audio?.pause();
-  }
+  pause() { this.audio?.pause(); }
 
   resume() {
     const audio = this.audio;
-    if (!this.active || !audio || !audio.paused || this.disposed) return;
-    // Resume is itself initiated by a user tap.
-    void audio.play().catch(() => {
-      // Playback can fail after an iOS audio interruption: use the same
-      // per-clip error callback so the user sees an explicit warning.
-      audio.onerror?.(new Event("error"));
-    });
+    if (!audio || this.disposed || this.mode === "idle" || !audio.paused) return;
+    // Resume comes directly from the user's Play tap.
+    const attempt = ++this.playbackAttempt;
+    try {
+      void audio.play().catch(() => {
+        if (attempt === this.playbackAttempt) this.handleFailure("resume blocked");
+      });
+    } catch { this.handleFailure("resume threw"); }
   }
 
   stopSources() {
-    this.generation++;
-    this.active = false;
-    this.remainingPlays = 0;
-    const audio = this.audio;
-    if (!audio) return;
-    audio.onended = null;
-    audio.onerror = null;
-    audio.pause();
-    try { audio.currentTime = 0; } catch { /* not yet loaded */ }
+    this.playbackAttempt++;
+    this.mode = "idle";
+    this.activeCue = null;
+    this.openingMissing = null;
+    this.audio?.pause();
+    this.diagnostic("stopped");
   }
 
   dispose() {
     if (this.disposed) return;
     this.stopSources();
     this.disposed = true;
+    if (this.timer !== null) { clearInterval(this.timer); this.timer = null; }
     const audio = this.audio;
     this.audio = null;
-    if (audio) audio.removeAttribute("src");
+    if (audio) {
+      audio.ontimeupdate = null;
+      audio.onerror = null;
+      audio.onended = null;
+      audio.removeAttribute("src");
+      audio.load();
+    }
   }
 }
