@@ -65,6 +65,8 @@ Várt: az első három jelző `True`; az utolsó kettő `False`.
 
 ## Patch alkalmazása
 
+A következő lépések a ZIP-es körre vonatkoznak. Ha a Codex közvetlenül dolgozik a helyi repóban, ő futtatja az ellenőrzéseket, és siker esetén a commit- és push-parancsot adja meg.
+
 A visszakapott `kincstarto-patch-*.zip` **csak a változott vagy új fájlokat** tartalmazza. A repository gyökerébe csomagold ki a relatív útvonalak megtartásával.
 
 1. Futtasd az asszisztens ellenőrző PowerShell-blokkját, és küldd vissza a releváns kimenetet. Az esetleg megjelenő titkokat és személyes adatokat takard ki. Hiba esetén az asszisztens javító patch-et és új ellenőrzést készít.

@@ -34,6 +34,8 @@ Never include actual credentials, private logs, tokens or user data in returned 
 
 ## Development round
 
+When Codex can edit the local checkout and run the relevant checks, it works directly in the checkout, runs the checks itself and reruns them after fixes. After successful verification, it reports the result and gives the user only the ticket-scoped Git commit and push commands. Use the steps below for ZIP-based rounds, including when Codex receives only a source ZIP.
+
 1. Use the newest fresh Kincstarto ZIP as the implementation source of truth.
 2. Work in the smallest relevant code boundary; no incidental refactors.
 3. Return a ZIP containing **only changed/new files**, at repository-relative paths.

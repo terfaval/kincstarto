@@ -41,6 +41,8 @@ No new dependencies, runtime audio logic, or UI changes. Verify the Home Screen 
 
 ## Working agreement
 
+When Codex has access to the local checkout and can run the relevant checks, it verifies the change directly and gives the user ticket-scoped Git commands after success.
+
 The ZIP workflow includes two assistant-prepared PowerShell blocks. The user applies the changed-files-only patch in the local repository, runs the first block and shares the relevant verification output. The assistant diagnoses failures and prepares a correction if needed. After successful verification, the assistant prepares the ticket-specific Git block, which the user reviews and confirms locally before commit and push. The newest supplied ZIP supersedes older unpacked copies. See the [development workflow](DEVELOPMENT_WORKFLOW.md) for the checks and Git guards.
 
 `Base` omits large media by design, so when the requested work involves precise sound/image assets, ask for a targeted `Custom` archive or use `Full`; never infer media deletion from its absence.

@@ -2,9 +2,15 @@
 
 ## Principle
 
-A fresh source ZIP starts every development round. The assistant prepares the **smallest coherent patch**, the checks appropriate to its risk, and a guarded Git block after verification succeeds. The user runs both PowerShell blocks in the local repository.
+A fresh source ZIP starts a ZIP-based development round. The assistant prepares the **smallest coherent patch**, the checks appropriate to its risk, and a guarded Git block after verification succeeds. The user runs both PowerShell blocks in the local repository.
 
-## Round trip
+## Local Codex round
+
+Use this path when Codex can edit the local checkout and run the relevant checks. Codex applies the smallest change, runs the checks below for its risk, diagnoses failures and reruns the checks after fixes. If a required check is blocked, report which check is still pending before handing over Git commands.
+
+After successful verification, report the checks run and give plain Git commands for the user to run. Verify the branch, push remote, staged state and ticket diff first. Scope the commit to the exact paths and use the intended commit message. Give the normal push command for the established target, to run after the commit succeeds. The verification and guarded PowerShell blocks below apply to ZIP-based rounds, including rounds where Codex receives only an archive.
+
+## ZIP round trip
 
 ```text
 local Kincstarto repo (source of truth)
