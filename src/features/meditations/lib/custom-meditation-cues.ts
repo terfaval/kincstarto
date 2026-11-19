@@ -30,7 +30,7 @@ type CuePlayback = { start: number; end: number; remaining: number; done: () => 
 
 export class CustomMeditationCues {
   private audio: HTMLAudioElement | null = null;
-  private timer: ReturnType<typeof setInterval> | null = null;
+  private timer: number | null = null;
   private mode: Mode = "idle";
   private activeCue: CuePlayback | null = null;
   private openingMissing: (() => void) | null = null;
