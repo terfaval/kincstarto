@@ -65,4 +65,10 @@ Várt: az első három jelző `True`; az utolsó kettő `False`.
 
 ## Patch alkalmazása
 
-A visszakapott `kincstarto-patch-*.zip` **csak a változott/új fájlokat** tartalmazza. Kicsomagoláskor a repository gyökerébe helyezd el őket, azonos relatív útvonalakkal. Ne töröld a meglévő fájlokat, és ne cseréld le az egész repositoryt a patch-re. A megadott célzott ellenőrzéseket futtasd; a következő érdemi fejlesztéshez készíts új friss fő ZIP-et.
+A visszakapott `kincstarto-patch-*.zip` **csak a változott vagy új fájlokat** tartalmazza. A repository gyökerébe csomagold ki a relatív útvonalak megtartásával.
+
+1. Futtasd az asszisztens ellenőrző PowerShell-blokkját, és küldd vissza a releváns kimenetet. Az esetleg megjelenő titkokat és személyes adatokat takard ki. Hiba esetén az asszisztens javító patch-et és új ellenőrzést készít.
+2. Sikeres ellenőrzés után az asszisztens elkészíti a feladathoz tartozó védett Git-blokkot. Futtasd, nézd át a commitra kijelölt fájlok összesítését, és `yes` beírásával hagyd jóvá a commitot és a push-t. Küldd vissza az eredményt, hiba esetén a Git hibaüzenetét is.
+3. A következő érdemi fejlesztéshez készíts friss forrás ZIP-et.
+
+A két PowerShell-blokk követelményeit a [fejlesztési útmutató](DEVELOPMENT_WORKFLOW.md) rögzíti.

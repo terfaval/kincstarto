@@ -39,8 +39,9 @@ Never include actual credentials, private logs, tokens or user data in returned 
 3. Return a ZIP containing **only changed/new files**, at repository-relative paths.
 4. Preserve all untouched repository files and media when the patch is applied.
 5. Choose the lightest trustworthy verification: script/document checks for workflow changes; focused behavior tests where meaningful; manual mobile checks for UI; typecheck/build only when justified.
-6. Give the user one exact, copyable Windows PowerShell verification block when local verification is needed.
-7. Update `docs/HANDOFF.md` only for meaningful workflow/product checkpoints, not cosmetic edits.
-8. Close with modified paths, verified checks, limitations, and any remaining follow-up. Stop when the requested ticket is done.
+6. Give the user one ready-to-run Windows PowerShell verification block for the patch. The user runs it in the local repository and returns the relevant output with sensitive values redacted. Diagnose failures and send a corrected patch and checks as needed.
+7. After the user reports successful verification, prepare a separate guarded PowerShell block for the user to run. Use the exact ticket paths, expected branch, push target and commit message. Show the staged diff summary and require explicit confirmation before commit and push. Follow the guards in `docs/DEVELOPMENT_WORKFLOW.md`.
+8. Update `docs/HANDOFF.md` only for meaningful workflow/product checkpoints, not cosmetic edits.
+9. Close with modified paths, verified checks, limitations, and any remaining follow-up. Report commit or push success only after receiving the corresponding output.
 
 For full operating details see `docs/DEVELOPMENT_WORKFLOW.md` and `docs/command-to-zip.md`.
