@@ -5,7 +5,7 @@ import styles from "@/features/meditations/styles/meditations.module.css";
 import { isAdminRequest } from "@/lib/adminAuth";
 
 export const metadata = {
-  title: "Üveggyöngy meditációk",
+  title: "Tamayura · Üveggyöngyök",
   description: "Lassú, atmoszférikus meditációs tér",
 };
 

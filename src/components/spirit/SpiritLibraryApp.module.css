@@ -1495,3 +1495,27 @@
     text-align: left;
   }
 }
+
+/* A fő koszorúhoz vezető, minden nyilvános könyvtárnézetben elérhető út. */
+.wreathReturn {
+  position: fixed;
+  top: max(14px, env(safe-area-inset-top));
+  left: max(14px, env(safe-area-inset-left));
+  z-index: 43;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 7px 15px;
+  box-shadow: var(--shadow);
+  color: var(--foreground);
+  font-size: .78rem;
+  font-weight: 650;
+  text-decoration: none;
+  backdrop-filter: blur(10px);
+}
+.wreathReturn:hover { background: var(--surface); }
+.wreathReturn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }

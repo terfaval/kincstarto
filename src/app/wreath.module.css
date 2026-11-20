@@ -1,0 +1,265 @@
+.page {
+  min-height: 100svh;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: max(18px, env(safe-area-inset-top)) 18px max(18px, env(safe-area-inset-bottom));
+  color: var(--foreground);
+  background-image: url('/backgrounds/landing_background.png');
+  background-size: cover;
+  background-position: center 65%;
+}
+.atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 47%, rgba(242, 231, 213, .67), rgba(242, 231, 213, .28) 52%, rgba(242, 231, 213, .15));
+}
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.mainSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+}
+.wreath {
+  position: relative;
+  flex: none;
+  width: min(550px, 100%);
+  aspect-ratio: 1;
+  --orbit-radius: clamp(158px, 19vw, 192px);
+  --name-distance: 86px;
+  /* Finomhangolás: ezt a néhány változót érdemes kézzel állítani. */
+  --mon-size: 66px;
+  --hanko-size: 52px;
+  --hanko-shift-x: -15px;
+  --orb-size: 76px;
+  --orb-shift-y: 10px;
+}
+.orbit, .orbitInner {
+  position: absolute;
+  inset: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.orbit {
+  width: calc(var(--orbit-radius) * 2);
+  height: calc(var(--orbit-radius) * 2);
+  border: 1px solid color-mix(in srgb, var(--foreground) 19%, transparent);
+  box-shadow: 0 0 90px rgba(204, 162, 108, .08), inset 0 0 36px rgba(204, 162, 108, .05);
+}
+.orbitInner {
+  width: calc(var(--orbit-radius) * 2 - 48px);
+  height: calc(var(--orbit-radius) * 2 - 48px);
+  border: 1px dotted color-mix(in srgb, var(--foreground) 11%, transparent);
+}
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(246px, 46%);
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+}
+.emblem { object-fit: contain; width: 104px; height: 104px; }
+.preview { animation: previewIn .2s ease-out both; }
+.previewTitle {
+  display: block;
+  font-size: clamp(1.05rem, 2.5vw, 1.55rem);
+  line-height: 1.12;
+  font-weight: 680;
+}
+.previewDefinition {
+  font-size: .88rem;
+  line-height: 1.4;
+  font-weight: 560;
+  color: color-mix(in srgb, var(--foreground) 90%, transparent);
+  margin: 10px 0 0;
+  text-wrap: balance;
+}
+.previewDescription {
+  font-size: .76rem;
+  line-height: 1.42;
+  font-style: italic;
+  color: var(--muted);
+  margin: 9px 0 0;
+  text-wrap: balance;
+}
+.previewPending {
+  display: block;
+  margin-top: 11px;
+  font-size: .62rem;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+@keyframes previewIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.beads { position: absolute; inset: 0; }
+.bead {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 124px;
+  height: 90px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transform: translate(-50%, -50%) rotate(var(--bead-angle)) translateY(calc(var(--orbit-radius) * -1)) rotate(calc(var(--bead-angle) * -1));
+  -webkit-tap-highlight-color: transparent;
+}
+.beadOrb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--orb-size);
+  height: var(--orb-size);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 30%, rgba(255,255,255,.78), rgba(255,255,255,.08) 42%, rgba(255,255,255,.02) 58%, transparent 72%),
+    radial-gradient(circle at 65% 68%, rgba(206, 184, 142, .26), rgba(206, 184, 142, .08) 46%, rgba(206, 184, 142, 0) 72%),
+    color-mix(in srgb, rgba(255,255,255,.42) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent);
+  box-shadow: inset 0 1px 8px rgba(255,255,255,.35), 0 8px 18px rgba(49, 28, 11, .08);
+  transform: translate(-50%, calc(-50% + var(--orb-shift-y)));
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.symbolPair {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 100%;
+  transition: transform .25s ease, filter .25s ease, opacity .25s ease;
+}
+.monSymbol {
+  position: relative;
+  width: var(--mon-size);
+  height: var(--mon-size);
+  flex: 0 0 var(--mon-size);
+}
+.monInk {
+  position: absolute;
+  inset: 0;
+  background: var(--foreground);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.monAccent {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.hankoSymbol {
+  display: block;
+  width: var(--hanko-size);
+  height: var(--hanko-size);
+  flex: 0 0 var(--hanko-size);
+  margin-left: var(--hanko-shift-x);
+  object-fit: contain;
+}
+.beadName {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: .94rem;
+  font-weight: 700;
+  line-height: 1.15;
+  white-space: nowrap;
+  transform: translate(-50%, -50%) rotate(var(--bead-angle)) translateY(calc(var(--name-distance) * -1)) rotate(calc(var(--bead-angle) * -1));
+  transition: color .2s ease;
+}
+.bead:hover .symbolPair, .bead:focus-visible .symbolPair, .beadFocused .symbolPair {
+  transform: scale(1.065);
+  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--foreground) 24%, transparent));
+}
+.bead:hover .beadOrb, .bead:focus-visible .beadOrb, .beadFocused .beadOrb {
+  transform: translate(-50%, calc(-50% + var(--orb-shift-y))) scale(1.04);
+  border-color: color-mix(in srgb, var(--foreground) 20%, transparent);
+  box-shadow: inset 0 1px 8px rgba(255,255,255,.45), 0 12px 24px rgba(49, 28, 11, .12);
+}
+.bead:hover .beadName, .bead:focus-visible .beadName, .beadFocused .beadName {
+  color: var(--foreground);
+}
+.bead:focus-visible { outline: 2px solid var(--brand-ink); outline-offset: 4px; border-radius: 50%; }
+:global(:root[data-time-theme="night"]) .page { background-image: url('/backgrounds/landing_night.png'); }
+:global(:root[data-time-theme="night"]) .atmosphere {
+  background: radial-gradient(circle at 50% 47%, rgba(7, 20, 37, .68), rgba(7, 20, 37, .48) 56%, rgba(7, 20, 37, .36));
+}
+:global(:root[data-time-theme="night"]) .emblem { filter: brightness(0) invert(1); }
+:global(:root[data-time-theme="night"]) .beadOrb {
+  background:
+    radial-gradient(circle at 32% 30%, rgba(255,255,255,.26), rgba(255,255,255,.08) 40%, rgba(255,255,255,.02) 58%, transparent 72%),
+    radial-gradient(circle at 65% 68%, rgba(76, 113, 157, .18), rgba(76, 113, 157, .08) 44%, rgba(76, 113, 157, 0) 72%),
+    color-mix(in srgb, rgba(36, 54, 79, .42) 78%, transparent);
+  border-color: color-mix(in srgb, var(--foreground) 16%, transparent);
+  box-shadow: inset 0 1px 12px rgba(255,255,255,.08), 0 10px 24px rgba(1, 8, 18, .36);
+}
+@media (max-width: 600px) {
+  .page { padding: max(16px, env(safe-area-inset-top)) 10px max(16px, env(safe-area-inset-bottom)); }
+  .wreath { width: min(440px, 100%); --orbit-radius: clamp(93px, 28vw, 135px); --name-distance: 45px; --mon-size: 49px; --hanko-size: 40px; --hanko-shift-x: -5px; --orb-size: 58px; --orb-shift-y: 8px; }
+  .center { width: 36%; min-height: 136px; }
+  .emblem { width: 78px; height: 78px; }
+  .previewTitle { font-size: 1.03rem; }
+  .previewDefinition { font-size: .68rem; margin-top: 6px; }
+  .previewDescription { font-size: .65rem; line-height: 1.34; margin-top: 6px; }
+  .previewPending { font-size: .53rem; margin-top: 7px; }
+  .bead { width: 93px; height: 66px; }
+
+  .beadName { font-size: .8rem; }
+}
+@media (max-width: 360px) {
+  .wreath { --orbit-radius: 94px; --name-distance: 33px; --mon-size: 44px; --hanko-size: 36px; --hanko-shift-x: -4px; --orb-size: 52px; --orb-shift-y: 7px; }
+  .beadName { font-size: .75rem; }
+  .center { width: 40%; }
+  .bead { width: 86px; height: 60px; }
+  .emblem { width: 68px; height: 68px; }
+  .previewDescription { font-size: .65rem; }
+}
+@media (max-height: 520px) and (min-width: 601px) {
+  .wreath { width: min(410px, 100%); --orbit-radius: 145px; --name-distance: 74px; --mon-size: 52px; --hanko-size: 42px; --hanko-shift-x: -5px; --orb-size: 62px; --orb-shift-y: 9px; }
+  .bead { width: 100px; height: 72px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .symbolPair, .beadName { transition: none; }
+  .preview { animation: none; }
+}

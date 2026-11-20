@@ -57,6 +57,7 @@ export default function RootLayout({
       lang="hu"
       className={`${sfFontBody.variable} ${sfFontDisplay.variable}`}
       data-preboot="ok"
+      suppressHydrationWarning
     >
       <body className={`${sfFontBody.className} antialiased`}>
         <Script
