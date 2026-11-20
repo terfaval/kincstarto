@@ -106,10 +106,9 @@ export async function cleanupSupersededImage(input: {
   previousUrl: string;
   currentUrl: string;
   enabled: boolean;
-  backupManifestSha256: string;
   blob: BlobClient;
 }): Promise<YogiCleanupResult> {
-  if (!input.enabled || !/^[a-f0-9]{64}$/i.test(input.backupManifestSha256)) {
+  if (!input.enabled) {
     return { status: "disabled" };
   }
   if (!input.previousUrl || input.previousUrl === input.currentUrl) {

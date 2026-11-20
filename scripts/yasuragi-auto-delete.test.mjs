@@ -5,7 +5,6 @@ import { cleanupSupersededImage } from '../src/lib/yogiOldImageCleanupCore.ts';
 const host = 'https://yasuragi.public.blob.vercel-storage.com/';
 const oldUrl = host + 'yogi/images/tree/mannequin_angled-1775000000000.png';
 const newUrl = host + 'yogi/images/tree/illustration-abcdef01-1775000000001.webp';
-const backupHash = 'e'.repeat(64);
 
 function fakeBlob({ referenced = false, staleGet = false, changedAfterRead = false, missingPoses = false, deleteFailure = false } = {}) {
   const poses = JSON.stringify([{ id: 'pose_tree', mannequin_angled: {asset_ref: newUrl} }]);
@@ -61,17 +60,15 @@ function fakeBlob({ referenced = false, staleGet = false, changedAfterRead = fal
 
 const request = (client, extras = {}) => ({
   enabled: true,
-  backupManifestSha256: backupHash,
   previousUrl: oldUrl,
   currentUrl: newUrl,
   blob: client,
   ...extras,
 });
 
-test('disabled unless BOTH switch and verified-backup marker are configured; no network calls', async () => {
+test('disabled when production switch is off; no network calls', async () => {
   const {client, calls} = fakeBlob();
   assert.equal((await cleanupSupersededImage(request(client, {enabled:false}))).status, 'disabled');
-  assert.equal((await cleanupSupersededImage(request(client, {backupManifestSha256:''}))).status, 'disabled');
   assert.equal(calls.length, 0);
 });
 

@@ -7,18 +7,17 @@
 - A helyi backup ZIP SHA-256 ellenőrzőösszege: `2FC6F18882F36767609EE139EDA8D99583DE8F39C7216CE254CFBFDC7AA8CD86`.
 - A 202 darab régi, már nem hivatkozott manökenkép törlése sikerült. A végső szárazpróba: 83 megmaradó kép, 0 törlési jelölt.
 - A mentés a felhasználó helyi gépén található, nem a repóban vagy a Vercelben. Megőrzése és egy külön példány készítése szükséges.
-- Ezeket az eredményeket a felhasználó production parancskimenete igazolja. Az **új automatikus törlés még nincs productionben engedélyezve vagy ellenőrizve**.
+- Ezeket az eredményeket a felhasználó production parancskimenete igazolja. Az **új automatikus törlés a production környezeti kapcsoló engedélyezéséig nem fut**.
 
 ## Automatikus törlés képcsere után
 
-A `POST /api/admin/yogi-knowledge/illustration` admin-útvonal az új kép sikeres feltöltése és a `yogi/poses.json` mentése után hívja meg az automatikus takarítást. Csak production környezetben és a következő két változó beállításakor engedélyezett:
+A `POST /api/admin/yogi-knowledge/illustration` admin-útvonal az új kép sikeres feltöltése és a `yogi/poses.json` mentése után hívja meg az automatikus takarítást. Csak production környezetben és az alábbi változó beállításakor engedélyezett:
 
 ```text
 YASURAGI_AUTO_DELETE_OLD_BLOB=true
-YASURAGI_BACKUP_MANIFEST_SHA256=<a visszaellenőrzött manifest.json SHA-256 hash-e, 64 hex karakter>
 ```
 
-**A manifest SHA nem a ZIP SHA-ja.** Ez a második változó egy üzemeltetői engedélyező feltétel. A production alkalmazás nem tudja ténylegesen elolvasni a számítógépen tárolt mentést; a megfelelő formátumú hash önmagában nem bizonyítja a backup elérhetőségét.
+**Nincs manifest-hash-függőség.** A korábbi SHA-256 változó csak formai engedélyező feltétel volt, nem igazolta a mentés tényleges meglétét. Ezt a korlátot megszüntettük. A régi képek törlése továbbra is végleges: az eredeti mentést másik helyen célszerű megőrizni, és a jövőbeli feltöltésekről külön backupot készíteni.
 
 A szerveroldali védelmek:
 
@@ -44,7 +43,7 @@ npm.cmd run build
 if ($LASTEXITCODE -ne 0) { throw 'Buildhiba' }
 ```
 
-A mentés külön is ellenőrizhető:
+A korábbi mentés ellenőrzése **nem követelménye** az automatikus törlés technikai engedélyezésének. Ha a korábbi ZIP új helyen rendelkezésre áll, külön is ellenőrizhető:
 
 ```powershell
 $folder = Join-Path $HOME 'Documents\yasuragi-20261120-141004'
@@ -58,9 +57,13 @@ Get-FileHash -LiteralPath (Join-Path $backup 'manifest.json') -Algorithm SHA256
 ## Production bekapcsolása (sikeres teszt és deploy után)
 
 1. Nyisd meg: Vercel Dashboard → `mates-projects-bda608e3/kincstarto` → **Settings → Environment Variables**.
-2. **Production** környezetben állítsd be a két változót. A manifest hash-t a helyi `Get-FileHash` eredményéből vedd, **ne** a ZIP hash-t másold.
+2. **Production** környezetben állítsd be az egyetlen változót. A manifest hash-t a helyi `Get-FileHash` eredményéből vedd, **ne** a ZIP hash-t másold.
 3. A tesztelt módosítások kerüljenek Git commit/push útján production deploymentbe. Környezeti változó módosításakor is új deployment szükséges; a már futó deployment nem veszi fel visszamenőleg az új értéket.
 4. Az első valódi adminos képcsere után ellenőrizd az `deleted`, `skipped`, `failed` vagy `disabled` státuszt és szükség esetén a Vercel Function logokat. Egy még hivatkozott kép kihagyása a várható biztonságos viselkedés.
 5. Visszakapcsolás: állítsd `YASURAGI_AUTO_DELETE_OLD_BLOB=false` értékre és készíts új deploymentet. A képfeltöltés kikapcsolt törléssel is működik.
 
 A korábbi **tömeges takarító script** ettől független: alapértelmezésben dry-run, éles törléshez továbbra is kötelező `--apply --confirm YES_DELETE_UNREFERENCED --max-delete N` (N = 1–250). Az automatikus képcsere nem indít tömeges takarítást.
+
+## Egyszerusitett production kapu (2026-11-20)
+
+A production automatizmus egyetlen kapcsolot vizsgal (`YASURAGI_AUTO_DELETE_OLD_BLOB=true`). A korabbi `YASURAGI_BACKUP_MANIFEST_SHA256` nincs felhasznalva, es nem kell beallitani. A fail-closed JSON/ETag/hivatkozas-ellenorzes valtozatlan. Meglevo backupot az alkalmazas nem tud ellenorizni, ezert a regi Blob automatikus torlese a jovoben keszulo kepekhez nem jelent garantalt visszaallitasi lehetoseget.

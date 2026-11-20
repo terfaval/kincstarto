@@ -155,7 +155,7 @@ export async function POST(request: Request) {
     current[index] = updated;
     await store.savePoses(current);
     // The image is already committed. Old Blob cleanup is independently guarded
-    // by a production-only switch and an operator-provided verified-backup marker.
+    // by a production-only switch; there is no requirement for a local backup manifest.
     const cleanup = await cleanupSupersededYogiImage({
       previousUrl: previousRef,
       currentUrl: saved.url,

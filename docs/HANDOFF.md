@@ -135,5 +135,11 @@ Prepared against `kincstarto-main(4).zip`, which already contains Patch 05 and p
 
 - Fresh source: `kincstarto-main(4).zip` (2026-11-20). The prior manual backup and 202-image cleanup have user-confirmed `VERIFIED` and final `0 candidates` logs.
 - Prepared patch hardens the already-wired post-commit cleanup: only current-production, user-enabled cleanup; strict known pose-image URL guard; fresh ETag-checked reads of all `yogi/*.json`; conditional old Blob deletion. New image activation remains independent of deletion outcome.
-- Scoped behavior tests are included in `scripts/yasuragi-auto-delete.test.mjs`. User-side typecheck, build, deploy, manifest-hash configuration and an actual admin swap are pending; **no claim of production enablement**.
+- Scoped behavior tests are included in `scripts/yasuragi-auto-delete.test.mjs`. User-side typecheck, build, deploy, production flag configuration and an actual admin swap are pending; **no claim of production enablement**.
 - Preserve the original local ZIP backup. Later uploaded illustrations are not included in that fixed snapshot; decide on periodic backups if historical recovery of future image versions is needed.
+
+## Checkpoint: automatic old-image deletion without legacy manifest gate (2026-11-20)
+
+- Remove the `YASURAGI_BACKUP_MANIFEST_SHA256` gating condition: a 64-hex string was a configuration marker, not a verification that a backup is present or recoverable.
+- Require only `NODE_ENV=production` plus `YASURAGI_AUTO_DELETE_OLD_BLOB=true`; retain all existing URL ownership, JSON freshness, reference and conditional-delete checks.
+- The operator should preserve relocated backups externally; new uploads remain unbacked until a separate backup is created. This patch does not enable the production flag or change existing Blob data.

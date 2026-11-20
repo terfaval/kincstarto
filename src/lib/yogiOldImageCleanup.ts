@@ -15,7 +15,6 @@ export async function cleanupSupersededYogiImage(input: {
   return cleanupSupersededImage({
     ...input,
     enabled: process.env.NODE_ENV === "production" && process.env.YASURAGI_AUTO_DELETE_OLD_BLOB === "true",
-    backupManifestSha256: process.env.YASURAGI_BACKUP_MANIFEST_SHA256 ?? "",
     blob: {
       list: async (options) => {
         const page = await list(options);
