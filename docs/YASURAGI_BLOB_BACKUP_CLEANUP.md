@@ -1,71 +1,66 @@
-# Yasuragi – Vercel Blob mentés és régi illusztrációk takarítása
+# Yasuragi – Vercel Blob-mentés, takarítás és automatikus képcsere utáni törlés
 
-## Amit ez a patch megváltoztat
+## Visszaellenőrzött állapot (2026. november 20.)
 
-- Hozzáad egy **csak olvasó** mentőeszközt (`scripts/yasuragi-blob-backup.mjs`), amely a Vercel Blob `yogi/` prefixének összes objektumát letölti. Benne van a `yogi/poses.json` és minden kép. A képeket SHA-256-tal és (ha rendelkezésre áll) az ETaggel ellenőrzi.
-- Hozzáad egy külön, alaphelyzetben **csak tervező/dry-run** takarítóeszközt (`scripts/yasuragi-blob-cleanup.mjs`). Csak olyan már nem hivatkozott `yogi/images/` objektum lehet törlési jelölt, amely benne van a helyben ellenőrzött backupban, az URL és az ETag is változatlan, valamint egyik élő `yogi/*.json` sem hivatkozik rá.
-- Az adminos képcsere háttérfolyamata választhatóan törölheti az előző képet, de **alapértelmezetten OFF**. Csak akkor aktiválódik, ha a telepített környezetben `YASURAGI_AUTO_DELETE_OLD_BLOB=true` és `YASURAGI_BACKUP_MANIFEST_SHA256=<64 hex karakter>` is be van állítva. A hash a ténylegesen ellenőrzött helyi mentés `manifest.json` fájljáról származzon. A törlés előtt az app minden, Vercel Blobban tárolt `yogi/*.json` fájlt újra beolvas és ellenőrzi, maradt-e hivatkozás. A `del` ETag-alapú feltételes művelet.
-- A csere HTTP-válasza külön jelzi, hogy a régi fájl törlődött, megmaradt vagy ellenőrzési hiba miatt nem törlődhetett. **A sikeresen aktivált új kép nem vonódik vissza akkor sem, ha a takarítás sikertelen.**
+- Projekt: `mates-projects-bda608e3/kincstarto`.
+- Teljes `yogi/` backup: 288 objektum, 446 848 666 bájt, 79 póz, sikeres `VERIFIED` ellenőrzéssel.
+- A helyi backup ZIP SHA-256 ellenőrzőösszege: `2FC6F18882F36767609EE139EDA8D99583DE8F39C7216CE254CFBFDC7AA8CD86`.
+- A 202 darab régi, már nem hivatkozott manökenkép törlése sikerült. A végső szárazpróba: 83 megmaradó kép, 0 törlési jelölt.
+- A mentés a felhasználó helyi gépén található, nem a repóban vagy a Vercelben. Megőrzése és egy külön példány készítése szükséges.
+- Ezeket az eredményeket a felhasználó production parancskimenete igazolja. Az **új automatikus törlés még nincs productionben engedélyezve vagy ellenőrizve**.
 
-## 1. Telepítés (lokális forráskód, először még ne deployolj)
+## Automatikus törlés képcsere után
 
-A patch kizárólag új/módosított fájlokat tartalmaz. Telepítés előtt ellenőrizd, hogy a korábbi Yasuragi illusztrációadmin-v1 és v2 patch már alkalmazva van. Másold ezt a patch ZIP-et a repó gyökerébe, vagy bontsd ki ott `Expand-Archive ... -Force` segítségével. A `BLOB_READ_WRITE_TOKEN` továbbra is szerveroldali titok; sem a backup ZIP-be, sem a Git repóba nem kerülhet.
-
-## 2. Teljes production backup a saját gépen
-
-A `C:\kincstarto` gyökérből, miután az adott Vercel-projekthez hozzá vagy linkelve:
-
-```powershell
-cd C:\kincstarto
-# Ha még nincs összekötve: npx vercel link
-$backup = Join-Path $HOME ("Documents\Yasuragi-Backups\yasuragi-" + (Get-Date -Format 'yyyyMMdd-HHmmss'))
-npx vercel env run -e production -- node scripts/yasuragi-blob-backup.mjs backup --out "$backup"
-if ($LASTEXITCODE -ne 0) { throw 'A Vercel Blob mentés nem teljes. Semmit ne törölj!' }
-node scripts/yasuragi-blob-backup.mjs verify --dir "$backup"
-if ($LASTEXITCODE -ne 0) { throw 'A backup ellenőrzése nem sikerült. Semmit ne törölj!' }
-Compress-Archive -Path "$backup\*" -DestinationPath "$backup.zip" -CompressionLevel Optimal
-Get-FileHash -Algorithm SHA256 "$backup.zip"
-Get-FileHash -Algorithm SHA256 "$backup\manifest.json"
-Write-Host "Backup helye: $backup.zip"
-```
-
-**A backup NINCS kész addig, amíg a script `VERIFIED` eredményt nem ad**, és a teljes ZIP fájlt nem ellenőrizted/mentetted el olyan helyre, amely nem maga a Vercel projekt. A script nem ír a távoli tárhelyre, és semmit sem töröl.
-
-Az eredmény `manifest.json` fájljában vannak a fájlnevek, eredeti URL-ek, méretek, ETag-ek, SHA-256 hash-ek, a pillanatnyi pózreferenciák és az esetleg nem mentett külső hivatkozások. Ha `unlistedBlobRefs` nem üres, a törlést nem szabad aktiválni a hiány rendezéséig.
-
-## 3. Takarítási terv ellenőrzése (NINCS törlés)
-
-```powershell
-npx vercel env run -e production -- node scripts/yasuragi-blob-cleanup.mjs --backup "$backup"
-if ($LASTEXITCODE -ne 0) { throw 'Nem készült biztonságos takarítási terv!' }
-notepad "$backup\cleanup-dry-run.json"
-```
-
-Ez külön listázza a megtartandó objektumokat és a `candidates` törlési jelölteket. A tervet és a `VERIFIED` kimenetet nézd át még tényleges törlés előtt. **A dry-run egyetlen Blob-objektumot sem töröl.**
-
-## 4. Takarítás végrehajtása (CSAK a sikeres backup és az ellenőrzött dry-run után)
-
-```powershell
-npx vercel env run -e production -- node scripts/yasuragi-blob-cleanup.mjs --backup "$backup" --apply --confirm YES_DELETE_UNREFERENCED
-```
-
-Az `--apply` nem érint aktív képeket; egyenként újraellenőrzi a távoli JSON-referenciákat, a fájlazonosságot és az ETag-et. A Vercel cache-ben egy törölt fájl átmenetileg még elérhető lehet, a törlés visszavonása pedig csak a backupból való visszatöltéssel lehetséges.
-
-## 5. Automatikus törlés engedélyezése (csak a mentés tényleges jóváhagyása után)
-
-Vercel Production környezetben állítsd be:
+A `POST /api/admin/yogi-knowledge/illustration` admin-útvonal az új kép sikeres feltöltése és a `yogi/poses.json` mentése után hívja meg az automatikus takarítást. Csak production környezetben és a következő két változó beállításakor engedélyezett:
 
 ```text
 YASURAGI_AUTO_DELETE_OLD_BLOB=true
-YASURAGI_BACKUP_MANIFEST_SHA256=<a helyben ellenőrzött manifest.json SHA-256 hash-e>
+YASURAGI_BACKUP_MANIFEST_SHA256=<a visszaellenőrzött manifest.json SHA-256 hash-e, 64 hex karakter>
 ```
 
-Ezután külön deployment szükséges. Amíg ezek hiányoznak, az adminos képválasztó csak új URL-re vált és megőrzi a régit. Az új kép aktiválása után a takarítás megpróbálja eltávolítani az előző, nem hivatkozott `yogi/images/` objektumot. Ha bármelyik biztonsági ellenőrzés nem teljesül, kihagyja a törlést és a képcsere sikeres marad.
+**A manifest SHA nem a ZIP SHA-ja.** Ez a második változó egy üzemeltetői engedélyező feltétel. A production alkalmazás nem tudja ténylegesen elolvasni a számítógépen tárolt mentést; a megfelelő formátumú hash önmagában nem bizonyítja a backup elérhetőségét.
 
-## Korlátok
+A szerveroldali védelmek:
 
-- A forrás ZIP-ben nincsenek Vercel-hozzáférési adatok. A távoli backupot nem lehetett az asszisztens munkakörnyezetéből ténylegesen elvégezni; csak a felhasználó gépén, kapcsolt production Vercel-projekttel.
-- A `yogi/` prefix az alkalmazásban dokumentált Yasuragi-tárhelyet fedi le; ha máshol vagy más Blob store-ban is vannak korábbi illusztrációk, azokhoz külön feltárás/mentés szükséges.
-- A törlési referenciavizsgálat a Vercelben tárolt `yogi/*.json` adatokra terjed ki. A régi admin másik böngészőfülében nyitott elavult vázlatok, az alkalmazáson kívüli hivatkozások vagy egyidejű szerver nélküli szerkesztések nincsenek tranzakciósan zárolva. Az első nagytakarításkor ne szerkessz párhuzamosan pózokat.
-- Régi, manuálisan feltöltött, a `yogi/` prefixen kívüli fájlokra a mechanizmus nem nyúl.
-- Backup készítéskor és az első takarításkor a Vercel tároló és a fejlesztés környezete legyen egyértelműen azonosítva; a `vercel env run -e production` a linkelt projekt production tokenjét használja.
+1. Kizárólag azonos Vercel Blob-tárhelyen lévő, ismert nevű `mannequin_*` vagy az admin által készített `illustration-*` korábbi pózképeket törölhet. Más képtípusokat kihagy.
+2. A tárhelyről frissen listázza a `yogi/` alatti JSON-fájlokat. A `yogi/poses.json` megléte kötelező.
+3. A JSON-ok ellenőrzése a már bevált nyilvános Blob-olvasással történik: lista-ETag, GET-ETag és a GET előtti/utáni origin HEAD egyezését vizsgálja. Elavult, gyorsítótárazott tartalomból nem engedélyez törlést.
+4. Ha bármelyik JSON még hivatkozik a régi képre, megőrzi azt.
+5. A régi kép metaadatait is ellenőrzi, és csak ETag-feltételes (`ifMatch`) törlést végez.
+6. Sikertelen biztonsági ellenőrzésnél vagy Blob-hibánál megőrzi a régi képet. **A már aktivált új illusztráció továbbra is működik**, a felület és a szervernapló külön jelzi az eredményt.
+
+**Korlát:** a `yogi/*.json` fájlok vizsgálata nem tudja tranzakciósan megakadályozni egy másik, tökéletesen egyidejű adminírás megjelenését, és nem látja az alkalmazáson kívüli közvetlen URL-hivatkozásokat. A 2026. november 20-i mentés a később feltöltött új képeket sem tartalmazhatja; ezek későbbi visszaállíthatóságához további rendszeres backup szükséges.
+
+## Patch ellenőrzése élesítés előtt
+
+A ZIP csak a módosított/új fájlokat tartalmazza. Kicsomagolás után a `C:\kincstarto` projektben:
+
+```powershell
+node --experimental-strip-types --test scripts/yasuragi-auto-delete.test.mjs
+if ($LASTEXITCODE -ne 0) { throw 'Az automatikus törlés tesztje hibás' }
+.\node_modules\.bin\tsc.cmd --noEmit
+if ($LASTEXITCODE -ne 0) { throw 'TypeScript-hiba' }
+npm.cmd run build
+if ($LASTEXITCODE -ne 0) { throw 'Buildhiba' }
+```
+
+A mentés külön is ellenőrizhető:
+
+```powershell
+$folder = Join-Path $HOME 'Documents\yasuragi-20261120-141004'
+$zip = Join-Path $folder 'yasuragi-20261120-141004.zip'
+$backup = Join-Path $folder 'restored'
+Get-FileHash -LiteralPath $zip -Algorithm SHA256
+node scripts/yasuragi-blob-backup.mjs verify --dir "$backup"
+Get-FileHash -LiteralPath (Join-Path $backup 'manifest.json') -Algorithm SHA256
+```
+
+## Production bekapcsolása (sikeres teszt és deploy után)
+
+1. Nyisd meg: Vercel Dashboard → `mates-projects-bda608e3/kincstarto` → **Settings → Environment Variables**.
+2. **Production** környezetben állítsd be a két változót. A manifest hash-t a helyi `Get-FileHash` eredményéből vedd, **ne** a ZIP hash-t másold.
+3. A tesztelt módosítások kerüljenek Git commit/push útján production deploymentbe. Környezeti változó módosításakor is új deployment szükséges; a már futó deployment nem veszi fel visszamenőleg az új értéket.
+4. Az első valódi adminos képcsere után ellenőrizd az `deleted`, `skipped`, `failed` vagy `disabled` státuszt és szükség esetén a Vercel Function logokat. Egy még hivatkozott kép kihagyása a várható biztonságos viselkedés.
+5. Visszakapcsolás: állítsd `YASURAGI_AUTO_DELETE_OLD_BLOB=false` értékre és készíts új deploymentet. A képfeltöltés kikapcsolt törléssel is működik.
+
+A korábbi **tömeges takarító script** ettől független: alapértelmezésben dry-run, éles törléshez továbbra is kötelező `--apply --confirm YES_DELETE_UNREFERENCED --max-delete N` (N = 1–250). Az automatikus képcsere nem indít tömeges takarítást.

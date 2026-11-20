@@ -130,3 +130,10 @@ Prepared against `kincstarto-main(4).zip`, which already contains Patch 05 and p
 - `CustomMeditationCues` calls `play()` in response to the user's Start tap **once**, then keeps the same source playing continuously and seeks within that source for each stage-ending cue and its repetitions. It never changes `audio.src` or starts a new play() call at a timer boundary. Pause/resume and restart occur from explicit user taps. No guaranteed iPhone result is claimed until physical-device QA.
 - Timing semantics: a stage's saved duration starts when the meditation is launched; the first 7-second opening sound occurs **inside the first stage** rather than before the timer. Stage cues are triggered when cumulative stage durations elapse; the final cue (and any repeats) finishes before automatic exit. A later boundary can interrupt a long series of repeats.
 - On a physical iPhone, test a single 15-second stage with one `bells` cue (then a second test with 2 repetitions). For additional console diagnostics, open the app URL with `?meditationAudioDebug=1`; the minimal player UI remains unchanged. Keep the display visible and check MP3 asset deployment.
+
+## Checkpoint: Yasuragi automatikus regi illusztracio-torles, pending review
+
+- Fresh source: `kincstarto-main(4).zip` (2026-11-20). The prior manual backup and 202-image cleanup have user-confirmed `VERIFIED` and final `0 candidates` logs.
+- Prepared patch hardens the already-wired post-commit cleanup: only current-production, user-enabled cleanup; strict known pose-image URL guard; fresh ETag-checked reads of all `yogi/*.json`; conditional old Blob deletion. New image activation remains independent of deletion outcome.
+- Scoped behavior tests are included in `scripts/yasuragi-auto-delete.test.mjs`. User-side typecheck, build, deploy, manifest-hash configuration and an actual admin swap are pending; **no claim of production enablement**.
+- Preserve the original local ZIP backup. Later uploaded illustrations are not included in that fixed snapshot; decide on periodic backups if historical recovery of future image versions is needed.

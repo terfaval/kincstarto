@@ -133,7 +133,8 @@ export async function POST(request: Request) {
     return error("A kép feltöltése nem sikerült. A jelenlegi illusztráció változatlan.", 502);
   }
 
-  // Write just the image slot, based on freshly fetched pose data. Never delete old Blob objects here.
+  // Write just the image slot, based on freshly fetched pose data.
+  // Old-image cleanup runs separately after the new reference is committed.
   try {
     const current = await store.listPoses();
     const index = current.findIndex((pose) => pose.id === poseId);
@@ -154,7 +155,7 @@ export async function POST(request: Request) {
     current[index] = updated;
     await store.savePoses(current);
     // The image is already committed. Old Blob cleanup is independently guarded
-    // and disabled until a complete local backup has been verified.
+    // by a production-only switch and an operator-provided verified-backup marker.
     const cleanup = await cleanupSupersededYogiImage({
       previousUrl: previousRef,
       currentUrl: saved.url,
