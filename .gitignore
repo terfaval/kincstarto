@@ -49,3 +49,5 @@ next-env.d.ts
 
 # generated assistant source/patch ZIP archives
 /kincstarto-*.zip
+
+.vercel

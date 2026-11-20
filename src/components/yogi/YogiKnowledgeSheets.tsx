@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import { resolveYogiImageUrl } from "@/lib/yogiImageUrl";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { Anatomy, KnowledgeCard, Pose } from "@/lib/yogiKnowledgeSchema";
@@ -328,10 +329,7 @@ type ImageSlotLike = {
   status?: string | null;
 };
 
-function resolveImageUrl(url?: string | null) {
-  if (!url) return "";
-  return `/api/yogi-knowledge/image-proxy?url=${encodeURIComponent(url)}`;
-}
+const resolveImageUrl = resolveYogiImageUrl;
 
 function hexToRgba(hex: string, alpha: number) {
   const sanitized = hex.replace("#", "");

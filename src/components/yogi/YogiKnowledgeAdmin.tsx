@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { resolveYogiImageUrl } from "@/lib/yogiImageUrl";
 import Link from "next/link";
 import styles from "./YogiKnowledgeAdmin.module.css";
 import {
@@ -191,10 +192,7 @@ const VIDEO_STYLE_META: Record<YogaVideoStyle, { label: string; color: string }>
   breath: { label: "Breath", color: "#84cc16" },
 };
 
-function resolveImageUrl(url?: string | null) {
-  if (!url) return "";
-  return `/api/yogi-knowledge/image-proxy?url=${encodeURIComponent(url)}`;
-}
+const resolveImageUrl = resolveYogiImageUrl;
 
 export default function YogiKnowledgeAdmin({
   mode = "admin",
@@ -1444,6 +1442,11 @@ export default function YogiKnowledgeAdmin({
 
   return (
     <section className={`admin-stack ${styles.page} ${styles.yogiPage}`}>
+      {isAdmin && (
+        <Link href="/admin/yogis-choice/illustrations" className="btn btn--primary" style={{ alignSelf: "flex-start" }}>
+          Ászanaillusztrációk cseréje
+        </Link>
+      )}
       <div className={`admin-card ${styles.poseFilterPanel} ${styles.poseFilterPanelCompact}`}>
         <button
           type="button"
