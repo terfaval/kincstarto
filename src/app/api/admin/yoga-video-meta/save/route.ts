@@ -12,7 +12,7 @@ function jsonError(detail: string, status = 400) {
 }
 
 export async function POST(request: Request) {
-  const unauthorized = await requireAdmin();
+  const unauthorized = await requireAdmin(request);
   if (unauthorized) return unauthorized;
 
   let payload: Payload;

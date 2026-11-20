@@ -104,7 +104,7 @@ ${source ? `\nForrás leírás (YouTube):\n${source}\n` : ""}${poseBlock}
 }
 
 export async function POST(request: Request) {
-  const unauthorized = await requireAdmin();
+  const unauthorized = await requireAdmin(request);
   if (unauthorized) return unauthorized;
 
   let payload: Payload;

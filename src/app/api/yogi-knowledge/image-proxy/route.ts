@@ -1,3 +1,4 @@
+import { requireAdmin } from "@/lib/adminAuth";
 import { NextResponse } from "next/server";
 
 const ALLOWED_HOSTS = new Set([
@@ -11,6 +12,9 @@ function isAllowedHost(hostname: string) {
 }
 
 export async function GET(request: Request) {
+  const unauthorized = await requireAdmin();
+  if (unauthorized) return unauthorized;
+
   const { searchParams } = new URL(request.url);
   const rawUrl = searchParams.get("url");
   if (!rawUrl) {
@@ -28,21 +32,19 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Blocked host" }, { status: 400 });
   }
 
-  const upstream = await fetch(target.toString(), { method: "GET" });
+  const upstream = await fetch(target.toString(), { method: "GET", redirect: "error", cache: "no-store" });
   if (!upstream.ok) {
     return NextResponse.json({ error: "Upstream error" }, { status: upstream.status });
   }
 
   const contentType = upstream.headers.get("content-type") ?? "image/png";
-  const cacheControl =
-    upstream.headers.get("cache-control") ?? "public, max-age=31536000, immutable";
   const body = await upstream.arrayBuffer();
 
   return new NextResponse(body, {
     status: 200,
     headers: {
       "Content-Type": contentType,
-      "Cache-Control": cacheControl,
+      "Cache-Control": "private, no-store",
     },
   });
 }

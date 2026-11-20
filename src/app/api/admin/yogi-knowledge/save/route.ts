@@ -42,7 +42,7 @@ function checkPublishGate(item: any, entityType: Payload["entity_type"]) {
 }
 
 export async function POST(request: Request) {
-  const authError = await requireAdmin();
+  const authError = await requireAdmin(request);
   if (authError) return authError;
 
   let payload: Payload;

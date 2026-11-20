@@ -1,17 +1,31 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-
-const ADMIN_COOKIE = "admin_key";
+import {
+  ADMIN_SESSION_COOKIE,
+  getAdminSecret,
+  isSameOriginMutation,
+  verifyAdminSession,
+} from "@/lib/adminSession";
 
 export async function isAdminRequest() {
-  const adminKey = process.env.ADMIN_KEY ?? process.env.ADMIN_PASSWORD;
-  if (!adminKey) return true;
+  const secret = getAdminSecret();
+  if (!secret) return false; // Missing configuration must always fail closed.
   const cookieStore = await cookies();
-  const cookieValue = cookieStore.get(ADMIN_COOKIE)?.value;
-  return cookieValue === adminKey;
+  return verifyAdminSession(cookieStore.get(ADMIN_SESSION_COOKIE)?.value, secret);
 }
 
-export async function requireAdmin() {
-  if (await isAdminRequest()) return null;
-  return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export async function requireAdmin(request?: Request) {
+  if (!(await isAdminRequest())) {
+    return NextResponse.json({ error: "Unauthorized" }, {
+      status: 401,
+      headers: { "Cache-Control": "private, no-store" },
+    });
+  }
+  if (request && !["GET", "HEAD", "OPTIONS"].includes(request.method.toUpperCase()) && !isSameOriginMutation(request)) {
+    return NextResponse.json({ error: "Forbidden origin" }, {
+      status: 403,
+      headers: { "Cache-Control": "private, no-store" },
+    });
+  }
+  return null;
 }

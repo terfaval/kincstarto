@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { isAdminRequest } from "@/lib/adminAuth";
 import { getYogiKnowledgeStore } from "@/lib/yogiKnowledgeStore";
 import { normalizeSlug } from "@/lib/slug";
 import { YogiPoseSheet } from "@/components/yogi/YogiKnowledgeSheets";
@@ -16,6 +17,7 @@ type Props = {
 };
 
 export async function generateMetadata({ params, searchParams }: Props) {
+  if (!(await isAdminRequest())) return { title: "Not Found" };
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
   const store = getYogiKnowledgeStore();
@@ -43,6 +45,7 @@ export async function generateMetadata({ params, searchParams }: Props) {
 }
 
 export default async function YogisChoicePosePage({ params, searchParams }: Props) {
+  if (!(await isAdminRequest())) notFound();
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
   const store = getYogiKnowledgeStore();
@@ -68,7 +71,7 @@ export default async function YogisChoicePosePage({ params, searchParams }: Prop
     <section className={`admin-stack ${styles.page}`}>
       <YogiChoiceBodyEffect />
       <Link
-        href="/yogis-choice"
+        href="/admin/yogis-choice"
         className={`${backStyles.backLink} ${yogiStyles.yogiBackLink}`}
         aria-label="Vissza"
       >

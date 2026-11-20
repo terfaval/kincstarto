@@ -1,15 +1,12 @@
 import { NextResponse } from "next/server";
+import { ADMIN_SESSION_COOKIE, LEGACY_ADMIN_COOKIE, isSameOriginMutation } from "@/lib/adminSession";
 
-const ADMIN_COOKIE = "admin_key";
-
-export async function POST() {
-  const response = NextResponse.json({ ok: true });
-  response.cookies.set(ADMIN_COOKIE, "", {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: 0,
-  });
+export async function POST(request: Request) {
+  if (!isSameOriginMutation(request)) {
+    return NextResponse.json({ error: "Forbidden origin" }, { status: 403 });
+  }
+  const response = NextResponse.json({ ok: true }, { headers: { "Cache-Control": "private, no-store" } });
+  response.cookies.delete(ADMIN_SESSION_COOKIE);
+  response.cookies.delete(LEGACY_ADMIN_COOKIE);
   return response;
 }

@@ -1,6 +1,10 @@
+import { requireAdmin } from "@/lib/adminAuth";
 import type { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
+  const unauthorized = await requireAdmin();
+  if (unauthorized) return unauthorized;
+
   const headers = request.headers;
   const safeHeaders: Record<string, string> = {};
   const allowList = [

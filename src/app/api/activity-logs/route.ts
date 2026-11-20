@@ -65,7 +65,7 @@ function sortLogs(logs: ActivityLogRow[]) {
 }
 
 export async function GET(request: Request) {
-  const unauthorized = await requireAdmin();
+  const unauthorized = await requireAdmin(request);
   if (unauthorized) return unauthorized;
 
   const { searchParams } = new URL(request.url);
@@ -80,7 +80,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const unauthorized = await requireAdmin();
+  const unauthorized = await requireAdmin(request);
   if (unauthorized) return unauthorized;
 
   const payload = (await request.json()) as Partial<ActivityLogRow>;
@@ -178,7 +178,7 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const unauthorized = await requireAdmin();
+  const unauthorized = await requireAdmin(request);
   if (unauthorized) return unauthorized;
 
   const payload = (await request.json()) as Partial<ActivityLogRow> & { id?: string };
@@ -277,7 +277,7 @@ export async function PATCH(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const unauthorized = await requireAdmin();
+  const unauthorized = await requireAdmin(request);
   if (unauthorized) return unauthorized;
 
   const payload = (await request.json()) as { id?: string };

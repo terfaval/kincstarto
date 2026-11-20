@@ -1,28 +1,11 @@
-import Link from "next/link";
-import YogiKnowledgeAdmin from "@/components/yogi/YogiKnowledgeAdmin";
-import styles from "@/features/meditations/styles/meditations.module.css";
-import yogiStyles from "@/components/yogi/YogiKnowledgeAdmin.module.css";
+import { notFound, redirect } from "next/navigation";
+import { isAdminRequest } from "@/lib/adminAuth";
 
-export const metadata = {
-  title: "Yogi's Choice",
-};
-
+export const metadata = { title: "Yogi's Choice" };
 export const dynamic = "force-dynamic";
 
-export default function YogisChoicePublicPage() {
-  return (
-    <>
-      <Link
-        href="/library"
-        className={`${styles.backLink} ${yogiStyles.yogiBackLink}`}
-        aria-label="Vissza a főoldalra"
-      >
-        <span className={styles.backIcon} aria-hidden="true">
-          ‹
-        </span>
-        <span className={styles.backLabel}>vissza</span>
-      </Link>
-      <YogiKnowledgeAdmin mode="public" showPropCatalog={false} />
-    </>
-  );
+// Former public entry point. Keep existing links usable for authenticated admins.
+export default async function YogisChoicePage() {
+  if (!(await isAdminRequest())) notFound();
+  redirect("/admin/yogis-choice");
 }

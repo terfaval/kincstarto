@@ -1,3 +1,4 @@
+import { requireAdmin } from "@/lib/adminAuth";
 import { NextResponse } from "next/server";
 import { readYogaLibrary } from "@/lib/yogaLibrary";
 
@@ -11,6 +12,9 @@ type YogaTemplate = {
 };
 
 export async function GET() {
+  const unauthorized = await requireAdmin();
+  if (unauthorized) return unauthorized;
+
   const library = await readYogaLibrary();
   const templates: YogaTemplate[] = library.map((entry) => ({
     id: entry.id,
