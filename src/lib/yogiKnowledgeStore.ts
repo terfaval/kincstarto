@@ -4,6 +4,7 @@ import { normalizeSlug } from "./slug";
 import type { Anatomy, KnowledgeCard, Pose } from "./yogiKnowledgeSchema";
 import { normalizePoseProps } from "./yogiPropCatalog";
 import { applyPoseOverrides } from "./yogiPoseOverrides";
+import { readLatestYogiPoseRevision, writeYogiPoseRevision } from "./yogiPoseRevisionStore";
 
 export type YogiCollectionKey = "poses" | "anatomy" | "knowledge_cards";
 
@@ -66,7 +67,7 @@ function createJsonStore(): YogiKnowledgeStore {
     readCollection,
     writeCollection,
     listPoses: async () => {
-      const base = await readCollection<Pose>("poses", []);
+      const base = (await readLatestYogiPoseRevision()) ?? (await readCollection<Pose>("poses", []));
       const overridden = await applyPoseOverrides(base);
       return overridden.map((pose) => ({
         ...pose,
@@ -75,7 +76,12 @@ function createJsonStore(): YogiKnowledgeStore {
     },
     listAnatomy: () => readCollection<Anatomy>("anatomy", []),
     listKnowledgeCards: () => readCollection<KnowledgeCard>("knowledge_cards", []),
-    savePoses: (items) => writeCollection<Pose>("poses", items),
+    savePoses: async (items) => {
+      // Maintain the legacy canonical file for external tooling/backups. The
+      // immutable revision below is the authoritative read source thereafter.
+      await writeCollection<Pose>("poses", items);
+      await writeYogiPoseRevision(items);
+    },
     saveAnatomy: (items) => writeCollection<Anatomy>("anatomy", items),
     saveKnowledgeCards: (items) => writeCollection<KnowledgeCard>("knowledge_cards", items),
   };

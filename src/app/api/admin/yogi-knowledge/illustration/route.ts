@@ -5,7 +5,7 @@ import { getYogiKnowledgeStore } from "@/lib/yogiKnowledgeStore";
 import { saveYogiImageAsset } from "@/lib/yogiImageStore";
 import { normalizeSlug } from "@/lib/slug";
 import { isBlobEnabled } from "@/lib/jsonStore";
-import { cleanupSupersededYogiImage } from "@/lib/yogiOldImageCleanup";
+
 
 export const runtime = "nodejs";
 
@@ -154,12 +154,13 @@ export async function POST(request: Request) {
     };
     current[index] = updated;
     await store.savePoses(current);
-    // The image is already committed. Old Blob cleanup is independently guarded
-    // by a production-only switch; there is no requirement for a local backup manifest.
-    const cleanup = await cleanupSupersededYogiImage({
-      previousUrl: previousRef,
-      currentUrl: saved.url,
-    });
+    const verified = (await store.listPoses()).find((entry) => entry.id === poseId);
+    if (verified?.mannequin_angled?.asset_ref !== saved.url) {
+      throw new Error("The saved illustration is not visible in the authoritative pose store");
+    }
+    // Retain previous images while immutable pose revisions remain available for
+    // disaster recovery; deleting an image could break a historical revision.
+    const cleanup = { status: "disabled" as const };
     return NextResponse.json({
       ok: true,
       pose: updated,
@@ -167,7 +168,8 @@ export async function POST(request: Request) {
       storage: saved.blobPath ? "blob" : "local",
       previous_blob_cleanup: cleanup,
     }, { headers: { "Cache-Control": "no-store" } });
-  } catch {
-    return error("A kép feltöltődött, de az adatbázis mentése nem sikerült. A régi kép maradt aktív.", 500);
+  } catch (err) {
+    console.error("Yasuragi illustration persistence failed", err);
+    return error("A kép feltöltődött, de a tartós mentést nem sikerült ellenőrizni. Ne tölts fel újabb képet, amíg nem ellenőrizted a pózlista frissítését.", 500);
   }
 }

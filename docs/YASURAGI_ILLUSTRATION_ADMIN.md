@@ -25,3 +25,39 @@
 - Concurrent serverless writers do not share a global lock; the expected-reference check reduces but does not eliminate races across different instances.
 - `Pose` image validation currently trusts the admin's manual approval; the pose must be checked for anatomical accuracy before activation.
 - The deployment's actual Blob token, remote assets and end-to-end upload flow cannot be verified from a source-only ZIP.
+
+## 2026-11-21 — tartós képcsere, verziózott pózkatalógus
+
+A meglévő `yogi/poses.json` nyilvános Vercel Blob felülírása után az első
+frissítések a CDN-ben levő, korábbi JSON-t kaphatták vissza. Emiatt az admin
+az új képet mutatta a feltöltés sikeres válasza után, de újratöltéskor a régi
+képhivatkozás térhetett vissza. Ez nem feltétlenül jelenti az új képfájl
+elvesztését: maga a kép továbbra is a Blobban lehet.
+
+- Az admin változatlan: ugyanaz a Ctrl+V/fájlfeltöltés, ellenőrző jelölőnégyzet
+  és **Illusztráció cseréje** gomb.
+- `savePoses()` továbbra is frissíti a kompatibilitást szolgáló
+  `yogi/poses.json` fájlt, **de minden mentés új, immutábilis verziót** is
+  létrehoz a `yogi/pose-revisions/v1/` mappában. A mentés a friss fájl
+  visszaolvasásával és tartalomellenőrzésével zárul.
+- `listPoses()` a **legújabb verzióból** olvas, ha már létezik ilyen. Első
+  deploy után (az első mentésig) továbbra is a meglévő központi JSON-t
+  használja. A verziók Vercel Blob `list()` + egyedi URL-es `get()` alapján
+  kerülnek kiválasztásra; nem a felülírt JSON CDN-gyorsítótárából.
+- Sikertelen olvasás vagy ellenőrzés esetén a szerver hibát jelez. Nem
+  állítja, hogy tartós a mentés, és nem esik vissza észrevétlenül a ZIP-ben
+  lévő régi pózadatokra.
+- **Régi képfájl automatikus törlése a képcserekor most ki van kapcsolva.**
+  A megőrzött katalógusverziókban még lehetnek történeti képhivatkozások;
+  ezeket törölni külön backup/migráció és ellenőrzött takarítás után szabad.
+- A verziózott JSON-ok idővel tárhelyet és listázási műveleteket fogyasztanak.
+  Később külön, jóváhagyott archiválási/takarítási eljárás ajánlott.
+- A korábban feltöltött, de be nem kapcsolt képeket ez a patch **nem** rendeli
+  automatikusan pózhoz. A pózonkénti aktív referenciákat a telepítés után az
+  adminban ellenőrizni kell; szükség esetén újra importálni.
+
+**Éles elfogadási próba:** telepítés után egyetlen, könnyen azonosítható
+próbaképet tölts fel, ellenőrizd az `Illusztráció cseréje` sikerüzenetet, majd
+frissítsd az admin oldalt és a publikus pózoldalt. Ellenőrizd ismét néhány
+perc múlva és egy új böngészőfülön is. A próba nélkül az éles perzisztencia
+nem tekinthető igazoltnak; a ZIP nem tartalmaz Blob tokeneket vagy éles adatot.
