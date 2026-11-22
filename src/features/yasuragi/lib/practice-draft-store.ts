@@ -32,9 +32,9 @@ export type PracticeDraftSummary = {
 };
 
 function privateToken() {
-  const token = process.env.YASURAGI_PRIVATE_BLOB_TOKEN;
+  const token = process.env.YASURAGI_PRIVATE_BLOB_READ_WRITE_TOKEN;
   if (!token) {
-    if (process.env.NODE_ENV === "production") throw new Error("YASURAGI_PRIVATE_BLOB_TOKEN hiányzik. Éles tervezetmentés leállítva.");
+    if (process.env.NODE_ENV === "production") throw new Error("YASURAGI_PRIVATE_BLOB_READ_WRITE_TOKEN hiányzik. Éles tervezetmentés leállítva.");
     return null;
   }
   if (token === process.env.BLOB_READ_WRITE_TOKEN || token === process.env.SHIORI_PRIVATE_BLOB_TOKEN) {

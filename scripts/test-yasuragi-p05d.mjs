@@ -144,9 +144,9 @@ test('P05d: local private drafts + approvals paginate beyond 100 without mutatio
 
 test('P05d: mocked private Blob history paginates and finds newest receipt over 100 entries', async () => {
   const store = await fixtureStore(135);
-  const old = process.env.YASURAGI_PRIVATE_BLOB_TOKEN;
+  const old = process.env.YASURAGI_PRIVATE_BLOB_READ_WRITE_TOKEN;
   try {
-    process.env.YASURAGI_PRIVATE_BLOB_TOKEN = 'p05d-fake-private-token';
+    process.env.YASURAGI_PRIVATE_BLOB_READ_WRITE_TOKEN = 'p05d-fake-private-token';
     const drafts = serverModule('src/features/yasuragi/lib/practice-draft-store.ts', store.blob);
     const approval = serverModule('src/features/yasuragi/lib/practice-approval-store.ts', store.blob);
     const foundDrafts = await pages((cursor) => drafts.listPracticeDrafts(cursor));
@@ -155,8 +155,8 @@ test('P05d: mocked private Blob history paginates and finds newest receipt over 
     assert.deepEqual(foundReceipts.map((x)=>x.receiptId),store.receiptIds);
     assert.equal((await approval.latestReviewReceipt(store.draftIds[0])).receiptId,store.receiptIds.at(-1));
   } finally {
-    if (old === undefined) delete process.env.YASURAGI_PRIVATE_BLOB_TOKEN;
-    else process.env.YASURAGI_PRIVATE_BLOB_TOKEN = old;
+    if (old === undefined) delete process.env.YASURAGI_PRIVATE_BLOB_READ_WRITE_TOKEN;
+    else process.env.YASURAGI_PRIVATE_BLOB_READ_WRITE_TOKEN = old;
     await rm(store.dir,{recursive:true,force:true});
   }
 });

@@ -26,7 +26,7 @@ const safeDraft = (draftId: string) => {
   return draftId.slice(0, -5);
 };
 function token() {
-  const value = process.env.YASURAGI_PRIVATE_BLOB_TOKEN;
+  const value = process.env.YASURAGI_PRIVATE_BLOB_READ_WRITE_TOKEN;
   if (!value) {
     if (process.env.NODE_ENV === "production") throw new Error("A privát Yasuragi tároló nincs konfigurálva.");
     return null;
