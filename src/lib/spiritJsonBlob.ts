@@ -3,6 +3,7 @@ import { get, head, put, type BlobAccessType } from "@vercel/blob";
 import { validateSpiritLibrary, type SpiritLibrary } from "./spiritSchema";
 import { privateShioriReady, readShioriPrivateBlob } from "./shioriPrivateBlob";
 import { publicShioriHasPersonalFields, publicShioriJson } from "./shioriPrivateState";
+import { readFreshPublicShioriBlob } from "./spiritBlobFreshPublicRead";
 
 const PATH = "spirit/library.json";
 
@@ -54,12 +55,28 @@ export async function readSpiritJsonBlob(): Promise<{
   if (!result?.stream || result.statusCode !== 200 || result.blob?.pathname !== PATH) {
     throw new Error("Nem olvasható a Shiori éles Blob-fájlja. A művelet leállt.");
   }
-  const raw = await new Response(result.stream).text();
-  const meta = await head(PATH);
-  if (meta?.pathname !== PATH || comparableTag(meta.etag) !== meta.etag ||
-      comparableTag(result.blob.etag) !== meta.etag ||
-      meta.size !== Buffer.byteLength(raw, "utf8")) {
+  let raw = await new Response(result.stream).text();
+  let meta = await head(PATH);
+  if (meta?.pathname !== PATH || comparableTag(meta.etag) !== meta.etag) {
     throw new SpiritJsonBlobConflict();
+  }
+  if (comparableTag(result.blob.etag) !== meta.etag ||
+      meta.size !== Buffer.byteLength(raw, "utf8")) {
+    // Public Blob overwrites may leave get() serving the old CDN revision even
+    // while HEAD reports the new one. Recover ONLY by reading the ETag-versioned
+    // public URL and verifying the ETag, byte count and a second HEAD.
+    // Never bypass the optimistic write's `ifMatch` concurrency protection.
+    if (access !== "public") throw new SpiritJsonBlobConflict();
+    try {
+      raw = await readFreshPublicShioriBlob(meta, PATH);
+      const latest = await head(PATH);
+      if (latest.pathname !== PATH || latest.etag !== meta.etag ||
+          latest.size !== meta.size) throw new SpiritJsonBlobConflict();
+      meta = latest;
+    } catch {
+      // Fail closed for a real concurrent update or an unverifiable read.
+      throw new SpiritJsonBlobConflict();
+    }
   }
   const original = JSON.parse(raw) as unknown;
   const library = validateSpiritLibrary(original);
