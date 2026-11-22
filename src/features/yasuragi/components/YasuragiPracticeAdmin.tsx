@@ -8,6 +8,7 @@ import type { ProjectReview } from "../lib/practice-review";
 import type { PublicationGate, EditorialAttestations } from "../lib/practice-publication";
 import type { PracticeReviewReceipt } from "../lib/practice-approval-store";
 import type { PracticeDraftSummary, SavedPracticeDraft } from "../lib/practice-draft-store";
+import { createWorkflowReport, planPracticeWorkflow } from "../lib/practice-workflow";
 import styles from "../styles/YasuragiPracticeAdmin.module.css";
 
 const ENDPOINT = "/api/admin/yasuragi/practices";
@@ -273,6 +274,8 @@ export default function YasuragiPracticeAdmin() {
     finally { setBusy(false); }
   }
 
+  const workflowPlan = planPracticeWorkflow({ gate: approval?.gate ?? null, receiptCurrent: approval?.receiptCurrent === true, publication });
+
   return <main className={styles.page}>
     <nav className={styles.nav}><Link href="/admin/yasuragi">← P01 lejátszópróba</Link><Link href="/admin/yogis-choice">Ászanatár</Link></nav>
     <header className={styles.header}>
@@ -328,6 +331,24 @@ export default function YasuragiPracticeAdmin() {
             {projectReview && <p><strong>{projectReview.libraryReadyCount}</strong> használatra előkészített póz · <strong>{projectReview.missingCount}</strong> könyvtárból hiányzó · <strong>{projectReview.unapprovedCount}</strong> még nem teljesen jóváhagyott, hivatkozott póz. A P04 szerkesztői kapuja az alábbi külön felületen ellenőrizhető.</p>}
             <button type="button" className={styles.secondaryButton} onClick={() => void openDraft(openedDraft.draftId)} disabled={Boolean(writingPose)}>Élő könyvtári státusz frissítése</button>
           </div>
+          <section className={styles.approvalPanel} aria-label="P07 munkafolyamat-összegzés">
+            <h4>P07 · Automatikusan összeállított következő lépések</h4>
+            <p role="status"><strong>{workflowPlan.label}</strong></p>
+            <ol>{workflowPlan.actions.map((step, index) => <li key={`${step.code}-${index}`}>{step.label}</li>)}</ol>
+            <p className={styles.reminder}>Ez pillanatnyi, csak olvasó státusz. A szakmai nyilatkozatokat és a publikálást továbbra is külön, kézzel kell végrehajtani.</p>
+            <button type="button" className={styles.secondaryButton}
+              disabled={!approval?.gate || !approval.librarySha256 || !publication}
+              onClick={() => {
+                if (!approval?.gate || !approval.librarySha256 || !publication) return;
+                downloadJson(`${openedDraft.script.practiceId}-p07-munkafolyamat.json`, createWorkflowReport({
+                  draftId: openedDraft.draftId, practiceId: openedDraft.script.practiceId,
+                  version: openedDraft.script.version, scriptSha256: openedDraft.sha256,
+                  librarySha256: approval.librarySha256, gate: approval.gate,
+                  receiptCurrent: approval.receiptCurrent === true, publication,
+                  createdAt: new Date().toISOString(),
+                }));
+              }}><Download size={15} aria-hidden="true"/> Műszaki státuszjelentés exportálása</button>
+          </section>
           <section className={styles.approvalPanel} aria-label="P04 jóváhagyási kapu">
             <h4>Gyakorlás jóváhagyási kapuja · P04</h4>
             <p>A kapu minden aktív útvonal és az azokhoz szükséges ászanák élő állapotából számol. A tiltott, tervezett ágak nem publikálható választások.</p>
