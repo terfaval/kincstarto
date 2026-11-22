@@ -57,10 +57,9 @@ export default function ShioriBookDetail({ initialBook, books, themePills, tagLa
   }, [active, history.length]);
 
   useEffect(() => {
-    if (embedded) return;
     const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     closeRef.current?.focus();
-    return () => { if (previousFocus?.isConnected) previousFocus.focus(); };
+    if (!embedded) return () => { if (previousFocus?.isConnected) previousFocus.focus(); };
   }, [embedded]);
 
   const remember = (): Entry => ({
@@ -154,7 +153,7 @@ export default function ShioriBookDetail({ initialBook, books, themePills, tagLa
           <span className={styles.toolbarLabel}>Könyvadatlap</span>
           <div className={styles.actions}>
             {history.length > 1 && <button type="button" ref={backRef} onClick={back} className={styles.toolbarButton}><ArrowLeft size={16} aria-hidden="true" /> <span>Előző könyv</span></button>}
-            <button type="button" ref={closeRef} onClick={onClose} className={styles.toolbarButton} aria-label={embedded ? "Vissza a borítóhoz" : "Könyvadatlap bezárása"}><X size={17} aria-hidden="true" /> <span>{embedded ? "Borító" : "Bezárás"}</span></button>
+            <button type="button" ref={closeRef} onClick={onClose} className={styles.toolbarButton} aria-label={embedded ? "Vissza a könyvlistához" : "Könyvadatlap bezárása"}>{embedded ? <ArrowLeft size={17} aria-hidden="true" /> : <X size={17} aria-hidden="true" />} <span>{embedded ? "Vissza a listához" : "Bezárás"}</span></button>
           </div>
         </div>
         <div className={styles.spread}>

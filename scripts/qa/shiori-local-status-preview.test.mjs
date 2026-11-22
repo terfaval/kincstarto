@@ -24,8 +24,10 @@ test('preview uses deterministic synthetic labels but not private values or edit
   assert.match(shelf, /if \(canManagePrivate\) return book\.status/);
   assert.match(shelf, /if \(localStatusPreview\) return LOCAL_SAMPLE_STATUSES\[hashId\(book\.id\) % LOCAL_SAMPLE_STATUSES\.length\]/);
   assert.match(shelf, /return null;/);
-  assert.equal((shelf.match(/\{currentCoverStatus && <PrivateCoverStatus status=\{currentCoverStatus\} \/>\}/g) ?? []).length, 2);
-  assert.equal((shelf.match(/Helyi státuszikon-minta, nem valódi olvasottság/g) ?? []).length, 4);
+  assert.equal((shelf.match(/\{currentCoverStatus && <PrivateCoverStatus status=\{currentCoverStatus\} \/>\}/g) ?? []).length, 1);
+  assert.match(shelf, /const status = coverStatusForBook\(book, canManagePrivate, localStatusPreview\)/);
+  assert.match(shelf, /\{status && <PrivateCoverStatus status=\{status\} \/>\}/);
+  assert.match(shelf, /Helyi státuszikon-minta, nem valódi olvasottság/);
   assert.match(app, /const canManagePrivate = admin && privateEnabled/);
   assert.match(shelf, /\{canManagePrivate && collection\.kind === "path" && currentPath && onPathSaved && \(/);
   assert.match(privateBlob, /process\.env\.SHIORI_PRIVATE_STATE_READY === "1"/);

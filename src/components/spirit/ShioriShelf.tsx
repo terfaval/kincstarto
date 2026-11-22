@@ -8,6 +8,7 @@ import { orderShioriBooks } from "@/lib/shioriCatalog";
 import shelfPlan from "./shioriShelves.json";
 import styles from "./ShioriShelf.module.css";
 import ShioriBookDetail from "./ShioriBookDetail";
+import { wholeBookCapacity } from "@/lib/shioriWholeBookPaging";
 
 type Shelf = (typeof shelfPlan.shelves)[number];
 type Group = Shelf & { books: SpiritBook[] };
@@ -89,6 +90,17 @@ function bookStyle(book: SpiritBook, categoryId: string | null): CSSProperties {
   return { "--book-tone": tone, "--book-height": `${82 + hash % 15}%` } as CSSProperties;
 }
 
+/** A mobile stack of horizontal book spines, with subtle handmade variation. */
+function horizontalBookStyle(book: SpiritBook, categoryId: string | null): CSSProperties {
+  const hash = hashId(book.id + ":horizontal");
+  return {
+    ...bookStyle(book, categoryId),
+    "--mobile-book-width": `${86 + (hash % 11)}%`,
+    "--mobile-book-offset": `${((hash >>> 4) % 7) - 3}px`,
+    "--mobile-book-height": `${64 + ((hash >>> 9) % 14)}px`,
+  } as CSSProperties;
+}
+
 const LOCAL_SAMPLE_STATUSES: SpiritStatus[] = ["olvasatlan", "folyamatban", "befejezett", "referencia"];
 
 function coverStatusForBook(book: SpiritBook, canManagePrivate: boolean, localStatusPreview: boolean): SpiritStatus | null {
@@ -111,7 +123,7 @@ function PrivateCoverStatus({ status }: { status: SpiritStatus }) {
     : status === "befejezett" ? Check
     : status === "referencia" ? Bookmark : Circle;
   return (
-    <span className={styles.coverStatus} aria-hidden="true">
+    <span className={styles.coverStatus} data-status={status} aria-hidden="true">
       <Icon size={15} strokeWidth={2.1} />
     </span>
   );
@@ -124,18 +136,23 @@ export default function ShioriShelf({ fullscreen = false, books, paths, themePil
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [spinePage, setSpinePage] = useState(0);
   const [spinesPerPage, setSpinesPerPage] = useState(10);
+  const [desktopStripWidth, setDesktopStripWidth] = useState("100%");
+  const [mobileBooksPerPage, setMobileBooksPerPage] = useState(4);
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
   const [filterPanel, setFilterPanel] = useState(false);
   const [detailStack, setDetailStack] = useState<string[]>([]);
   const deckRef = useRef<HTMLDivElement>(null);
+  const spineFrameRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
-  const mobileCoverRef = useRef<HTMLButtonElement>(null);
+  const mobileViewportRef = useRef<HTMLDivElement>(null);
+  const mobileListScroll = useRef(0);
+  const mobileSelectedRowRef = useRef<HTMLButtonElement>(null);
+  const mobileSwipeStartY = useRef<number | null>(null);
+  const mobileSwipeAt = useRef(0);
   const filterTriggerRef = useRef<HTMLButtonElement>(null);
   const desktopFilterRef = useRef<HTMLButtonElement>(null);
-  const browseSnapshot = useRef<{ selectedId: string | null; spinePage: number; listY: number } | null>(null);
-  const wheelTurnAt = useRef(0);
-  const swipeStartX = useRef<number | null>(null);
+  const browseSnapshot = useRef<{ selectedId: string | null; spinePage: number; mobileY: number } | null>(null);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 700px)");
@@ -213,32 +230,56 @@ export default function ShioriShelf({ fullscreen = false, books, paths, themePil
     });
   }, [searchActive, collectionBooks, sortedAll, query, filters, themePills, tagLabels, groupByBook]);
 
-  // Only complete spines are mounted on a page. A clipped scroll container or
-  // scroll-snap alone cannot guarantee a whole spine at the right-hand edge.
+  // Size both carousels from the UNRESTRICTED parent, never from their already
+  // quantized content. This avoids a ResizeObserver feedback loop and cut books.
   useLayoutEffect(() => {
-    if (mobile || !deckRef.current) return;
+    const frame = spineFrameRef.current;
     const deck = deckRef.current;
+    if (mobile || !frame || !deck) return;
     const measure = () => {
       const computed = getComputedStyle(deck);
       const padding = (parseFloat(computed.paddingLeft) || 0) + (parseFloat(computed.paddingRight) || 0);
       const gap = parseFloat(computed.columnGap) || 4;
       const firstSpine = deck.querySelector<HTMLButtonElement>(`button.${styles.spine}`);
       const spineWidth = firstSpine?.getBoundingClientRect().width || Math.min(50, Math.max(33, window.innerWidth * .0315));
-      const available = Math.max(0, deck.clientWidth - padding);
-      setSpinesPerPage(Math.max(1, Math.floor((available + gap) / (spineWidth + gap))));
+      const wholeSpines = wholeBookCapacity(frame.clientWidth, spineWidth, gap, padding);
+      setSpinesPerPage(wholeSpines);
+      setDesktopStripWidth(`${wholeSpines * spineWidth + (wholeSpines - 1) * gap + padding}px`);
     };
     measure();
-    const resizeObserver = new ResizeObserver(measure);
-    resizeObserver.observe(deck);
-    return () => resizeObserver.disconnect();
+    const observer = new ResizeObserver(measure);
+    observer.observe(frame);
+    return () => observer.disconnect();
   }, [mobile, shownBooks.length]);
 
-  const pageCount = Math.max(1, Math.ceil(shownBooks.length / spinesPerPage));
-  const activePage = Math.min(spinePage, pageCount - 1);
-  const pageStart = activePage * spinesPerPage;
-  const visibleSpines = shownBooks.slice(pageStart, pageStart + spinesPerPage);
+  // Observe the free viewport, not the quantized scrolling list: no resize loop.
+  // The list shows a whole number of 86px slots, while native touch/wheel
+  // momentum and CSS scroll snapping preserve the original rolling feeling.
+  useLayoutEffect(() => {
+    const viewport = mobileViewportRef.current;
+    if (!mobile || !viewport) return;
+    const measure = () => {
+      if (viewport.clientHeight <= 0) return;
+      setMobileBooksPerPage(wholeBookCapacity(viewport.clientHeight, 86, 4, 10));
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  }, [mobile]);
 
-  const current = shownBooks.find((book) => book.id === selectedId) ?? (mobile ? shownBooks[0] : null) ?? null;
+  const maxSpineStart = Math.max(0, shownBooks.length - spinesPerPage);
+  const activeSpineStart = Math.min(spinePage, maxSpineStart);
+  const scrollSpines = (direction: number, count: number) => {
+    const deck = deckRef.current;
+    if (!deck) return;
+    const gap = parseFloat(getComputedStyle(deck).columnGap) || 4;
+    const spine = deck.querySelector<HTMLButtonElement>(`button.${styles.spine}`);
+    const step = (spine?.getBoundingClientRect().width || 50) + gap;
+    deck.scrollBy({ left: direction * count * step, behavior: "smooth" });
+  };
+
+  const current = shownBooks.find((book) => book.id === selectedId) ?? null;
   const currentCoverStatus = current ? coverStatusForBook(current, canManagePrivate, localStatusPreview) : null;
   const detailBook = detailStack.length ? byId.get(detailStack[0]) ?? null : null;
   const currentPath = paths.find((path) => path.id === collection.id);
@@ -252,16 +293,17 @@ export default function ShioriShelf({ fullscreen = false, books, paths, themePil
     setCollection(next);
     setSelectedId(null);
     setSpinePage(0);
+    if (deckRef.current) deckRef.current.scrollLeft = 0;
+    listRef.current?.scrollTo({ top: 0 });
     setDetailStack([]);
     setQuery("");
     setFilters(EMPTY_FILTERS);
     browseSnapshot.current = null;
     setFilterPanel(false);
-    listRef.current?.scrollTo({ top: 0 });
   };
   const rememberBrowse = () => {
     if (!searchActive && !browseSnapshot.current) {
-      browseSnapshot.current = { selectedId, spinePage: activePage, listY: listRef.current?.scrollTop ?? 0 };
+      browseSnapshot.current = { selectedId, spinePage: activeSpineStart, mobileY: listRef.current?.scrollTop ?? 0 };
     }
   };
   const changeQuery = (next: string) => {
@@ -271,11 +313,15 @@ export default function ShioriShelf({ fullscreen = false, books, paths, themePil
     }
     if (next.trim()) rememberBrowse();
     setSpinePage(0);
+    if (deckRef.current) deckRef.current.scrollLeft = 0;
+    listRef.current?.scrollTo({ top: 0 });
     setQuery(next);
   };
   const changeFilter = (key: FilterGroup, value: string) => {
     rememberBrowse();
     setSpinePage(0);
+    if (deckRef.current) deckRef.current.scrollLeft = 0;
+    listRef.current?.scrollTo({ top: 0 });
     setFilters((currentFilters) => ({
       ...currentFilters,
       [key]: currentFilters[key].includes(value)
@@ -289,16 +335,34 @@ export default function ShioriShelf({ fullscreen = false, books, paths, themePil
     setFilters(EMPTY_FILTERS);
     setSelectedId(snapshot?.selectedId ?? null);
     setSpinePage(snapshot?.spinePage ?? 0);
+    requestAnimationFrame(() => {
+      if (listRef.current) listRef.current.scrollTop = snapshot?.mobileY ?? 0;
+      const deck = deckRef.current;
+      if (deck && snapshot) {
+        const gap = parseFloat(getComputedStyle(deck).columnGap) || 4;
+        const spine = deck.querySelector<HTMLButtonElement>(`button.${styles.spine}`);
+        deck.scrollLeft = snapshot.spinePage * ((spine?.getBoundingClientRect().width || 50) + gap);
+      }
+    });
     setDetailStack([]);
     setFilterPanel(false);
     browseSnapshot.current = null;
-    requestAnimationFrame(() => {
-      if (listRef.current) listRef.current.scrollTop = snapshot?.listY ?? 0;
-    });
   };
   const openBook = (book: SpiritBook) => {
-    if (mobile) setDetailStack([book.id]);
-    else onOpenBook(book);
+    if (mobile) {
+      // The browser may synthesize a click after a swipe: never open that book.
+      if (Date.now() - mobileSwipeAt.current < 450) return;
+      mobileListScroll.current = listRef.current?.scrollTop ?? 0;
+      setSelectedId(book.id);
+      setDetailStack([book.id]);
+    } else onOpenBook(book);
+  };
+  const closeMobileBook = () => {
+    setDetailStack([]);
+    requestAnimationFrame(() => {
+      if (listRef.current) listRef.current.scrollTop = mobileListScroll.current;
+      mobileSelectedRowRef.current?.focus({ preventScroll: true });
+    });
   };
   const selectBook = (book: SpiritBook) => {
     setSelectedId(book.id);
@@ -326,7 +390,7 @@ export default function ShioriShelf({ fullscreen = false, books, paths, themePil
   };
 
   return (
-    <section className={`${styles.shell} ${fullscreen ? styles.fullscreen : ""}`} style={stageStyle} aria-label={COPY.heading}>
+    <section className={`${styles.shell} ${fullscreen ? styles.fullscreen : ""} ${detailBook ? styles.mobileDetailOpen : ""}`} style={stageStyle} aria-label={COPY.heading}>
       <header className={styles.header}>
         <div className={styles.brand}>
           <span className={styles.brandSeal} aria-hidden="true" />
@@ -396,28 +460,21 @@ export default function ShioriShelf({ fullscreen = false, books, paths, themePil
               <div className={styles.empty}><BookOpen size={27} /><p>{COPY.empty}</p></div>
             ) : (
               <>
-                <div className={styles.spineFrame}>
-                  <div className={styles.spines} ref={deckRef} role="group" tabIndex={0} aria-label="Könyvgerincek"
-                    onWheel={(event) => {
-                      // Horizontal trackpad gestures page by complete book groups.
-                      if (Math.abs(event.deltaX) < 15 || Date.now() - wheelTurnAt.current < 420) return;
-                      wheelTurnAt.current = Date.now();
-                      setSpinePage((page) => Math.max(0, Math.min(pageCount - 1, page + (event.deltaX > 0 ? 1 : -1))));
-                    }}
-                    onTouchStart={(event) => { swipeStartX.current = event.touches[0]?.clientX ?? null; }}
-                    onTouchEnd={(event) => {
-                      const from = swipeStartX.current;
-                      const to = event.changedTouches[0]?.clientX;
-                      swipeStartX.current = null;
-                      if (from === null || to === undefined || Math.abs(from - to) < 55) return;
-                      setSpinePage((page) => Math.max(0, Math.min(pageCount - 1, page + (from > to ? 1 : -1))));
+                <div className={styles.spineFrame} ref={spineFrameRef}>
+                  <div className={styles.spines} ref={deckRef} style={{ "--desktop-spine-strip-width": desktopStripWidth } as CSSProperties} role="group" tabIndex={0} aria-label="Könyvgerincek"
+                    onScroll={(event) => {
+                      const deck = event.currentTarget;
+                      const gap = parseFloat(getComputedStyle(deck).columnGap) || 4;
+                      const spine = deck.querySelector<HTMLButtonElement>(`button.${styles.spine}`);
+                      const step = (spine?.getBoundingClientRect().width || 50) + gap;
+                      setSpinePage(Math.min(maxSpineStart, Math.max(0, Math.round(deck.scrollLeft / step))));
                     }}
                     onKeyDown={(event) => {
-                    if (event.target !== event.currentTarget) return;
-                    if (event.key === "ArrowRight" && activePage < pageCount - 1) { event.preventDefault(); setSpinePage(activePage + 1); }
-                    if (event.key === "ArrowLeft" && activePage > 0) { event.preventDefault(); setSpinePage(activePage - 1); }
-                  }}>
-                  {visibleSpines.map((book) => {
+                      if (event.target !== event.currentTarget) return;
+                      if (event.key === "ArrowRight") { event.preventDefault(); scrollSpines(1, 1); }
+                      if (event.key === "ArrowLeft") { event.preventDefault(); scrollSpines(-1, 1); }
+                    }}>
+                  {shownBooks.map((book) => {
                     const active = current?.id === book.id;
                     return (
                       <button key={book.id} type="button" className={`${styles.spine} ${active ? styles.spineSelected : ""} ${styles[`spineFamily${spineVariant(book)}`]}`} style={bookStyle(book, groupByBook.get(book.id) ?? null)} aria-pressed={active} aria-label={`${book.author} - ${book.title}`} title={`${book.author}: ${book.title}`} onClick={() => selectBook(book)} onDoubleClick={() => onOpenBook(book)} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); onOpenBook(book); } }}>
@@ -426,10 +483,10 @@ export default function ShioriShelf({ fullscreen = false, books, paths, themePil
                     );
                   })}
                   </div>
-                  {pageCount > 1 && <nav className={styles.spinePager} aria-label="Könyvgerincek lapozása">
-                    <button type="button" disabled={activePage === 0} aria-label="Előző könyvek" onClick={() => setSpinePage(activePage - 1)}><ChevronLeft size={16} aria-hidden="true" /></button>
-                    <button type="button" disabled={activePage === pageCount - 1} aria-label="Következő könyvek" onClick={() => setSpinePage(activePage + 1)}><ChevronRight size={16} aria-hidden="true" /></button>
-                    <span className={styles.visuallyHidden} aria-live="polite">{pageStart + 1}–{Math.min(pageStart + spinesPerPage, shownBooks.length)}. könyv a {shownBooks.length} közül</span>
+                  {maxSpineStart > 0 && <nav className={styles.spinePager} aria-label="Könyvgerincek lapozása">
+                    <button type="button" disabled={activeSpineStart === 0} aria-label="Előző könyvek" onClick={() => scrollSpines(-1, spinesPerPage)}><ChevronLeft size={16} aria-hidden="true" /></button>
+                    <button type="button" disabled={activeSpineStart >= maxSpineStart} aria-label="Következő könyvek" onClick={() => scrollSpines(1, spinesPerPage)}><ChevronRight size={16} aria-hidden="true" /></button>
+                    <span className={styles.visuallyHidden} aria-live="polite">{activeSpineStart + 1}–{Math.min(activeSpineStart + spinesPerPage, shownBooks.length)}. könyv a {shownBooks.length} közül</span>
                   </nav>}
                 </div>
                 <div className={styles.featured}>
@@ -455,7 +512,7 @@ export default function ShioriShelf({ fullscreen = false, books, paths, themePil
           </div>
 
           <div className={`${styles.mobileTop} ${detailBook ? styles.mobileTopExpanded : ""}`}>
-            {detailBook ? (
+            {detailBook && (
               <ShioriBookDetail
                 key={detailBook.id}
                 embedded
@@ -465,28 +522,47 @@ export default function ShioriShelf({ fullscreen = false, books, paths, themePil
                 tagLabels={tagLabels}
                 canManagePrivate={canManagePrivate}
                 onBookSaved={onBookSaved}
-                onClose={() => {
-                  setDetailStack([]);
-                  requestAnimationFrame(() => mobileCoverRef.current?.focus());
-                }}
+                onClose={closeMobileBook}
               />
-            ) : current ? (
-              <button ref={mobileCoverRef} type="button" className={`${styles.mobileCover} ${styles[`coverFamily${coverVariant(current)}`]}`} style={bookStyle(current, groupByBook.get(current.id) ?? null)} onClick={() => openBook(current)} aria-label={`${COPY.detail}: ${current.title}${canManagePrivate ? ` · Olvasottság: ${STATUS_LABELS[current.status]}` : localStatusPreview ? " · Helyi státuszikon-minta, nem valódi olvasottság" : ""}`} title={canManagePrivate ? `Olvasottság: ${STATUS_LABELS[current.status]}` : localStatusPreview ? "Helyi státuszikon-minta, nem valódi olvasottság" : undefined}>
-                {currentCoverStatus && <PrivateCoverStatus status={currentCoverStatus} />}
-                <span className={styles.coverArt} aria-hidden="true"><span className={styles.coverArtDetail}/></span>
-                <span className={styles.coverAuthor}>{current.author_display_short ?? current.author}</span>
-                <strong className={styles.coverTitle}>{current.title}</strong>
-                <span className={styles.coverTagline}>{(current.cover_tag_ids?.length ? current.cover_tag_ids : current.tags ?? []).slice(0, 2).map((tag) => tagLabels[tag] ?? tag).join(" · ")}</span>
-              </button>
-            ) : <div className={styles.empty}><p>{COPY.empty}</p></div>}
+            )}
           </div>
-          <div className={styles.mobileList} ref={listRef} role="list" aria-label="Az aktuális válogatás könyvei">
-            {shownBooks.map((book) => (
-              <button role="listitem" type="button" key={book.id} className={`${styles.mobileListItem} ${current?.id === book.id ? styles.mobileListSelected : ""}`} onClick={() => selectBook(book)} aria-current={current?.id === book.id ? "true" : undefined}>
-                <span className={styles.listColor} style={{ background: COLOR[CATEGORIES.findIndex((c) => c.id === groupByBook.get(book.id))] ?? "#829482" }} />
-                <span><strong>{book.title}</strong><small>{book.author}</small></span>
-              </button>
-            ))}
+          <div className={styles.mobileViewport} ref={mobileViewportRef}>
+          <div className={styles.mobileList} ref={listRef} role="list" tabIndex={0} aria-label="A válogatás fekvő könyvei"
+            style={{ "--mobile-whole-height": `${mobileBooksPerPage * 86 + (mobileBooksPerPage - 1) * 4 + 10}px` } as CSSProperties}
+            onTouchStart={(event) => { mobileSwipeStartY.current = event.touches[0]?.clientY ?? null; }}
+            onTouchMove={(event) => {
+              const from = mobileSwipeStartY.current;
+              const to = event.touches[0]?.clientY;
+              if (from !== null && to !== undefined && Math.abs(from - to) > 10) mobileSwipeAt.current = Date.now();
+            }}
+            onTouchEnd={(event) => {
+              const from = mobileSwipeStartY.current;
+              const to = event.changedTouches[0]?.clientY;
+              mobileSwipeStartY.current = null;
+              if (from !== null && to !== undefined && Math.abs(from - to) > 10) mobileSwipeAt.current = Date.now();
+            }}>
+            {shownBooks.length === 0 && <p className={styles.mobileEmpty}>{COPY.empty}</p>}
+            {shownBooks.map((book) => {
+              const status = coverStatusForBook(book, canManagePrivate, localStatusPreview);
+              return (
+                <div className={styles.mobileBookItem} role="listitem" key={book.id}>
+                  <button
+                    ref={selectedId === book.id ? mobileSelectedRowRef : undefined}
+                    type="button"
+                    className={`${styles.spine} ${styles.mobileSpine} ${styles[`spineFamily${spineVariant(book)}`]} ${status ? styles.mobileSpineHasStatus : ""}`}
+                    style={horizontalBookStyle(book, groupByBook.get(book.id) ?? null)}
+                    onClick={() => openBook(book)}
+                    aria-label={`${COPY.detail}: ${book.author} – ${book.title}${canManagePrivate ? ` · Olvasottság: ${STATUS_LABELS[book.status]}` : status ? " · Helyi státuszikon-minta, nem valódi olvasottság" : ""}`}
+                    title={`${book.author}: ${book.title}`}
+                  >
+                    <span className={styles.spineAuthor}>{book.author_display_short ?? book.author}</span>
+                    <span className={styles.spineTitle}>{book.title}</span>
+                    {status && <PrivateCoverStatus status={status} />}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
           </div>
           <footer className={styles.footer}>
             <button className={styles.mobileFilterButton} ref={filterTriggerRef} type="button" onClick={() => setFilterPanel(true)}><Search size={18} aria-hidden="true" />{COPY.search}</button>

@@ -22,20 +22,21 @@ test('four status icons are distinct and contain no editorial or personal text o
   assert.doesNotMatch(shelf, /<PrivateCoverStatus[^>]*notes=/);
 });
 
-test('desktop and mobile covers show status only for authorized admin or explicit local demonstration', () => {
-  assert.equal((shelf.match(/\{currentCoverStatus && <PrivateCoverStatus status=\{currentCoverStatus\} \/>\}/g) ?? []).length, 2);
-  assert.equal((shelf.match(/Olvasottság: \$\{STATUS_LABELS\[current\.status\]\}/g) ?? []).length, 4);
-  assert.equal((shelf.match(/title=\{canManagePrivate \? `Olvasottság:/g) ?? []).length, 2);
+test('desktop featured cover and mobile book spines reveal private status only to authorized admin or local demo', () => {
+  assert.equal((shelf.match(/\{currentCoverStatus && <PrivateCoverStatus status=\{currentCoverStatus\} \/>\}/g) ?? []).length, 1);
+  assert.match(shelf, /const status = coverStatusForBook\(book, canManagePrivate, localStatusPreview\)/);
+  assert.match(shelf, /\{status && <PrivateCoverStatus status=\{status\} \/>\}/);
   assert.match(shelf, /className=\{`\$\{styles\.bookCover\}/);
-  assert.match(shelf, /className=\{`\$\{styles\.mobileCover\}/);
+  assert.match(shelf, /styles\.spine\} \$\{styles\.mobileSpine\}/);
+  assert.doesNotMatch(shelf, /className=\{`\$\{styles\.mobileCover\}/);
   assert.match(shelf, /canManagePrivate = false/);
 });
 
-test('indicator uses a compact, non-interactive corner overlay on both cover sizes', () => {
+test('desktop featured-cover indicator remains noninteractive and mobile spines get quiet status icons', () => {
   assert.match(css, /\.bookCover > \.coverStatus,\s*\.mobileCover > \.coverStatus/);
   assert.match(css, /\.bookCover > \.coverStatus,[\s\S]*?position:absolute/);
   assert.match(css, /\.bookCover > \.coverStatus,[\s\S]*?pointer-events:none/);
-  assert.match(css, /@media \(max-width:700px\)\s*\{\s*\.mobileCover > \.coverStatus/);
+  assert.match(css, /\.mobileSpine > \.coverStatus/);
 });
 
 test('public route never loads a private snapshot, while admin status edits refresh the highlighted book', () => {
