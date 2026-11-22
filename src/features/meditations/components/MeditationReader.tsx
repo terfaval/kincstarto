@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import type {
   Meditation,
-  MeditationEndBehavior,
   ReaderBlock,
   ReaderTextBlock,
   ReaderTone,
@@ -19,7 +18,6 @@ type Props = {
   meditation: Meditation;
   audioConfig: MeditationAudioConfig | null;
   onExit: () => void;
-  onComplete: (behavior: MeditationEndBehavior) => void;
   isAdmin?: boolean;
 };
 
@@ -52,7 +50,6 @@ export default function MeditationReader({
   meditation,
   audioConfig,
   onExit,
-  onComplete,
   isAdmin,
 }: Props) {
   const { status, currentText, currentBlockIndex, start, restart, stop } = useReaderEngine(meditation);
@@ -154,7 +151,6 @@ export default function MeditationReader({
       audioEngine.stop();
     }
     setCompleted(true);
-    onComplete(endBehavior);
 
     if (endBehavior === "fade_out") {
       setClosing(true);
@@ -163,7 +159,7 @@ export default function MeditationReader({
       }, 2000);
       return () => window.clearTimeout(timer);
     }
-  }, [completed, editorMode, endBehavior, onComplete, onExit, status]);
+  }, [completed, editorMode, endBehavior, onExit, status]);
 
   const handleExit = useCallback(() => {
     audioEngine.stop();
@@ -182,7 +178,7 @@ export default function MeditationReader({
   }, [handleExit]);
 
   const showEndPanel = !editorMode && status === "ended" && endBehavior !== "fade_out";
-  const endCopy = endBehavior === "complete" ? "Meditacio befejezve." : "Lassan terj vissza.";
+  const endCopy = endBehavior === "complete" ? "Meditáció befejezve." : "Lassan térj vissza.";
   const displayBlock = editorMode ? editorCurrentBlock : currentText;
   const durationInputValue = editorDurationMs > 0 ? Number((editorDurationMs / 1000).toFixed(1)) : 0;
   const displayPosition = hasTextBlocks ? editorTextPosition + 1 : 0;
@@ -238,7 +234,7 @@ export default function MeditationReader({
         onClick={(event) => event.stopPropagation()}
       >
         <button type="button" className={styles.readerExit} onClick={handleExit}>
-          Kilepes
+          Kilépés
         </button>
         {isAdmin && (
           <button
@@ -246,7 +242,7 @@ export default function MeditationReader({
             className={styles.readerAdminToggle}
             onClick={() => setEditorMode((mode) => !mode)}
           >
-            {editorMode ? "Olvaso mod" : "Szerkeszto mod"}
+            {editorMode ? "Olvasó mód" : "Szerkesztő mód"}
           </button>
         )}
         <ReaderStage block={displayBlock} isClosing={closing && !editorMode} />
@@ -254,18 +250,18 @@ export default function MeditationReader({
           <div className={styles.readerEditorPanel}>
             <div className={styles.readerEditorHeader}>
               <div>
-                <p className={styles.readerEditorTitle}>Szerkeszto mod</p>
+                <p className={styles.readerEditorTitle}>Szerkesztő mód</p>
                 <p className={styles.readerEditorMeta}>
-                  Szoveg {displayPosition} / {textBlockIndices.length}
+                  Szöveg {displayPosition} / {textBlockIndices.length}
                 </p>
                 <p className={styles.readerEditorSaveState}>
-                  {saveState === "saving" && "Mentes..."}
+                  {saveState === "saving" && "Mentés…"}
                   {saveState === "saved" && "Mentve"}
-                  {saveState === "error" && "Mentes hiba"}
+                  {saveState === "error" && "Mentési hiba"}
                 </p>
               </div>
               <div className={styles.readerEditorDuration}>
-                Idotartam: {formatDurationMs(editorDurationMs)}
+                Időtartam: {formatDurationMs(editorDurationMs)}
               </div>
             </div>
             <div className={styles.readerEditorControls}>
@@ -312,7 +308,7 @@ export default function MeditationReader({
               </select>
             </div>
             <label className={styles.readerEditorLabel} htmlFor="editor-text-content">
-              Szoveg
+              Szöveg
             </label>
             <textarea
               id="editor-text-content"
@@ -341,7 +337,7 @@ export default function MeditationReader({
               ))}
             </select>
             <label className={styles.readerEditorLabel} htmlFor="editor-text-duration">
-              Idotartam (mp)
+              Időtartam (mp)
             </label>
             <input
               id="editor-text-duration"
@@ -360,10 +356,10 @@ export default function MeditationReader({
             <p>{endCopy}</p>
             <div className={styles.readerEndActions}>
               <button type="button" className="btn btn--ghost" onClick={restart}>
-                Ujrainditas
+                Újraindítás
               </button>
               <button type="button" className="btn btn--primary" onClick={handleExit}>
-                Vissza a terbe
+                Vissza a térbe
               </button>
             </div>
           </div>
@@ -372,7 +368,7 @@ export default function MeditationReader({
       <button
         type="button"
         className={styles.readerMuteFab}
-        aria-label={audioEngine.isMuted ? "Hang visszakapcsolasa" : "Hang elnemitasa"}
+        aria-label={audioEngine.isMuted ? "Hang visszakapcsolása" : "Hang elnémítása"}
         onClick={(event) => {
           event.stopPropagation();
           audioEngine.setMuted(!audioEngine.isMuted);

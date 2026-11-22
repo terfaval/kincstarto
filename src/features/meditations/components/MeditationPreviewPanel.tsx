@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import type { Meditation } from "../lib/meditation-types";
+import type { Meditation, MeditationMode } from "../lib/meditation-types";
 import { formatDuration, getCategoryLabel } from "../lib/meditation-utils";
 import styles from "../styles/meditations.module.css";
 
@@ -8,6 +8,11 @@ type Props = {
   meditation: Meditation;
   onEnter: () => void;
   onClose: () => void;
+};
+
+const MODE_LABELS: Record<MeditationMode, string> = {
+  kontemplativ: "Kontemplatív",
+  imaginativ: "Imaginatív",
 };
 
 export default function MeditationPreviewPanel({ meditation, onEnter, onClose }: Props) {
@@ -43,7 +48,7 @@ export default function MeditationPreviewPanel({ meditation, onEnter, onClose }:
       </div>
       <div className={styles.previewModeRow}>
         <span className={`${styles.modePill} ${styles[`mode${meditation.meditation_mode}` as const]}`}>
-          {meditation.meditation_mode}
+          {MODE_LABELS[meditation.meditation_mode]}
         </span>
       </div>
       {meditation.techniques.length > 0 && (

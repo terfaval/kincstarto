@@ -1,0 +1,25 @@
+.launch { display:flex; align-items:center; gap:7px; border:1px solid #bca98a; border-radius:999px; padding:10px 14px; background:#faf3e5; color:#463b2e; font-weight:650; cursor:pointer; box-shadow:0 2px 12px #0002; }
+.panel { width:min(94vw,780px); max-height:90dvh; overflow:auto; background:#f7f0e4; color:#3e362b; border-radius:20px; padding:24px; display:grid; gap:18px; }
+.header { display:flex; justify-content:space-between; gap:15px; }
+.header small { color:#7a6852; text-transform:uppercase; letter-spacing:.1em; }
+.header h2 { font:600 1.8rem Georgia,serif; margin:5px 0; }
+.header p,.body p { font-size:.85rem; color:#6c6254; margin:6px 0; }
+.header button { align-self:start; border:1px solid #cbbba4; border-radius:50%; background:#fffaf0; padding:8px; cursor:pointer; }
+.tabs { display:flex; gap:6px; flex-wrap:wrap; }
+.tabs button { border:1px solid #d6c8b4; border-radius:9px; padding:10px; background:#ece3d4; cursor:pointer; }
+.tabs button[aria-current="page"] { background:#fffaf0; border-color:#698574; font-weight:700; }
+.body { display:grid; gap:14px; }
+.body label { display:grid; gap:6px; font-size:.82rem; font-weight:650; }
+.body input,.body select { width:100%; min-width:0; border:1px solid #c8b9a2; border-radius:8px; padding:10px; background:#fffdf8; color:#392f25; }
+.inline { display:flex; gap:8px; }
+.inline button,.footer>button,.preview button { background:#405b51; color:white; border:0; border-radius:8px; padding:10px 14px; cursor:pointer; }
+.chips { display:flex; flex-wrap:wrap; gap:7px; margin-top:8px; }
+.chips button { border:1px solid #c4b8a5; border-radius:20px; padding:7px 10px; background:#fffaf0; color:#40372d; cursor:pointer; }
+.choices,.usage { max-height:180px; overflow:auto; display:grid; gap:5px; }
+.choices button,.usage button { text-align:left; border:1px solid #ddd1bd; border-radius:6px; background:#fffaf0; padding:8px; cursor:pointer; }
+.footer { border-top:1px solid #d8c8af; padding-top:16px; display:grid; gap:12px; justify-items:start; }
+.footer button:disabled { opacity:.5; cursor:not-allowed; }
+.preview { background:#fffaf0; border:1px solid #d7c7b1; border-radius:10px; padding:14px; width:100%; }
+.preview label { display:flex; gap:8px; align-items:center; margin:12px 0; }
+.error { color:#9b352c; }
+@media(max-width:650px) { .panel { padding:14px; } .inline { flex-direction:column; } }

@@ -280,7 +280,7 @@ export default function CustomMeditationsDialog({
     setEditor({ ...editor, draft: { ...editor.draft, stages: editor.draft.stages.filter((stage) => stage.id !== id) } });
   };
 
-  const title = stageForm ? "Szakasz beállítása" : editor ? (editor.id ? "Gyakorlás szerkesztése" : "Új gyakorlás") : "Saját gyakorlásaim";
+  const title = stageForm ? "Szakasz beállítása" : editor ? (editor.id ? "Meditáció szerkesztése" : "Új meditáció") : "Saját meditációk";
 
   return (
     <div className={styles.backdrop} onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}>
@@ -378,12 +378,12 @@ export default function CustomMeditationsDialog({
               <button type="button" className={styles.addButton} onClick={addStage} disabled={editor.draft.stages.length >= MAX_STAGES}>
                 + Szakasz hozzáadása
               </button>
-              <p className={styles.helper}>A szakaszok egymás után következnek. A dedikált nyitóhang minden induláskor automatikusan megszólal majd, nem része a szakaszoknak.</p>
+              <p className={styles.helper}>A szakaszok egymás után következnek. Indításkor külön nyitóhang szól. Ez nem része az időzített szakaszoknak.</p>
             </div>
           ) : (
             <div className={styles.editorSection}>
               {collection.presets.length === 0 ? (
-                <p className={styles.emptyState}>Még nincs mentett saját meditációd. Állíts össze egyet a saját ritmusodban.</p>
+                <p className={styles.emptyState}>Még nincs saját gyakorlásod.</p>
               ) : (
                 <div className={styles.presetList}>
                   {collection.presets.map((preset) => (
@@ -395,7 +395,7 @@ export default function CustomMeditationsDialog({
                       </div>
                       <div className={styles.presetActions}>
                         <button type="button" onClick={() => onStartRequested(preset.id)}>Indítás</button>
-                        {collection.defaultId !== preset.id && <button type="button" onClick={() => onSetDefault(preset.id)}>Legyen az alap</button>}
+                        {collection.defaultId !== preset.id && <button type="button" onClick={() => onSetDefault(preset.id)}>Legyen alapértelmezett</button>}
                         <button type="button" onClick={() => editPreset(preset.id)}>Szerkesztés</button>
                         <button type="button" onClick={() => copyPreset(preset.id)} disabled={collection.presets.length >= MAX_PRESETS}>Másolás</button>
                         <button type="button" onClick={() => removePreset(preset.id)} className={styles.deleteButton}>Törlés</button>
@@ -405,9 +405,9 @@ export default function CustomMeditationsDialog({
                 </div>
               )}
               <button type="button" className={styles.addButton} onClick={() => { setEditor({ draft: freshDraft() }); setMessage(null); }} disabled={collection.presets.length >= MAX_PRESETS}>
-                + Új meditáció létrehozása
+                + Új gyakorlás létrehozása
               </button>
-              <p className={styles.helper}>A gyakorlásaid ezen az eszközön és ebben a böngészőben maradnak. A lejátszó nyitott képernyővel használható.</p>
+              <p className={styles.helper}>A saját gyakorlásaidat ez a böngésző tárolja. Más eszközön nem jelennek meg. Lejátszás közben hagyd nyitva az oldalt.</p>
             </div>
           )}
           {(message || error) && <p className={styles.feedback} role="status">{message || error}</p>}
@@ -427,7 +427,7 @@ export default function CustomMeditationsDialog({
           ) : (
             <>
               <button type="button" className={styles.secondaryButton} onClick={onClose}>Bezárás</button>
-              {collection.presets.length > 0 && <button type="button" className={styles.primaryButton} onClick={() => onStartRequested()}>Alapgyakorlás indítása</button>}
+              {collection.presets.length > 0 && <button type="button" className={styles.primaryButton} onClick={() => onStartRequested()}>Alapértelmezett gyakorlás indítása</button>}
             </>
           )}
         </div>

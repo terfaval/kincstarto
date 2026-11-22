@@ -172,8 +172,8 @@ export default function CustomMeditationPlayer({ preset, cues, openingError = fa
       <span className={styles.srOnly} role="status" aria-live="polite">
         {isPaused ? "A meditáció szünetel." : phase === "finishing" ? "A meditáció lezárása." : "A meditáció folyamatban van."}
       </span>
-      {(soundError || openingError) && <p className={styles.soundError} role="alert">A hangjelzés nem indult el. Ellenőrizd a /audio/timer/ hangfájlok elérhetőségét.</p>}
-      {wakeLockUnavailable && !isPaused && <p className={styles.wakeLockWarning} role="status">A kijelző ébren tartása ezen az eszközön nem garantált.</p>}
+      {(soundError || openingError) && <p className={styles.soundError} role="alert">A hangjelzés nem szólalt meg.</p>}
+      {wakeLockUnavailable && !isPaused && <p className={styles.wakeLockWarning} role="status">A képernyő automatikusan lezárhat. Lejátszás közben tartsd nyitva.</p>}
     </div>
   );
 }

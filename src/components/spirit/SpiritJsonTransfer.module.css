@@ -58,3 +58,6 @@
 .closeButton:focus-visible,.tabs button:focus-visible,.filePick:focus-within,.primaryButton:focus-visible,.dangerButton:focus-visible { outline:2px solid #577263; outline-offset:2px; }
 @media(max-width:700px) { .panel { max-height:95dvh; padding:15px; } .steps { gap:4px; } .steps span { font-size:.65rem; padding:8px 3px; } .stats { grid-template-columns:repeat(2,minmax(0,1fr)); } .filePick { padding:20px 10px; } }
 @media(max-width:420px) { .headingTitle { font-size:1.48rem; } .tabs button { font-size:.77rem; } .preview { padding:12px; } }
+
+.downloadIcon { color: #fffdf5; stroke: currentColor; flex: none; }
+.primaryButton:disabled .downloadIcon { color: #fffdf5; }

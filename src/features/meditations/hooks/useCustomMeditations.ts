@@ -46,7 +46,7 @@ export function useCustomMeditations() {
       return false;
     }
     if (!existingId && collection.presets.length >= MAX_PRESETS) {
-      setError("Legfeljebb 50 saját meditáció menthető.");
+      setError("Legfeljebb 50 saját gyakorlás menthető.");
       return false;
     }
     if (existingId && !collection.presets.some((preset) => preset.id === existingId)) return false;

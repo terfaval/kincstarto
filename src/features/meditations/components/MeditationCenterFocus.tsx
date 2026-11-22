@@ -9,7 +9,7 @@ export default function MeditationCenterFocus({ meditation }: { meditation: Medi
     return (
       <div className={styles.centerFocus}>
         <p className={styles.centerHint}>Engedd, hogy a figyelmed lassan megálljon.</p>
-        <span className={styles.centerSubtle}>Érints meg egy gyöngyöt.</span>
+        <span className={styles.centerSubtle}>Válassz egy gyöngyöt.</span>
       </div>
     );
   }

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { SlidersHorizontal } from "lucide-react";
 import type { CSSProperties } from "react";
-import type { Meditation, MeditationCategory, MeditationEndBehavior } from "../lib/meditation-types";
+import type { Meditation, MeditationCategory } from "../lib/meditation-types";
 import { CATEGORY_ORDER, getCategoryAngle } from "../lib/meditation-layout";
 import { getCategoryLabel } from "../lib/meditation-utils";
 import { useMeditations } from "../hooks/useMeditations";
@@ -58,7 +58,6 @@ export default function MeditationSpace({ meditations: initialMeditations, audio
   };
   const [readerId, setReaderId] = useState<string | null>(null);
   const [readerOpen, setReaderOpen] = useState(false);
-  const [readerCompleted, setReaderCompleted] = useState(false);
 
   useEffect(() => {
     const body = document.body;
@@ -146,19 +145,12 @@ export default function MeditationSpace({ meditations: initialMeditations, audio
   const openReader = () => {
     if (!selected) return;
     setReaderId(selected.id);
-    setReaderCompleted(false);
     setReaderOpen(true);
   };
 
   const closeReader = () => {
     setReaderOpen(false);
     setReaderId(null);
-  };
-
-  const handleReaderComplete = (behavior: MeditationEndBehavior) => {
-    if (behavior !== "fade_out") {
-      setReaderCompleted(true);
-    }
   };
 
   useEffect(() => {
@@ -230,9 +222,9 @@ export default function MeditationSpace({ meditations: initialMeditations, audio
                 <div className={styles.desktopCustomEntry}>
                   {defaultPreset && <span className={styles.customPresetSummary}>{formatCustomDuration(durationOfPreset(defaultPreset))}</span>}
                   <button type="button" className={styles.customStartButton} disabled={!customReady} onClick={() => defaultPreset ? startCustomMeditation() : openCustomConfig("new")}>
-                    {defaultPreset ? `${defaultPreset.title} indítása` : "Első saját meditáció beállítása"}
+                    {defaultPreset ? `${defaultPreset.title} indítása` : "Saját meditáció létrehozása"}
                   </button>
-                  <button type="button" className={styles.customSettingsLink} disabled={!customReady} onClick={() => openCustomConfig("list")}>Gyakorlásaim beállítása</button>
+                  <button type="button" className={styles.customSettingsLink} disabled={!customReady} onClick={() => openCustomConfig("list")}>Saját meditációim</button>
                 </div>
               )}
             </div>
@@ -245,10 +237,10 @@ export default function MeditationSpace({ meditations: initialMeditations, audio
                   <div className={styles.customMeditationEntry}>
                     {defaultPreset && <span className={styles.customPresetSummary}>{formatCustomDuration(durationOfPreset(defaultPreset))}</span>}
                     <button type="button" className={styles.customStartButton} disabled={!customReady} onClick={() => defaultPreset ? startCustomMeditation() : openCustomConfig("new")}>
-                      {defaultPreset ? `${defaultPreset.title} indítása` : "Első saját meditáció beállítása"}
+                      {defaultPreset ? `${defaultPreset.title} indítása` : "Saját meditáció létrehozása"}
                     </button>
                     <button type="button" className={styles.customSettingsLink} disabled={!customReady} onClick={() => openCustomConfig("list")}>
-                      Gyakorlásaim beállítása
+                      Saját meditációim
                     </button>
                   </div>
                 </div>
@@ -260,9 +252,6 @@ export default function MeditationSpace({ meditations: initialMeditations, audio
           <div className={styles.previewBackdrop} onClick={closePreview}>
             <MeditationPreviewPanel meditation={selected} onEnter={openReader} onClose={closePreview} />
           </div>
-        )}
-        {readerCompleted && !readerOpen && (
-          <div className={styles.readerReturnHint}>A csend marad. Válassz újra.</div>
         )}
         {!customDialog && customError && !readerOpen && (
           <p className={styles.customStorageError} role="alert">{customError}</p>
@@ -293,7 +282,6 @@ export default function MeditationSpace({ meditations: initialMeditations, audio
           meditation={readerMeditation}
           audioConfig={readerAudioConfig}
           onExit={closeReader}
-          onComplete={handleReaderComplete}
           isAdmin={isAdmin}
         />
       )}
