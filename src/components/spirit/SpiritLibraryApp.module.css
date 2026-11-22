@@ -1072,6 +1072,42 @@
   padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.25rem, 6vw, 4.5rem) 4rem;
 }
 
+/* SHIORI-02: the public shelf occupies one viewport; only its books scroll. */
+.page.pageShelf {
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: clamp(65px, 8.5vh, 81px) clamp(82px, 8vw, 106px) 14px clamp(12px, 2.2vw, 36px);
+  gap: 0;
+}
+.pageShelf .toolbarPanelBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  background: rgba(0,0,0,.56);
+}
+.pageShelf .toolbarPanelCard {
+  display: block;
+  width: min(920px, 100%);
+  max-height: 87dvh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+@media (max-width: 720px) {
+  .page.pageShelf { padding: 54px 8px 8px; }
+  .pageShelf .fabToolbar { top: 8px; right: 10px; bottom: auto; flex-direction: row; gap: 5px; }
+  .pageShelf .addFab { width: 35px; height: 35px; }
+  .pageShelf .wreathReturn { top: 8px; left: 8px; padding: 5px 10px; min-height: 35px; }
+  .pageShelf .viewToggleButton { display: inline-flex; }
+}
+
 .pathSection {
   display: grid;
   gap: 1.2rem;
@@ -1496,26 +1532,94 @@
   }
 }
 
-/* A fő koszorúhoz vezető, minden nyilvános könyvtárnézetben elérhető út. */
-.wreathReturn {
-  position: fixed;
-  top: max(14px, env(safe-area-inset-top));
-  left: max(14px, env(safe-area-inset-left));
-  z-index: 43;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  min-height: 40px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: var(--panel);
-  padding: 7px 15px;
-  box-shadow: var(--shadow);
-  color: var(--foreground);
-  font-size: .78rem;
-  font-weight: 650;
-  text-decoration: none;
-  backdrop-filter: blur(10px);
+/* Shiori illustrated room master assets. The images are environment, never UI. */
+.page.pageShelf {
+  background-color: #f0dfc5;
+  background-image: url('/shiori/backgrounds/shiori-day-desktop-master.webp');
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: clamp(62px, 8.6vh, 82px) clamp(18px, 2.6vw, 44px) 12px;
 }
-.wreathReturn:hover { background: var(--surface); }
-.wreathReturn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+:global(:root[data-time-theme="night"]) .page.pageShelf {
+  background-color: #1e2736;
+  background-image: url('/shiori/backgrounds/shiori-night-desktop-master.webp');
+}
+@media (prefers-color-scheme: dark) {
+  :global(:root:not([data-time-theme])) .page.pageShelf {
+    background-color: #1e2736;
+    background-image: url('/shiori/backgrounds/shiori-night-desktop-master.webp');
+  }
+}
+@media (max-width: 700px) {
+  .page.pageShelf {
+    padding: max(55px, env(safe-area-inset-top)) 7px max(7px, env(safe-area-inset-bottom));
+    background-image: url('/shiori/backgrounds/shiori-day-mobile-master.webp');
+    background-position: center center;
+  }
+  :global(:root[data-time-theme="night"]) .page.pageShelf {
+    background-image: url('/shiori/backgrounds/shiori-night-mobile-master.webp');
+  }
+}
+@media (max-width: 700px) and (prefers-color-scheme: dark) {
+  :global(:root:not([data-time-theme])) .page.pageShelf {
+    background-image: url('/shiori/backgrounds/shiori-night-mobile-master.webp');
+  }
+}
+/* Shiori shares Tamayura's actual back-link markup and CSS module.
+   Only the ink color changes on the light daytime artwork. */
+.pageShelf .shioriBackLink {
+  color: #342c25;
+  text-shadow: 0 1px 3px rgba(255, 248, 233, .7);
+}
+.pageShelf .shioriBackLink:hover { color: #211b16; }
+.pageShelf .shioriBackLabel { color: rgba(52, 44, 37, .84); }
+.pageShelf .shioriBackLink:focus-visible {
+  outline: 2px solid #53685f;
+  outline-offset: 2px;
+}
+.pageShelf .shioriBackLink:focus-visible .shioriBackLabel {
+  opacity: 1;
+  transform: translateX(0);
+}
+:global(:root[data-time-theme="night"]) .pageShelf .shioriBackLink {
+  color: rgba(233, 239, 246, .9);
+  text-shadow: 0 1px 4px rgba(8, 13, 22, .65);
+}
+:global(:root[data-time-theme="night"]) .pageShelf .shioriBackLink:hover { color: #fff; }
+:global(:root[data-time-theme="night"]) .pageShelf .shioriBackLabel { color: rgba(233, 239, 246, .8); }
+@media (prefers-color-scheme: dark) {
+  :global(:root:not([data-time-theme])) .pageShelf .shioriBackLink {
+    color: rgba(233, 239, 246, .9);
+    text-shadow: 0 1px 4px rgba(8, 13, 22, .65);
+  }
+  :global(:root:not([data-time-theme])) .pageShelf .shioriBackLink:hover { color: #fff; }
+  :global(:root:not([data-time-theme])) .pageShelf .shioriBackLabel { color: rgba(233, 239, 246, .8); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pageShelf .shioriBackLink, .pageShelf .shioriBackLabel { transition: none; }
+}
+/* No personal status controls or progress in the public catalog. */
+.pagePublic .statusButton, .pagePublic .statusLabel, .pagePublic .statusSection,
+.pagePublic .pathProgressBar, .pagePublic .pathProgressValue { display: none !important; }
+
+/* ===== Shiori polish 04: daytime background shelf alignment ===== */
+.page.pageShelf {
+  --shiori-shelf-bg-x: 50%;
+  --shiori-shelf-bg-y: 48%;
+  background-position: var(--shiori-shelf-bg-x) var(--shiori-shelf-bg-y);
+}
+:global(:root[data-time-theme="night"]) .page.pageShelf {
+  --shiori-shelf-bg-y: 50%;
+}
+@media (prefers-color-scheme: dark) {
+  :global(:root:not([data-time-theme])) .page.pageShelf {
+    --shiori-shelf-bg-y: 50%;
+  }
+}
+@media (max-width: 700px) {
+  .page.pageShelf {
+    --shiori-shelf-bg-y: 50%;
+    background-position: var(--shiori-shelf-bg-x) var(--shiori-shelf-bg-y);
+  }
+}

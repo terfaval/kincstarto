@@ -1,0 +1,195 @@
+{
+  "version": "SHIORI-01B",
+  "source": "Approved SHIORI-01A shelf map; editorial mapping only",
+  "shelves": [
+    {
+      "id": "shelf-1",
+      "title": "Tao és kínai bölcsesség",
+      "description": "A természetes út, a változás és a csendes önművelés könyvei.",
+      "themeHints": [
+        "tao_alapok",
+        "wu_wei",
+        "termeszetes_elet",
+        "belso_alkimia",
+        "hosszu_elet"
+      ],
+      "featured": "utmutato_a_taoizmushoz",
+      "color": "#526b60",
+      "bookIds": [
+        "aranyvirag_titka",
+        "csuang_ce_lie_ce_fli",
+        "kinai_orvoslas_kezikonyve",
+        "wu_wei_borel",
+        "imigyen_szola_laozi",
+        "csuang_ce_bolcsessege_brelich",
+        "belso_alkimia",
+        "tao_te_king_weores",
+        "tao_te_king_karatson",
+        "tao_longevity_mind_body",
+        "ji_king",
+        "tao_viragzo_delvidek",
+        "micimacko_tao",
+        "malacka_tao",
+        "utmutato_a_taoizmushoz",
+        "konfuciusz_szivbol_yu_dan",
+        "a_het_taoista_mester"
+      ]
+    },
+    {
+      "id": "shelf-2",
+      "title": "Zen és jelenlét",
+      "description": "A közvetlen tapasztalás, a figyelem és a zen mindennapi gyakorlása.",
+      "themeHints": [
+        "zen_gyakorlat",
+        "mindfulness",
+        "nem_kettosseg"
+      ],
+      "featured": "tisztan_ragyogo_forras",
+      "color": "#52677e",
+      "bookIds": [
+        "kapujanincs_atjaro",
+        "bevezetes_zen_buddhizmusba",
+        "tisztan_ragyogo_forras",
+        "zen_utja",
+        "dogen_zuimonki",
+        "uton_onmagadhoz",
+        "folyik_a_hid",
+        "lin_csi_feljegyzesek",
+        "lin_csi_reggeli_beszelgetesek",
+        "suzuki_dt_introduction_zen",
+        "suzuki_dt_manual_zen",
+        "zen_wave_aitken",
+        "zen_levelek_szung_szan",
+        "egyszeru_elet_muveszete_masuno",
+        "az_ut_gyakorlasa_deshimaru"
+      ]
+    },
+    {
+      "id": "shelf-3",
+      "title": "Tibet és a belső út",
+      "description": "A tibeti hagyományok, együttérzés és a bardó-kérdések világa.",
+      "themeHints": [
+        "tibeti_buddhizmus",
+        "halal_es_atmenet",
+        "egyutt_erzes"
+      ],
+      "featured": "tibeti_buddhizmus_alapjai",
+      "color": "#735a7b",
+      "bookIds": [
+        "lodzsong_meditaciok",
+        "tudat_gyogyito_ereje",
+        "tibeti_halottaskonyv_helikon",
+        "tibeti_halottaskonyv_fli",
+        "tibeti_buddhizmus_gyongyszemei",
+        "nagy_keleti_nap",
+        "milarepa_elete",
+        "tibeti_miszteriumok",
+        "tibeti_konyv_eletrol_halalrol",
+        "tibeti_buddhizmus_alapjai",
+        "koztes_let_konyvei",
+        "szabadsag_mitosza_trungpa",
+        "tibeti_halalmeditaciok",
+        "orult_bolcsesseg_trungpa",
+        "feher_felhok_utja_govinda",
+        "shambhala_trungpa",
+        "belepes_gyemant_utra_nydahl",
+        "tudast_orzo_tiszta_tenger",
+        "szavakon_tuli_lenyeg_marpa",
+        "dzsigme_lingpa_dzogcsen_atijoga_kezikonyve",
+        "elet_es_benso_munka_ngawang_rinpocse",
+        "ahogy_a_dolgok_vannak_nydahl"
+      ]
+    },
+    {
+      "id": "shelf-4",
+      "title": "Meditáció és jóga",
+      "description": "Gyakorlatok, testtudat és a figyelem tudatos fejlesztése.",
+      "themeHints": [
+        "meditacio",
+        "joga",
+        "test_tudat",
+        "legzes_es_energia",
+        "tudomany"
+      ],
+      "featured": "barhova_mes_ott_vagy",
+      "color": "#617763",
+      "bookIds": [
+        "meditation_process_practice_culmination",
+        "joga_tiszta_forrasbol",
+        "barhova_mes_ott_vagy",
+        "eber_figyelem_orok_kezdoknek",
+        "meditaciorol_erthetoen",
+        "meditacios_gondolatok",
+        "mantra_es_meditacio_bharati",
+        "hatha_joga_filozofiaja_bharati"
+      ]
+    },
+    {
+      "id": "shelf-5",
+      "title": "Buddhista alapok és szútrák",
+      "description": "Bevezetők, tanítások és a klasszikus forrásszövegek felé vezető kapuk.",
+      "themeHints": [
+        "buddhizmus_alapok",
+        "szutra",
+        "klasszikus_szoveg"
+      ],
+      "featured": "buddha_besetal_a_kocsmaba_rinzler",
+      "color": "#9a735b",
+      "bookIds": [
+        "lotusz_szutra_fli",
+        "gyemant_es_lotusz",
+        "nirvana_megvalositasa",
+        "buddha_besetal_a_kocsmaba_rinzler",
+        "bevezetes_buddhista_megvaltastanba"
+      ]
+    },
+    {
+      "id": "shelf-6",
+      "title": "Önismeret és tudat",
+      "description": "Az én, a lélek és a figyelem pszichológiai és filozófiai megközelítései.",
+      "themeHints": [
+        "ontudat_es_en",
+        "pszichologia",
+        "nem_kettosseg",
+        "modern_spiritualitas"
+      ],
+      "featured": "az_ember_es_szimbolumai_jung",
+      "color": "#796d5c",
+      "bookIds": [
+        "konyv_taburól",
+        "jard_tul_eszeden",
+        "bizonytalansag_bolcsessege",
+        "az_ember_es_szimbolumai_jung",
+        "belso_utak_konyve_popper",
+        "levelek_egy_hinduhoz_szatjagraha",
+        "ha_buddhaval_talalkozol_az_uton_old_meg"
+      ]
+    },
+    {
+      "id": "shelf-7",
+      "title": "Irodalom, mítosz és szimbólum",
+      "description": "Regények, történetek és jelképek, amelyek másképp tesznek fel kérdéseket.",
+      "themeHints": [
+        "irodalmi_spiritualitas",
+        "mitologia",
+        "popularizalo"
+      ],
+      "featured": "sziddhartha_hesse",
+      "color": "#796779",
+      "bookIds": [
+        "teljesség_felé",
+        "mahabharata_ramajana",
+        "nyugati_utazas_wu_cheng_en",
+        "sziddhartha_hesse",
+        "uveggyongyjatek_hesse",
+        "agyaggepuska_pelevin",
+        "legyozhetetlen_nap_pelevin",
+        "titkos_pillantasok_fudzsi_hegyre_pelevin",
+        "metamor_szent_konyve_pelevin",
+        "aranytemplom_mishima",
+        "hitopadesa_hasznos_tanitasok",
+        "dzsan_platonov"
+      ]
+    }
+  ]
+}

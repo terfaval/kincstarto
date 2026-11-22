@@ -1,64 +1,50 @@
 import { NextResponse } from "next/server";
 import { SpiritStatusEnum } from "@/lib/spiritSchema";
 import { requireAdmin } from "@/lib/adminAuth";
-import { loadSpiritLibrary, saveSpiritLibrary } from "@/lib/spiritLibrary";
+import { loadSpiritLibrary } from "@/lib/spiritLibrary";
+import { privateShioriReady, updateShioriPrivateBlob } from "@/lib/shioriPrivateBlob";
 
 export const runtime = "nodejs";
-
-type Payload = {
-  bookId: string;
-  status?: string;
-  notes?: string;
-};
+const HEADERS = { "Cache-Control": "private, no-store" };
 
 export async function POST(request: Request) {
-  const authError = await requireAdmin(request);
-  if (authError) return authError;
-
-  let payload: Payload;
+  const rejected = await requireAdmin(request);
+  if (rejected) return rejected;
+  if (!privateShioriReady()) return NextResponse.json({ error: "Privát tárolás még nem aktív." }, { status: 503, headers: HEADERS });
+  const payload = await request.json().catch(() => null);
+  if (!payload || typeof payload.bookId !== "string" || !payload.bookId ||
+      (typeof payload.status === "undefined" && typeof payload.notes === "undefined")) {
+    return NextResponse.json({ error: "Érvénytelen státuszkérés." }, { status: 400, headers: HEADERS });
+  }
+  const parsed = payload.status !== undefined ? SpiritStatusEnum.safeParse(payload.status) : null;
+  if ((parsed && !parsed.success) || (payload.notes !== undefined && typeof payload.notes !== "string")) {
+    return NextResponse.json({ error: "Érvénytelen státusz vagy jegyzet." }, { status: 400, headers: HEADERS });
+  }
   try {
-    payload = (await request.json()) as Payload;
-  } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
-  }
-
-  const hasStatus = typeof payload.status !== "undefined";
-  const hasNotes = typeof payload.notes !== "undefined";
-
-  if (!payload.bookId || (!hasStatus && !hasNotes)) {
-    return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
-  }
-
-  const statusParse = hasStatus ? SpiritStatusEnum.safeParse(payload.status) : null;
-  if (hasStatus && !statusParse?.success) {
-    return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
-  }
-
-  if (hasNotes && typeof payload.notes !== "string") {
-    return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
-  }
-
-  const library = await loadSpiritLibrary();
-
-  const book = library.books.find((item) => item.id === payload.bookId);
-  if (!book) {
-    return NextResponse.json({ error: "Book not found" }, { status: 404 });
-  }
-
-  if (statusParse?.success) {
-    book.status = statusParse.data;
-  }
-
-  if (typeof payload.notes !== "undefined") {
-    const trimmed = payload.notes.trim();
-    if (trimmed) {
-      book.notes = trimmed;
-    } else {
-      delete book.notes;
+    const library = await loadSpiritLibrary();
+    if (!library.books.some((book) => book.id === payload.bookId)) {
+      return NextResponse.json({ error: "A könyv nem található." }, { status: 404, headers: HEADERS });
     }
+    const saved = await updateShioriPrivateBlob((state) => {
+      const books = { ...state.books };
+      const current = { ...(books[payload.bookId] ?? {}) };
+      if (parsed?.success) {
+        if (parsed.data === "olvasatlan") delete current.status;
+        else current.status = parsed.data;
+      }
+      if (payload.notes !== undefined) {
+        const note = payload.notes.trim();
+        if (note) current.notes = note;
+        else delete current.notes;
+      }
+      if (Object.keys(current).length) books[payload.bookId] = current;
+      else delete books[payload.bookId];
+      return { ...state, books };
+    });
+    return NextResponse.json({ ok: true,
+      status: saved.books[payload.bookId]?.status ?? "olvasatlan",
+      notes: saved.books[payload.bookId]?.notes ?? "" }, { headers: HEADERS });
+  } catch {
+    return NextResponse.json({ error: "A privát mentés nem igazolható. Ellenőrizd az adatokat, ne ismételd automatikusan." }, { status: 503, headers: HEADERS });
   }
-
-  await saveSpiritLibrary(library);
-
-  return NextResponse.json({ ok: true, status: book.status, notes: book.notes ?? "" });
 }

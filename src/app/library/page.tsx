@@ -1,4 +1,5 @@
 import { loadSpiritLibrary } from "@/lib/spiritLibrary";
+import { publicShioriCatalog } from "@/lib/shioriCatalog";
 import SpiritLibraryApp from "@/components/spirit/SpiritLibraryApp";
 
 export const metadata = {
@@ -13,7 +14,7 @@ export default async function SpiritPage({
 }: {
   searchParams?: Record<string, string | string[] | undefined>;
 }) {
-  const library = await loadSpiritLibrary();
+  const library = publicShioriCatalog(await loadSpiritLibrary());
   const debugParam = searchParams?.debug;
   const debugEnabled = Array.isArray(debugParam)
     ? debugParam.includes("1")

@@ -1,0 +1,12 @@
+/* The private form lives inside the existing washi book leaf; no global room changes. */
+.panel { padding:16px 15px 14px; margin:0 0 24px; border:1px solid rgba(119,96,64,.31); border-radius:10px; background:rgba(220,204,172,.24); }
+.panel h3 { margin:0 0 12px; font:600 .94rem/1.4 Georgia,serif; color:#66513b; }
+.form { display:grid; gap:12px; }
+.field { display:grid; gap:6px; font:600 .73rem/1.35 system-ui,sans-serif; color:#635444; }
+.field select,.field textarea { width:100%; max-width:100%; border:1px solid #c9b797; border-radius:7px; padding:9px 10px; font:400 .86rem/1.5 system-ui,sans-serif; color:#332d25; background:#fffaf0; }
+.field textarea { resize:vertical; min-height:83px; }
+.field :is(select,textarea):focus-visible,.actions button:focus-visible { outline:2px solid #6d8e91; outline-offset:2px; }
+.actions { display:flex; flex-wrap:wrap; gap:9px; align-items:center; }
+.actions button { border:1px solid #9f8b6a; border-radius:999px; padding:8px 17px; background:#5e6e63; color:#fff7e9; font:600 .78rem system-ui,sans-serif; cursor:pointer; }
+.actions button:disabled { opacity:.55; cursor:default; }
+.message { color:#5c4b39; font-size:.72rem; line-height:1.4; overflow-wrap:anywhere; }

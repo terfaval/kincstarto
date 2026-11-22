@@ -1,0 +1,137 @@
+.backdrop { position:fixed; inset:0; z-index:100; display:grid; place-items:center; padding:clamp(12px,3vw,40px); background:rgba(7,18,29,.70); backdrop-filter:blur(4px); }
+.bookFrame { width:min(1100px,100%); height:min(790px,90dvh); min-height:0; display:flex; flex-direction:column; color:#383227; filter:drop-shadow(0 18px 27px rgba(0,0,0,.29)); }
+.toolbar { display:flex; align-items:center; justify-content:space-between; gap:10px; flex:none; min-height:49px; padding:6px 10px 8px 16px; background:#e2d3b6; border:1px solid #c8b795; border-radius:11px 11px 0 0; color:#514336; }
+.toolbarLabel { font:500 .79rem/1.2 Georgia,serif; letter-spacing:.09em; }
+.actions { display:flex; flex-wrap:wrap; gap:7px; }
+.toolbarButton { display:inline-flex; align-items:center; justify-content:center; gap:6px; min-height:36px; padding:6px 11px; border:1px solid #bcab8c; border-radius:999px; background:#f5eddb; color:#3c342c; cursor:pointer; font-size:.78rem; }
+.toolbarButton:hover { background:#fff8e9; }
+.toolbarButton:focus-visible,.relatedButton:focus-visible,.paperPage:focus-visible,.singlePage:focus-visible { outline:2px solid #6e6d4e; outline-offset:2px; }
+.spread { position:relative; flex:1; min-height:0; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); overflow:hidden; border:1px solid #c8b795; border-top:0; border-radius:0 0 11px 11px; background:#f5ebd5; }
+.spread::after { position:absolute; left:50%; top:0; bottom:0; width:14px; transform:translateX(-50%); content:""; pointer-events:none; background:linear-gradient(90deg,transparent,rgba(82,57,27,.16) 40%,rgba(82,57,27,.07) 60%,transparent); }
+.paperPage { min-width:0; min-height:0; height:100%; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; padding:clamp(22px,3vw,46px); background:radial-gradient(circle at 25% 13%,rgba(255,255,255,.63),transparent 55%),#f6efdd; }
+.leftPage { box-shadow:inset -8px 0 12px rgba(83,56,25,.055); }
+.rightPage { box-shadow:inset 8px 0 12px rgba(83,56,25,.06); }
+.singlePage { display:none; }
+.kicker { font:500 .7rem/1.4 sans-serif; letter-spacing:.17em; text-transform:uppercase; color:#867963; }
+.bookTitle { margin:14px 0 7px; font:500 clamp(1.55rem,2.6vw,2.65rem)/1.18 Georgia,serif; color:#312d27; overflow-wrap:anywhere; }
+.author { margin:0 0 28px; font:italic .98rem/1.5 Georgia,serif; color:#665745; }
+.section { margin:0 0 27px; }
+.section h3 { margin:0 0 9px; font:600 .92rem/1.4 Georgia,serif; color:#62503d; }
+.section p { margin:0; font:400 .94rem/1.75 Georgia,serif; color:#36342f; white-space:pre-line; overflow-wrap:anywhere; }
+.pills { display:flex; gap:7px; flex-wrap:wrap; }
+.pill,.metaValue { display:inline-block; padding:5px 9px; border:1px solid #d7c8ad; border-radius:99px; background:rgba(229,218,192,.38); color:#5c5041; font-size:.72rem; line-height:1.35; }
+.pillSmall { font-size:.68rem; }
+.relatedGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:13px; }
+.relatedButton { min-width:0; display:flex; flex-direction:column; align-items:center; gap:7px; padding:0; border:0; background:none; color:#514538; cursor:pointer; text-align:center; }
+.miniCover { width:min(100%,122px); aspect-ratio:3/4; min-height:118px; display:flex; flex-direction:column; align-items:center; justify-content:space-around; gap:8px; padding:11px 8px; border:1px solid #b8af91; border-radius:3px 6px 3px 3px; box-shadow:3px 5px 8px rgba(60,42,30,.17), inset 4px 0 5px rgba(0,0,0,.16); color:#fff6e3; background:linear-gradient(100deg,rgba(0,0,0,.23),transparent 23%,rgba(255,255,255,.12)),color-mix(in srgb,var(--related-tone) 60%,#294b3a); }
+.miniCover strong { font:500 .71rem/1.28 Georgia,serif; overflow-wrap:anywhere; }
+.miniMark { font:1.3rem Georgia,serif; opacity:.86; }
+.miniVariant1 { background-image:linear-gradient(135deg,rgba(255,255,255,.22) 0 25%,transparent 26% 70%,rgba(0,0,0,.15) 71%); }
+.miniVariant2 .miniMark { border:1px solid rgba(255,255,255,.38); padding:3px 8px; border-radius:50%; }
+.miniVariant3 { background-image:linear-gradient(0deg,rgba(245,222,175,.19) 0 28%,transparent 29%); }
+.relatedAuthor { font:italic .7rem/1.35 Georgia,serif; overflow-wrap:anywhere; }
+.embedded { width:100%; height:100%; min-height:0; display:flex; }
+.embedded .bookFrame { width:100%; height:100%; min-height:0; filter:none; }
+.embedded .toolbar { min-height:39px; padding:3px 6px 3px 9px; }
+.embedded .toolbarButton { min-height:33px; padding:5px 8px; font-size:.72rem; }
+.embedded .spread { display:flex; }
+.embedded .spread::after,.embedded .paperPage { display:none; }
+.embedded .singlePage { display:block; flex:1; height:100%; min-height:0; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; padding:clamp(13px,3vw,21px); background:radial-gradient(circle at 20% 0%,rgba(255,255,255,.78),transparent 55%),#f6efdd; }
+.embedded .bookTitle { font-size:clamp(1.18rem,4vw,1.65rem); }
+.embedded .section { margin-bottom:18px; }
+.embedded .section p { font-size:.84rem; line-height:1.62; }
+.embedded .relatedGrid { gap:9px; }
+@media (max-width:850px) { .backdrop .spread { display:flex; } .backdrop .spread::after,.backdrop .paperPage { display:none; } .backdrop .singlePage { display:block; flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:clamp(18px,4vw,36px); } }
+@media (max-width:420px) { .embedded .toolbarLabel { font-size:.66rem; } .embedded .toolbarButton { padding:4px 7px; } .embedded .relatedGrid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (prefers-reduced-motion:reduce) { .backdrop { backdrop-filter:none; } }
+/* Shiori reading-book polish: preserve both independently scrolling desktop leaves. */
+.backdrop { background:rgba(21,25,27,.41); backdrop-filter:blur(2px); }
+.bookFrame { filter:drop-shadow(0 18px 24px rgba(19,16,12,.24)); }
+.toolbar { background:linear-gradient(90deg,#e7d9bc,#eee1c7); min-height:41px; border-color:#bda98a; border-radius:9px 9px 0 0; padding:4px 10px 4px 20px; }
+.toolbarLabel { font-size:.73rem; letter-spacing:.16em; text-transform:uppercase; color:#796955; }
+.toolbarButton { min-height:31px; background:#f6efdf; border-color:#cebea0; }
+.spread { border-color:#bba581; border-radius:0 0 7px 7px; box-shadow:inset 0 0 0 1px rgba(255,255,255,.5),0 4px 0 #b5a084,0 7px 0 #88745a; }
+.spread::after { width:23px; background:linear-gradient(90deg,transparent,rgba(75,57,31,.09) 17%,rgba(75,57,31,.23) 47%,rgba(255,250,231,.48) 61%,transparent); }
+.paperPage { background:radial-gradient(ellipse at 20% 8%,rgba(255,255,255,.65),transparent 70%),repeating-linear-gradient(98deg,transparent 0 13px,rgba(124,98,58,.015) 14px 15px),#f6eedc; padding:clamp(22px,3.2vw,49px); }
+.leftPage { box-shadow:inset -13px 0 21px rgba(79,57,31,.07),inset 3px 0 10px rgba(106,79,44,.06); }
+.rightPage { box-shadow:inset 14px 0 19px rgba(79,57,31,.075),inset -3px 0 10px rgba(106,79,44,.06); }
+.bookTitle { font-size:clamp(1.75rem,2.8vw,2.8rem); letter-spacing:-.025em; }
+.author { font-size:1rem; }
+.section { margin-bottom:31px; }
+.section h3 { color:#62503a; font-size:.95rem; border-bottom:1px solid rgba(126,105,74,.13); padding-bottom:4px; }
+.section p { font-size:.94rem; line-height:1.78; }
+.pill { background:rgba(227,215,191,.33); color:#5b4c3b; border-color:#d9c7a8; }
+.metaValue { display:inline-flex; align-items:center; background:transparent; border:0; border-radius:0; padding:2px 7px 2px 0; font-size:.79rem; color:#6f5e49; }
+.metaValue:not(:last-child)::after { content:'·'; margin-left:9px; color:#b09a78; }
+.relatedGrid { grid-template-columns:repeat(auto-fit,minmax(94px,1fr)); gap:13px 17px; }
+.relatedButton { gap:7px; }
+.miniCover { width:min(100%,96px); min-height:114px; background-color:color-mix(in srgb,var(--related-tone) 78%,#514e43); background-image:linear-gradient(94deg,rgba(0,0,0,.24),transparent 20%,rgba(248,236,205,.11)); box-shadow:2px 4px 8px rgba(58,39,22,.17),inset 4px 0 5px rgba(0,0,0,.18); }
+.miniMark { font-size:.82rem; opacity:.55; }
+.miniVariant1 { background-image:linear-gradient(155deg,rgba(236,206,149,.37) 0 34%,transparent 34% 73%,rgba(29,21,23,.2) 73%); }
+.miniVariant2 .miniMark { border:2px solid rgba(248,226,182,.75); border-radius:50%; padding:6px 10px; }
+.miniVariant3 { background-image:linear-gradient(90deg,rgba(240,213,167,.24) 0 19%,transparent 19% 83%,rgba(47,37,43,.2) 83%); }
+.relatedAuthor { color:#70604c; font-size:.68rem; }
+.embedded .bookFrame { filter:none; }
+.embedded .toolbar { border-radius:9px 9px 0 0; }
+.embedded .spread { box-shadow:none; }
+.embedded .singlePage { background:radial-gradient(circle at 20% 0%,rgba(255,255,255,.78),transparent 55%),#f6eedc; }
+@media(max-width:850px) { .backdrop { background:rgba(21,25,27,.48); } }
+@media(prefers-reduced-motion:reduce) { .backdrop { backdrop-filter:none; } }
+
+/* ===== Shiori UI polish 02: open book, not a titled desktop dialog ===== */
+.bookFrame { position:relative; }
+.backdrop { background:rgba(18,25,30,.26); backdrop-filter:blur(.8px); }
+/* Keep the DOM toolbar and its accessible actions, but place them on the page
+   edge instead of a full-width horizontal application window bar. */
+.backdrop .toolbar {
+  position:absolute;top:11px;right:12px;left:auto;z-index:4;
+  min-height:0;width:auto;max-width:calc(100% - 24px);
+  padding:0;border:0;border-radius:0;
+  box-shadow:none;background:transparent;
+}
+.backdrop .toolbarLabel {
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip-path:inset(50%);white-space:nowrap;
+}
+.backdrop .toolbarButton {
+  min-height:32px;padding:5px 10px;
+  color:#5a4833;background:rgba(249,240,220,.93);
+  border:1px solid rgba(155,131,97,.64);border-radius:999px;
+  box-shadow:0 1px 4px rgba(71,48,23,.11);
+}
+.backdrop .toolbarButton:hover { background:#fff8e8; }
+.backdrop .spread {
+  border:1px solid #b9a581;border-radius:12px 12px 8px 8px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.48),0 3px 0 #d0bda0,0 6px 0 #bca886,0 9px 0 #8f7e64,0 17px 25px rgba(25,20,14,.22);
+}
+.backdrop .spread::before {
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  border-radius:inherit;
+  box-shadow:inset 3px 0 8px rgba(82,57,24,.12),inset -3px 0 8px rgba(82,57,24,.12);
+}
+.backdrop .paperPage { padding-top:clamp(57px,5vw,70px); }
+.backdrop .paperPage,.backdrop .singlePage {
+  background-image:radial-gradient(ellipse at 24% 10%,rgba(255,255,255,.49),transparent 67%),url('/shiori/textures/shiori-washi-grain.webp');
+  background-size:100% 100%,190px 190px;
+  background-color:#f7eedb;
+}
+.backdrop .paperPage { background-blend-mode:normal,soft-light; }
+/* The related miniatures follow the same four artistic families as the large
+   covers. The old repeating logo is visually replaced, not another data field. */
+.miniCover { position:relative;isolation:isolate;overflow:hidden; border-color:rgba(178,152,110,.75); }
+.miniCover::before { content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:url('/shiori/textures/shiori-washi-grain.webp') 0 0/152px 152px repeat;opacity:.3;mix-blend-mode:soft-light; }
+.miniMark {
+  flex:none;display:block;font-size:0;width:72%;height:41px;opacity:.86;
+  background:url('/shiori/textures/shiori-wash.webp') center / contain no-repeat;
+}
+.miniVariant1 .miniMark { background-image:url('/shiori/textures/shiori-strokes.webp'); }
+.miniVariant2 .miniMark { padding:0;border:0;border-radius:0;background-image:url('/shiori/textures/shiori-ring.webp'); }
+.miniVariant3 .miniMark { background-image:url('/shiori/textures/shiori-wash.webp');opacity:.5; }
+@media (max-width:850px) {
+  .backdrop .toolbar { top:8px;right:8px; }
+  .backdrop .singlePage { padding-top:53px; }
+}
+/* On mobile the book is embedded above the independent scrolling book list.
+   Its navigation must stay in the normal layout, unlike the desktop modal. */
+.embedded .toolbar { position:relative;top:auto;right:auto;width:100%; }
+@media (prefers-reduced-motion:reduce) { .backdrop { backdrop-filter:none; } }
