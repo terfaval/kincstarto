@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/adminAuth";
 import { getYogiKnowledgeStore } from "@/lib/yogiKnowledgeStore";
+import { PoseRevisionConflict } from "@/lib/yogiPoseConcurrency";
 import type { Pose } from "@/lib/yogiKnowledgeSchema";
 
 const DEFAULT_LIMIT = 8;
@@ -43,7 +44,7 @@ export async function POST(request: Request) {
       : DEFAULT_LIMIT;
 
   const store = getYogiKnowledgeStore();
-  const poses = await store.listPoses();
+  const { poses, revision } = await store.readPoseSnapshot();
   if (!Array.isArray(poses) || poses.length === 0) {
     return NextResponse.json({ ok: true, updated: 0, total: 0, poses: [] });
   }
@@ -119,12 +120,18 @@ export async function POST(request: Request) {
     }
   });
 
-  await store.savePoses(updatedPoses);
+  let nextRevision: string;
+  try { nextRevision = await store.savePoses(updatedPoses, revision); }
+  catch (cause) {
+    if (cause instanceof PoseRevisionConflict) return NextResponse.json({ error: cause.message, error_code: "POSE_REVISION_CONFLICT" }, { status: 409 });
+    throw cause;
+  }
 
   return NextResponse.json({
     ok: true,
     updated: updatedCount,
     total: updatedPoses.length,
+    revision: nextRevision,
     poses: updatedPoses,
   });
 }

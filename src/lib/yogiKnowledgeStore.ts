@@ -1,10 +1,11 @@
 import { join } from "node:path";
-import { readJsonStore, writeJsonStore } from "./jsonStore";
+import { isBlobEnabled, readJsonStore, writeJsonStore } from "./jsonStore";
 import { normalizeSlug } from "./slug";
 import type { Anatomy, KnowledgeCard, Pose } from "./yogiKnowledgeSchema";
 import { normalizePoseProps } from "./yogiPropCatalog";
 import { applyPoseOverrides } from "./yogiPoseOverrides";
-import { readLatestYogiPoseRevision, writeYogiPoseRevision } from "./yogiPoseRevisionStore";
+import { readLegacyYogiPoseBlobSnapshot, readYogiPoseBlobSnapshot, commitYogiPoseBlobSnapshot } from "./yogiPoseRevisionStore";
+import { readLocalPoseSnapshot, commitLocalPoseSnapshot } from "./yogiPoseConcurrency";
 
 export type YogiCollectionKey = "poses" | "anatomy" | "knowledge_cards";
 
@@ -34,9 +35,10 @@ export type YogiKnowledgeStore = {
   readCollection<T>(key: YogiCollectionKey, fallback: T[]): Promise<T[]>;
   writeCollection<T>(key: YogiCollectionKey, items: T[]): Promise<void>;
   listPoses(): Promise<Pose[]>;
+  readPoseSnapshot(): Promise<{ poses: Pose[]; revision: string }>;
   listAnatomy(): Promise<Anatomy[]>;
   listKnowledgeCards(): Promise<KnowledgeCard[]>;
-  savePoses(items: Pose[]): Promise<void>;
+  savePoses(items: Pose[], expectedRevision: string): Promise<string>;
   saveAnatomy(items: Anatomy[]): Promise<void>;
   saveKnowledgeCards(items: KnowledgeCard[]): Promise<void>;
 };
@@ -53,6 +55,7 @@ function createJsonStore(): YogiKnowledgeStore {
   }
 
   async function writeCollection<T>(key: YogiCollectionKey, items: T[]) {
+    if (key === "poses") throw new Error("Use savePoses with an expected revision for catalogue changes");
     const config = COLLECTIONS[key];
     await writeJsonStore(
       {
@@ -63,24 +66,43 @@ function createJsonStore(): YogiKnowledgeStore {
     );
   }
 
+  async function readRawPoseSnapshot(): Promise<{ poses: Pose[]; revision: string }> {
+    if (isBlobEnabled()) {
+      const headSnapshot = await readYogiPoseBlobSnapshot();
+      if (headSnapshot) return headSnapshot;
+      return readLegacyYogiPoseBlobSnapshot();
+    }
+    return readLocalPoseSnapshot(COLLECTIONS.poses.filePath);
+  }
+
+  async function readPoseSnapshot(): Promise<{ poses: Pose[]; revision: string }> {
+    const snapshot = await readRawPoseSnapshot();
+    const overridden = await applyPoseOverrides(snapshot.poses);
+    return {
+      revision: snapshot.revision,
+      poses: overridden.map((pose) => ({ ...pose, props: normalizePoseProps(pose.props) })),
+    };
+  }
+
   return {
     readCollection,
     writeCollection,
-    listPoses: async () => {
-      const base = (await readLatestYogiPoseRevision()) ?? (await readCollection<Pose>("poses", []));
-      const overridden = await applyPoseOverrides(base);
-      return overridden.map((pose) => ({
-        ...pose,
-        props: normalizePoseProps(pose.props),
-      }));
-    },
+    readPoseSnapshot,
+    listPoses: async () => (await readPoseSnapshot()).poses,
     listAnatomy: () => readCollection<Anatomy>("anatomy", []),
     listKnowledgeCards: () => readCollection<KnowledgeCard>("knowledge_cards", []),
-    savePoses: async (items) => {
-      // Maintain the legacy canonical file for external tooling/backups. The
-      // immutable revision below is the authoritative read source thereafter.
-      await writeCollection<Pose>("poses", items);
-      await writeYogiPoseRevision(items);
+    savePoses: async (items, expectedRevision) => {
+      if (process.env.NODE_ENV === "production" && !isBlobEnabled()) {
+        throw new Error("Durable pose storage is unavailable in production");
+      }
+      if (isBlobEnabled()) {
+        // Legacy content is used only to initialize the CAS head on the first write.
+        const legacy = expectedRevision.startsWith("legacy:")
+          ? (await readRawPoseSnapshot()).poses
+          : [];
+        return commitYogiPoseBlobSnapshot(items, expectedRevision, legacy);
+      }
+      return commitLocalPoseSnapshot(COLLECTIONS.poses.filePath, items, expectedRevision);
     },
     saveAnatomy: (items) => writeCollection<Anatomy>("anatomy", items),
     saveKnowledgeCards: (items) => writeCollection<KnowledgeCard>("knowledge_cards", items),

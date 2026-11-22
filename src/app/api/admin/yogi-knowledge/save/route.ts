@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/adminAuth";
 import { PoseSchema, AnatomySchema, KnowledgeCardSchema } from "@/lib/yogiKnowledgeSchema";
 import { getYogiKnowledgeStore, normalizeSlug, createYogiId } from "@/lib/yogiKnowledgeStore";
+import { PoseRevisionConflict } from "@/lib/yogiPoseConcurrency";
 import { validatePoseQuality, validateAnatomyQuality, validateKnowledgeCardQuality } from "@/lib/yogiKnowledgeValidation";
 
 export const runtime = "nodejs";
@@ -9,7 +10,7 @@ export const runtime = "nodejs";
 type SaveIntent = "save" | "publish" | "archive";
 
 type Payload =
-  | { entity_type: "pose"; item: unknown; intent?: SaveIntent }
+  | { entity_type: "pose"; item: unknown; intent?: SaveIntent; expectedRevision?: string }
   | { entity_type: "anatomy"; item: unknown; intent?: SaveIntent }
   | { entity_type: "knowledge_card"; item: unknown; intent?: SaveIntent };
 
@@ -77,7 +78,13 @@ export async function POST(request: Request) {
       return phaseError("quality_check", "POSE_HARD_REJECT", quality.hardErrors.join(" | "), 400);
     }
 
-    const poses = await store.listPoses();
+    if (typeof payload.expectedRevision !== "string") {
+      return phaseError("revision", "POSE_REVISION_REQUIRED", "Frissítsd az ászanatárat, majd próbáld újra a mentést.", 409);
+    }
+    const { poses, revision } = await store.readPoseSnapshot();
+    if (payload.expectedRevision !== revision) {
+      return phaseError("revision", "POSE_REVISION_CONFLICT", "Az ászanatár időközben megváltozott. Frissítsd az oldalt.", 409);
+    }
     const slug = normalizeSlug(pose.slug);
     const id = pose.id || createYogiId("pose", slug);
     const existingIndex = poses.findIndex((item) => item.id === id);
@@ -90,9 +97,13 @@ export async function POST(request: Request) {
 
     if (existingIndex === -1) poses.push(next);
     else poses[existingIndex] = next;
-    await store.savePoses(poses);
-
-    return NextResponse.json({ ok: true, id: next.id, warnings: quality.warnings });
+    try {
+      const savedRevision = await store.savePoses(poses, revision);
+      return NextResponse.json({ ok: true, id: next.id, revision: savedRevision, warnings: quality.warnings });
+    } catch (cause) {
+      if (cause instanceof PoseRevisionConflict) return phaseError("revision", "POSE_REVISION_CONFLICT", cause.message, 409);
+      throw cause;
+    }
   }
 
   if (payload.entity_type === "anatomy") {

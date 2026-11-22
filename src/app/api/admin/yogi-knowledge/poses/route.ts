@@ -7,6 +7,6 @@ export async function GET() {
   if (authError) return authError;
 
   const store = getYogiKnowledgeStore();
-  const poses = await store.listPoses();
-  return NextResponse.json({ poses }, { headers: { "Cache-Control": "private, no-store" } });
+  const { poses, revision } = await store.readPoseSnapshot();
+  return NextResponse.json({ poses, revision }, { headers: { "Cache-Control": "private, no-store" } });
 }

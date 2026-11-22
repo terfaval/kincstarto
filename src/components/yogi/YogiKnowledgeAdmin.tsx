@@ -214,6 +214,7 @@ export default function YogiKnowledgeAdmin({
   const [saving, setSaving] = useState<"save" | "publish" | null>(null);
   const [imageLoading, setImageLoading] = useState<Record<string, boolean>>({});
   const [poses, setPoses] = useState<Pose[]>([]);
+  const [poseRevision, setPoseRevision] = useState<string | null>(null);
   const [poseLoading, setPoseLoading] = useState(false);
   const [poseError, setPoseError] = useState<string | null>(null);
   const [posePage, setPosePage] = useState(0);
@@ -277,7 +278,10 @@ export default function YogiKnowledgeAdmin({
           if (active) setPoseError(readJsonError(data));
           return;
         }
-        if (active) setPoses(data.poses as Pose[]);
+        if (active) {
+          setPoses(data.poses as Pose[]);
+          setPoseRevision(typeof data.revision === "string" ? data.revision : null);
+        }
       } catch (err) {
         if (active) setPoseError((err as Error)?.message ?? "Failed to load poses");
       } finally {
@@ -514,6 +518,7 @@ export default function YogiKnowledgeAdmin({
         body: JSON.stringify({
           entity_type: entityType,
           item: parsed,
+          ...(entityType === "pose" ? { expectedRevision: poseRevision } : {}),
           intent: intent === "publish" ? "publish" : "save",
         }),
       });
@@ -521,11 +526,20 @@ export default function YogiKnowledgeAdmin({
       const data = await response.json().catch(() => null);
 
       if (!response.ok) {
-        setError(readJsonError(data));
+        if (entityType === "pose" && response.status === 409) {
+          // Preserve draftText. The user must retain/copy their pending edits
+          // before refreshing the catalogue; never replay a stale write.
+          setError("Az ászanatár időközben megváltozott. A szerkesztett JSON itt megmaradt, de nem mentődött. Másold ki a módosításaidat, majd frissítsd az ászanatárat, és egyeztesd a változásokat az új verzióval.");
+        } else {
+          setError(readJsonError(data));
+        }
         setSaving(null);
         return;
       }
 
+      if (entityType === "pose" && typeof data?.revision === "string") {
+        setPoseRevision(data.revision);
+      }
       if (Array.isArray(data?.warnings)) {
         setSaveWarnings(data.warnings);
       }
@@ -1425,6 +1439,7 @@ export default function YogiKnowledgeAdmin({
       }
       if (Array.isArray(data?.poses)) {
         setPoses(data.poses as Pose[]);
+        if (typeof data.revision === "string") setPoseRevision(data.revision);
       }
       const updated = typeof data?.updated === "number" ? data.updated : null;
       const total = typeof data?.total === "number" ? data.total : null;

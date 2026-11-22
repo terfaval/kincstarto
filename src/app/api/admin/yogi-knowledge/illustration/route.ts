@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
 import { requireAdmin } from "@/lib/adminAuth";
+import { PoseRevisionConflict } from "@/lib/yogiPoseConcurrency";
 import { getYogiKnowledgeStore } from "@/lib/yogiKnowledgeStore";
 import { saveYogiImageAsset } from "@/lib/yogiImageStore";
 import { normalizeSlug } from "@/lib/slug";
@@ -105,7 +106,7 @@ export async function POST(request: Request) {
   }
 
   const store = getYogiKnowledgeStore();
-  const poses = await store.listPoses();
+  const { poses } = await store.readPoseSnapshot();
   const target = poses.find((pose) => pose.id === poseId);
   if (!target) return error("A megadott póz nem található.", 404);
   const previousRef = target.mannequin_angled?.asset_ref ?? "";
@@ -136,7 +137,7 @@ export async function POST(request: Request) {
   // Write just the image slot, based on freshly fetched pose data.
   // Old-image cleanup runs separately after the new reference is committed.
   try {
-    const current = await store.listPoses();
+    const { poses: current, revision } = await store.readPoseSnapshot();
     const index = current.findIndex((pose) => pose.id === poseId);
     if (index < 0 || (current[index].mannequin_angled?.asset_ref ?? "") !== expectedRef) {
       return error("Közben másik csere történt. A korábbi kép változatlan; frissítsd az oldalt.", 409);
@@ -153,22 +154,20 @@ export async function POST(request: Request) {
       },
     };
     current[index] = updated;
-    await store.savePoses(current);
-    const verified = (await store.listPoses()).find((entry) => entry.id === poseId);
-    if (verified?.mannequin_angled?.asset_ref !== saved.url) {
-      throw new Error("The saved illustration is not visible in the authoritative pose store");
-    }
+    const newRevision = await store.savePoses(current, revision);
     // Retain previous images while immutable pose revisions remain available for
     // disaster recovery; deleting an image could break a historical revision.
     const cleanup = { status: "disabled" as const };
     return NextResponse.json({
       ok: true,
       pose: updated,
+      revision: newRevision,
       previous_asset_ref: previousRef || null,
       storage: saved.blobPath ? "blob" : "local",
       previous_blob_cleanup: cleanup,
     }, { headers: { "Cache-Control": "no-store" } });
   } catch (err) {
+    if (err instanceof PoseRevisionConflict) return error(err.message, 409);
     console.error("Yasuragi illustration persistence failed", err);
     return error("A kép feltöltődött, de a tartós mentést nem sikerült ellenőrizni. Ne tölts fel újabb képet, amíg nem ellenőrizted a pózlista frissítését.", 500);
   }

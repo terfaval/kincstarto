@@ -46,9 +46,9 @@ const rooms: Room[] = [
     kanji: "安らぎ",
     tagline: "Mozgás, amit nem kell erőltetni.",
     description: "Jóga és testtudatosság a hétköznapi tevékenységeid közben. Szelíden vezetett mozdulatok, amelyek a munkához, a sétához vagy az otthoni teendőkhöz igazodnak.",
-    href: null,
+    href: "/yasuragi",
     angle: "72deg",
-    accessible: "Yasuragi – készülő mindennapi jóga, bemutatás megjelenítése",
+    accessible: "Yasuragi – publikált jógagyakorlások",
   },
   {
     key: "kagami",

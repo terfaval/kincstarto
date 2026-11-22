@@ -1,0 +1,25 @@
+.page { min-height: 100dvh; padding: 28px 18px 72px; color: var(--text); background: var(--bg-grad); }
+.shell { width: min(860px,100%); margin: 0 auto; }
+.back { margin-bottom: 42px; font-size: 13px; }
+.back a { color: var(--brand-ink); text-decoration: none; }
+.back a:hover { text-decoration: underline; }
+.header { margin-bottom: 32px; }
+.kicker { letter-spacing:.21em; text-transform: uppercase; font-size: 11px; color: var(--brand-ink); }
+.header h1, .detail h1 { font-family:var(--font-display); font-size: clamp(30px,5vw,48px); letter-spacing: -.03em; margin: 12px 0; }
+.header p:not(.kicker), .detail p { max-width:620px; color:var(--muted); line-height:1.7; font-size:15px; }
+.catalogue { margin: 0; padding:0; list-style:none; display:grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,290px),1fr)); gap:14px; }
+.practiceCard { display:flex; align-items:center; gap:16px; border:1px solid var(--line); background: var(--panel); border-radius:16px; padding:18px; text-decoration:none; color:inherit; min-height:126px; box-shadow:var(--shadow); transition:transform .15s ease, border-color .15s ease; }
+.practiceCard:hover { transform:translateY(-2px); border-color:var(--brand-ink); }
+.practiceCard:focus-visible,.start:focus-visible,.back a:focus-visible { outline:3px solid var(--brand-accent); outline-offset:3px; }
+.cardAccent { width:5px; height:65px; flex:none; border-radius:6px; background:var(--brand-ink); opacity:.65; }
+.cardBody { display:grid; gap:8px; flex:1; min-width:0; }
+.cardBody strong { font-size:17px; overflow-wrap:anywhere; }
+.cardBody small { font-size:12px; color:var(--muted); }
+.cardAction { align-self:end; white-space:nowrap; font-size:12px; color:var(--brand-ink); }
+.empty { border:1px dashed var(--line); background:var(--panel); border-radius:16px; padding:30px 22px; color:var(--muted); line-height:1.6; }
+.detail { padding: clamp(20px,5vw,40px); border:1px solid var(--line); background:var(--panel); border-radius:18px; box-shadow:var(--shadow); }
+.duration { font-weight:600; }
+.start { display:inline-flex; justify-content:center; align-items:center; padding:13px 27px; min-height:46px; border-radius:12px; background:var(--brand-ink); color:#fff; text-decoration:none; margin-top:20px; font-weight:600; }
+.start:hover { filter:brightness(1.07); }
+@media (max-width:420px) { .page { padding: 18px 12px 56px; } .back { margin-bottom:24px; } .practiceCard { padding:14px; min-height:112px; } .detail { padding:20px 16px; } .start { width:100%; } }
+@media (prefers-reduced-motion:reduce) { .practiceCard { transition:none; } .practiceCard:hover { transform:none; } }
