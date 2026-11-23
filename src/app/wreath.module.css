@@ -296,6 +296,11 @@
   mix-blend-mode: soft-light;
   opacity: .19;
 }
+
+/* Invisible at rest. Holding the mobile logo for eight seconds opens /login. */
+.mobileLogoButton { display: none; }
+.mobileHoldRing { display: none; }
+
 /* Both desktop and mobile logos use the same independent logo.svg. */
 :global(:root[data-time-theme="night"]) .emblem,
 :global(:root[data-time-theme="night"]) .mobileEmblem {
@@ -344,11 +349,63 @@
     text-align: center;
     overflow: hidden;
   }
+  .mobileLogoButton {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: clamp(72px, 21vw, 112px);
+    aspect-ratio: 1;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    background: none;
+    color: var(--foreground);
+    cursor: default;
+    touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mobileLogoButton:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 12px;
+    border-radius: 50%;
+  }
   .mobileEmblem {
     display: block;
-    width: clamp(72px, 21vw, 112px);
+    width: 100%;
     height: auto;
     object-fit: contain;
+    pointer-events: none;
+    -webkit-user-drag: none;
+  }
+  .mobileHoldRing {
+    position: absolute;
+    display: block;
+    inset: -12%;
+    width: 124%;
+    height: 124%;
+    transform: rotate(-90deg);
+    overflow: visible;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .mobileHoldRing circle {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5px;
+    stroke-linecap: round;
+    stroke-dasharray: 346;
+    stroke-dashoffset: 346;
+  }
+  .mobileLogoHolding .mobileHoldRing {
+    animation: adminRingAppear .35s .6s ease forwards;
+  }
+  .mobileLogoHolding .mobileHoldRing circle {
+    animation: adminRingProgress 8s linear forwards;
   }
   .mobileLower .preview {
     max-width: 410px;
@@ -450,3 +507,6 @@
     background-image: url('/backgrounds/landing-hybrid-night-mobile.webp');
   }
 }
+
+@keyframes adminRingAppear { to { opacity: .65; } }
+@keyframes adminRingProgress { to { stroke-dashoffset: 0; } }

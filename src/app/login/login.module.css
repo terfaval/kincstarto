@@ -1,49 +1,187 @@
-.panel {
+.page {
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
+  padding: max(24px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
   display: grid;
-  gap: 1rem;
+  place-items: center;
+  background-color: #efddc6;
+  background-image: linear-gradient(135deg, rgba(239, 221, 198, .44), rgba(239, 221, 198, .2)), url('/backgrounds/landing-hybrid-day-desktop.webp');
+  background-position: center;
+  background-size: cover;
+  color: var(--foreground);
 }
-
+.panel {
+  width: min(100%, 436px);
+  padding: clamp(24px, 5vw, 38px);
+  border: 1px solid color-mix(in srgb, var(--foreground) 18%, transparent);
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--panel) 93%, transparent);
+  box-shadow: 0 22px 70px rgba(27, 29, 29, .19);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+}
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: .82rem;
+  font-weight: 600;
+  transition: color .2s ease;
+}
+.backLink::before { content: '←'; margin-right: 9px; font-size: 1.15rem; }
+.backLink:hover { color: var(--foreground); }
+.backLink:focus-visible, .visibilityButton:focus-visible, .submit:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
 .header {
   display: grid;
-  gap: 0.35rem;
+  justify-items: center;
+  text-align: center;
+  margin: 12px 0 26px;
 }
-
-.title {
-  margin: 0;
-  font-size: 1.6rem;
-}
-
-.subtitle {
-  margin: 0;
+.mark { width: 76px; height: 76px; object-fit: contain; }
+.eyebrow {
+  margin: 14px 0 8px;
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: .69rem;
+  font-weight: 650;
+  letter-spacing: .14em;
+  text-transform: uppercase;
 }
-
-.form {
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 5vw, 2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -.035em;
+  margin: 0;
+}
+.subtitle {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: .92rem;
+  line-height: 1.48;
+  max-width: 28ch;
+}
+.form { display: grid; gap: 17px; }
+.field { display: grid; gap: 7px; min-width: 0; }
+.label { color: var(--foreground); font-size: .83rem; font-weight: 650; }
+.input {
+  width: 100%;
+  min-width: 0;
+  min-height: 50px;
+  padding: 12px 15px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  font-size: 16px; /* Prevents iOS from zooming on focus. */
+  line-height: 1.4;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.input::placeholder { color: var(--muted); opacity: .75; }
+.input:focus-visible {
+  outline: none;
+  border-color: var(--brand-ink);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+.input:disabled { opacity: .7; }
+.passwordField { position: relative; display: block; }
+.passwordField .input { padding-right: 54px; }
+.visibilityButton {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
   display: grid;
-  gap: 0.85rem;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
 }
-
-.actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 0.25rem;
-}
-
+.visibilityButton:hover { color: var(--foreground); }
 .rememberRow {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
+  gap: 11px;
+  cursor: pointer;
+  font-size: .85rem;
+  line-height: 1.4;
   color: var(--muted);
 }
-
 .rememberCheckbox {
-  width: 16px;
-  height: 16px;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin: 0;
   accent-color: var(--brand-ink);
 }
-
-.rememberLabel {
-  color: inherit;
+.error {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(171, 59, 44, .5);
+  background: rgba(171, 59, 44, .11);
+  color: var(--foreground);
+  font-size: .86rem;
+  line-height: 1.45;
+}
+.submit {
+  width: 100%;
+  min-height: 50px;
+  border: 1px solid var(--brand-ink);
+  border-radius: 999px;
+  padding: 12px 20px;
+  background: var(--brand-ink);
+  color: #fff;
+  font: 700 .9rem var(--font-body);
+  letter-spacing: .035em;
+  cursor: pointer;
+  transition: filter .2s ease, transform .2s ease;
+}
+.submit:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-1px); }
+.submit:disabled { opacity: .68; cursor: progress; }
+:global(:root[data-time-theme="night"]) .page {
+  background-color: #0d2037;
+  background-image: linear-gradient(135deg, rgba(5, 14, 28, .38), rgba(5, 14, 28, .12)), url('/backgrounds/landing-hybrid-night-desktop.webp');
+}
+:global(:root[data-time-theme="night"]) .mark { filter: brightness(0) invert(1); }
+@media (max-width: 600px) {
+  .page {
+    background-image: linear-gradient(180deg, rgba(239, 221, 198, .28), rgba(239, 221, 198, .34)), url('/backgrounds/landing-hybrid-day-mobile.webp');
+  }
+  .panel { padding: 24px clamp(20px, 6vw, 30px) 30px; border-radius: 19px; }
+  .header { margin-top: 8px; margin-bottom: 23px; }
+  :global(:root[data-time-theme="night"]) .page {
+    background-image: linear-gradient(180deg, rgba(5, 14, 28, .42), rgba(5, 14, 28, .22)), url('/backgrounds/landing-hybrid-night-mobile.webp');
+  }
+}
+@media (max-height: 620px) {
+  .header { margin: 4px 0 15px; }
+  .mark { width: 58px; height: 58px; }
+  .form { gap: 13px; }
+}
+@media (prefers-color-scheme: dark) {
+  :global(:root:not([data-time-theme])) .page {
+    background-color: #0d2037;
+    background-image: linear-gradient(135deg, rgba(5, 14, 28, .38), rgba(5, 14, 28, .12)), url('/backgrounds/landing-hybrid-night-desktop.webp');
+  }
+  :global(:root:not([data-time-theme])) .mark { filter: brightness(0) invert(1); }
+}
+@media (prefers-color-scheme: dark) and (max-width: 600px) {
+  :global(:root:not([data-time-theme])) .page {
+    background-image: linear-gradient(180deg, rgba(5, 14, 28, .42), rgba(5, 14, 28, .22)), url('/backgrounds/landing-hybrid-night-mobile.webp');
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .backLink, .input, .submit { transition: none; }
 }

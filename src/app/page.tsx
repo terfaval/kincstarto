@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import styles from "./wreath.module.css";
+import HiddenAdminEntry from "./HiddenAdminEntry";
 
 type RoomKey = "shiori" | "tamayura" | "yasuragi" | "kagami" | "kaori";
 type Room = {
@@ -215,14 +216,7 @@ export default function LandingPage() {
         {selected ? (
           <RoomPreview room={selected} />
         ) : (
-          <Image
-            src="/logo.svg"
-            alt="Kincstartó"
-            width={112}
-            height={112}
-            className={styles.mobileEmblem}
-            priority
-          />
+          <HiddenAdminEntry />
         )}
       </section>
     </main>

@@ -3,7 +3,7 @@ import { isAdminRequest } from "@/lib/adminAuth";
 import LoginOverlay from "./LoginOverlay";
 
 export const metadata = {
-  title: "Admin Login",
+  title: "Adminbelépés | Kincstartó",
 };
 
 export default async function LoginPage() {
