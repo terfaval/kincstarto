@@ -114,6 +114,12 @@ export default function KincstartoMenu({ adminMode = false }: { adminMode?: bool
   return (
     <main className={styles.page}>
       <div className={styles.atmosphere} aria-hidden="true" />
+      {adminMode && (
+        <span className={styles.adminModeIndicator} aria-label="Szerkesztői nézet">
+          <span className={styles.adminModeIndicatorSeal} aria-hidden="true" />
+          Szerkesztői nézet
+        </span>
+      )}
       <h1 className={styles.visuallyHidden}>Kincstartó</h1>
 
       <section className={styles.mainSection} aria-label={adminMode ? "Kincstartó admin főmenü" : "Kincstartó főmenü"}>

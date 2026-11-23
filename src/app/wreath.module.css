@@ -33,6 +33,37 @@
   mix-blend-mode: multiply;
   opacity: .15;
 }
+/* A közös körmenü admin változatának csendes, de látható jelölése. */
+.adminModeIndicator {
+  position: absolute;
+  z-index: 5;
+  top: max(18px, env(safe-area-inset-top));
+  right: max(20px, env(safe-area-inset-right));
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 11px;
+  border: 1px solid color-mix(in srgb, var(--foreground) 15%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--panel) 74%, transparent);
+  color: var(--foreground);
+  font-size: .67rem;
+  line-height: 1.35;
+  font-weight: 650;
+  letter-spacing: .025em;
+  white-space: nowrap;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+.adminModeIndicatorSeal {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: #a84637;
+  transform: rotate(-8deg);
+  flex: none;
+}
 .visuallyHidden {
   position: absolute;
   width: 1px;
@@ -308,6 +339,13 @@
 }
 /* The mobile homepage is a fixed, two-zone composition: no document scrolling. */
 @media (max-width: 600px) {
+  .adminModeIndicator {
+    top: max(12px, env(safe-area-inset-top));
+    right: max(12px, env(safe-area-inset-right));
+    gap: 6px;
+    padding: 6px 9px;
+    font-size: .62rem;
+  }
   .page {
     background-image: url('/backgrounds/landing-hybrid-day-mobile.webp');
     flex-direction: column;

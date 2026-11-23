@@ -4,14 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import styles from "./login.module.css";
 
 export default function LoginOverlay() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,6 +22,8 @@ export default function LoginOverlay() {
     try {
       const response = await fetch("/api/login", {
         method: "POST",
+        credentials: "same-origin",
+        cache: "no-store",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, remember: rememberMe }),
       });
@@ -36,7 +36,9 @@ export default function LoginOverlay() {
         setError("A belépés most nem sikerült. Próbáld meg később.");
         return;
       }
-      router.replace("/admin");
+      // A teljes navigáció új szerverkérést indít az imént beállított
+      // HttpOnly sütivel; nem használ korábbi, kijelentkezett RSC állapotot.
+      window.location.replace("/admin");
     } catch {
       setError("Nem sikerült kapcsolódni. Ellenőrizd a kapcsolatot, és próbáld újra.");
     } finally {
@@ -110,7 +112,7 @@ export default function LoginOverlay() {
               onChange={(event) => setRememberMe(event.target.checked)}
               disabled={loading}
             />
-            <span>Maradjak bejelentkezve 30 napig</span>
+            <span>Maradjak bejelentkezve ezen az eszközön (30 nap)</span>
           </label>
 
           {error && <p role="alert" className={styles.error}>{error}</p>}
