@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { BookOpen, Brain, ChevronLeft, ChevronRight, Info, LogOut, Pencil, Plus, Trash2 } from "lucide-react";
+import { House, Brain, ChevronLeft, ChevronRight, Info, LogOut, Pencil, Plus, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "./YogaLogApp.module.css";
@@ -1418,10 +1418,10 @@ export default function YogaLogApp() {
         <Link
           href="/admin"
           className={styles.addFab}
-          aria-label="Vissza a konyvekhez"
-          title="Vissza a konyvekhez"
+          aria-label="Vissza az admin főmenübe"
+          title="Vissza az admin főmenübe"
         >
-          <BookOpen size={18} />
+          <House size={18} />
         </Link>
         <Link
           href="/admin/yogis-choice"

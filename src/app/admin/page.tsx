@@ -1,11 +1,10 @@
-import { loadSpiritLibrary } from "@/lib/spiritLibrary";
-import SpiritLibraryApp from "@/components/spirit/SpiritLibraryApp";
+import KincstartoMenu from "@/app/KincstartoMenu";
 
 export const metadata = {
-  title: "Spirit Library Admin",
+  title: "Kincstartó · Admin főmenü",
 };
 
-export default async function SpiritAdminPage() {
-  const library = await loadSpiritLibrary();
-  return <SpiritLibraryApp library={library} admin />;
+export default function AdminHomePage() {
+  // AdminLayout and proxy.ts both enforce the signed administrator session.
+  return <KincstartoMenu adminMode />;
 }

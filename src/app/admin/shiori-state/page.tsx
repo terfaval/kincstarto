@@ -17,7 +17,7 @@ export default async function ShioriStatePage() {
   if (!privateShioriReady()) {
     return (
       <main className={styles.page}>
-        <Link href="/admin">← Shiori admin</Link>
+        <Link href="/admin/shiori">← Shiori admin</Link>
         <h1>Belső állapot</h1>
         <p>Az adatátvitel utáni privát olvasás még nincs aktiválva.</p>
       </main>
@@ -30,7 +30,7 @@ export default async function ShioriStatePage() {
   return (
     <main className={styles.page}>
       <header className={styles.header}>
-        <div><Link href="/admin">← Shiori admin</Link><p className={styles.kicker}>Kizárólag admin · privát tároló</p><h1>Belső állapot</h1></div>
+        <div><Link href="/admin/shiori">← Shiori admin</Link><p className={styles.kicker}>Kizárólag admin · privát tároló</p><h1>Belső állapot</h1></div>
         <p className={styles.summary}>{library.books.length} könyv · {paths.length} olvasási út</p>
       </header>
       <p className={styles.intro}>Az olvasottság, az útvonalak haladása és a belső szerkesztői jegyzetek nem részei a nyilvános könyvadatlapoknak. Ez a nézet csak olvasásra szolgál.</p>

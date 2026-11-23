@@ -55,7 +55,7 @@ export default function SpiritLibraryApp({ library, admin = false, privateEnable
   return (
     <section className={`${styles.page} ${styles.pageShelf} ${styles.pagePublic} admin-stack`}>
       {/* Use Tamayura's original back control, including its hover label. */}
-      <Link href="/" className={`${meditationStyles.backLink} ${styles.shioriBackLink}`} aria-label="Vissza a főoldalra">
+      <Link href={admin ? "/admin" : "/"} className={`${meditationStyles.backLink} ${styles.shioriBackLink}`} aria-label={admin ? "Vissza az admin főmenübe" : "Vissza a főoldalra"}>
         <span className={meditationStyles.backIcon} aria-hidden="true">‹</span>
         <span className={`${meditationStyles.backLabel} ${styles.shioriBackLabel}`}>vissza</span>
       </Link>

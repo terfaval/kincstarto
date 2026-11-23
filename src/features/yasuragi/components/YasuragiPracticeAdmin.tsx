@@ -277,7 +277,7 @@ export default function YasuragiPracticeAdmin() {
   const workflowPlan = planPracticeWorkflow({ gate: approval?.gate ?? null, receiptCurrent: approval?.receiptCurrent === true, publication });
 
   return <main className={styles.page}>
-    <nav className={styles.nav}><Link href="/admin/yasuragi">← P01 lejátszópróba</Link><Link href="/admin/yogis-choice">Ászanatár</Link></nav>
+    <nav className={styles.nav}><Link href="/admin">← Admin főmenü</Link><Link href="/admin/yasuragi?fixture=1">P01 lejátszópróba (helyi)</Link><Link href="/admin/yogis-choice">Ászanatár</Link></nav>
     <header className={styles.header}>
       <p className={styles.eyebrow}>YASURAGI · ADMIN P04</p>
       <h1>Egységes gyakorlástervezés</h1>

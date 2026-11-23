@@ -12,10 +12,11 @@ import { join } from "node:path";
 export const metadata: Metadata = { title: "Yasuragi – belső lejátszópróba" };
 export const dynamic = "force-dynamic";
 
-type PageProps = { searchParams: Promise<{ draft?: string }> };
+type PageProps = { searchParams: Promise<{ draft?: string; fixture?: string }> };
 export default async function YasuragiPrototypePage({ searchParams }: PageProps) {
   if (!(await isAdminRequest())) redirect("/login");
-  const { draft } = await searchParams;
+  const { draft, fixture } = await searchParams;
+  if (!draft && fixture !== "1") redirect("/admin/yasuragi/practices");
   let script: PracticeScript;
   let title = "Földön dolgozás";
   if (draft) {
